@@ -1,0 +1,73 @@
+\documentclass{layout/tudelft-report}
+
+%% Setting up the bibliography
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+% Additional packages and commands
+\setlist{itemsep=-2pt} % Reducing white space in lists slightly
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Begin of document %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% Roman page numbering
+\frontmatter
+
+%% Defining the main parameters
+\title{A Backward Search approach to action sequence search for nonholonomic robots}
+
+\subtitle{An application to pushing and navigation tasks} 
+
+\author{G.S. Groote}
+\subject{SC52010: S\&C Literature Research}
+\affiliation{Delft University of Technology}
+
+\coverimage{figures/cover.jpg} 
+\definecolor{title}{HTML}{4884d6} % Color for title
+
+\makecover
+page intentionally left blank.
+\newpage
+\input{frontmatter/title-report}
+\input{frontmatter/abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%% Arabic page numbering
+\mainmatter
+
+
+\input{mainmatter/introduction}
+\input{mainmatter/proposed_method}
+\input{mainmatter/results}
+\input{mainmatter/conclusions}
+
+
+\todo[inline]{ list metric}
+\todo[inline]{find the metrics used in relevant comparable papers}
+
+\todo[inline]{create simple sections + bullet lists what can be in them}
+\todo[inline]{create expected results}
+
+
+\input{frontmatter/acronyms.tex}
+
+%% Prevent urls running into margins in bibliography
+\setcounter{biburlnumpenalty}{7000}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{7000}
+
+%% Add bibliography
+\printbibliography
+\printbibliography[title=References]
+couls you print the bib in tto>>>??c?
+\printbibliography[heading=bibintoc]
+\printbibliography[heading=bibintoc,title=References]
+
+\input{mainmatter/appendix.tex}
+\end{document}

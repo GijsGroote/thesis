@@ -1,0 +1,67 @@
+\subsection{Definition}
+\label{subsec: hgraph_definition}
+
+\todo[inline]{definition of state, node, }
+
+
+
+\textbf{Lifetime and types of edges}
+\newline
+An edge denotes that input commands are sent to the robot and as a result the robot can drive around changing it's state. Obstacles in a certain state represented by a node in the hgraph can be connected to other nodes via edges.
+The edge contains all necessary components to sent input to the robot resulting in an obstacle reaching the target state residing in the node where the edge points toward. \\
+
+There exist two types of edges, identification edges and action edges. An identification edge is responsible for sending an input sequence to the system and recording the system output which the simulation returns. An input/output sequence and assumptions on the system are the basis for system identification techniques discussed in \cref{subsec: sys_iden_and_control_methods}. The goal is to create a dynamical model which if augmented with an corresponding controller is closed-loop stable. \\
+
+An action edge is responsible for putting an obstacle at a target state, the goal is to reach the target state, without triggering the fault detector and scoring well at internal metrics elaborated in \cref{subsec: edge_metrics}.
+
+\todo[inline]{the lifetime of an identification edge}
+
+The different status an edge can have is listed below. An edge status can only change according to the directed arrows in \cref{tikz: lifetime_action_edge}
+
+\definecolor{lavenderIndigo}{RGB}{160, 110, 224}
+\definecolor{batteryChargedBlue}{RGB}{22, 164, 216}
+\definecolor{skyBlue}{RGB}{96, 219, 232}
+\definecolor{kiwi}{RGB}{139, 211, 70}
+\definecolor{minionYellow}{RGB}{239, 223, 72}
+\definecolor{deepSaffron}{RGB}{249, 165, 44}
+\definecolor{sinopia}{RGB}{214, 78, 18}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto]
+    \node [block, fill=lavenderIndigo] (init) {Initialised};
+    \node [block, fill=batteryChargedBlue, below of=init] (path_exist) {Path Exists};
+    \node [block, fill=skyBlue, below of=path_exist] (system_model) {System Model};
+    \node [block, fill=kiwi, below of=system_model] (path_planned) {Path Planned};
+    \node [block, fill=minionYellow, below of=path_planned] (executing) {Executing};
+    \node [block, fill=deepSaffron, below of=executing] (completed) {Completed};
+    \node [block, fill=sinopia] (failed) at ([xshift=4cm]$(system_model)!0.5!(path_planned)$) {Failed};
+    
+    % arrows
+    \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{select controller} (init.west);
+    \draw [-stealth] (init.south) to node[left]{graph-based path estimation} (path_exist.north);
+    \draw [-stealth] (path_exist.west) [out=215,in=145] to node[left]{system identification} ([yshift=0.3cm] system_model.west);
+    \draw [-stealth] ([yshift=-0.3cm] system_model.west) [out=215,in=145] to node[left]{motion planning} ([yshift=0.3cm] path_planned.west);
+    \draw [-stealth] ([yshift=-0.3cm] path_planned.west) [out=215,in=145] to  node[left]{go to execution loop} ([yshift=0.3cm] executing.west);
+    \draw [-stealth] (executing.south) to node[left]{evaluate with metrics} (completed.north);
+    % edges to failed
+    \draw [-stealth] (init.east) [out=0, in=90] to node[right]{path non-existence proven}  ([xshift=0.3cm]failed.north);
+    \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.4cm,yshift=0.55cm, above]{\shortstack[l]{system\\identification\\error}}  ([xshift=-0.3cm]failed.north);
+    \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{motion\\planning\\error}} ([yshift=0.3cm]failed.west);
+    node[right]{motion planning error}  
+    ([yshift=-0.3cm]failed.west);
+    \draw [-stealth] (executing.east) [out=0, in=-90] to node[right]{fault detected}(failed.south);
+\end{tikzpicture}
+\caption{The status of an action edge and the most important indicator to change status}
+\label{tikz: lifetime_action_edge}
+\end{figure}
+
+\begin{enumerate}
+    \item[INITIALISED] The edge is created with a source and target node which are present in the hypothesis graph. A choice of controller is made.
+    \item[PATH EXISTS] A graph-based search is performed to validate if the target state is reachable assuming that the system is holonomic.
+    \item[SYSTEM MODEL] A dynamics system model is provided to the controller residing in the edge.
+    \item[PATH PLANNED] Resulting from a sampble-based planner, a path from start to target state is provided. 
+    \item[EXECUTING] The edge is currently sending input toward the robot. 
+    \item[COMPLETED] The edge has driven the system toward it's target state and it's performance has been calculated.
+    \item[FAILED] An error occurred, yielding the edge unusable. 
+\end{enumerate}
