@@ -1,0 +1,120 @@
+\subsection{Motion Planning}
+\label{subsec:motion_planning}
+
+In order to place an obstacle at a new location, an path connecting the start to target pose is required, a practical example of such an path is a list of successive robot poses, from starting pose in small steps (reachable for the robot in $\sim10$ time samples) toward the target pose. The problem to find a path the robot can track to drive from a start- to target pose whils avoiding obstacles is referred to as \textit{motion planning}. Finding a path between start and target pose for pushing application avoiding collision is referred to as \textit{manipulation planning}. First this subsection presents motion planning, next section dedicates itself to manipulation planning. To obtain a discrete path sampling-based methods are used, described as.\bs
+
+\textit{\quotes{The main idea is to avoid the explicit construction of the obstacle spac, and instead conduct a search that probes the configuration space with a sampling scheme. This probing is enabled by a collision detection module, which the motion planning algorithm considers as a “black box.”~\cite{lavalle_planning_2006}}}\bs
+
+For this purpose a dedicated motion planning algorithm has been developed. The developed motion planning algorithm extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}. The modification allows the motion planning algorithm to detect known or unknown obstacles. \ac{RRT*} keeps track of a cost to source node in order to find the shortest path, a fixed panalty is given to paths crossing through known or unknown obstacles as displayed in~\cref{fig:double_rrt_alg}. What can be seen in~\cref{fig:double_rrt_alg} is that the motion planner cannot find a path around the movable obstacle and is forced to add the cost to move the obstacle. If a path around movable or unknown obstacles exist the motion planner finds it with infinite sampling. The added fixed cost for a path crossing through a movable or unknown obstacles motivates the motion planner to find the shortest path around obstacles but prefers moving an obstacle over making a large detour.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/rrt_with_costs.png}
+    \caption{Schematic view of the proposed double $\text{RRT}^*$ tree taking movable and unknown obstacles into account with cost to reach a sampled configuration displayed.}
+    \label{fig:double_rrt_alg}
+\end{figure}
+\todo[inline]{Update the figure above}
+
+
+\cref{pseudocode:proposed_rrt_star} displays the pseudocode for the proposed modified \ac{RRT*} algorithm which takes unknown and movable obstacles into account. The following definitions are used by the proposed algorithm.\bs
+
+
+\begin{center}
+\begin{tabular}[t]{l p{10cm}}
+$x$:& A node containing a point in configuration space, a flag indicating if the node in in the start tree or target tree and the cost toward initial node\\
+$V$:& A set of nodes\\
+$E$:& A set of edges\\
+$P$:& A set of paths\\
+\end{tabular}
+\end{center}
+\todo[inline]{Is this too vague? the paths could be defined more specifically}
+
+
+The following functions are called by the \cref{pseudocode:proposed_rrt_star}.\\ 
+
+\begin{center}
+\begin{tabular}[t]{l p{10cm}}
+$x_{init}$:& Creates a start and target node\\ 
+$NotReachStop$:& True if the stopping criteria is not reached\\ 
+$Sample_{random}$:& Creates a random sample in free-, movable- or unknown space\\
+$Nearest(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
+$NearestSet(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
+$Project(x, x')$:& Project $x$ toward $x'$\\
+$CollisionCheck(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
+$ObstacleCost(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwis returns 0\\
+$Distance(x, x')$:& Returns the distance between sample $x$ and $x'$\\
+$CostToInit(x)$:& Find the total cost from $x$ to the initial node\\
+$LocalPlannerCheck(x, x')$:& Return true if a local planner is able to connect $x$ and $x'$, otherwise return false \\
+$InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
+\end{tabular}
+\end{center}
+
+\begin{algorithm}[H]
+\caption{Pseudocode for modified $\text{RRT}^*$ algorithm taking movable obstacles and constraints into account}
+\label{pseudocode:proposed_rrt_star}
+\begin{algorithmic}[1]
+\State $V \leftarrow x_{init}$
+\While{$NotReachStop$} 
+    \State $Cost_{min} \leftarrow +\infty$ \algorithmiccomment{Create and check a new random sample}
+    \State $x_{rand} \leftarrow Sample_{random}$
+    \State $x_{nearest} \leftarrow Nearest(x_{rand}, V)$
+    \State $x_{temp} \leftarrow Project(x_{rand}, x_{nearest})$
+    \If{$CollisionCheck(x_{temp})$}
+        \State $x_{new} = x_{temp}$
+        \Else
+        \State $Continue$
+    \EndIf
+    \bs 
+    \State $X_{near} \leftarrow NearestSet(x_{new}, V)$ \algorithmiccomment{Add new node to the parent node\newline yielding lowest total cost }
+    \For{$x_{near} \in X_{near}$}
+    \State $Cost_{temp} \leftarrow CostFromInit(x_{near}) + Distance(x_{near}, x_{new}) + ObstacleCost(x_{near}, x_{new})$
+    \If{$Cost_{temp}  < Cost_{min}$}
+            \If{$LocalPlannerCheck(x_{new}, x_{near})$}
+            \State $Cost_{min} \leftarrow x_{temp}$
+            \State $x_{minCost} \leftarrow x_{near}$
+            \EndIf
+        \EndIf
+    \EndFor
+    \If{$Cost_{min} == \infty$}
+        \State $Continue$
+    \Else
+        \State $V.add(x_{new})$
+        \State $E.add(x_{minCost}, x_{new})$
+    \EndIf
+
+    \bs
+    \State $Cost_{path} \leftarrow +\infty$ \algorithmiccomment{Check if newly added node can lower cost for nearby nodes}
+    \For{$x_{near} \in X_{near}$} 
+      \If{$InSameTree(x_{near}, x_{new})$} 
+        \State $Cost_{temp} \leftarrow CostFromInit(x_{new}) + distance(x_{new}, x_{near}) + ObstacleCost(x_{new}, x_{near})$
+        \If{$Cost_{temp} < CostFromInit(x_{near})$}
+           \If{$LocalPlannerCheck(x_{new}, x_{near})$}
+              \State $E.rewire(x_{near}, x_{new})$
+           \EndIf
+        \EndIf
+      \Else \algorithmiccomment{Add lowest cost path to list of paths}
+          \State $Cost_{temp} \leftarrow CostFromInit(x_{new}) + distance(x_{new}, x_{near}) $ \newline\hspace*{10em} $+ CostFromInit(x_{near}) + ObstacleCost(x_{new}, x_{near})$
+          \If{$Cost_{temp}  < Cost_{path}$}
+              \If{$LocalPlannerCheck(x_{new}, x_{near})$}
+                  \State $Cost_{pathMin} \leftarrow x_{temp}$
+                  \State $x_{pathMin} \leftarrow x_{near}$
+              \EndIf
+          \EndIf
+      \EndIf
+      \If{$Cost_{pathMin} == \infty$}
+          \State $Continue$
+      \Else
+          \State $P.addPath(x_{new}, x_{pathMin}, Cost_{pathMin})$
+      \EndIf
+    \EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+\todo[inline]{connect localplannercheck to dynamical models}
+\todo[inline]{do you want examples? graph with big-o times? practical stuff sucha as if it takes more than 0.5 sec -> halt without a path.}
+
+
+
+

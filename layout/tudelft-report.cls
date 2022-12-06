@@ -12,12 +12,16 @@
 % custom colors for style of the report
 \definecolor{myDarkColor}{RGB}{178, 178, 255} % blue!30, #b2b2ff
 \definecolor{myLightColor}{RGB}{204, 204, 255} % blue!20, #ccccff 
-\definecolor{myEvenLighterColor}{RGB}{230, 230, 255} % blue!10, #e6e6ff
+\definecolor{myEvenLighterColor}{RGB}{230, 230, 254} % blue!10, #e6e6ff
+% \definecolor{myEvenLighterColor}{HTML}{e6e6ff} % blue!10, 
 \definecolor{myObstacleLighColor}{RGB}{255, 204, 204} % red!20, #ffcccc
 
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+% create a macro for \quotes
+\newcommand{\quotes}[1]{``#1''}
+\newcommand{\bs}{\vspace{\baselineskip}}
 
 % Required package
 \usepackage{tikz}
@@ -75,7 +79,7 @@
 \RequirePackage{pdfpages}   % Include PDF documents
 
 \RequirePackage[pdfusetitle,hidelinks]{hyperref} % Extensive support for hypertext
-\RequirePackage[noabbrev,nameinlink,]{cleveref} % Intelligent cross-referencing
+\RequirePackage[noabbrev,nameinlink,capitalise]{cleveref} % Intelligent cross-referencing
 \RequirePackage{xcolor}     % Driver-independent color extensions
 \RequirePackage{tikz} 
 % Create PostScript and PDF graphics
