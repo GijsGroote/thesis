@@ -30,7 +30,16 @@
 % For minimisation functions
 \usepackage{optidef}
 
-\newtheorem{assumption}{Assumption}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\usepackage{amsthm}
+
+\newtheoremstyle{dotless}{}{}{\itshape}{}{\bfseries}{}{ }{}
+
+% custom assumption environment
+\theoremstyle{dotless}
+\newtheorem{assumption}{}
+\newtheorem*{assumption*}{}
 \newtheorem{definition}{Definition}
 
 %% to create notes to self
@@ -79,7 +88,7 @@
 \RequirePackage{pdfpages}   % Include PDF documents
 
 \RequirePackage[pdfusetitle,hidelinks]{hyperref} % Extensive support for hypertext
-\RequirePackage[noabbrev,nameinlink,capitalise]{cleveref} % Intelligent cross-referencing
+\RequirePackage[noabbrev,nameinlink]{cleveref} % Intelligent cross-referencing
 \RequirePackage{xcolor}     % Driver-independent color extensions
 \RequirePackage{tikz} 
 % Create PostScript and PDF graphics
@@ -268,3 +277,5 @@ reversed diagonal fill/.style 2 args={fill=#2, path picture={
 \fill[#1, sharp corners] (path picture bounding box.north west) |- 
                          (path picture bounding box.south east) -- cycle;}}
 }
+
+\usetikzlibrary{automata, positioning, arrows}

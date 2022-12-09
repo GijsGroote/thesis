@@ -1,22 +1,13 @@
 \chapter{The Hypothesis and Knowledge graph}
 \textit{
-As defined in the introduction, a task consists of obstacles with corresponding target positions, an obstacle with an accompanying target position is called a subtask. The \textbf{hypothesis graph} contains nodes corresponding to obstacles at a certain position and edges corresponding to actions which relocate obstacles, and connect nodes in the hypothesis graph. A formal description of the hypothesis graph with its nodes and edges is given in \cref{subsec:hgraph_definition} and \cref{subsec:sys_iden_and_control_methods} elaborates the meaning of actions taken when traversing over one of the hypothesis graphs edges.\\
-\newline
-For every subtask in a task, a start and a target node is created, the hypothesis graph tries to connect the starting node to the corresponding target node by adding nodes and edges. The choice and content of these nodes and edges is based on local planning and randomisation, elaborated in~\cref{subsec:estimating_path_existence,subsec:motion_planning,subsec:manipulation_planning}. A successive path from a starting node to the corresponding target node is called a hypothesis. During the search for a hypothesis, the hypothesis graph resides in the \textbf{search loop}, when traversing over edges toward the target node the hypothesis graph resides in the \textbf{execution loop}, both loops are elaborated in \cref{subsec:2_loops}. When the hypothesis graph traverses over an edge, fault detectors monitors the progress, elaborated in \cref{subsec:fault_detection}. Finally an example of an hypothesis graph is given in \cref{subsec:hgraph_example}.\\
-\newline
-After execution, the traversed edge enters a review period, during which performance is checked in various metrics. The review is stored in a database, called the \textbf{knowledge graph} which serves to collect edges and rank them based on performance. The knowledge graph is defined in \cref{subsec:kgraph_definition}, metrics to rank edges can be found in \cref{subsec:edge_metrics} and an example is displayed in \cref{subsec:kgraph_example}.
+  As defined in the introduction, a task consists of obstacles with corresponding target positions, an obstacle with an accompanying target position is called a subtask, termonology used is presented in \cref{table:proposed_method_termonology}. The \textbf{hypothesis graph} contains nodes corresponding to obstacles at a certain state, edges correspond to actions which changing the obstacle's state, and connect nodes in the hypothesis graph. A formal description of the hypothesis graph with its nodes and edges is given in \cref{subsec:hgraph_definition}, \cref{subsec:sys_iden_and_control_methods} gives more details on the meaning of traversing over edges in the hypothesis graphs. \Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment.\bs
 }
-
-\newpage
-
-\section{Hypothesis Graph}
-\label{sec:hgraph}
 
 \begin{figure}[H] \centering
 \begin{tikzpicture}[node distance = 2cm, auto]
     % Place nodes
     \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=12.1cm, minimum width=6.8cm, yshift=3.7cm] (focusbox) {}; 
-    \node[yshift=5.5cm, xshift=-0.6cm, align=left] at (focusbox) {\textbf{Literature study focus}};
+    \node[yshift=5.5cm, xshift=-0.6cm, align=left] at (focusbox) {\textbf{Thesis focus}};
    
    \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=5.0cm]{figures/example_environment_cropped.png}}; 
 
@@ -70,10 +61,31 @@ After execution, the traversed edge enters a review period, during which perform
     \draw[-stealth] ([xshift=-0.4cm]ontology.south) -- node [left] {\shortstack[]{output}}([xshift=-0.4cm]planner.north);
     \draw[stealth-] (planner.south) |- ++ (2,-1) node[near end, above] {\shortstack[]{High-level\\task}};
     \end{tikzpicture}
-\caption{Simplified flowchart representation of the proposed method.}
+\caption{Simplified flowchart representation of the proposed method. This thesis work could be augmented with an ontology and high-level planner as displayed. Such an augmentation would create a framework capable of completing high-level tasks.}
 \label{tikz:flowchart_proposed_method}
 \end{figure}
+
 \todo[inline]{Review/restyle/update the flowchart here above}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}[t]{l p{10cm}}
+  Task:& Collection of obstacles and target states, defined in \cref{subsec:task}\\
+Subtask:& a single obstacle, and a single target state \\
+Edge:& transition in the todod this here \\
+Hypothesis:& idea, sequence of edges to complete a subtask\\
+\end{tabular}
+\caption{Terminology of terms used}
+\label{table:proposed_method_termonology}
+\end{table}
+
+\section{Hypothesis Graph}
+\label{sec:hgraph}
+\todo[inline]{this should be rewritten as hgraph intro}
+For every subtask in a task, a start and a target node is created, the hypothesis graph tries to connect the starting node to the corresponding target node by adding node and edges. The choice and content of these nodes and edges is based on local planning and randomisation, elaborated in~\cref{subsec:estimating_path_existence,subsec:motion_planning,subsec:manipulation_planning}. A successive path from a starting node to the corresponding target node is called a hypothesis. During the search for a hypothesis, the hypothesis graph resides in the \textbf{search loop}, when traversing over edges toward the target node the hypothesis graph resides in the \textbf{execution loop}, both loops are elaborated in \cref{subsec:2_loops}. When the hypothesis graph traverses over an edge, fault detectors monitors the progress, elaborated in \cref{subsec:fault_detection}. Finally an example of an hypothesis graph is given in \cref{subsec:hgraph_example}.\bs
+
+After execution, the traversed edge enters a review period, during which performance is checked in various metrics. The review is stored in a database, called the \textbf{knowledge graph} which serves to collect edges and rank them based on performance. The knowledge graph is defined in \cref{subsec:kgraph_definition}, metrics to rank edges can be found in \cref{subsec:edge_metrics} and an example is displayed in \cref{subsec:kgraph_example}.
+\todo[inline]{come back to joint configuration space, and tell the hgraph cuts the different modes of dynamics with an edge for every mode of dynamics}
 
 
 \input{mainmatter/hypothesis_graph/definition}
@@ -84,6 +96,7 @@ After execution, the traversed edge enters a review period, during which perform
 \input{mainmatter/hypothesis_graph/path_estimation}
 \input{mainmatter/hypothesis_graph/motion_planning}
 
+% should these subsections not belong in some subdirectory gijs?
 \subsection{Manipulation Planning}
 \label{subsec:manipulation_planning}
 \subsection{The Search and the Execution loop}
@@ -94,9 +107,6 @@ After execution, the traversed edge enters a review period, during which perform
 \label{subsec:hgraph_example}
 
 \section{Knowledge Graph}
-\subsection{Definition}
-\label{subsec:kgraph_definition}
-\subsection{Edge Metrics}
-\label{subsec:edge_metrics}
-\subsection{Example}
-\label{subsec:kgraph_example}
+\label{sec:kgraph}
+\todo[inline]{this should get a intro, what does that kgraph dooo}
+\input{mainmatter/knowledge_graph/definition}

@@ -1,6 +1,48 @@
 \chapter{Results}
 
 
+\subsection{The Simulation Environment} Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library \cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standart TU Delft laptop: HP ZBook Studio x360 G5, running OS: Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
+The simulation environment provides many different robot, 2 simple robots are selected to perform tests, they are displayed in \cref{fig:example_robots}, various obstacles are displayed in \cref{fig:example_obstacles}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/point_robot.png}
+    \caption{The holonomic point robot\\the 2 inputs drive the robot in $x$ and in $y$ direction}
+    \label{subfig:example_point_robot_todo_rename_this}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/boxer_robot.png}
+    \caption{The nonholonomic boxer robot\\the first input drives the robot forward/backward\\the second rotates the robot}
+    \label{subfig:example_boxer_robot_todo_rename_this}
+    \end{subfigure}%
+    \caption{Robots used for testing, for either robot an velocity and a accelaration input exists, in total 4 different robots are used}
+    \label{fig:example_robots_change_ref_please}
+
+\end{figure}
+\todo[inline]{renaem labels in thingy above}
+\todo[inline]{zoom in a bit on these 2 cute robots}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/box_obstacle.png}
+    \caption{A box obstacle}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/cylinder_obstacle.png}
+    \caption{A cylinder obstacle}
+    \end{subfigure}%
+    \caption{Various obstacles in the robot environment}
+    \label{fig:example_obstacles_change_this_label}
+\end{figure}
+
+
+
 The results will be made in a while, wait for a moment while we try to make sense of the almost existing results
 
 
@@ -8,6 +50,9 @@ The results will be made in a while, wait for a moment while we try to make sens
 \section{Metrics}
 
 A clear distinction between a transition, or an hypothesis is now made. A transition is a single action. An hypothesis is an sequence of actions/transitions.\\
+
+
+\todo[inline]{why would any metric be usefull, explain why a metric is required.}
 
 \textbf{Metric for a transition}
 \newline
