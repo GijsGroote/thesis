@@ -1,68 +1,71 @@
-\subsection{Definition}
+\subsection{Definition}%
 \label{subsec:hgraph_definition}
 Before defining the \ac{hgraph}, some definitions are defined which the \ac{hgraph} depends on. First, recall the \textbf{state} defined in the \cref{sec:problem_description}.\bs
 
-An obstacle holds the information about an obstacle.\\Formally, a \textbf{obstacle},  $obst_{id}(k) = (s_{id}(k), shape)$.\bs
+An object holds the information about an object.\\Formally, a \textbf{object},  $obst_{id}(k) = \left\langle s(k), shape \right\rangle $\bs
 
-where $shape$ is linked to a 3D representation of the obstacle which is used to construct the configuration space.\bs
+where $shape$ is linked to a 3D representation of the object which is used to construct the configuration space.\bs
 
-There are 2 types of nodes, an obstacleNode that represents a obstacle in a state, and an changeOfStateNode representing change in state of an obstacle\\Formally, a \textbf{node}:\bs
+An objectNode represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obst}_{id} =\left\langle \textrm{status}, obst(k)\right\rangle $\\where status indicates if the node has been visited in the \ac{hgraph}$\textrm{status} = \textrm{initialised} \lor \textrm{completed} \lor \textrm{failed}$\bs
 
-\textbf{objectNode}, $V^{obst}_{id} =(id1, obst_{id2}(k))$ for some $s \geq 1$.\\
-\todo[inline]{this cannot only be it for an obstaclenode, status, controller, other stuff. what does the node contain other than simply the obstacle }
-\todo[inline]{do somthing about that id1 and id2 in obstaclenode def, it looks awefull}
+A edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment an edge represents change of state for an object. System identification and performing an action such as pushing or driving both change the state of objects in the robot envireronment, but because are very different, the edges are split into 2 categories. IdentificationEdges that collect system \ac{IO} data an convert that into a system model. And actionEdges that plan and track a motion from start to target state. Formally:\bs
 
-\textbf{changeOfStateNode}, $V^{\Delta conf}_{id} = (id, s_{id}, \mathbb{B}_{id})$ where $\textrm{Dim}(s_{i})=\textrm{Dim}(\mathbb{B}_i)$, with $\mathbb{B}_i$ a vector of booleans for some $s,i \geq 1$.\bs
+A \textbf{identificationEdge}, \todo[inline]{define identificationEdge}
 
-\todo[inline]{shall I use transition, edge or is it oke to use both?}
-A edge describes the details of how a node transitions to another node in the \ac{hgraph}, in the robot environment is represents a change of the environment due to robot movement, such as robot driving. edges are split into 2 categories, identificationEdges that collect system \ac{IO} data an convert that into a system model. and actionEdges that plan and track a motion from start to target state. \\
+A \textbf{actionEdge}, $\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\bs
 
-Formally, a \textbf{transition}, $\tau_{(from, to)} = (id_{from}, id_{to}, verb, controller, d, path)$ with $verb$ an English verb describing the transformation in configuration sets in human language, $controller$ the controller used for driving the robot, $d$ dynamic model used by the controller, $path$ a list of configurations indicating the path connecting a start- to target node, if no path has been planned then $path = False$.\\
+with $id_{from}$ and $id_{to}$ indicating the node id of the node in the \ac{hgraph} where the edge start from and point to respectively, $verb$ an English verb describing the action the edge represents, controller contains the controller used for driving the robot, dynamic model is the dynamic model used by the controller, path a list of configurations indicating the path connecting a start- to target node.\bs
 
-A $verb = \{\textrm{driving, pushing, system identification}\}$.\\
+A $verb = \{\textrm{driving, pushing}\}$.\bs
 
-Transitions can also be system identification periods, system identification changes the environment because a train set drives or pushes objects. Every change in the environment has an accompanying transition.\\
+Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
-Now the nodes and edges have been defined, the hypothesis graph can be defined. A hypothesis graph is a directed graph that includes the current configuration set and the target configuration set. \\
-Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = (V, E)$ 
-\\comprising $V = \{V^{ob}_{i}, V^{conf}_{j}\}$, $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{ob}_{i}, V^{conf}_{j}\}, i \neq j\}$.\\
+Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \right\rangle $ 
+\\comprising $V = \{V^{ob}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{ob} \}, i \neq j\}$.\bs
 
+Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge is still remains undefined and requires some further explanation.\bs
 
+\paragraph{Types and Lifetime of edges}
+There exist two types of edges, identification edges and action edges. An identification edge, which is responsible for sending an input sequence to the system and recording the system output. That input/output sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \cref{subsec:sys_iden_and_control_methods}. The goal is to create a dynamical model which if augmented with an corresponding controller is closed-loop stable.\bs
 
-\todo[inline]{introduce the citation \cite{ellis_navigation_2022}}
-
-
-\textbf{Lifetime and types of edges}
-\newline
-An edge denotes that input commands are sent to the robot and as a result the robot can drive around changing it's state. Obstacles in a certain state represented by a node in the hgraph can be connected to other nodes via edges.
-The edge contains all necessary components to sent input to the robot resulting in an obstacle reaching the target state residing in the node where the edge points toward. \vspace{\baselineskip}
-
-There exist two types of edges, identification edges and action edges. An identification edge is responsible for sending an input sequence to the system and recording the system output which the simulation returns. An input/output sequence and assumptions on the system are the basis for system identification techniques discussed in \cref{subsec:sys_iden_and_control_methods}. The goal is to create a dynamical model which if augmented with an corresponding controller is closed-loop stable. \vspace{\baselineskip}
-
-An action edge is responsible for putting an obstacle at a target state, the goal is to reach the target state, without triggering the fault detector and scoring well at internal metrics elaborated in \cref{subsec:edge_metrics}.
-
-\todo[inline]{the lifetime of an identification edge}
-
-The different status an edge can have is listed below. An edge status can only change according to the directed arrows in \cref{tikz: lifetime_action_edge}
-
-\definecolor{lavenderIndigo}{RGB}{160, 110, 224}
-\definecolor{batteryChargedBlue}{RGB}{22, 164, 216}
-\definecolor{skyBlue}{RGB}{96, 219, 232}
-\definecolor{kiwi}{RGB}{139, 211, 70}
-\definecolor{minionYellow}{RGB}{239, 223, 72}
-\definecolor{deepSaffron}{RGB}{249, 165, 44}
-\definecolor{sinopia}{RGB}{214, 78, 18}
+An identificationEdge \todo[inline]{identification edge intro}, the status can be visualised in \cref{tikz:status_identification_edge}.\bs
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance = 2cm, auto, initial]
-    \node [state, fill=lavenderIndigo] (init) {IN};
-    \node [state, fill=batteryChargedBlue, below of=init] (path_exist) {PE};
-    \node [state, fill=skyBlue, below of=path_exist] (system_model) {SM};
-    \node [state, fill=kiwi, below of=system_model] (path_planned) {PP};
-    \node [state, fill=minionYellow, below of=path_planned] (executing) {EX};
-    \node [state, accepting, fill=deepSaffron, below of=executing] (completed) {CO};
-    \node [state, accepting, fill=sinopia] (failed) at ([xshift=4cm]$(system_model)!0.5!(path_planned)$) {FAIL};
+    \node [state, fill=my_dark_blue] (init_test_num) {IT\#t};
+    \node [state, fill=my_light_blue, below of=init_test_num] (completed_test_num) {CT\#t};
+    \node [state, accepting, fill=my_green, below of=completed_test_num] (completed) {CO};
+    \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
+
+ % arrows
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{create test inputs} (init_test_num.west);
+    \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
+(completed_test_num) edge node[left]{create system model} (completed);
+    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{goto next start state} (init_test_num);
+    \draw [-stealth] (completed_test_num) to node[]{Unable to reach next start state}  (failed.west);
+    \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach next pos}  (failed.north);
+
+\end{tikzpicture}
+\caption{\acs{FSM} displaying the state of an identification edge}%
+\label{tikz:status_identification_edge}
+\end{figure}
+
+\todo[inline]{some explainer on this status of iden edge}
+
+The second type of edge is an actionEdge. An actionEdge ready for execution contains all necessary information to sent input to the robot resulting in an object being steered toward it's target state. Before an edge is ready for execution it should be initialised properly, more specifically: initialised, path estimated should be performed, a system model must be initilised and path planned must be performed. Then finally the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the actionEdge's status can be visualised in \cref{tikz:status_action_edge}.\bs
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto, initial]
+    % \node [state, fill=lavenderIndigo] (init) {IN};
+    \node [state, fill=my_purple] (init) {IN};
+    \node [state, fill=my_dark_blue, below of=init] (path_exist) {PE};
+    \node [state, fill=my_light_blue, below of=path_exist] (system_model) {SM};
+    \node [state, fill=my_green, below of=system_model] (path_planned) {PP};
+    \node [state, fill=my_yellow, below of=path_planned] (executing) {EX};
+    \node [state, accepting, fill=my_orange, below of=executing] (completed) {CO};
+    \node [state, accepting, fill=my_red] (failed) at ([xshift=4cm]$(system_model)!0.5!(path_planned)$) {FAIL};
     
  % arrows
     \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{select controller} (init.west);
@@ -70,7 +73,7 @@ The different status an edge can have is listed below. An edge status can only c
       (path_exist) edge[bend right] node[left]{system identification} (system_model)
 (system_model) edge[bend right] node[left]{motion planning} (path_planned)
 (path_planned) edge[bend right] node[left]{goto execution loop} (executing)
-(executing) edge[bend right] node[left]{completed I suppose} (completed);
+(executing) edge[bend right] node[left]{completed} (completed);
 
     \draw [-stealth] (init.east) [out=0, in=90] to node[xshift=0.1cm, right]{path non-existence proven}  ([yshift=-0.03cm,xshift=0.2cm]failed.north);
     \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.6cm,yshift=0.55cm, above]{\shortstack[l]{system\\identification\\error}}  ([yshift=-0.03cm,xshift=-0.2cm]failed.north);
@@ -80,14 +83,15 @@ The different status an edge can have is listed below. An edge status can only c
     \draw [-stealth] (executing.east) [out=0, in=-90] to node[right]{fault detected}(failed.south);
 
 \end{tikzpicture}
-\caption{\acs{FSM} displaying the state of an action edge and the most important indicator to change status}
-\label{tikz: lifetime_action_edge}
+\caption{\acs{FSM} displaying the state of an action edge}%
+\label{tikz:status_action_edge}
 \end{figure}
+\todo[inline]{what is going on with your colors? choose a color palette for the entire thesis document please. }
 
 % \par\smallskip\noindent
 \centerline{\begin{minipage}{0.8\textwidth}
 \begin{enumerate}
-    \item[INITIALISED (IN)] The edge is created with a source and target node which are present in the hypothesis graph. A choice of controller is made.
+  \item[INITIALISED (IN)] The edge is created with a source and target node which are present in the \ac{hgraph}. A choice of controller is made.
     \item[PATH EXISTS (PE)] A graph-based search is performed to validate if the target state is reachable assuming that the system is holonomic.
     \item[SYSTEM MODEL (SM)] A dynamics system model is provided to the controller residing in the edge.
     \item[PATH PLANNED (PP)] Resulting from a sampble-based planner, a path from start to target state is provided. 
@@ -98,175 +102,5 @@ The different status an edge can have is listed below. An edge status can only c
 \end{minipage}}
 \par\smallskip
 
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance = 2cm, auto, initial]
-    \node [state, fill=lavenderIndigo] (init) {IN};
-    \node [state, fill=batteryChargedBlue, below of=init] (path_exist) {PE};
-    \node [state, fill=skyBlue, below of=path_exist] (system_model) {SM};
-   \node [state, accepting, fill=sinopia] (failed) at ([xshift=4cm]$(system_model)!0.5!(path_planned)$) {FAIL};
-    
-%  % arrows
-%     \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{select controller} (init.west);
-%     \draw[-stealth] (init) edge node[left]{graph-based path estimation} (path_exist)
-%       (path_exist) edge[bend right] node[left]{system identification} (system_model)
-% (system_model) edge[bend right] node[left]{motion planning} (path_planned)
-% (path_planned) edge[bend right] node[left]{goto execution loop} (executing)
-% (executing) edge[bend right] node[left]{completed I suppose} (completed);
-%
-%     \draw [-stealth] (init.east) [out=0, in=90] to node[xshift=0.1cm, right]{path non-existence proven}  ([yshift=-0.03cm,xshift=0.2cm]failed.north);
-%     \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.6cm,yshift=0.55cm, above]{\shortstack[l]{system\\identification\\error}}  ([yshift=-0.03cm,xshift=-0.2cm]failed.north);
-%     \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{motion\\planning\\error}} (failed.west);
-%     node[right]{motion planning error}  
-%     ([yshift=-0.3cm]failed.west);
-%     \draw [-stealth] (executing.east) [out=0, in=-90] to node[right]{fault detected}(failed.south);
-%
-\end{tikzpicture}
-\caption{todo: this is an identification edge}
-\label{tikz: lifetime_identification_edge}
-\end{figure}
-
-
-\newpage
-\newgeometry{left=1.1cm,bottom=0.1cm,top=1.9cm,headsep=0.1in,heightrounded}
-
-\begin{figure}[H] 
-\centering
-\begin{tikzpicture}[node distance = 3cm]
-    % Nodes
-    \node [block, fill=yellow!50, line width=2pt, dashed] (first) {create start and target node};
-    
-    % legend
-    \node[text width=2.8cm, yshift=1cm, right of=first, node distance=7cm, text centered, rounded corners, minimum height=1em, label={[name=lab, yshift=0.4cm, left]\textbf{Legend}}] (legend1) {\small Update KGraph};
-    \node[rectangle, draw, left of=legend1, fill=green!50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend1color) {};
-    
-    \node[text width=2.8cm, below of=legend1, text centered, minimum height=1em, node distance=0.7cm] (legend2) {\small Query KGraph};
-    \node[rectangle, draw, left of=legend2, fill=red!40, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend2color) {};
-   
-    \node[text width=2.8cm, below of=legend2, text centered, minimum height=1em, node distance=0.7cm] (legend3) {\small Update C-Space};
-\node[rectangle, draw, left of=legend3, fill=yellow!50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend3color) {};
-    
-    \node[text width=2.8cm, below of=legend3, text centered, minimum height=1em, node distance=0.7cm] (legend4) {\small action in HGraph};
-    \node[rectangle, draw, left of=legend4, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm, line width=2pt, dashed] (legend4color) {};
- 
-    \node[text width=2.8cm, below of=legend4, text centered, minimum height=1em, node distance=0.7cm] (legend5) {\small action in C-Space};
-\node[rectangle, draw, left of=legend5, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm, line width=2pt] (legend5color) {};
-
-    % nodes, Path exists 
-    \node [decision, below of=first, node distance=3cm, line width=2pt] (path_existence) {Path non-existence};
-    \node [decision, left of=path_existence, node distance=4.5cm, line width=2pt, dashed] (subtasks) {Is there a Subtask};
-    \node [block, above of=subtasks, node distance=2.7cm] (no_solution_found) {no solution found};
-    
-    % nodes, Knowledge available
-    \node [decision, fill=red!40, below of=path_existence, node distance=3cm, inner sep=0.5mm] (know_avail) { Knowledge Available };
-    \node [decision, fill=red!40, right of=know_avail, node distance=3.5cm, inner sep=0.5mm] (know_good) {Knowledge Usable};
-    \node [decision, right of=know_good, node distance=3.5cm, inner sep=0.5mm] (movable) {Obstacle Movable or Unkown};
-    \node [block, left of=know_avail, node distance=3cm, line width=2pt, dashed] (impossible) {impossible task, abort subtask};
-    
-    % nodes, Generate new transition
-    \node [decision, below of=know_avail, node distance=3.2cm, line width=2pt, inner sep=0.5mm, dashed] (goto_sys_iden) {Generate new Transition};
-    \node[block, right of=goto_sys_iden, node distance=3.5cm, line width=2pt, dashed] (no_trans_found) {no transaction found, abort subtask};
-    
-    
-    % Motion/Manipulation planning 
-    \node [decision, below of=goto_sys_iden, node distance=3.5cm] (single_multi) {Single, Multi- body};
-    \node [decision, line width=2pt, dashed, left of=single_multi, node distance=3.7cm] (model_avail_single) {Model available};
-    \node [decision, line width=2pt, dashed, right of=single_multi, node distance=3.7cm] (model_avail_multi) {Model available};
-    \node [block, line width=2pt, dashed, left of=model_avail_single, node distance=2.7cm] (sys_iden_single) {Add subtask Sys. Iden.};
-    \node [block, line width=2pt, dashed, right of=model_avail_multi, node distance=3cm] (sys_iden_multi) {Add subtasks Go To + Sys. Iden.};
-    \node [block, line width=2pt, dashed, below of=single_multi, node distance=3cm] (move_object) {Add subtask to Move Object};
-    \node [block, line width=2pt, left of=move_object, node distance=3.7cm] (motion_planning) {Motion Planning};
-    \node [block, line width=2pt, right of=move_object, minimum width=2.3cm, node distance=3.7cm] (manipulation_planning) {Manipulation Planning};
-    
-    % nodes, Path to target
-    \node [decision, below of =move_object, node distance=3.5cm, line width=2pt, dashed] (global_path) {Path to Target}; 
-    \node [decision, right of=global_path, node distance=3.5cm, line width=2pt, dashed] (first_action) {First Action Planned};
-    \node [decision, right of=first_action, diagonal fill={yellow!50}{green!50}, node distance=3cm] (execute) {Execute};
-     
-    % nodes, Target node reached 
-    \node [decision, below of=global_path, node distance=3cm, line width=2pt, dashed] (target_node_reached) {Target Node Reached};
-    \node [block, left of=target_node_reached, node distance=3cm] (end) {Task successfully executed};
-    
-    % Edges
-    \path[line] ++(0,1.5) -- node[left]{task} (first);
-    \path[line] (first) -- node[midway](to_path_exists){}(path_existence); 
-    
-    % edges, Path exists 
-    \path[line] (path_existence) -- node[midway, above, left] {no} (impossible.north east);
-    \path[line] (subtasks.north) --  node[left] {no} (no_solution_found);
-    \path[line] (path_existence) -- node[left] {yes} (know_avail); 
-    \path[line] (subtasks.east) -- node[above] {yes} (path_existence.west);
-    
-    % edges, Knowledge available
-    \path[line] (know_avail) -- node[above] {yes} (know_good); 
-    \path[line] (know_avail) -- node[left](toward_new_trans) {no} (goto_sys_iden); 
-    \draw[->] (know_good.east) -- node[above] {yes} (movable.west);
-    
-    % \draw[-]  ([xshift=3.2mm]toward_new_trans.center) -| node[near start, above] {no} (know_good.south);
-    \draw[-](impossible.west) -- +(-0.47,0); 
-     
-    \draw[->]  ([xshift=1.75cm, yshift=7.7cm]know_avail.center) --  node[at start, above] {action suggestions} ([xshift=1.75cm, yshift=1.75cm]know_avail.center) -- (know_avail.north east);
-    \draw[->]  ([xshift=1.75cm, yshift=1.75cm]know_avail.center) -- (know_good.north west);
-    \draw [draw=white,double distance=\pgflinewidth,ultra thick] (path_existence.east) -- +(2cm,0);
-    
-    % edges, Generate new transition
-    \draw[-] (move_object.south) |- +(-8.2,-0.3);
-    \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] (motion_planning.south) -- +(0,-1cm);
-    \draw[-stealth] (motion_planning.south)  -- ([yshift=-1cm]motion_planning.south) -| node[near start, above] {success} (global_path.north);
-    \draw[-] (manipulation_planning.south) -- ([yshift=-1cm]manipulation_planning.south) -| node[near start, above] {success} (global_path.north);
-    \draw[-] (motion_planning.west) -- node[above] {failure} +(-3.47,0);
-    \draw[-] (manipulation_planning.east) -| node[near start, above] {failure} ([xshift=4.7cm,yshift=-0.6cm]no_trans_found.south) -- ([yshift=-0.6cm]no_trans_found.south);
-    
-    % edges, Single/Multi body
-    \draw[-stealth] (single_multi.west) -- node[above] {single} (model_avail_single);
-    \draw[-stealth] (single_multi.east) -- node[above] {multi} (model_avail_multi);
-    \draw[-stealth] (model_avail_single.south) -- node[left] {yes} (motion_planning.north);
-    \draw[-stealth] (model_avail_single.west) -- node[above] {no} (sys_iden_single);
-    \draw[-stealth] (model_avail_multi.south) -- node[near start, left] {yes} (manipulation_planning.north);
-    \draw[-stealth] (model_avail_multi.east) -- node[above] {no} (sys_iden_multi);
-    \draw[-stealth] (motion_planning.east) -- node[above] {blockade} (move_object);
-    \draw[-stealth] (manipulation_planning.west) -- node[above] {blockade} (move_object);
-    \draw[-stealth] (goto_sys_iden) -- node[above] {failure} (no_trans_found);
-    \draw[-] (sys_iden_single.north) --  ([yshift=1.07cm]sys_iden_single.north);
-    \draw[-] (sys_iden_multi.north) |-  ([yshift=-0.6cm]no_trans_found.south);
-    \draw[-] (no_trans_found.south) -- ++(0,-0.6cm) --([xshift=-8cm, yshift=-0.6cm]no_trans_found.south);
-    \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] (goto_sys_iden.south) -- node[at start, left] {success}(single_multi.north);
-    \draw[-stealth] ([yshift=-0.5cm]goto_sys_iden) -- (single_multi.north);
-    
-    \draw[-] (movable.south) |- node[near start, left] {yes} ([xshift=-1.5cm, yshift=-1.4cm]movable.south) |- ([yshift=0.2cm]single_multi.north);
-    \draw [draw=white,double distance=\pgflinewidth,ultra thick]  (movable.north) |- ([xshift=-8cm, yshift=0.1cm]movable.north);
-    \draw[-] (movable.north) |- node[above]{no}([xshift=-8.08cm, yshift=0.1cm]movable.north);
-    % HERE
-    \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] ([xshift=5.5cm,yshift=0.3cm]single_multi.north) -- ([xshift=5.5cm, yshift=2cm]single_multi.north);
-    % \draw[-] (know_good.east) -| node[above]{yes} ([xshift=5.5cm, yshift=0.2cm]single_multi.north) -- ([yshift=0.2cm]single_multi.north);
-    
-    % edges, Path to target
-    \path[line] (global_path) -- node[above] {yes} (first_action);
-    \path[line] (first_action.east) -- node[above] {yes} (execute);
-    \path[line] (global_path.west) -| node[left, below, near start] {no} ([xshift=-7cm, yshift=8.31cm]global_path.west) -|  (subtasks.south); 
-   
-    \draw[-stealth] (first_action.north) |- node[near end, above] {no} ([xshift=1.7cm, yshift=0.15cm]first_action.north) |- ([yshift=-0.35cm]single_multi.south) -- (single_multi.south);
-    \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] (manipulation_planning.east) -- +(1cm,0);
-    \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] (manipulation_planning.north) -- +(0,1cm);
-    
-    \draw[-stealth] ([yshift=0.2cm, xshift=0.2cm]execute.south east) --  ([yshift=-0.8cm, xshift=1.2cm]execute.south east) -- node[at end, left] {robot input, action feedback} +(0,-2.7cm);
-    
-    \draw[stealth-] ([yshift=-0.2cm, xshift=-0.2cm]execute.south east) --  ([yshift=-1.2cm, xshift=0.8cm]execute.south east) -- node[left, at end] {sensor measurements} +(0, -1.8cm);
-    
-    \path[line] (execute.south) |- node[near start, left] {success} (target_node_reached.east);
-    \draw[-stealth] (execute.east) -- node[above] {failure} ([xshift=1.5cm]execute.east) |- (path_existence.east);
-    
-    
-    % edges, Target node reached 
-    \path[line] (target_node_reached.north) -- node[left] {no} (global_path.south);
-    \path[line] (target_node_reached.west) -- node[above] {yes} (end.east);
-
-\end{tikzpicture}
-\caption{Flowchart displaying the hypothesis graph's workflow.}
-\label{figure:flowchart_hgraph} 
-\end{figure}
-
-\todo[inline]{update the figure above here}
-\todo[inline]{make the colors different, some which can be visualised with the airlab monitors..}
-\restoregeometry
+\todo[inline]{the FSM above, it is not clear if that is about pushing, driving, what is an action.}
+\todo[inline]{add reason why to split action and identificatino edges}

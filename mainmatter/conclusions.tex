@@ -1,5 +1,6 @@
-\chapter{Discussion or Conclusions}
-
+\chapter{Conclusions}%
+\label{chap:conclusion}
+\textit{This chapter todo A.\bs}
 
 Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5\baselineskip}\\
 \textit{\indent\quotes{How do objects' system models learned by a nonprehensile manipulation robot during task \\ \indent execution improve global task planning?}}\vspace{\baselineskip}
@@ -7,7 +8,7 @@ Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5
 \noindent Before answering the main research question, the two research subquestions are answered.\vspace{\baselineskip}
 
 \noindent Recall \hyperref[researchsubquestion:does_it_work]{first research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\indent\quotes{How does backtracing \cite{krontiris_dealing_2015} while remembering interactions with unknown obstacles compare to\\\indent not remembering learning interactions over time?}}\vspace{0.5\baselineskip}
+\textit{\indent\quotes{How does a backward search~\cite{krontiris_dealing_2015} while remembering interactions with unknown objects compare to\\\indent not remembering learning interactions over time?}}\vspace{0.5\baselineskip}
 
 \noindent The backwards search technique used by the hypothsis graph has shown to succesfully handle uncertain action sequences toward a task completion. Replanning occurs when edges fail to complete. To obtain a clear overview of the effect of learned system model, the effectiveness of the hgraph has been monitored over time in various metrics. Two cases have researched, task execution whilst remebering interaction in the knowledge graph versus task execution without a knowledge graph. The main difference was the time difference because system identification procedure was executed for every edge in the no KGraph case. Another difference was spotted, over time the KGraph case generates hypothesises which completed more often compared to the no KGraph case. \vspace{\baselineskip}
 
@@ -25,10 +26,10 @@ Now the main question can be answered...
 \section{Drawbacks}
 \cite{vega-brown_asymptotically_2020} optimises a global path (let's say shortest path to complete a task), the proposed method takes a random subtask which does not even try to converte toward a global optimal path. 
 
-\section{Future work}
+\section{Future work}%
 \label{sec:future_work}
 \todo[inline]{how could the closed-world assumption be removed to resample the real world more?}
-\todo[inline]{how could the perfect obstacle sensor assumption be removed to resample the real world more?}
+\todo[inline]{how could the perfect object sensor assumption be removed to resample the real world more?}
 \todo[inline]{how could the task as commutative assumption be removed to resample the real world more?}
-\todo[inline]{how could the obstacles do not tip over assumption be removed to resample the real world more?}
+\todo[inline]{how could the objects do not tip over assumption be removed to resample the real world more?}
 

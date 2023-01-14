@@ -1,96 +1,41 @@
-\chapter{Results}
+\chapter{Results}%
+\label{chap:results}
+\textit{This chapter does this or that todo A.\bs}
 
-
-\subsection{The Simulation Environment} Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library \cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standart TU Delft laptop: HP ZBook Studio x360 G5, running OS: Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
-The simulation environment provides many different robot, 2 simple robots are selected to perform tests, they are displayed in \cref{fig:example_robots}, various obstacles are displayed in \cref{fig:example_obstacles}.
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/point_robot.png}
-    \caption{The holonomic point robot\\the 2 inputs drive the robot in $x$ and in $y$ direction}
-    \label{subfig:example_point_robot_todo_rename_this}
-    \end{subfigure}%
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/boxer_robot.png}
-    \caption{The nonholonomic boxer robot\\the first input drives the robot forward/backward\\the second rotates the robot}
-    \label{subfig:example_boxer_robot_todo_rename_this}
-    \end{subfigure}%
-    \caption{Robots used for testing, for either robot an velocity and a accelaration input exists, in total 4 different robots are used}
-    \label{fig:example_robots_change_ref_please}
-
-\end{figure}
-\todo[inline]{renaem labels in thingy above}
-\todo[inline]{zoom in a bit on these 2 cute robots}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/box_obstacle.png}
-    \caption{A box obstacle}
-    \end{subfigure}%
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/cylinder_obstacle.png}
-    \caption{A cylinder obstacle}
-    \end{subfigure}%
-    \caption{Various obstacles in the robot environment}
-    \label{fig:example_obstacles_change_this_label}
-\end{figure}
-
+\paragraph{The Simulation Environment}
+Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library \cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standart TU Delft laptop: HP ZBook Studio x360 G5, running OS: Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
+The simulation environment provides many different robot, 2 simple robots are selected to perform tests, they are displayed in \cref{fig:example_robots}, various objects are displayed in \cref{fig:example_objects}.
 
 
 The results will be made in a while, wait for a moment while we try to make sense of the almost existing results
 
 
+\section{Proposed Method Metrics}%
+\label{sec:proposed_method_metrics}
+Most interesting is the progression of metrics over time. It is expected that the effect of learning can be measured by inverstigating various metrics and track their development over time. Furthermore metrics will used to compare the proposed method to relative state-of-the-art papers. All metrics including argumentation why the metric is relevant are presented in~\cref{table:proposed_method_metrics}.\bs
 
-\section{Metrics}
-
-A clear distinction between a transition, or an hypothesis is now made. A transition is a single action. An hypothesis is an sequence of actions/transitions.\\
-
-
-\todo[inline]{why would any metric be usefull, explain why a metric is required.}
-
-\textbf{Metric for a transition}
-\newline
-Prediction Error\\
-Tracing Error\\
-Failing/succeeding of this  transition\\
-(optional) model accuracy (if you can get the model from the pybullet simulation
-number of collisions
-repositioning around an object when pushing
-number of replanning of motion planning\\
-final position and displacement error\\
-
-\todo[inline]{Split metrics in internal and external/comparable}
-
-\textbf{Metric for hypothesis}
-\newline
-Number of replanning an hypothesis\\
-number of Successes/number of failed transitions in the hypothesis\\
-overall planning time\\
-overall runtime\\
-completion time = runtime + planning time\\
-fail/success of the task\\
-number of hypothesis / number of target positions\\
-
-\textbf{Metric for executing a task}
-completion / uncompleted subtasks
-
-
-\textbf{System identification}
-\newline
-estimation of object mass\\
-Comparison of bode diagram\\
-poles and zeros of the true and estimated model.\\
-
+\begin{table}[htb!]
+\centering
+\begin{tabular}[t]{p{4cm} p{10cm}}
+Total Average\newline \acl{PE} & The total average \ac{PE} is created by averaging over every hypothesis' average \ac{PE} in a \ac{hgraph}. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
+Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
+Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller perfoms. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
+Ratio between \#hypothesis and \#tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
+Ratio between \#successfull and \#total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because with better recommedations, more edges will be succesfully completed.\\
+task completion time =\newline runtime + planning time& If equal tasks are given multiple times, the total task completion time should drop pretty drastically. Multiple factors help to lower the task completion time, firstly system identification has to be performed only once, and there is not need to lose time on redoing system identification. Secondly, the \ac{hgraph} is expected to improve generated hypothesis, or better said, the same mistake should not be made multiple times, resulting in less failing hypothesis and lowering task completion time.\\
+\end{tabular}
+\caption{Proposed method metrics used to compare the proposed method with the state-of-the art}
+\label{table:proposed_method_metrics}
+\end{table}
+\todo[inline]{Corrado: \# is that nicely replacing number of?}
 
 \newpage
-\section{Benchmark Tests}
-\section{Comparison with related papers}
+\section{Benchmark Tests}%
+\label{sec:benchmark_tests}
+
+\section{Comparison with related papers}%
+\label{sec:compare_with_related_papers}
+
 The papers to compare with:\newline
 
 \citefield{sabbaghnovin_model_2021}{title}\\
@@ -102,5 +47,13 @@ The papers to compare with:\newline
 \citefield{novin_dynamic_2018}{title}\\
 \cite{novin_dynamic_2018}
 The following \cite{novin_dynamic_2018} citation is here because it is a refered to from \cite{sabbaghnovin_model_2021} many times
-\section{Randomisation}
-\section{Knowledge Graph On/Off}
+
+
+\section{Randomisation}%
+\label{sec:randomisation}
+
+\section{Knowledge Graph On/Off}%
+\label{sec:kgraph_on_off}
+
+\section{Discussion}%
+\label{sec:discussion}

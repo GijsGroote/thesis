@@ -10,11 +10,26 @@
 \usepackage{svg}
 
 % custom colors for style of the report
+
+\definecolor{my3blue1}{RGB}{1, 1, 64} % blue!30, #b2b2ff
+% \definecolor{my3blue2}{RGB}{1, 1, 128} % blue!30, #b2b2ff
+% \definecolor{my3blue3}{RGB}{1, 1, 191} % blue!30, #b2b2ff
+
 \definecolor{myDarkColor}{RGB}{178, 178, 255} % blue!30, #b2b2ff
 \definecolor{myLightColor}{RGB}{204, 204, 255} % blue!20, #ccccff 
 \definecolor{myEvenLighterColor}{RGB}{230, 230, 254} % blue!10, #e6e6ff
 % \definecolor{myEvenLighterColor}{HTML}{e6e6ff} % blue!10, 
-\definecolor{myObstacleLighColor}{RGB}{255, 204, 204} % red!20, #ffcccc
+% \definecolor{myObstacleLighColor}{RGB}{255, 204, 204} % red!20, #ffcccc
+
+\definecolor{my_purple}{RGB}{160, 110, 224} % lavenderIndigo #9457eb
+\definecolor{my_dark_blue}{RGB}{22, 164, 216} % batteryChargedBlue #1dacd6
+\definecolor{my_light_blue}{RGB}{96, 219, 232} % skyBlue ##87CEEB
+\definecolor{my_green}{RGB}{139, 211, 70} % kiwi #d3e7c1
+\definecolor{my_dark_green}{RGB}{38, 120, 19} % #267813
+
+\definecolor{my_yellow}{RGB}{239, 223, 72} % minionYellow #FFD55E 
+\definecolor{my_orange}{RGB}{249, 165, 44} % deepSaffron #FF9933
+\definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
 
 \usepackage{algorithm}
 \usepackage{algpseudocode}
