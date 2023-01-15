@@ -5,7 +5,11 @@
 
 \setlength{\tabcolsep}{20pt}
 \renewcommand{\arraystretch}{1.5}
+
 \usepackage[table, dvipsnames]{xcolor} 
+\usepackage[export]{adjustbox}
+
+\usepackage{mdframed}
 % including .svg graphics for figures
 \usepackage{svg}
 
@@ -20,6 +24,9 @@
 \definecolor{myEvenLighterColor}{RGB}{230, 230, 254} % blue!10, #e6e6ff
 % \definecolor{myEvenLighterColor}{HTML}{e6e6ff} % blue!10, 
 % \definecolor{myObstacleLighColor}{RGB}{255, 204, 204} % red!20, #ffcccc
+
+
+\definecolor{my_grey}{RGB}{238,238,228} % #eeeee4
 
 \definecolor{my_purple}{RGB}{160, 110, 224} % lavenderIndigo #9457eb
 \definecolor{my_dark_blue}{RGB}{22, 164, 216} % batteryChargedBlue #1dacd6

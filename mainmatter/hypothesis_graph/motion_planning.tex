@@ -7,24 +7,6 @@ In order to place an object at a new location, an path connecting the start to t
 
 For this purpose a dedicated motion planning algorithm has been developed. The developed motion planning algorithm extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}. The modification allows the motion planning algorithm to detect known or unknown objects. \ac{RRT*} keeps track of a cost to source node in order to find the shortest path, a fixed panalty is given to paths crossing through known or unknown objects as displayed in~\cref{fig:double_rrt_alg}. What can be seen in~\cref{fig:double_rrt_alg} is that the motion planner cannot find a path around the movable object and is forced to add the cost to move the object. If a path around movable or unknown objects exist the motion planner finds it with infinite sampling. The added fixed cost for a path crossing through a movable or unknown objects motivates the motion planner to find the shortest path around objects but prefers moving an object over making a large detour.
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/drawio/mp_init.png}
-    \caption{initial space}
-    \label{subfig:hey}
-    \end{subfigure}%
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=1.0\textwidth]{figures/drawio/mp_new_rand_sample.png}
-    \caption{}
-    \label{subfig:}
-    \end{subfigure}
-    \caption{Motion planning multiple stages yo}
-    \label{fig:}
-\end{figure}
-
 
 
 
@@ -34,7 +16,7 @@ For this purpose a dedicated motion planning algorithm has been developed. The d
     \caption{Schematic view of the proposed double $\text{RRT}^*$ tree taking movable and unknown objects into account with cost to reach a sampled configuration displayed.}
     \label{fig:double_rrt_alg}
 \end{figure}
-\todo[inline]{Update the figure above}
+\todo[inline]{what do you want, keep the figure above? update it then}
 
 
 \cref{pseudocode:proposed_rrt_star} displays the pseudocode for the proposed modified \ac{RRT*} algorithm which takes unknown and movable objects into account. The following definitions are used by the proposed algorithm.\bs
@@ -70,17 +52,18 @@ $InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, ot
 \end{tabular}
 \end{center}
 
-\todo[inline]{make 3 images of motion planning}
-\todo[inline]{create 3 sections, connect those with a lil explainer and the 3 imagase}
+
 
 \begin{algorithm}[H]
 \caption{Pseudocode for modified $\text{RRT}^*$ algorithm taking movable objects and constraints into account}
 \label{pseudocode:proposed_rrt_star}
 \begin{algorithmic}[1]
+
+\hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
 \State $V \leftarrow x_{init}$
 \While{$NotReachStop$} 
 
-\hspace{-0.8cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
+\hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
     \State $Cost_{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
     \State $x_{rand} \leftarrow Sample_{random}$
     \State $x_{nearest} \leftarrow Nearest(x_{rand}, V)$
@@ -93,7 +76,7 @@ $InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, ot
     \EndIf
 }}
 
-\hspace{-0.8cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
+\hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
     \State $X_{near} \leftarrow NearestSet(x_{new}, V)$ \algorithmiccomment{Find and connect new node to parent node}
     \For{$x_{near} \in X_{near}$}
     \State $Cost_{temp} \leftarrow CostFromInit(x_{near}) + Distance(x_{near}, x_{new}) + ObjectCost(x_{near}, x_{new})$
@@ -112,7 +95,7 @@ $InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, ot
     \EndIf
 }}
 
-\hspace{-0.8cm}\colorbox{my_green}{\parbox{\linewidth}{%
+\hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
     \State $Cost_{path} \leftarrow +\infty$ \algorithmiccomment{Check if newly added node can lower cost for nearby nodes}
     \For{$x_{near} \in X_{near}$} 
       \If{$InSameTree(x_{near}, x_{new})$} 
@@ -137,14 +120,74 @@ $InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, ot
           \State $P.addPath(x_{new}, x_{pathMin}, Cost_{pathMin})$
       \EndIf
     \EndFor
+
 }}
+
+
 \EndWhile
+}}
 \end{algorithmic}
 \end{algorithm}
 
 
-\todo[inline]{create 3 sections in the the pseudocode}
-\todo[inline]{create 3 images which explain what the motion planning algorithms does in that section of the algoritm}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_grey 5pt 0pt]{figures/mp/1mp_init.drawio.png}
+    \caption{Snapshot of the configuration space during a search from start configuration to target configuration.}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/mp/2mp_new_rand_sample.drawio.png}
+    \caption{A new random sample is generated.\bs}
+    \end{subfigure}
+
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/mp/3mp_project_sample.drawio.png}
+    \caption{The new sample is projected toward the closest sample.\bs}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_yellow 5pt 0pt]{figures/mp/4mp_connect_to_tree.drawio.png}
+    \caption{The new sample is connected to the node in search space that results in the lowest cost.}
+    \end{subfigure}
+
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/mp/5mp_rewire.drawio.png}
+    \caption{Nodes for which the cost can be lowered from the new sample are rewired.}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/mp/6mp_search_other_tree.drawio.png}
+    \caption{A path from start to target configuration is found. \bs}
+    \end{subfigure}
+
+    \caption{Visualisation of the Double tree \acs{RRT*} motion planner that add a single sample to the connectivity graph. The color of the box surrounding subfigures corresponds to the colored sections in \cref{pseudocode:proposed_rrt_star}. 3 dimensional configuration space displayed as 2 dimensional configuration space ($x$ and $y$ are visable $\theta$ is not visable). Subspace in the configuration space are obstacle space, movable space and free space. }
+    \label{fig:motion_planner_adding_one_sample}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/mp/7mp_path_found.png}
+    \caption{The result of the sample added from \cref{fig:motion_planner_adding_one_sample}}
+    \label{subfig:}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/mp/7mp_path_found.png}
+    \caption{A visualisation of the real \acs{RRT*} algorithm when a path is found}
+    \label{subfig:}
+    \end{subfigure}
+    \caption{}
+    \label{fig:}
+\end{figure}
 
 \todo[inline]{connect localplannercheck to dynamical models}
 
