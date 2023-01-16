@@ -6,11 +6,12 @@ An object holds the information about an object.\\Formally, a \textbf{object},  
 
 where $shape$ is linked to a 3D representation of the object which is used to construct the configuration space.\bs
 
-An objectNode represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obst}_{id} =\left\langle \textrm{status}, obst(k)\right\rangle $\\where status indicates if the node has been visited in the \ac{hgraph}$\textrm{status} = \textrm{initialised} \lor \textrm{completed} \lor \textrm{failed}$\bs
+An objectNode represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obst}_{id} =\left\langle \textrm{status}, obst(k)\right\rangle $\\where status indicates if the node has been visited in the hgraph. $\textrm{status} = (Initialised, Completed, Failed)$\bs
 
 A edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment an edge represents change of state for an object. System identification and performing an action such as pushing or driving both change the state of objects in the robot envireronment, but because are very different, the edges are split into 2 categories. IdentificationEdges that collect system \ac{IO} data an convert that into a system model. And actionEdges that plan and track a motion from start to target state. Formally:\bs
 
-A \textbf{identificationEdge}, \todo[inline]{define identificationEdge}
+A \textbf{identificationEdge},
+\todo[inline]{define identificationEdge, currently hard coded models are used in the implementation}
 
 A \textbf{actionEdge}, $\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\bs
 
@@ -25,10 +26,10 @@ Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \righ
 
 Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge is still remains undefined and requires some further explanation.\bs
 
-\paragraph{Types and Lifetime of edges}
-There exist two types of edges, identification edges and action edges. An identification edge, which is responsible for sending an input sequence to the system and recording the system output. That input/output sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \cref{subsec:sys_iden_and_control_methods}. The goal is to create a dynamical model which if augmented with an corresponding controller is closed-loop stable.\bs
+\paragraph{Status, Types and Lifetime of edges}
+Because system identification and tracking a path are so very different, the edges are split into two categories, identification edges and action edges. An identification edge, which is responsible for sending an input sequence to the system and recording the system output. That input/output sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \cref{subsec:sys_iden_and_control_methods}. The goal is to create a dynamical model which if augmented with an corresponding controller is closed-loop stable.\bs
 
-An identificationEdge \todo[inline]{identification edge intro}, the status can be visualised in \cref{tikz:status_identification_edge}.\bs
+An identificationEdge \todo[inline]{create obstacle image with multiple 'push' arrows from multiple sides}, the status can be visualised in \cref{tikz:status_identification_edge}.\bs
 
 \begin{figure}[H]
 \centering
@@ -53,7 +54,7 @@ An identificationEdge \todo[inline]{identification edge intro}, the status can b
 
 \todo[inline]{some explainer on this status of iden edge}
 
-The second type of edge is an actionEdge. An actionEdge ready for execution contains all necessary information to sent input to the robot resulting in an object being steered toward it's target state. Before an edge is ready for execution it should be initialised properly, more specifically: initialised, path estimated should be performed, a system model must be initilised and path planned must be performed. Then finally the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the actionEdge's status can be visualised in \cref{tikz:status_action_edge}.\bs
+The second type of edge is an actionEdge, containing a drive or push action. An actionEdge ready for execution contains all necessary information to sent input to the robot resulting in an object being steered toward it's target state. Before an edge is ready for execution it should be initialised properly, more specifically: initialised, path estimated should be performed, a system model must be initilised and path planned must be performed. Then finally the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the actionEdge's status can be visualised in \cref{tikz:status_action_edge}.\bs
 
 \begin{figure}[H]
 \centering
@@ -80,13 +81,12 @@ The second type of edge is an actionEdge. An actionEdge ready for execution cont
     \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{motion\\planning\\error}} (failed.west);
     node[right]{motion planning error}  
     ([yshift=-0.3cm]failed.west);
-    \draw [-stealth] (executing.east) [out=0, in=-90] to node[right]{fault detected}(failed.south);
+    \draw [-stealth] (executing.east) [out=0, in=-90] to node[xshift=0.1cm,right]{fault detected}(failed.south);
 
 \end{tikzpicture}
 \caption{\acs{FSM} displaying the state of an action edge}%
 \label{tikz:status_action_edge}
 \end{figure}
-\todo[inline]{what is going on with your colors? choose a color palette for the entire thesis document please. }
 
 % \par\smallskip\noindent
 \centerline{\begin{minipage}{0.8\textwidth}
@@ -102,5 +102,4 @@ The second type of edge is an actionEdge. An actionEdge ready for execution cont
 \end{minipage}}
 \par\smallskip
 
-\todo[inline]{the FSM above, it is not clear if that is about pushing, driving, what is an action.}
-\todo[inline]{add reason why to split action and identificatino edges}
+\Cref{tikz:status_action_edge} shows that many steps must succesfully be completed before the robot can start executing. The performance of an edge during execution, measured in various metrics (\cref{sec:proposed_method_metrics} is dedicated to metrics) is dependent on many aspects. Such as the choice of controller, the path estimation, the system model yielded by the identification edge and the path yielded by motion planning. Now that he \ac{hgraph} is defined, let's see how it is generated in upcoming section.\bs
