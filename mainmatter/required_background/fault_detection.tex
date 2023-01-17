@@ -1,12 +1,13 @@
-\subsection{Fault Detection}%
-\label{subsec:fault_detection}
+\section{Fault Detection}%
+\label{sec:fault_detection}
 During execution time, the \ac{hgraph} is unable to perfrom any action, such as motion planning or finding new hypotheses. This blocking behaviour has some implications, especially when an edge steers the system toward a target state and is blocked, for example the controller steers the system a target state, and meets a unmovable object. In such cases the controller will never reach the target state and the system remains in a local minima forever. Giving complete control to an edge is thus not desired because of the blocking behaviour of edges. More examples can be given such as system identification or push manipulation on an object that is cornered can be provided. However, instead of thinking of all possible option how the robot could get stuck a more automated approach is sought.  A central coordinator who can step in an terminate the edge is desired. Detecting controller faults is an large robotic topic~\cite{khalastchi_fault_2019} properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead the two simple metrics will be monitored during execution. \ac{PE} where the predicted position is compared with the measured position of the system, and \ac{TE} where the path provided for the robot to track is compared with the trajectory that the robot made during tracking such a path. Defenitions of \ac{PE} and \ac{TE} are now given, in \cref{table:monitoring_edge_metrics} insight is provided why a metric would catch certain faulty behaviour.
 
 \todo[inline]{define \ac{PE}}
 % Every time step a predition one step into the furure is made with the use of the dynamic model. Also every time step the \ac{PE} is calculated, which is the difference of the one-step-ahead predictor of the previous timestep and the measurement of where the object currently is.
 \todo[inline]{define \ac{TE}}
 
-\subsubsection{Monitoring Metrics}
+\subsection{Monitoring Metrics}
+
 \begin{table}[htb!]
 \centering
 \begin{tabular}[t]{l p{10cm}}
