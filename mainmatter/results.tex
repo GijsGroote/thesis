@@ -3,26 +3,26 @@
 \textit{This chapter does this or that todo A.\bs}
 
 \paragraph{The Simulation Environment}
-Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library \cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standart TU Delft laptop: HP ZBook Studio x360 G5, running OS: Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
-The simulation environment provides many different robot, 2 simple robots are selected to perform tests, they are displayed in \cref{fig:example_robots}, various objects are displayed in \cref{fig:example_objects}.
+Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library \cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standard TU Delft laptop: HP ZBook Studio x360 G5, running OS: Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
+The simulation environment provides many different robots, 2 simple robots are selected to perform tests, they are displayed in \cref{fig:example_robots}, and various objects are displayed in \cref{fig:example_objects}.
 
 
-The results will be made in a while, wait for a moment while we try to make sense of the almost existing results
+The results will be made in a while, wait for a moment while we try to make sense of the almost-existing results
 
 
 \section{Proposed Method Metrics}%
 \label{sec:proposed_method_metrics}
-Most interesting is the progression of metrics over time. It is expected that the effect of learning can be measured by inverstigating various metrics and track their development over time. Furthermore metrics will used to compare the proposed method to relative state-of-the-art papers. All metrics including argumentation why the metric is relevant are presented in~\cref{table:proposed_method_metrics}.\bs
+Most interesting is the progression of metrics over time. It is expected that the effect of learning can be measured by investigating various metrics and tracking their development over time. Furthermore, metrics will be used to compare the proposed method to relative state-of-the-art papers. All metrics including argumentation of why the metric is relevant are presented in~\cref{table:proposed_method_metrics}.\bs
 
 \begin{table}[htb!]
 \centering
 \begin{tabular}[t]{p{4cm} p{10cm}}
 Total Average\newline \acl{PE} & The total average \ac{PE} is created by averaging over every hypothesis' average \ac{PE} in a \ac{hgraph}. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
 Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
-Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller perfoms. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
-Ratio between \#hypothesis and \#tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
-Ratio between \#successfull and \#total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because with better recommedations, more edges will be succesfully completed.\\
-task completion time =\newline runtime + planning time& If equal tasks are given multiple times, the total task completion time should drop pretty drastically. Multiple factors help to lower the task completion time, firstly system identification has to be performed only once, and there is not need to lose time on redoing system identification. Secondly, the \ac{hgraph} is expected to improve generated hypothesis, or better said, the same mistake should not be made multiple times, resulting in less failing hypothesis and lowering task completion time.\\
+Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
+The ratio between \#hypothesis and \#tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between the total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
+The ratio between \#successfull and \#total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because, with better recommendations, more edges will be succesfully completed.\\
+task completion time =\newline runtime + planning time& If equal tasks are given multiple times, the total task completion time should drop pretty drastically. Multiple factors help to lower the task completion time, firstly system identification has to be performed only once, and there is no need to lose time on redoing system identification. Secondly, the \ac{hgraph} is expected to improve generated hypothesis, or better said, the same mistake should not be made multiple times, resulting in fewer failing hypotheses and lowering task completion time.\\
 \end{tabular}
 \caption{Proposed method metrics used to compare the proposed method with the state-of-the art}\label{table:proposed_method_metrics}
 \end{table}

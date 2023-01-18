@@ -1,13 +1,8 @@
 \chapter{Required Background}%
 \label{chap:required_background}
-
-
-
+\textit{This chapter presents the modules that the \acl{hgraph} and \acl{kgraph} rely upon. All modules are isolated from one another. As a result, modules can easily be replaced by other modules that perform the same function, such as replace the system identification method with another system identification method. There exist a combination of modules that are non-compatible, which is displayed in \cref{table:compatible_modules}. As long as required communication between the modules are met, and the modules are compatible the \acl{hgraph} will try to complete the specified task. The different modules are system identification \cref{subsec:sys_iden}, control methods \cref{subsec:control_methods}, path estimation \cref{sec:estimating_path_existence}, motion planning \cref{subsec:motion_planning}, manipulation planning \cref{subsec:manipulation_planning} and lastly fault detection \cref{sec:fault_detection}.\bs}
 
 \input{mainmatter/required_background/sys_iden_and_control_methods}
 \input{mainmatter/required_background/path_estimation}
-\input{mainmatter/required_background/motion_planning}
-
-\input{mainmatter/required_background/manipulation_planning}
-
+\input{mainmatter/required_background/planning}
 \input{mainmatter/required_background/fault_detection}

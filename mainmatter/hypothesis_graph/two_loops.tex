@@ -1,22 +1,74 @@
 \subsection{The Search and the Execution loop}%
 \label{subsec:two_loops}
-Now that \ac{hgraph} is defined let's find how it reacts it reacts to various behavirour. A flowchart of the \ac{hgraph} is provided in \cref{tikz:flowchart_hgraph}, where two loops can be identified. The search loop and the execution loop, to forestall that the loops are not correctly identified in \cref{tikz:flowchart_hgraph}, see \cref{fig:two_loops_identified}
+Now that \ac{hgraph} is defined let's find out how it reacts to various behaviour. The reaction of the \ac{hgraph} can be visualized in a flowchart of the \ac{hgraph} provided in \cref{tikz:flowchart_hgraph}. In \cref{tikz:flowchart_hgraph} two loops can be identified, clarified in \Cref{fig:two_loops_identified}. In the search, loop hypotheses are formed and the execution loop tests the hypothesis.\bs
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=5cm]{figures/two_loops_identified}
-    \caption{The search and execution loop.}
+    \caption{The search and execution loop.}%
     \label{fig:two_loops_identified}
 \end{figure}
+\todo[inline]{Update figure above, professionalise arrows}
 
-Upon initialisation of the \ac{hgraph}
+While the \ac{hgraph} resides in the search loop, hypotheses are formed. Forming a hypothesis, generating edges, nodes and progressing their status as described in \cref{tikz:status_identification_edge,tikz:status_action_edge} respectively. The \ac{hgraph} operates synchronously, thus at any point in time, the \ac{hgraph} resides in a single block within \cref{tikz:flowchart_hgraph}. The result is that the robots cannot operate whilst the \ac{hgraph} resides in the search loop, and during execution, no hypothesis can be formed or updated. Assumption~\ref{assumption:closed_world} guarantees that the robot environment does not change causing existing hypotheses to be outdated.\bs
 
-% list the properties of the hgraph and why 
+While the \ac{hgraph} resides in the execution loop, \textit{an edge is being executed}. The phrase \quotes{an edge is being executed} seems odd at first because every aspect of closed-loop control resides in an edge, edges can be executed. Recall that nodes in the \ac{hgraph} represent objects in a state, and edges represent actions. Now a flowchart of the behaviour of the \ac{hgraph} is presented.\bs
 
 \input{mainmatter/hypothesis_graph/hgraph_tikz_figure}
 
-% list what happens in every block in the tikz figure above 
+\Cref{table:explainer_hgraph_figures_nodes} provides important information that does not fit on the flowchart above.
 
-\todo[inline]{walk through the flowchart, what is actually happening here, It might be in your mind, but can the reader understand the flowchart without any additional context? clarify how edges are initialised, hypotheses are formed and how replanning occurs}
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{l p{10cm}}
+  \textbf{Node name} & \textbf{Description of actions taken}\\\hline
+  task finished & Calculate and log all metrics for every hypothesis in the \ac{hgraph}.\\
+  create start and target nodes & generate a start and target node for every subtask in the task.\\
+  is there an unfinished subtask & \\
+estimate path existence & \\
+add node to drive to object& \\
+impossible node & \\
+knowledge available& \\
+knowledge usable& \\
+object movable or unknown& \\
+robot close to object& \\
+generate random action& \\
+all possible actions failed& \\
+\shortstack[l]{add drive system\\identification node}& \\
+model available& \\
+action type& \\
+model available& \\
+add push system identification node& \\
+motion planning& \\
+add node to drive to push pose& \\
+robot close to push pose& \\
+path to target& \\
+first action planned& \\
+execute& \\
+subtask succesfully completed& \\
+target node reached& \\
+\end{tabular}
+\caption{Functions used by the \cref{pseudocode:proposed_rrt_star}}%
+\label{table:explainer_hgraph_figures_nodes}
+\end{table}
+\todo[inline]{add RHS' in the table above}
 
-As can be seen in \cref{tikz:flowchart_hgraph} there are some methods used which are still unexplained. Such as path non-existence, or motion planning. 
+After initialising the \ac{hgraph} with a task, there is only a single access point toward the \ac{hgraph}. A function \textit{respond(observation)} that returns control input toward the robot. As argument function \textit{respond(observation)} takes an observation of the environment, such an observation contains measurements of every object's latest measured state. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor} provides access to the exact states of every object.\bs
+\todo[inline]{it is not clear to the reader that the text above only focusses on a single subtask AKA no global optimum for the task is sought}
+
+\todo[inline]{Visualise this in hgraph: adding an edge for a drive action including sys iden. use "backward search"}
+ A hypothesis is formed when the robot node is connected through a set of successive edges to the subtasks target node.
+\todo[inline]{visualise this in hgraph: Executing a drive action}
+\todo[inline]{Visualise this: adding an edge for a push action including sys iden.}
+\todo[inline]{visualise this in hgraph: Executing a push action}
+\todo[inline]{emphasise recursiveness of the hgraph, thus want to move box A, but B is in the way, move box B first, but box C is in the way, move box C first becomes: move(C) -> move(B) -> move(A)}
+
+\todo[inline]{introduce the blacklist: a set of edges that cannot be added to a node because they failed in the past. The blacklist prevents regenerating edges which already failed in the past}
+
+\todo[inline]{section about fault/monitoring metrics, that can halt and fail an executing edge}
+
+What by now hopefully became clear to the reader is that the \ac{hgraph} autonomously searches for hypotheses to solve the task, one subtask at a time. The \ac{hgraph} switches between the search and execution loop. Switching from the search loop toward the execution loop when a hypothesis is found, and switching back when a hypothesis is completed or an action failed to complete.\bs
+
+The limited number of possible edges (every combination of a system identification method with a compatible control method) guarantees that the robot tries to connect 2 nodes, but concludes that it cannot reach a node if all possible edges have failed. Eventually running out of nodes to connect and conclude that a subtask cannot be completed.\bs
+
+In the next section, the edges that are executed will be reviewed and stored in a knowledge base. The knowledge base will suggest edges when faced with similar nodes to connect.

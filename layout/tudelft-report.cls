@@ -14,17 +14,9 @@
 \usepackage{svg}
 
 % custom colors for style of the report
-
-\definecolor{my3blue1}{RGB}{1, 1, 64} % blue!30, #b2b2ff
-% \definecolor{my3blue2}{RGB}{1, 1, 128} % blue!30, #b2b2ff
-% \definecolor{my3blue3}{RGB}{1, 1, 191} % blue!30, #b2b2ff
-
 \definecolor{myDarkColor}{RGB}{178, 178, 255} % blue!30, #b2b2ff
 \definecolor{myLightColor}{RGB}{204, 204, 255} % blue!20, #ccccff 
-\definecolor{myEvenLighterColor}{RGB}{230, 230, 254} % blue!10, #e6e6ff
-% \definecolor{myEvenLighterColor}{HTML}{e6e6ff} % blue!10, 
-% \definecolor{myObstacleLighColor}{RGB}{255, 204, 204} % red!20, #ffcccc
-
+\definecolor{myEvenLighterColor}{RGB}{231, 231, 255}
 
 \definecolor{my_grey}{RGB}{238,238,228} % #eeeee4
 
@@ -48,11 +40,14 @@
 % Required package
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning,fit,calc}
-\usetikzlibrary{mindmap}  % Mindmap drawing library 
+\usetikzlibrary{mindmap, arrows}
+
+
 % For minimisation functions
 \usepackage{optidef}
 
 \usepackage{amsthm}
+
 \theoremstyle{plain}
 \usepackage{amsthm}
 

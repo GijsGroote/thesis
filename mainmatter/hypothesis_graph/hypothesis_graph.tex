@@ -1,14 +1,8 @@
 \section{Hypothesis Graph}%
 \label{sec:hgraph}
-The \ac{hgraph} is responsible for generating action sequences, called hypothesis (consisting of a list of succesive edges from start to target node in the \ac{hgraph}) that complete a single subtasks. When all subtasks in a task are completed, the \ac{hgraph} halts and concludes the task succesfully completed. A search in the joint configuration space is avoided because an edge only operates in a single mode of dynamics, such as driving or pushing. When a object cannot directly be steered toward it's target location new nodes are generated which need to be completed before the original object can be steered toward it's target location. An example of when an object cannot directly be steered toward it's target state is because the path is blocked by another object. An hypothesis, consisting of a list of edges that represent actions in the robot environment might succeed or fail. \Cref{tikz:flowchart_hgraph} displays a flowchart explaining how new nodes and edges are generated in the \ac{hgraph}. Succesfully completed edges eventually result in completed subtasks, failed edges trigger replanning that will restart the search to a hypothesis.\bs
+The \ac{hgraph} is responsible for generating action sequences, called hypothesis (consisting of a list of successive edges from start to target node in the \ac{hgraph}) that complete a single subtask. When all subtasks in a task are completed, the \ac{hgraph} halts and concludes the task successfully completed. A search in the joint configuration space is avoided because an edge only operates in a single mode of dynamics, such as driving or pushing. When an object cannot directly be steered toward its target location new nodes are generated which need to be completed before the original object can be steered toward its target location. An example of when an object cannot directly be steered toward its target state is because the path is blocked by another object. A hypothesis, consisting of a list of edges that represent actions in the robot environment might succeed or fail. \Cref{tikz:flowchart_hgraph} displays a flowchart explaining how new nodes and edges are generated in the \ac{hgraph}. Succesfully completed edges eventually result in completed subtasks, failed edges trigger replanning that will restart the search to a hypothesis.\bs
 
-\Cref{subsec:hgraph_definition} defines the \ac{hgraph} and components, then~\cref{subsec:two_loops} eleborates how the \ac{hgraph} searches for a solution in the joint configuration space. Followed by subsections elaborating the methods used by the \ac{hgraph} such as system identification and control methods in \cref{subsec:sys_iden_and_control_methods}, path estimation in \cref{subsec:estimating_path_existence}, motion planning in \cref{subsec:motion_planning}, manipulation planning in \cref{subsec:manipulation_planning} and fault detection in \cref{subsec:fault_detection}.\bs
-
-% For every subtask in a task, a start and a target node is created, the hypothesis graph tries to connect the starting node to the corresponding target node by adding node and edges. The choice and content of these nodes and edges is based on local planning and randomisation, elaborated in~\cref{subsec:estimating_path_existence,subsec:motion_planning,subsec:manipulation_planning}. A successive path from a starting node to the corresponding target node is called a hypothesis. During the search for a hypothesis, the hypothesis graph resides in the \textbf{search loop}, when traversing over edges toward the target node the hypothesis graph resides in the \textbf{execution loop}, both loops are elaborated in \cref{subsec:2_loops}. When the hypothesis graph traverses over an edge, fault detectors monitors the progress, elaborated in \cref{subsec:fault_detection}. Finally an example of an hypothesis graph is given in \cref{subsec:hgraph_example}.\bs
-%
-% After execution, the traversed edge enters a review period, during which performance is checked in various metrics. The review is stored in a database, called the \textbf{knowledge graph} which serves to collect edges and rank them based on performance. The knowledge graph is defined in \cref{subsec:kgraph_definition}, metrics to rank edges can be found in \cref{subsec:edge_metrics} and an example is displayed in \cref{subsec:kgraph_example}.
-% \todo[inline]{come back to joint configuration space, and tell the hgraph cuts the different modes of dynamics with an edge for every mode of dynamics}
-
+\Cref{subsec:hgraph_definition} defines the \ac{hgraph} and components, then~\cref{subsec:two_loops} eleborates how the \ac{hgraph} searches for a solution in the joint configuration space. The section is concluded with an extensive example.\bs
 
 \input{mainmatter/hypothesis_graph/definition}
 \input{mainmatter/hypothesis_graph/two_loops}
@@ -20,28 +14,8 @@ The \ac{hgraph} is responsible for generating action sequences, called hypothesi
 \begin{figure}[H]
     \centering
     \includegraphics[width=5cm]{figures/boxer_robot.png}
-    \caption{Pushing task through blocked corridor with the point robot, a green cube to push toward the target ghost state and a red blockade.}%
+    \caption{Pushing task through a blocked corridor with the point robot, a green cube to push toward the target ghost state and a red blockade.}%
 \label{fig:blocked_path_example_environment}
 \end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/boxer_robot.png}
-    \caption{todo}%
-    \label{subfig:todo}
-    \end{subfigure}%
-
-    \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/boxer_robot.png}
-    \caption{todo}%
-    \label{subfig:B}
-    \end{subfigure}
-    \caption{todo}%
-    \label{subfig:blocked_path_hgraph_exmple}
-\end{figure}
-
 
 
