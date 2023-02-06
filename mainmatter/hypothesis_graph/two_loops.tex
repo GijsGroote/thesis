@@ -18,40 +18,43 @@ While the \ac{hgraph} resides in the execution loop, \textit{an edge is being ex
 
 \Cref{table:explainer_hgraph_figures_nodes} provides important information that does not fit on the flowchart above.
 
+
 \begin{table}[H]
 \centering
-\begin{tabular}[t]{l p{10cm}}
-  \textbf{Node name} & \textbf{Description of actions taken}\\\hline
-  task finished & Calculate and log all metrics for every hypothesis in the \ac{hgraph}.\\
-  create start and target nodes & generate a start and target node for every subtask in the task.\\
-  is there an unfinished subtask & \\
-estimate path existence & \\
-add node to drive to object& \\
-impossible node & \\
-knowledge available& \\
-knowledge usable& \\
-object movable or unknown& \\
-robot close to object& \\
-generate random action& \\
-all possible actions failed& \\
-\shortstack[l]{add drive system\\identification node}& \\
-model available& \\
-action type& \\
-model available& \\
-add push system identification node& \\
-motion planning& \\
-add node to drive to push pose& \\
-robot close to push pose& \\
-path to target& \\
-first action planned& \\
-execute& \\
-subtask succesfully completed& \\
-target node reached& \\
+\rowcolors{2}{white}{my_light_blue}
+\begin{tabular}[t]{>{\raggedright}p{3.5cm}>{\raggedright\arraybackslash}p{10.5cm}}
+  \textbf{Node name} & \textbf{Description of actions taken}\\\toprule
+  Task Finished & log all metrics for the \ac{hgraph}, then deconstruct \ac{hgraph}.\\
+  Create Start and\newline Target Nodes & Generate a robot node and the start and target nodes for every subtask in the task.\\
+Update Current Subtask & Select an unfinished subtask or update current subtask. Use a backward search, eleborated in \cref{subsec:connecting_nodes} so select and update the \textit{current\_start\_node} and \textit{current\_target\_node}. When all subtask have been addressed, conclude task is finished. \\
+Estimate Path\newline Existence & Check if a path exists between \textit{current\_start\_node} and \textit{current\_target\_node} whilst assuming that the object is holonomic.\\
+Add Node to\newline Drive to Object & Add a node before the \textit{current\_target\_node}.\\
+Unfeasible Node & Update node's status to unfeasible because is can not be completed, log failed Edge.\\
+Knowledge Available& Query the \ac{kgraph} for action suggestion to connect \textit{current\_target\_node} to \textit{current\_target\_node}\\
+Knowledge Usable& Check if a suggested action is not on the blacklist.\\
+Object Movable & Check if object is classified as movable\\
+Robot Close to Object& Check if the object is inside directly reachable free space of the robot \\
+Generate Random\newline Action& Randomly sample a controller with a compatible system identification method that is not on the blacklist. \\
+All Possible Actions Failed & Every possible action is on the blacklist for the \textit{current\_target\_node}, update \textit{current\_target\_node} status to failed.\\
+Add Drive System Identification Edge & Adds identification edge between a newly generated node and the drive action edge source node. \\
+Model Available& Checks if the drive action edge contains a system model. \\
+Action Type& Checks the action type. \\
+Model Available& Checkif the push action edge containts a system model. \\
+Add Push System\newline Identification Edge& Adds identification edge compatible with push action edge. \\
+Motion Planning& Search a path for the \textit{current\_edge}, detect blocking objects. \\
+Add Node to Free Path & Search closeby pose for object to free path. Create node to push object toward that pose. \\
+Manipulation Planning & Search a path for the \textit{current\_edge}, detect blocking objects.\\
+Add Node to Drive\newline to Push Pose& Create node to drive toward push pose, add before action edge. \\
+Robot Close to\newline Push Pose & Check if the robot is overlapping with the best push position. \\
+Path to Target& Is there a path from robot to target node in the \ac{hgraph}, then set first edge to \textit{current\_edge} otherwise update subtask.\\
+First Action Planned&  Check if motion/manipulation planning was performed. \\
+Execute& Execute the \textit{current\_edge}, update \ac{hgraph} after completion, log failed hypothesis if a fault is detected. \\
+Subtask Succesfully\newline Completed& Log hypothesis metrics. \\
+Target Node Reached& Check if the target node is reached.\\
 \end{tabular}
-\caption{Functions used by the \cref{pseudocode:proposed_rrt_star}}%
+\caption{Eleborated description of blocks in the \cref{pseudocode:proposed_rrt_star}, ordered in this table with respect the top to bottom, left to right it \cref{pseudocode:proposed_rrt_star}.}%
 \label{table:explainer_hgraph_figures_nodes}
 \end{table}
-\todo[inline]{add RHS' in the table above}
 
 After initialising the \ac{hgraph} with a task, there is only a single access point toward the \ac{hgraph}. A function \textit{respond(observation)} that returns control input toward the robot. As argument function \textit{respond(observation)} takes an observation of the environment, such an observation contains measurements of every object's latest measured state. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor} provides access to the exact states of every object.\bs
 \todo[inline]{it is not clear to the reader that the text above only focusses on a single subtask AKA no global optimum for the task is sought}

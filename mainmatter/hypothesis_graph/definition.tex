@@ -16,6 +16,7 @@ A \textbf{identificationEdge},
 A \textbf{actionEdge}, $\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\bs
 
 with $id_{from}$ and $id_{to}$ indicating the node id of the node in the \ac{hgraph} where the edge start from and point to respectively, $verb$ an English verb describing the action the edge represents, the controller contains the controller used for driving the robot, the dynamic model is the dynamic model used by the controller, path a list of configurations indicating the path connecting a start- to target node.\bs
+\todo[inline]{Martijn: what does this mean: "the controller contains the controller..."?}
 
 A $verb = \{\textrm{driving, pushing}\}$.\bs
 
@@ -40,7 +41,7 @@ An identificationEdge, the status can be visualised in \cref{tikz:status_identif
     \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
 
  % arrows
-    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{create test inputs} (init_test_num.west);
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{select compatible\\sys. iden. method}} (init_test_num.west);
     \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
 (completed_test_num) edge node[left]{create system model} (completed);
     \draw [-stealth] (completed_test_num) edge[bend right] node[right]{goto next start state} (init_test_num);
@@ -48,7 +49,7 @@ An identificationEdge, the status can be visualised in \cref{tikz:status_identif
     \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach next pos}  (failed.north);
 
 \end{tikzpicture}
-\caption{\acs{FSM} displaying the state of an identification edge}%
+\caption{\acs{FSM} displaying the status of an identification edge}%
 \label{tikz:status_identification_edge}
 \end{figure}
 
@@ -71,7 +72,7 @@ The second type of edge is an actionEdge, containing a drive or push action. An 
  % arrows
     \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{select controller} (init.west);
     \draw[-stealth] (init) edge node[left]{graph-based path estimation} (path_exist)
-      (path_exist) edge[bend right] node[left]{system identification} (system_model)
+      (path_exist) edge[bend right] node[left]{load in system model} (system_model)
 (system_model) edge[bend right] node[left]{motion planning} (path_planned)
 (path_planned) edge[bend right] node[left]{goto execution loop} (executing)
 (executing) edge[bend right] node[left]{completed} (completed);

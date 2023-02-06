@@ -2,6 +2,24 @@
 \label{sec:planning}
 The planning problem arises when a path from the start to the target configuration for an object must be found. Such a path cannot cross through obstacle space and must be feasible for the system to track. Motion and manipulation planning are split up because there are some major differences. Motion planning only plans for the robot whilst manipulation planning plans for the robot and some objects. Manipulation planning bears more constraints than motion planning because constraints for the robot, the obstacle and constraints between the robot and the obstacle must be respected. A system model discussed in \cref{subsec:sys_iden} acts as a local planner and validates if a path is feasible. 
 
+
+\subsection{Estimating Path Existence}%
+\label{subsec:estimating_path_existence}
+Trying to accomplish an impossible task is a waste of time and resources. For that reason, a path estimation algorithm estimates the existence of a path before a planner (discussed in \cref{sec:planning}) starts a dedicated search. The path estimation algorithm chosen consists of a graph-based search on a discretised version of the configuration space and can be described as follows.\bs
+
+\quotes{The main idea is to discretise the configuration space with a finite discretisation. The emerged cells act as nodes in the graph, cells are connected through edges to nearby cells. Graph-based planners start from the cell containing the starting pose and search for the cell containing the target pose whilst avoiding cells which lie in obstacle space.}\bs
+
+\todo[inline]{you still have to define the Dijkstra path estimation algorithm}
+\todo[inline]{use the words "occupancy map" and "Dijkstra" in the definition, and \cite{zhang_simple_2008}}
+\todo[inline]{visualise the path estimation algorithm}
+
+\paragraph{Unfeasible solutions and an undecidable problem}
+The path estimation algorithms does not take system constraints into account. It is thus possible that the path estimation algorithm finds a path from the start to the target configuration, but in reality, the path is unfeasible. An example is driving the boxer robot through a narrow, sharp corner. Whilst theoretically the robot would fit through the corner, the nonholonomic property of the robot prevents it from steering through such a thight corner. It is for the motion or manipulation planner to detect that the path is unfeasible.\\The path estimator suffers from another drawback than potentially providing unfeasible solutions, finding proof that there exists a path that is undecidable. Due to the chosen cell size during discretising the configuration space and the alignment of cells. An example is a quoridor that has exactly the width of the robot. The robot would exactly fit through such a quoridor, but detecting this narrow quoridor requires a number of connected cells that lie exactly in the centre line of the quoridor. Path non-existence on the other hand can be proven easily, because effects such as caging can be detected~\cite{chen_fast_2018}.\bs
+
+Compared to planners which will be discussed in the next section, estimating the existence of a path is fast. Potentially is can even speed up planning because the estimated path can be converted to samples for the motion/manipulation planner, a set of initial samples is referred to as a \textit{warm start}. But let's not get ahead, \cref{sec:planning} is dedicated to planners.\bs
+
+Thus in exceptional cases the path estimation algorithm could yield unfeasible paths and could fails to detect existing paths. Generally, it is used to detect if there exists no path from start to target, and to provide a \quotes{warm start} to the planner. \bs
+
 \subsection{Motion Planning}%
 \label{subsec:motion_planning}
 Controllers discussed in \cref{sec:sys_iden_and_control_methods} can track a path from start to target. Providing a path is the motion planners' responsibility, motion planners seek inside the configuration space for a path from the start to the target configuration. A practical example of such a path is a list of successive robot poses, from starting pose (coinciding with the starting configuration) toward the target pose, where the successive poses lie close together (reachable for the robot in $\sim20$ time samples). Seeking a path from start to target inside a configuration space whilst avoiding obstacles for the robot to track is referred to as \textit{motion planning}. Finding a path between the start and target configuration for pushing applications whilst avoiding collisions is referred to as \textit{manipulation planning}. First, this subsection presents motion planning, and the next subsection \cref{subsec:manipulation_planning} dedicates itself to manipulation planning. For both motion and manipulation planning and sampling-based methods are used, which can be described as.\bs
@@ -24,6 +42,9 @@ Newly sampled configurations are added in a structural manner that guarantees an
 The algorithm takes in 2 arguments, first the \textit{step size}, the maximal normalised distance between connected samples in the connectivity trees. Second, the \textit{search size} is a subspace around newly sampled samples, inside this subspace a parent node is saught that results in the lowest cost, rewiring of closeby nodes happens and the other connectivity tree is searched to detect a full path from start to target.\bs
 
 Now pseudocode of the proposed algorithm is provided in \cref{pseudocode:proposed_rrt_star}, and functions used are elaborated on in \cref{table:functions_for_proposed_rrt_star}. The coloured sections inside \cref{pseudocode:proposed_rrt_star} correspond to the surrounding coloured box around subfigures in \cref{fig:motion_planner_adding_one_sample}. The following definitions are used by the proposed algorithm.\bs
+
+\todo[inline]{It is a suprise to suddenly read that there apparently is a "proposed algorithm". The chapter/section intro doesn't mention that something will be proposed, and neither does all of the text leading up to this sentence.}
+
 
 \begin{table}[H]
 \centering
