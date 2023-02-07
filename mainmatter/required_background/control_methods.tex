@@ -1,0 +1,44 @@
+\section{Control Methods}%
+\label{sec:control_methods}
+Understanding the world is done by a system model, but to perform actions and manipulate objects control is required. A first requirement for a controller is that it should yield a stable closed-loop control, and then additional requirements are desired such as a low prediction error and low final placement error.
+
+\paragraph{\acs{MPC} Control}
+The \ac{MPC} controller can be tuned in many ways, for example, to steer the system to the goal aggressively or calmly by adjusting the maximum input and by putting a penalty on rapid input changes. The weights inside its internal objective function can be adjusted during execution time allowing to shift the controller focus from rapid movement to avoiding obstacle regions or converging to a target setpoint. The best feasible input is found every time step by optimising the objective function whilst respecting constraints. Solving an optimisation function to find the best feasible input generally yields robust control. It is however required that the system model is \ac{LTI}. System models for driving the robot can be estimated with \ac{LTI} models without compromising on model accuracy.
+\todo[inline]{Document the \ac{MPC} method}
+
+\paragraph{\acs{MPPI} Control}
+A main advantage \ac{MPPI} has over \ac{MPC} control is that it is compatible with nonlinear system models. Whilst drive applications can be accurately estimated by linear models, push applications are harder to estimate with a linear model. Thus \ac{MPPI} is selected mainly for push applications.
+\todo[inline]{Document the \ac{MPPI} method}
+
+\begin{figure}[H]
+\begin{minipage}{0.5\linewidth}
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{l c c}
+  control sys.~iden. & \ac{PEM} & \ac{IPEM} \\
+  \toprule
+  \ac{MPC} & \cmark& \cmark\\
+  \ac{MPPI} & \cmark& \cmark\\
+\end{tabular}
+\caption{Compatibility between control and system identification methods for drive actions.}%
+\label{table:compatible_modules_drive}
+\end{table}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{l c c }
+  control sys.~iden. & \ac{PEM} & \acs{LSTM}\\
+  \toprule
+  \ac{MPC} & \cmark& \xmark\\
+  \ac{MPPI} & \cmark& \cmark\\
+\end{tabular}
+\caption{Compatibility between control and system identification methods for push actions.}%
+\label{table:compatible_modules_push}
+\end{table}
+\end{minipage}
+\caption{Compatible: todo thos stuff TODOD}%
+\label{table:compatible_modules}
+\end{figure}
+
+\todo[inline]{Augment above with all implemented sys identification methods}

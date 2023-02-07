@@ -1,0 +1,11 @@
+\section{System Identification}%
+\label{sec:sys_iden}
+\todo[inline]{System identification could upgraded toward termination. Thus it makes no sense to put my soul into this if its existence is so unsure}
+Understanding the world is captured by models, \textit{system models} that estimate the behaviour of real-world systems. For example what trajectory does an object take after receiving a push? The trajectory is dependent on the properties of the object (e.g. mass, geomtry), and interaction with its surroundings (e.g sliding friction). These properties and interactions are captured by a system model. Just as applicable constraints that are captured by a system model, see both robots in \cref{fig:example_robots}, the holonomic point robot in \cref{subfig:example_point_robot} can drive without constraints, and the boxer robot in \cref{subfig:example_boxer_robot} can drive forward, backwards and can rotate. A system model for robot driving for the boxer robot should thus capture that it is not able to drive directly sideways.\bs
+
+This thesis encounters only 2 different robots but many different objects. Since every object can be different in type, weight and dimensions. System identification methods are required to capture the variety of objects that the robot can encounter.\bs
+
+\todo[inline]{Visualise test push sequence to collect IO data after implementation}
+\todo[inline]{document your \ac{PEM} method after implementation}
+\todo[inline]{document your \ac{IPEM} method after implementation}
+

@@ -4,7 +4,7 @@ The planning problem arises when a path from the start to the target configurati
 
 
 \subsection{Estimating Path Existence}%
-\label{subsec:estimating_path_existence}
+\label{subsec:path_estimation}
 Trying to accomplish an impossible task is a waste of time and resources. For that reason, a path estimation algorithm estimates the existence of a path before a planner (discussed in \cref{sec:planning}) starts a dedicated search. The path estimation algorithm chosen consists of a graph-based search on a discretised version of the configuration space and can be described as follows.\bs
 
 \quotes{The main idea is to discretise the configuration space with a finite discretisation. The emerged cells act as nodes in the graph, cells are connected through edges to nearby cells. Graph-based planners start from the cell containing the starting pose and search for the cell containing the target pose whilst avoiding cells which lie in obstacle space.}\bs

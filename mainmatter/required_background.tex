@@ -1,8 +1,13 @@
 \chapter{Required Background}%
 \label{chap:required_background}
-\textit{This chapter presents the modules that the \acl{hgraph} and \acl{kgraph} rely upon. All modules are isolated from one another. As a result, modules can easily be replaced by other modules that perform the same function, such as replace the system identification method with another system identification method. There exist a combination of modules that are non-compatible, which is displayed in \cref{table:compatible_modules}. As long as required communication between the modules are met, and the modules are compatible the \acl{hgraph} will try to complete the specified task. The different modules are system identification \cref{subsec:sys_iden}, control methods \cref{subsec:control_methods}, path estimation \cref{sec:estimating_path_existence}, motion planning \cref{subsec:motion_planning}, manipulation planning \cref{subsec:manipulation_planning} and lastly fault detection \cref{sec:fault_detection}.\bs}
+\textit{This chapter presents the components that the proposed method relies upon, the required background. These components are: the backward search algorithm, system identification, control methods, planning and finaly fault detection. Every components plays a crucial role for the proposed method and its performance influences the proposed methods overall performance. The components role is motivated and the manner of workings is explained. Starting with the backwards search algorithm that searches for a feasible order in which the subtasks should be completed in \cref{subsec:backward_search}. As described in the introduction, this thesis will combine 3 subjects, learning, the \ac{NAMO} problem and non-prehensile pushing of objects to target locations. System identification encompasses the learning subject and is responsible for converting \ac{IO} data into a system model, \cref{sec:sys_iden} is dedicated to system identification. The system model that system identification methods yields is required by control methods in order to create stable control and to track a reference signal. Control methods are presented in \cref{sec:control_methods}. Planning is a core component of the proposed method and is responsible for finding a path in configuration space. Such a path acts as reference signal for the controller and planning detects objects that are blocking the path, adn must be removed first. The planning component is split into path estimation in \cref{subsec:path_estimation}, motion planning in \cref{subsec:motion_planning} and manipulation planning in \cref{subsec:manipulation_planning}. Lastly fault detection halts persisting faulty behavior and will be eleborated upon in \cref{sec:fault_detection}.\bs}
 
-\input{mainmatter/required_background/sys_iden_and_control_methods}
-\input{mainmatter/required_background/path_estimation}
+
+
+
+
+\input{mainmatter/required_background/backward_search}
+\input{mainmatter/required_background/system_identification}
+\input{mainmatter/required_background/control_methods}
 \input{mainmatter/required_background/planning}
 \input{mainmatter/required_background/fault_detection}
