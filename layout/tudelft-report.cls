@@ -39,12 +39,11 @@
 
 % Required package
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,fit,calc}
-\usetikzlibrary{mindmap, arrows}
-
+\usetikzlibrary{shapes,arrows,positioning,fit,mindmap,arrows,matrix,calc}
 
 % For minimisation functions
 \usepackage{optidef}
+
 
 \usepackage{amsthm}
 
