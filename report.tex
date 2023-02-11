@@ -39,11 +39,13 @@ page intentionally left blank.
 \newpage
 \begin{table}[H]
     \centering
-    \begin{tabular}{c l}
+    \begin{tabular}{r l}
       $\mathbb{R}$ & \textrm{Set of real numbers}\\
       $\mathbb{Z}_{\geq 0}$ & \textrm{Set of non-negative integers}\\
-      $\mathbb{C}$ & Configuration Space\\ 
+      C-space & Configuration Space\\ 
       $k$ & \textrm{time step index}\\
+      $x_{\mathit{grid}}$: & length of grid in direction of $x$-axis\\  
+      $y_{\mathit{grid}}$: & length of grid in direction of $y$-axis\\  
       $s_i(k)$: & \textrm{State}\\
       $c_i(k)$: & \textrm{Configuration}\\
       $\mathcal{C}(k)$: & \textrm{Configuration set} \\
@@ -73,11 +75,11 @@ page intentionally left blank.
 %% Arabic page numbering
 \mainmatter
 
-% \input{mainmatter/introduction}
+\input{mainmatter/introduction}
 \input{mainmatter/required_background}
-% \input{mainmatter/proposed_method}
-% \input{mainmatter/results}
-% \input{mainmatter/conclusions}
+\input{mainmatter/proposed_method}
+\input{mainmatter/results}
+\input{mainmatter/conclusions}
 
 \todo[inline]{list metric}
 \todo[inline]{find the metrics used in relevant comparable papers}

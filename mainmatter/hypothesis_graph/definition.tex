@@ -1,57 +1,57 @@
-% \subsection{Definition}%
-% \label{subsec:hgraph_definition}%
-% Before defining the \ac{hgraph}, some definitions are defined on which the \ac{hgraph} depends. First, recall the \textbf{state} defined in the \cref{sec:problem_description}.\bs
-%
-% An object holds the information about an object.\\Formally, a \textbf{object},  $obst_{id}(k) = \left\langle s(k), shape \right\rangle $\bs
-%
-% where $shape$ is linked to a 3D representation of the object which is used to construct the configuration space.\bs
-%
-% An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obst}_{id} =\left\langle \textrm{status}, obst(k)\right\rangle $\\where status indicates if the node has been visited in the \ac{hgraph}. $\textrm{status} = (Initialised, Completed, Failed)$\bs
-%
-% An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of state for an object. System identification and performing an action such as pushing or driving both change the state of objects in the robot environment, but because are very different, the edges are split into 2 categories. IdentificationEdges that collect system \ac{IO} data and convert that into a system model. And actionEdges that plan and track a motion from a start to a target state. Formally:\bs
-%
-% A \textbf{identificationEdge},
-% \todo[inline]{define identificationEdge, currently hard coded models are used in the implementation}
-%
-% A \textbf{actionEdge}, $\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\bs
-%
-% with $id_{from}$ and $id_{to}$ indicating the node id of the node in the \ac{hgraph} where the edge start from and point to respectively, $verb$ an English verb describing the action the edge represents, the controller contains the controller used for driving the robot, the dynamic model is the dynamic model used by the controller, path a list of configurations indicating the path connecting a start- to target node.\bs
-% \todo[inline]{Martijn: what does this mean: "the controller contains the controller..."?}
-%
-% A $verb = \{\textrm{driving, pushing}\}$.\bs
-%
-% Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
-%
-% Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \right\rangle $ 
-% \\comprising $V = \{V^{ob}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{ob} \}, i \neq j\}$.\bs
-%
-% Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
-%
-% \paragraph{Status, Types and Lifetime of edges}
-% Because system identification and tracking a path are so very different, the edges are split into two categories, identification edges and action edges. An identification edge, which is responsible for sending an input sequence to the system and recording the system output. That input/output sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \cref{sec:sys_iden}. The goal is to create a dynamical model which is augmented with a corresponding controller is closed-loop stable.\bs
-%
-% An identificationEdge, the status can be visualised in \cref{tikz:status_identification_edge}.\bs
-%
-% \begin{figure}[H]
-% \centering
-% \begin{tikzpicture}[node distance = 2cm, auto, initial]
-%     \node [state, fill=my_dark_blue] (init_test_num) {IT\#t};
-%     \node [state, fill=my_light_blue, below of=init_test_num] (completed_test_num) {CT\#t};
-%     \node [state, accepting, fill=my_green, below of=completed_test_num] (completed) {CO};
-%     \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
-%
-%  % arrows
-%     \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{select compatible\\sys. iden. method}} (init_test_num.west);
-%     \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
-% (completed_test_num) edge node[left]{create system model} (completed);
-%     \draw [-stealth] (completed_test_num) edge[bend right] node[right]{goto next start state} (init_test_num);
-%     \draw [-stealth] (completed_test_num) to node[]{Unable to reach next start state}  (failed.west);
-%     \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach next pos}  (failed.north);
-%
-% \end{tikzpicture}
-% \caption{\acs{FSM} displaying the status of an identification edge}%
-% \label{tikz:status_identification_edge}
-% \end{figure}
+\subsection{Definition}%
+\label{subsec:hgraph_definition}%
+Before defining the \ac{hgraph}, some definitions are defined on which the \ac{hgraph} depends. First, recall the \textbf{state} defined in the \cref{sec:problem_description}.\bs
+
+An object holds the information about an object.\\Formally, a \textbf{object},  $obst_{id}(k) = \left\langle s(k), shape \right\rangle $\bs
+
+where $shape$ is linked to a 3D representation of the object which is used to construct the configuration space.\bs
+
+An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obst}_{id} =\left\langle \textrm{status}, obst(k)\right\rangle $\\where status indicates if the node has been visited in the \ac{hgraph}. $\textrm{status} = (Initialised, Completed, Failed)$\bs
+
+An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of state for an object. System identification and performing an action such as pushing or driving both change the state of objects in the robot environment, but because are very different, the edges are split into 2 categories. IdentificationEdges that collect system \ac{IO} data and convert that into a system model. And actionEdges that plan and track a motion from a start to a target state. Formally:\bs
+
+A \textbf{identificationEdge},
+\todo[inline]{define identificationEdge, currently hard coded models are used in the implementation}
+
+A \textbf{actionEdge}, $\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\bs
+
+with $id_{from}$ and $id_{to}$ indicating the node id of the node in the \ac{hgraph} where the edge start from and point to respectively, $verb$ an English verb describing the action the edge represents, the controller contains the controller used for driving the robot, the dynamic model is the dynamic model used by the controller, path a list of configurations indicating the path connecting a start- to target node.\bs
+\todo[inline]{Martijn: what does this mean: "the controller contains the controller..."?}
+
+A $verb = \{\textrm{driving, pushing}\}$.\bs
+
+Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
+
+Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \right\rangle $ 
+\\comprising $V = \{V^{ob}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{ob} \}, i \neq j\}$.\bs
+
+Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
+
+\paragraph{Status, Types and Lifetime of edges}
+Because system identification and tracking a path are so very different, the edges are split into two categories, identification edges and action edges. An identification edge, which is responsible for sending an input sequence to the system and recording the system output. That input/output sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \cref{sec:sys_iden}. The goal is to create a dynamical model which is augmented with a corresponding controller is closed-loop stable.\bs
+
+An identificationEdge, the status can be visualised in \cref{tikz:status_identification_edge}.\bs
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto, initial]
+    \node [state, fill=my_dark_blue] (init_test_num) {IT\#t};
+    \node [state, fill=my_light_blue, below of=init_test_num] (completed_test_num) {CT\#t};
+    \node [state, accepting, fill=my_green, below of=completed_test_num] (completed) {CO};
+    \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
+
+ % arrows
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{select compatible\\sys. iden. method}} (init_test_num.west);
+    \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
+(completed_test_num) edge node[left]{create system model} (completed);
+    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{goto next start state} (init_test_num);
+    \draw [-stealth] (completed_test_num) to node[]{Unable to reach next start state}  (failed.west);
+    \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach next pos}  (failed.north);
+
+\end{tikzpicture}
+\caption{\acs{FSM} displaying the status of an identification edge}%
+\label{tikz:status_identification_edge}
+\end{figure}
 
 
 \todo[inline]{some explainer on this status of iden edge}
