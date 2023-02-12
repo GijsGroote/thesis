@@ -274,10 +274,10 @@
 
 % tikz flowchart settings
 \tikzstyle{decision} = [diamond, draw, fill=myEvenLighterColor, 
-    text width=4.5em, text badly centered, node distance=2.5cm, inner sep=0pt]
+text width=4.5em, text badly centered, node distance=2.5cm, inner sep=0pt]
 \tikzstyle{block} = [rectangle, draw, 
-    fill=myLightColor, 
-    text width=5em, text centered, rounded corners, minimum height=4em]
+fill=myLightColor, 
+text width=5em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{line} = [draw, -latex']
 % \tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
 
@@ -286,12 +286,12 @@
 
 % diagonal fill of a node
 \tikzset{
-diagonal fill/.style 2 args={fill=#2, path picture={
-\fill[#1, sharp corners] (path picture bounding box.south west) -|
-                         (path picture bounding box.north east) -- cycle;}},
-reversed diagonal fill/.style 2 args={fill=#2, path picture={
-\fill[#1, sharp corners] (path picture bounding box.north west) |- 
-                         (path picture bounding box.south east) -- cycle;}}
+  diagonal fill/.style 2 args={fill=#2, path picture={
+      \fill[#1, sharp corners] (path picture bounding box.south west) -|
+  (path picture bounding box.north east) -- cycle;}},
+  reversed diagonal fill/.style 2 args={fill=#2, path picture={
+      \fill[#1, sharp corners] (path picture bounding box.north west) |- 
+  (path picture bounding box.south east) -- cycle;}}
 }
 
 \usetikzlibrary{automata, positioning, arrows}
