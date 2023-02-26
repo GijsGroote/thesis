@@ -295,3 +295,7 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 }
 
 \usetikzlibrary{automata, positioning, arrows}
+
+% column type to center horizontally and provide column width
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
