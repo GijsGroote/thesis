@@ -1,21 +1,30 @@
-\section{Fault Detection}%
+\section{Monitoring Metrics}%
 \label{sec:fault_detection}
-\todo[inline]{Corrado: look out, fault detection is large, readers now expect an in depth }
-During execution time, the \ac{hgraph} is unable to perform any action, such as motion planning or finding new hypotheses. This blocking behaviour has some implications, especially when an edge steers the system toward a target state and is blocked, for example, the controller steers the system to a target state, and meets an unmovable object. In such cases, the controller will never reach the target state and the system remains in a local minimum forever. Giving complete control to an edge is thus not desired because of the blocking behaviour of edges. More examples can be given such as system identification or push manipulation on an object that is cornered can be provided. However, instead of thinking of all possible options for how the robot could get stuck a more automated approach is sought.  A central coordinator who can step in and terminate the edge is desired. Detecting controller faults is a large robotic topic~\cite{khalastchi_fault_2019} properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead, the two simple metrics will be monitored during execution. \ac{PE} where the predicted position is compared with the measured position of the system, and \ac{TE} where the path provided for the robot to track is compared with the trajectory that the robot made during tracking such a path. Definitions of \ac{PE} and \ac{TE} are now given, in \cref{table:monitoring_edge_metrics} insight is provided why a metric would catch certain faulty behaviour.
-\todo[inline]{Martijn: how is system identification another example of what you are trying to explain above?}
-\todo[inline]{define \ac{PE}}
-% Every time step a prediction one step into the future is made with the use of the dynamic model. Also, every time step the \ac{PE} is calculated, which is the difference between the one-step-ahead predictor of the previous timestep and the measurement of where the object currently is.
-\todo[inline]{define \ac{TE}}
+In the next chapter, the proposed method is discussed, for this section, it is important to know that the proposed method contains the \ac{halgorithm} which is responsible for finding action sequences, motion/manipulation planning, and execution of drive and push actions. During the execution time of a drive or push action, the \acl{halgorithm} is unable to perform any other action. This blocking behaviour has some implications, mainly a controller can steer the system to a state from which it cannot independently reach the target state, as a result, it will never halt. For example, a controller tries to drive the robot toward a target state but there is an unmovable obstacle in the way. Another example is the controller is closed-loop unstable and never reaches its target state. Both examples should not occur, because of the \cref{assumption:closed_world}, but in the real world, an unexpected blocking obstacle or unstable controller is more likely to occur.\bs
 
-\paragraph{Monitoring Metrics}
+Detecting controller faults is a large robotic topic~\cite{khalastchi_fault_2019} properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead, two simple metrics will be monitored during execution. \ac{PE} where the predicted state is compared with the measured state of the system, and \ac{TE} where the path provided by motion planning is compared with the trajectory the robot takes whilst tracking such a path. Definitions of \ac{PE} and \ac{TE} are now given, and \cref{table:monitoring_edge_metrics} provides insight in which monitoring metric would catch what faulty behaviour.\bs
+
+\[ \gls{pe}(\gls{k}) ::= ||\hat{\gls{c}}(\gls{k}|\gls{k}-1) - \gls{c}(\gls{k})|| \]
+
+Where $\hat{\gls{c}}(\gls{k}|\gls{k}-1)$ is a prediction of the configuration and $\gls{c}(\gls{k})$ is the actual configuration.\bs 
+
+The \ac{PE} can be described as:\\
+Every time step a prediction one step into the future is made with the use of the system model and system input. Then the system input is applied to the system and the actual configuration is measured. The difference between predicted and actual configuration is the \ac{PE}.
+
+\[ \gls{te}(\gls{k}) ::= ||\gls{c}_\mathit{target} - \gls{c}(\gls{k})|| \]
+
+Where $\gls{c}_\mathit{target}$ is the target configuration in the path that the controller tries to steer toward, and \gls{c}(\gls{k}) is the actual configuration.\bs
+
+The \ac{TE} can be described as:\\ A path consists of a list of configurations, a controller tracks the path by steering the system to the upcoming configuration in the path when reached the configuration is updated to the next configuration in the path. The difference between the current configuration and the current configuration the controller tries to steer toward is the \ac{TE}.\bs
+
+$\gls{c}_\mathit{target}$ does not update every time step, whilst \gls{c}(\gls{k}) does update every time step. As a result, a \quotes{good} \ac{TE} is expected to take the form of a saw tooth function inverted over the horizontal x-axis.\bs
 
 \begin{table}[htb!]
 \centering
 \begin{tabular}[t]{l p{10cm}}
-  \acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behaviour occurs, such as when the robot has driven into an object which is was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
+  \acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behaviour occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
   \acf{TE}& The system should not diverge too far from to path it is supposed to track, if the robot diverges more than a pre-defined threshold the \ac{hgraph} concludes that there was an error during execution and the edge fails. \\
 \end{tabular}
-\caption{Monitor metrics used to monitor if a fault occurred during execution of an edge}%
+\caption{Monitor metrics used to monitor if a fault occurred during the execution of an edge}%
 \label{table:monitoring_edge_metrics}
 \end{table}
-
