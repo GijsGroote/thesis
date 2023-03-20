@@ -122,11 +122,10 @@
   date = {2021-04-05},
   eprint = {2104.01817},
   eprinttype = {arxiv},
-  primaryclass = {cs, eess},
+  eprintclass = {cs, eess},
   url = {http://arxiv.org/abs/2104.01817},
   urldate = {2022-01-31},
   abstract = {This work presents a novel fault-tolerant control scheme based on active inference. Specifically, a new formulation of active inference which, unlike previous solutions, provides unbiased state estimation and simplifies the definition of probabilistically robust thresholds for fault-tolerant control of robotic systems using the free-energy. The proposed solution makes use of the sensory prediction errors in the free-energy for the generation of residuals and thresholds for fault detection and isolation of sensory faults, and it does not require additional controllers for fault recovery. Results validating the benefits in a simulated 2-DOF manipulator are presented, and future directions to improve the current fault recovery approach are discussed.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Robotics,Electrical Engineering and Systems Science - Systems and Control},
   file = {/home/gijs/Zotero/storage/Z3AXFH4T/Baioumy et al. - 2021 - Fault-tolerant Control of Robot Manipulators with .pdf;/home/gijs/Zotero/storage/3B8EMT8G/2104.html}
 }
@@ -137,11 +136,10 @@
   date = {2018-10-09},
   eprint = {1807.09904},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/1807.09904},
   urldate = {2022-03-01},
   abstract = {Decades of research in control theory have shown that simple controllers, when provided with timely feedback, can control complex systems. Pushing is an example of a complex mechanical system that is difficult to model accurately due to unknown system parameters such as coefficients of friction and pressure distributions. In this paper, we explore the data-complexity required for controlling, rather than modeling, such a system. Results show that a model-based control approach, where the dynamical model is learned from data, is capable of performing complex pushing trajectories with a minimal amount of training data (10 data points). The dynamics of pushing interactions are modeled using a Gaussian process (GP) and are leveraged within a model predictive control approach that linearizes the GP and imposes actuator and task constraints for a planar manipulation task.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Machine Learning,Computer Science - Robotics,Electrical Engineering and Systems Science - Systems and Control},
   file = {/home/gijs/Zotero/storage/T3NIME6Z/Bauza et al. - 2018 - A Data-Efficient Approach to Precise and Controlle.pdf;/home/gijs/Zotero/storage/YJLDGWNT/1807.html}
 }
@@ -175,6 +173,21 @@
   eventtitle = {2009 {{IEEE International Conference}} on {{Robotics}} and {{Automation}} ({{ICRA}})},
   isbn = {978-1-4244-2788-8},
   file = {/home/gijs/Zotero/storage/398ZXGLM/Berenson et al. - 2009 - Manipulation planning on constraint manifolds.pdf}
+}
+
+@online{bertoncelli_linear_2020,
+  title = {Linear {{Time-Varying MPC}} for {{Nonprehensile Object Manipulation}} with a {{Nonholonomic Mobile Robot}}},
+  author = {Bertoncelli, Filippo and Ruggiero, Fabio and Sabattini, Lorenzo},
+  date = {2020-03-23},
+  number = {arXiv:2003.10247},
+  eprint = {arXiv:2003.10247},
+  eprinttype = {arxiv},
+  url = {http://arxiv.org/abs/2003.10247},
+  urldate = {2023-03-18},
+  abstract = {This paper proposes a technique to manipulate an object with a nonholonomic mobile robot by pushing, which is a nonprehensile manipulation motion primitive. Such a primitive involves unilateral constraints associated with the friction between the robot and the manipulated object. Violating this constraint produces the slippage of the object during the manipulation, preventing the correct achievement of the task. A linear time-varying model predictive control is designed to include the unilateral constraint within the control action properly. The approach is verified in a dynamic simulation environment through a Pioneer 3-DX wheeled robot executing the pushing manipulation of a package.},
+  pubstate = {preprint},
+  keywords = {Computer Science - Robotics},
+  file = {/home/gijs/Zotero/storage/BPQUUMSC/Bertoncelli et al. - 2020 - Linear Time-Varying MPC for Nonprehensile Object M.pdf;/home/gijs/Zotero/storage/R65QJN8T/2003.html}
 }
 
 @article{bronson_practical_2010,
@@ -277,10 +290,9 @@
   date = {2020-07-27},
   eprint = {2007.13421},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2007.13421},
   urldate = {2022-04-06},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/JMSD634M/Cong et al. - 2020 - Self-Adapting Recurrent Models for Object Pushing .pdf;/home/gijs/Zotero/storage/GC4EZDUV/2007.html}
 }
@@ -292,20 +304,18 @@
   url = {http://pybullet.org}
 }
 
-@misc{denil_learning_2017,
+@online{denil_learning_2017,
   title = {Learning to {{Perform Physics Experiments}} via {{Deep Reinforcement Learning}}},
   author = {Denil, Misha and Agrawal, Pulkit and Kulkarni, Tejas D. and Erez, Tom and Battaglia, Peter and de Freitas, Nando},
   options = {useprefix=true},
   date = {2017-08-17},
   number = {arXiv:1611.01843},
-  eprint = {1611.01843},
+  eprint = {arXiv:1611.01843},
   eprinttype = {arxiv},
-  primaryclass = {physics, stat},
-  publisher = {{arXiv}},
   url = {http://arxiv.org/abs/1611.01843},
   urldate = {2022-05-19},
   abstract = {When encountering novel objects, humans are able to infer a wide range of physical properties such as mass, friction and deformability by interacting with them in a goal driven way. This process of active interaction is in the same spirit as a scientist performing experiments to discover hidden facts. Recent advances in artificial intelligence have yielded machines that can achieve superhuman performance in Go, Atari, natural language processing, and complex control problems; however, it is not clear that these systems can rival the scientific intuition of even a young child. In this work we introduce a basic set of tasks that require agents to estimate properties such as mass and cohesion of objects in an interactive simulated environment where they can manipulate the objects and observe the consequences. We found that state of art deep reinforcement learning methods can learn to perform the experiments necessary to discover such hidden properties. By systematically manipulating the problem difficulty and the cost incurred by the agent for performing experiments, we found that agents learn different strategies that balance the cost of gathering information against the cost of making mistakes in different situations.},
-  archiveprefix = {arXiv},
+  pubstate = {preprint},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Physics - Physics and Society,Statistics - Machine Learning},
   file = {/home/gijs/Zotero/storage/MAXNTAQD/Denil et al. - 2017 - Learning to Perform Physics Experiments via Deep R.pdf;/home/gijs/Zotero/storage/K9FQDWQ2/1611.html}
 }
@@ -572,7 +582,8 @@
   url = {http://journals.sagepub.com/doi/10.1177/0278364910386985},
   urldate = {2022-06-24},
   abstract = {Robots that perform complex manipulation tasks must be able to generate strategies that make and break contact with the object. This requires reasoning in a motion space with a particular multi-modal structure, in which the state contains both a discrete mode (the contact state) and a continuous configuration (the robot and object poses). In this paper we address multi-modal motion planning in the common setting where the state is high-dimensional, and there are a continuous infinity of modes. We present a highly general algorithm, Random-MMP, that repeatedly attempts mode switches sampled at random. A major theoretical result is that Random-MMP is formally reliable and scalable, and its running time depends on certain properties of the multi-modal structure of the problem that are not explicitly dependent on dimensionality. We apply the planner to a manipulation task on the Honda humanoid robot, where the robot is asked to push an object to a desired location on a cluttered table, and the robot is restricted to switch between walking, reaching, and pushing modes. Experiments in simulation and on the real robot demonstrate that Random-MMP solves problem instances that require several carefully chosen pushes in minutes on a PC.},
-  langid = {english}
+  langid = {english},
+  file = {/home/gijs/Zotero/storage/UJPFI86X/Hauser and Ng-Thow-Hing - 2011 - Randomized multi-modal motion planning for a human.pdf}
 }
 
 @incollection{hernandez_modelbased_2015,
@@ -832,14 +843,13 @@
   number = {2},
   eprint = {1911.04679},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   pages = {844--851},
   issn = {2377-3766, 2377-3774},
   doi = {10.1109/LRA.2020.2965875},
   url = {http://arxiv.org/abs/1911.04679},
   urldate = {2022-05-31},
   abstract = {We address the problem of applying Task and Motion Planning (TAMP) in real world environments. TAMP combines symbolic and geometric reasoning to produce sequential manipulation plans, typically specified as joint-space trajectories, which are valid only as long as the environment is static and perception and control are highly accurate. In case of any changes in the environment, slow re-planning is required. We propose a TAMP algorithm that optimizes over Cartesian frames defined relative to target objects. The resulting plan then remains valid even if the objects are moving and can be executed by reactive controllers that adapt to these changes in real time. We apply our TAMP framework to a torque-controlled robot in a pick and place setting and demonstrate its ability to adapt to changing environments, inaccurate perception, and imprecise control, both in simulation and the real world.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/4XG4YP7S/Migimatsu and Bohg - 2020 - Object-Centric Task and Motion Planning in Dynamic.pdf;/home/gijs/Zotero/storage/KKEPEBF9/1911.html}
 }
@@ -931,11 +941,10 @@
   date = {2021-06-09},
   eprint = {2011.09756},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2011.09756},
   urldate = {2022-01-16},
   abstract = {We propose a hybrid combination of active inference and behavior trees (BTs) for reactive action planning and execution in dynamic environments, showing how robotic tasks can be formulated as a free-energy minimization problem. The proposed approach allows to handle partially observable initial states and improves the robustness of classical BTs against unexpected contingencies while at the same time reducing the number of nodes in a tree. In this work, the general nominal behavior is specified offline through BTs, where a new type of leaf node, the prior node, is introduced to specify the desired state to be achieved rather than an action to be executed as typically done in BTs. The decision of which action to execute to reach the desired state is performed online through active inference. This results in the combination of continual online planning and hierarchical deliberation, that is an agent is able to follow a predefined offline plan while still being able to locally adapt and take autonomous decisions at runtime. The properties of our algorithm, such as convergence and robustness, are thoroughly analyzed, and the theoretical results are validated in two different mobile manipulators performing similar tasks, both in a simulated and real retail environment.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/Z8KPSPWT/Pezzato et al. - 2021 - Active Inference and Behavior Trees for Reactive A.pdf;/home/gijs/Zotero/storage/8ZLGGHVP/2011.html}
 }
@@ -1029,11 +1038,10 @@
   date = {2021-10-28},
   eprint = {2110.15245},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2110.15245},
   urldate = {2022-02-01},
   abstract = {Machine learning has long since become a keystone technology, accelerating science and applications in a broad range of domains. Consequently, the notion of applying learning methods to a particular problem set has become an established and valuable modus operandi to advance a particular field. In this article we argue that such an approach does not straightforwardly extended to robotics -- or to embodied intelligence more generally: systems which engage in a purposeful exchange of energy and information with a physical environment. In particular, the purview of embodied intelligent agents extends significantly beyond the typical considerations of main-stream machine learning approaches, which typically (i) do not consider operation under conditions significantly different from those encountered during training; (ii) do not consider the often substantial, long-lasting and potentially safety-critical nature of interactions during learning and deployment; (iii) do not require ready adaptation to novel tasks while at the same time (iv) effectively and efficiently curating and extending their models of the world through targeted and deliberate actions. In reality, therefore, these limitations result in learning-based systems which suffer from many of the same operational shortcomings as more traditional, engineering-based approaches when deployed on a robot outside a well defined, and often narrow operating envelope. Contrary to viewing embodied intelligence as another application domain for machine learning, here we argue that it is in fact a key driver for the advancement of machine learning technology. In this article our goal is to highlight challenges and opportunities that are specific to embodied intelligence and to propose research directions which may significantly advance the state-of-the-art in robot learning.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Machine Learning,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/GQDIUTZV/Roy et al. - 2021 - From Machine Learning to Robotics Challenges and .pdf}
 }
@@ -1112,11 +1120,10 @@
   date = {2021-02-22},
   eprint = {2102.11107},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2102.11107},
   urldate = {2022-01-31},
   abstract = {The two fields of machine learning and graphical causality arose and developed separately. However, there is now cross-pollination and increasing interest in both fields to benefit from the advances of the other. In the present paper, we review fundamental concepts of causal inference and relate them to crucial open problems of machine learning, including transfer and generalization, thereby assaying how causality can contribute to modern machine learning research. This also applies in the opposite direction: we note that most work in causality starts from the premise that the causal variables are given. A central problem for AI and causality is, thus, causal representation learning, the discovery of high-level causal variables from low-level observations. Finally, we delineate some implications of causality for machine learning and propose key research areas at the intersection of both communities.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning},
   file = {/home/gijs/Zotero/storage/8UNXTA7G/Schölkopf et al. - 2021 - Towards Causal Representation Learning.pdf;/home/gijs/Zotero/storage/ER2WTKZJ/2102.html}
 }
@@ -1215,7 +1222,6 @@
   url = {http://arxiv.org/abs/1905.03720},
   urldate = {2022-03-15},
   abstract = {This paper presents a data-efficient approach to learning transferable forward models for robotic push manipulation. Our approach extends our previous work on contact-based predictors by leveraging information on the pushed object's local surface features. We test the hypothesis that, by conditioning predictions on local surface features, we can achieve generalisation across objects of different shapes. In doing so, we do not require a CAD model of the object but rather rely on a point cloud object model (PCOM). Our approach involves learning motion models that are specific to contact models. Contact models encode the contacts seen during training time and allow generating similar contacts at prediction time. Predicting on familiar ground reduces the motion models' sample complexity while using local contact information for prediction increases their transferability. In extensive experiments in simulation, our approach is capable of transfer learning for various test objects, outperforming a baseline predictor. We support those results with a proof of concept on a real robot.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/IUNYYI7X/Stüber et al. - 2018 - Feature-Based Transfer Learning for Robotic Push M.pdf;/home/gijs/Zotero/storage/TWBEGT2W/1905.html}
 }
@@ -1236,7 +1242,6 @@
   url = {http://arxiv.org/abs/1905.05138},
   urldate = {2022-02-24},
   abstract = {As robot make their way out of factories into human environments, outer space, and beyond, they require the skill to manipulate their environment in multifarious, unforeseeable circumstances. With this regard, pushing is an essential motion primitive that dramatically extends a robot's manipulation repertoire. In this work, we review the robotic pushing literature. While focusing on work concerned with predicting the motion of pushed objects, we also cover relevant applications of pushing for planning and control. Beginning with analytical approaches, under which we also subsume physics engines, we then proceed to discuss work on learning models from data. In doing so, we dedicate a separate section to deep learning approaches which have seen a recent upsurge in the literature. Concluding remarks and further research perspectives are given at the end of the paper.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/AAQYHQCF/Stüber et al. - 2020 - Let's Push Things Forward A Survey on Robot Pushi.pdf;/home/gijs/Zotero/storage/C48RW2CD/1905.html}
 }
@@ -1283,11 +1288,10 @@
   date = {2022-03-10},
   eprint = {2203.05390},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2203.05390},
   urldate = {2022-04-29},
   abstract = {Task and Motion Planning has made great progress in solving hard sequential manipulation problems. However, a gap between such planning formulations and control methods for reactive execution remains. In this paper we propose a model predictive control approach dedicated to robustly execute a single sequence of constraints, which corresponds to a discrete decision sequence of a TAMP plan. We decompose the overall control problem into three sub-problems (solving for sequential waypoints, their timing, and a short receding horizon path) that each is a non-linear program solved online in each MPC cycle. The resulting control strategy can account for long-term interdependencies of constraints and reactively plan for a timing-optimal transition through all constraints. We additionally propose phase backtracking when running constraints are missed, leading to a fluent re-initiation behavior that is robust to perturbations and interferences by an experimenter.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/8935NEX7/Toussaint et al. - 2022 - Sequence-of-Constraints MPC Reactive Timing-Optim.pdf;/home/gijs/Zotero/storage/XUVT9DLH/2203.html}
 }
@@ -1371,11 +1375,10 @@
   date = {2021-12-21},
   eprint = {2105.10396},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/2105.10396},
   urldate = {2022-02-01},
   abstract = {Contemporary approaches to perception, planning, estimation, and control have allowed robots to operate robustly as our remote surrogates in uncertain, unstructured environments. This progress now creates an opportunity for robots to operate not only in isolation, but also with and alongside humans in our complex environments. Realizing this opportunity requires an efficient and flexible medium through which humans can communicate with collaborative robots. Natural language provides one such medium, and through significant progress in statistical methods for natural-language understanding, robots are now able to interpret a diverse array of free-form commands. However, most contemporary approaches require a detailed, prior spatial-semantic map of the robot's environment that models the space of possible referents of an utterance. Consequently, these methods fail when robots are deployed in new, previously unknown, or partially-observed environments, particularly when mental models of the environment differ between the human operator and the robot. This paper provides a comprehensive description of a novel learning framework that allows field and service robots to interpret and correctly execute natural-language instructions in a priori unknown, unstructured environments. Integral to our approach is its use of language as a "sensor" -- inferring spatial, topological, and semantic information implicit in the utterance and then exploiting this information to learn a distribution over a latent environment model. We incorporate this distribution in a probabilistic, language grounding model and infer a distribution over a symbolic representation of the robot's action space. We use imitation learning to identify a belief-space policy that reasons over the environment and behavior distributions. We evaluate our framework through a variety navigation and mobile-manipulation experiments.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Computation and Language,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/X257EN5W/Walter et al. - 2021 - Language Understanding for Field and Service Robot.pdf;/home/gijs/Zotero/storage/8XCXUK2Z/2105.html}
 }
@@ -1402,11 +1405,10 @@
   date = {2015-10-28},
   eprint = {1509.01149},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/1509.01149},
   urldate = {2022-05-02},
   abstract = {In this paper we develop a Model Predictive Path Integral (MPPI) control algorithm based on a generalized importance sampling scheme and perform parallel optimization via sampling using a Graphics Processing Unit (GPU). The proposed generalized importance sampling scheme allows for changes in the drift and diffusion terms of stochastic diffusion processes and plays a significant role in the performance of the model predictive control algorithm. We compare the proposed algorithm in simulation with a model predictive control version of differential dynamic programming.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Distributed; Parallel; and Cluster Computing,Computer Science - Robotics,Electrical Engineering and Systems Science - Systems and Control},
   file = {/home/gijs/Zotero/storage/I3JMY2L3/Williams et al. - 2015 - Model Predictive Path Integral Control using Covar.pdf;/home/gijs/Zotero/storage/CWCK5BXJ/1509.html}
 }
@@ -1454,11 +1456,10 @@
   date = {2017-03-22},
   eprint = {1703.07822},
   eprinttype = {arxiv},
-  primaryclass = {cs},
+  eprintclass = {cs},
   url = {http://arxiv.org/abs/1703.07822},
   urldate = {2022-03-15},
   abstract = {We consider the problem of a robot learning the mechanical properties of objects through physical interaction with the object, and introduce a practical, data-efficient approach for identifying the motion models of these objects. The proposed method utilizes a physics engine, where the robot seeks to identify the inertial and friction parameters of the object by simulating its motion under different values of the parameters and identifying those that result in a simulation which matches the observed real motions. The problem is solved in a Bayesian optimization framework. The same framework is used for both identifying the model of an object online and searching for a policy that would minimize a given cost function according to the identified model. Experimental results both in simulation and using a real robot indicate that the proposed method outperforms state-of-the-art model-free reinforcement learning approaches.},
-  archiveprefix = {arXiv},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Computer Science - Robotics},
   file = {/home/gijs/Zotero/storage/75MGGFIK/Zhu et al. - 2017 - Information-theoretic Model Identification and Pol.pdf;/home/gijs/Zotero/storage/MXFJSJUL/1703.html}
 }
