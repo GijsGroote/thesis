@@ -4,11 +4,10 @@ Now that \ac{hgraph} is defined let's find out how it reacts to various behaviou
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=5cm]{figures/two_loops_identified}
-    \caption{The search and execution loop.}%
+    \includegraphics[width=9cm]{figures/two_loops_identified}
+    \caption{The search (above) and execution (below) loop.}%
     \label{fig:two_loops_identified}
 \end{figure}
-\todo[inline]{Update figure above, professionalise arrows}
 
 While the \ac{hgraph} resides in the search loop, hypotheses are formed. Forming a hypothesis, generating edges, nodes and progressing their status as described in \cref{tikz:status_identification_edge,tikz:status_action_edge} respectively. The \ac{hgraph} operates synchronously, thus at any point in time, the \ac{hgraph} resides in a single block within \cref{tikz:flowchart_hgraph}. The result is that the robots cannot operate whilst the \ac{hgraph} resides in the search loop, and during execution, no hypothesis can be formed or updated. Assumption~\ref{assumption:closed_world} guarantees that the robot environment does not change causing existing hypotheses to be outdated.\bs
 

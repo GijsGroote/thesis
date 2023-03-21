@@ -39,12 +39,12 @@ System identification and tracking a path are so very different, the edges are s
     \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
 
  % arrows
-    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{select compatible\\sys. iden. method}} (init_test_num.west);
-    \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
-(completed_test_num) edge node[left]{create system model} (completed);
-    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{goto next start configuration} (init_test_num);
-    \draw [-stealth] (completed_test_num) to node[]{Unable to reach next start configuration}  (failed.west);
-    \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach starting robot configuration}  (failed.north);
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{Select compatible\\sys. iden. method}} (init_test_num.west);
+    \draw[-stealth] (init_test_num) edge[bend right] node[left]{\shortstack{Go to next start\\push configuration}} (completed_test_num)
+(completed_test_num) edge node[left]{Create system model} (completed);
+    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{Collect \ac{IO} data} (init_test_num);
+    \draw [-stealth] (completed_test_num) to node[below]{\shortstack[]{Unable to reach next\\start configuration}}  (failed.west);
+    % \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach starting robot configuration}  (failed.north);
 
 \end{tikzpicture}
 \caption{\acs{FSM} displaying the status of an identification edge}%
@@ -67,19 +67,19 @@ An action edge, contains a drive or push action. From the point of initialisatio
     \node [state, accepting, fill=my_red] (failed) at ([xshift=4cm]$(system_model)!0.5!(path_planned)$) {FAIL};
 
  % arrows
-    \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{select controller} (init.west);
-    \draw[-stealth] (init) edge node[left]{graph-based path estimation} (path_exist)
-      (path_exist) edge[bend right] node[left]{load in system model} (system_model)
-(system_model) edge[bend right] node[left]{motion planning} (path_planned)
-(path_planned) edge[bend right] node[left]{goto execution loop} (executing)
-(executing) edge[bend right] node[left]{completed} (completed);
+    \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{Select controller} (init.west);
+    \draw[-stealth] (init) edge node[left]{Graph-based path estimation} (path_exist)
+      (path_exist) edge[bend right] node[left]{Load in system model} (system_model)
+(system_model) edge[bend right] node[left]{Motion planning} (path_planned)
+(path_planned) edge[bend right] node[left]{Go to execution loop} (executing)
+(executing) edge[bend right] node[left]{Completed} (completed);
 
-    \draw [-stealth] (init.east) [out=0, in=90] to node[xshift=0.1cm, right]{path non-existence proven}  ([yshift=-0.03cm,xshift=0.2cm]failed.north);
-    \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.6cm,yshift=0.55cm, above]{\shortstack[l]{system\\identification\\error}}  ([yshift=-0.03cm,xshift=-0.2cm]failed.north);
-    \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{motion\\planning\\error}} (failed.west);
+    \draw [-stealth] (init.east) [out=0, in=90] to node[xshift=0.1cm, right]{Path non-existence proven}  ([yshift=-0.03cm,xshift=0.2cm]failed.north);
+    \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.6cm,yshift=0.55cm, above]{\shortstack[l]{System\\identification\\error}}  ([yshift=-0.03cm,xshift=-0.2cm]failed.north);
+    \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{Motion\\planning\\error}} (failed.west);
     node[right]{motion planning error}
     ([yshift=-0.3cm]failed.west);
-    \draw [-stealth] (executing.east) [out=0, in=-90] to node[xshift=0.1cm,right]{fault detected}(failed.south);
+    \draw [-stealth] (executing.east) [out=0, in=-90] to node[xshift=0.1cm,right]{Fault detected}(failed.south);
 
 \end{tikzpicture}
 \caption{\acs{FSM} displaying the status of an action edge}%
@@ -100,4 +100,4 @@ An action edge, contains a drive or push action. From the point of initialisatio
 \end{minipage}}
 \par\smallskip
 
-\Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the robot can start executing. The performance of an edge during execution, measured in various metrics (\cref{sec:proposed_method_metrics} is dedicated to metrics) is dependent on many aspects. Such as the choice of controller, the path estimation, the system model yielded by the identification edge and the path yielded by motion planning. Now that he \ac{hgraph} is defined, let's see how it is generated in the upcoming section.\bs
+\Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed. Before executing edges, edges must be initialised, which is where next section is dedicated to.\bs
