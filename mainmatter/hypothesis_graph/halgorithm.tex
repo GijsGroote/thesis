@@ -1,0 +1,70 @@
+\subsection{\acl{halgorithm}}%
+\label{subsec:halgorithm}
+This section will provide a mathematical description of the proposed \ac{halgorithm}, the search and execution loop are discussed. The section will finalise with 4 examples. First, let's look into the math of the \ac{halgorithm}.\bs
+
+\todo[inline]{a mathematically solid describtion of your backward search algorithm}
+
+During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of succesive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.
+
+A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an eleborate description for every block in the flowchart (see \cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occures. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straigtforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstacted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware. 
+
+\input{mainmatter/hypothesis_graph/hgraph_tikz_figure}
+
+\begin{table}[H]
+\centering
+\rowcolors{2}{white}{myLightColor}
+\begin{tabular}[t]{>{\raggedright}p{3.5cm}>{\raggedright\arraybackslash}p{10.5cm}}
+  \textbf{Node name} & \textbf{Description of actions taken}\\\toprule
+  Task Finished & log all metrics for the \ac{hgraph}, then deconstruct \ac{hgraph}.\\
+  Create Start and\newline Target Nodes & Generate a robot node and the start and target nodes for every subtask in the task.\\
+Update Current Subtask & Select an unfinished subtask or update current subtask. Use the backward search technique. The \textit{current\_start\_node} and \textit{current\_target\_node} are updated. When all subtask have been addressed, conclude task is finished. \\
+Estimate Path\newline Existence & Check if a path exists between \textit{current\_start\_node} and \textit{current\_target\_node} whilst assuming that the object is holonomic.\\
+Add Node to\newline Drive to Object & Add a node before the \textit{current\_target\_node}.\\
+Unfeasible Node & Update node's status to unfeasible because is can not be completed, log failed Edge.\\
+Knowledge Available& Query the \ac{kgraph} for action suggestion to connect \textit{current\_target\_node} to \textit{current\_target\_node}\\
+Knowledge Usable& Check if a suggested action is not on the blacklist.\\
+Object Movable & Check if object is classified as movable\\
+Robot Close to Object& Check if the object is inside directly reachable free space of the robot \\
+Generate Random\newline Action& Randomly sample a controller with a compatible system identification method that is not on the blacklist. \\
+All Possible Actions Failed & Every possible action is on the blacklist for the \textit{current\_target\_node}, update \textit{current\_target\_node} status to failed.\\
+Add Drive System Identification Edge & Adds identification edge between a newly generated node and the drive action edge source node. \\
+Model Available& Checks if the drive action edge contains a system model. \\
+Action Type& Checks the action type. \\
+Model Available& Checkif the push action edge containts a system model. \\
+Add Push System\newline Identification Edge& Adds identification edge compatible with push action edge. \\
+Motion Planning& Search a path for the \textit{current\_edge}, detect blocking objects. \\
+Add Node to Free Path & Search closeby pose for object to free path. Create node to push object toward that pose. \\
+Manipulation Planning & Search a path for the \textit{current\_edge}, detect blocking objects.\\
+Add Node to Drive\newline to Push Pose& Create node to drive toward push pose, add before action edge. \\
+Robot Close to\newline Push Pose & Check if the robot is overlapping with the best push position. \\
+Path to Target& Is there a path from robot to target node in the \ac{hgraph}, then set first edge to \textit{current\_edge} otherwise update subtask.\\
+First Action Planned&  Check if motion/manipulation planning was performed. \\
+Execute& Execute the \textit{current\_edge}, update \ac{hgraph} after completion, log failed hypothesis if a fault is detected. \\
+Subtask Succesfully\newline Completed& Log hypothesis metrics. \\
+Target Node Reached& Check if the target node is reached.\\
+\end{tabular}
+\caption{Eleborate information on actions taken by blocks in \cref{tikz:flowchart_hgraph}.}%
+\label{table:explainer_hgraph_figures_nodes}
+\end{table}
+
+When all tuning parameters are set, the \ac{hgraph} is initialized and a task is provided, there is only a single access point toward the \ac{hgraph}. A function \textit{respond(observation)} that provides the \ac{halgorithm} with sensor measurements of the environment with the argument \textit{observation}. The function \textit{respond($\cdot$)} returns control in put for the robot. In this theses, the sensor measurements are the configuration of objects in the environment. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor} that makes access to the exact configuration of every object possible.\bs
+
+
+\paragraph{The Blacklist}%
+Undesirable behavior is to generate an edge that fails, only to regenerate and fail again. This infinite behavior is prevented by the blacklist. When the \ac{halgorithm} connects two nodes with an action edge, the possible parameterizations (controller and system model) are filtered. Thus any parameterisation that is on the blacklist for this specific node (to which the action edge would point toward) cannot be created again for the lifetime of the \ac{hgraph}. An example where the blacklist can be seen in action is \cref{fig:failure_in_hgraph}.\bs
+
+\todo[inline]{math def for blacklist on the nodes}
+
+
+\subsection{The Search and the Execution loop}%
+\label{subsec:two_loops}
+In \cref{tikz:flowchart_hgraph} two main loops can be identified, see \Cref{fig:two_loops_identified}. These loops are the search loop, and the execution loop.\bs
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{figures/two_loops_identified}
+    \caption{The search (above) and execution (below) loop.}%
+    \label{fig:two_loops_identified}
+\end{figure}
+
+Whilst the \ac{halgorithm} resides in the search loop, hypotheses are formed. Forming a hypothesis generates nodes, edges, and progressing their status as described in \cref{tikz:status_identification_edge,tikz:status_action_edge}. In the execution loop \textit{an edge is being executed}, a phrase to describe that the controller residing in an edge is sending control input toward the robot. The \ac{halgorithm} operates synchronously, thus at any point in time, the \ac{halgorithm} resides in a single block within \cref{tikz:flowchart_hgraph}. The result is that the robots cannot operate whilst the \ac{halgorithm} resides in the search loop, and during execution, no hypothesis can be formed or updated. Assumption~\ref{assumption:closed_world} guarantees that the robot environment does not change causing existing hypotheses to be outdated.\bs

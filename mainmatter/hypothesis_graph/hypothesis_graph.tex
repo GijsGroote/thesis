@@ -1,69 +1,18 @@
 \section{Hypothesis Graph}%
 \label{sec:hgraph}
-The \ac{halgorithm} is responsible for generating action sequences, called hypothesis. An hypothesis consists of a list of successive edges in the \ac{hgraph} from start to target node in the \ac{hgraph}. When all subtasks in a task are completed, the \acf{halgorithm} halts and concludes the task successfully completed. A search in the joint configuration space is avoided because an edge only operates in a single mode of dynamics, such as driving or pushing. When an object cannot directly be steered toward its target location new nodes are generated which need to be completed before the original object can be steered toward its target location. An example of when an object cannot directly be steered toward its target state is because the path is blocked by another object. A hypothesis, consisting of a list of edges that represent actions in the robot environment might succeed or fail. \Cref{tikz:flowchart_hgraph} displays a flowchart explaining how new nodes and edges are generated in the \ac{hgraph}. Succesfully completed edges eventually result in completed subtasks, failed edges trigger replanning that will restart the search to a hypothesis.\bs
+The \ac{halgorithm} is responsible for generating action sequences, called hypothesis. An hypothesis consists of a list of successive edges in the \ac{hgraph} from start to target node in the \ac{hgraph}. When all subtasks in a task are completed, the \acf{halgorithm} halts and concludes the task successfully completed. A search in the joint configuration space is avoided because an edge only operates in a single mode of dynamics, such as driving or pushing. When an object cannot directly be steered toward its target location new nodes are generated which need to be completed before the original object can be steered toward its target location. An example of when an object cannot directly be steered toward its target state is because the path is blocked by another object. A hypothesis, consisting of a list of edges that represent actions in the robot environment might succeed or fail. \Cref{tikz:flowchart_hgraph} displays a flowchart explaining how new nodes and edges are generated in the \ac{hgraph}. Successfully completed edges eventually result in completed subtasks, failed edges trigger replanning that will restart the search to a hypothesis.\bs
 
-The \ac{halgorithm} with the \ac{hgraph} have a familiar structure compared to some recent literature~\cite{ellis_navigation_2022,wang_affordancebased_2020}. An important destinction is that the proposed method in this thesis aims to combine the 3 topics: learning object dynamics, solving \ac{NAMO} problems and nonprehensile pushing. Recent literature is able to only combine one or two topics of the three.\bs
+The \ac{halgorithm} with the \ac{hgraph} have a familiar structure compared to some recent literature~\cite{ellis_navigation_2022,wang_affordancebased_2020}. An important distinction is that the proposed method in this thesis aims to combine the 3 topics: learning object dynamics, solving \ac{NAMO} problems and nonprehensile pushing. Recent literature is able to only combine one or two topics of the three.\bs
 
-In the upcoming section the \ac{hgraph} is defined and discussed in \cref{subsec:hgraph_definition}. The \ac{halgorithm} is then discussed and in \cref{subsec:two_loops}, where an explination is provided on how the \ac{halgorithm} searches for a solution in the joint configuration space. The section is concluded with an extensive example.\bs
+In the upcoming section the \ac{hgraph} is defined and discussed in \cref{subsec:hgraph_definition}. The \ac{halgorithm} is then discussed and in \cref{subsec:halgorithm}, where an explanation is provided on how the \ac{halgorithm} searches for a solution in the joint configuration space. The section is concluded with an extensive example.\bs
 
 \input{mainmatter/hypothesis_graph/definition}
-\input{mainmatter/hypothesis_graph/connecting_nodes}
-\input{mainmatter/hypothesis_graph/two_loops}
+\input{mainmatter/hypothesis_graph/halgorithm}
+\input{mainmatter/hypothesis_graph/examples}
 
-\subsection{Example}%
-\label{subsec:hgraph_example}
-\begin{figure}[H]
-    \centering
+What by now hopefully became clear to the reader is that the \ac{hgraph} autonomously searches for hypotheses to solve the task, one subtask at a time. The \ac{hgraph} switches between the search and execution loop. Switching from the search loop toward the execution loop when a hypothesis is found, and switching back when a hypothesis is completed or an action failed to complete.\bs
 
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/example_hyp_graph/robot_box_and_ghost}
-    \caption{first caption}%
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/example_hyp_graph/1}
-    \caption{second captoin}%
-    \end{subfigure}
+The limited number of possible edges (every combination of a system identification method with a compatible control method) guarantees that the robot tries to connect 2 nodes, but concludes that it cannot reach a node if all possible edges have failed. Eventually running out of nodes to connect and conclude that a subtask cannot be completed.\bs
 
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/2}
-    \caption{fsdsoem text}%
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/3}
-    \caption{4th caption}%
-    \end{subfigure}
-
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/4}
-    \caption{fj5sldj}%
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/5}
-    \caption{6h captoin}%
-    \end{subfigure}
-
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/6}
-    \caption{777lala}%
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/example_hyp_graph/6}
-    \caption{888}%
-    \end{subfigure}
-
-    \caption{Example remake above Hgraph, white background and other stuff}%
-    \label{fig:blocked_path_example_environment}
-\end{figure}
-
+In the next section, the edges that are executed will be reviewed and stored in a knowledge base. The knowledge base will suggest edges when faced with similar nodes to connect.
+\

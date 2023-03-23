@@ -4,11 +4,11 @@ Before defining the \ac{hgraph}, some definitions are defined on which the \ac{h
 
 Formally a \textbf{configuration}, $c_{id}(k)$ is a tuple of $\left\langle pos_x(k), pos_y(k), pos_\theta(k)\right\rangle$\\ where $pos_x, pos_y \in \mathbb{R}, \quad  pos_\theta \in [0, 2\pi)$\bs
 
-An object holds the information about an object.\\Formally, a \textbf{object},  $obj_{id}(k) = \left\langle s(k), shape \right\rangle $\bs
+An object holds the information about an object.\\Formally, a \textbf{object},  $\mathit{obj}_{id}(k) = \left\langle s(k), \mathit{shape} \right\rangle $\bs
 
-where $shape$ is linked to a 3D representation of the object.\bs
+where $\mathit{shape}$ is linked to a 3D representation of the object.\bs
 
-An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{obj}_{id} =\left\langle \textrm{status}, obj(k)\right\rangle $.\bs
+An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{\mathit{obj}}_{id} =\left\langle \textrm{status}, \mathit{obj}(k)\right\rangle $.\bs
 
 An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of configuration of an object. Edges are split into 2 categories, system identification edges that have as goal to collect \ac{IO} data and generate a system model, and action edges that steer a system toward a target configuration. The different goals make action and system identification edges very different, which is why the destiction was make. At the same time the edges both represent a change in the environent as a result of the robot driving, pushing or collecting \ac{IO} data. The edges are formally defined as:\bs
 
@@ -23,7 +23,7 @@ With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the
 Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
 Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \right\rangle $
-\\comprising $V = \{V^{obj}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{obj} \}, i \neq j\}$.\bs
+\\comprising $V = \{V^{\mathit{obj}}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{\mathit{obj}} \}, i \neq j\}$.\bs
 
 Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
 
