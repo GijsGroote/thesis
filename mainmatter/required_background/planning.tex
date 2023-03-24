@@ -136,9 +136,9 @@ Controllers discussed in \cref{sec:control_methods} can track a path from start 
 Generally, the configuration space motion planners plan consists of 2 subspaces, free and obstacle space. The configuration space in this thesis consists of 4 subspaces, namely free, obstacle, unknown and movable space. To solve motion planning problems for such a configuration space a dedicated motion planning algorithm has been developed that extends the existing algorithm extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}. The motion planner consists of.
 \begin{center}
 \begin{tabular}[t]{l p{10cm}}
-$V$:& A set of nodes\\
-$E$:& A set of edges\\
-$P$:& A set of paths\\
+\gls{nodesMP}:& A set of nodes\\
+\gls{edgesMP}:& A set of edges\\
+\gls{pathsMP}:& A set of paths\\
 \end{tabular}
 \end{center}
 
@@ -158,23 +158,26 @@ Now pseudocode of the proposed algorithm is provided in \cref{pseudocode:propose
 \begin{tabular}[t]{l p{10cm}}
 $x$:& A node representing a point in configuration space\\
 $x_{init}$:& Creates a start and target node\\ 
-$NotReachStop$:& True if the stopping criteria is not reached\\ 
-$Sample_{random}$:& Creates a random sample in free-, movable- or unknown space\\
-$Nearest(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
-$NearestSet(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
-$Project(x, x')$:& Project $x$ toward $x'$\\
-$CollisionCheck(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
-$ObjectCost(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
-$Distance(x, x')$:& Returns the distance between sample $x$ and $x'$\\
-$CostToInit(x)$:& Find the total cost from $x$ to the initial node\\
-$ReachabilityCheck(x, x')$:& Return true if a system model with initial state $x$ is able to reach state $x'$ for a range of allowed input, otherwise, return false.\\
-$InSameTree(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
+\textit{NotReachStop}:& True if the stopping criteria is not reached\\ 
+$\mathit{Sample_{random}}$:& Creates a random sample in free-, movable- or unknown space\\
+$\mathit{Nearest}(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
+$\mathit{NearestSet}(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
+$\mathit{Project}(x, x')$:& Project $x$ toward $x'$\\
+$\mathit{CollisionCheck}(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
+$\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
+$\mathit{Distance}(x, x')$:& Returns the distance between sample $x$ and $x'$\\
+$\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
+  $\mathit{ReachabilityCheck}(x, x')$:& Return true if a system model with initial state $x$ is able to reach state $x'$ for a range of allowed input, otherwise, return false.\\
+  $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
 \end{tabular}
 \caption{Functions used by the \cref{pseudocode:proposed_rrt_star}}
 \label{table:functions_for_proposed_rrt_star}
 \end{table}
 
 Notice that in \cref{pseudocode:proposed_rrt_star} the coloured sections correspond to the surrounding coloured border in the subfigures of \cref{fig:motion_planner_adding_one_sample}.\bs
+
+
+v and \gls{nodeMP}
 
 \newpage
 \begin{algorithm}[H]
@@ -183,68 +186,67 @@ Notice that in \cref{pseudocode:proposed_rrt_star} the coloured sections corresp
 \begin{algorithmic}[1]
 
 \hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
-\State $V \leftarrow x_{init}$
-\While{$NotReachStop$} 
+\State $\gls{nodesMP} \leftarrow x_{init}$
+\While{\textit{NotReachStop}} 
 
 \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-    \State $Cost_{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
-    \State $x_{rand} \leftarrow Sample_{random}$
-    \State $x_{nearest} \leftarrow Nearest(x_{rand}, V)$
-    \State $x_{temp} \leftarrow Project(x_{rand}, x_{nearest})$
+    \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
+    \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
+    \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
+    \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
 
-    \If{$CollisionCheck(x_{temp})$}
-        \State $x_{new} = x_{temp}$
-        \Else
-        \State $Continue$
+    \If{$\mathit{CollisionCheck(\gls{nodeMP}_{temp})}$}
+    \State $\gls{nodeMP}_\mathit{new} = \gls{nodeMP}_\mathit{temp}$
+    \Else
+        \State Continue
     \EndIf
 }}
 
 \hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
-    \State $X_{near} \leftarrow NearestSet(x_{new}, V)$ \algorithmiccomment{Find and connect new node to parent node}
-    \For{$x_{near} \in X_{near}$}
-    \State $Cost_{temp} \leftarrow CostFromInit(x_{near}) + Distance(x_{near}, x_{new}) + ObjectCost(x_{near}, x_{new})$
-    \If{$Cost_{temp}  < Cost_{min}$}
-            \If{$ReachabilityCheck(x_{new}, x_{near})$}
-            \State $Cost_{min} \leftarrow x_{temp}$
-            \State $x_{minCost} \leftarrow x_{near}$
+    \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$ \algorithmiccomment{Find and connect new node to parent node}
+    \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
+    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new}) + ObjectCost(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
+    \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
+    \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
+    \State $\mathit{Cost_{min}} \leftarrow \gls{nodeMP}_\mathit{temp}$
+    \State $\gls{nodeMP}_\mathit{minCost} \leftarrow \gls{nodeMP}_\mathit{near}$
             \EndIf
         \EndIf
     \EndFor
-    \If{$Cost_{min} == \infty$}
-        \State $Continue$
+    \If{$\mathit{Cost_{min}} == \infty$}
+        \State Continue
     \Else
-        \State $V.add(x_{new})$
-        \State $E.add(x_{minCost}, x_{new})$
+    \State $\gls{nodesMP}.add(\gls{nodeMP}_\mathit{new})$
+    \State $E.\mathit{add}(\gls{nodeMP}_\mathit{minCost}, \gls{nodeMP}_\mathit{new})$
     \EndIf
 }}
 
 \hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
-    \State $Cost_{path} \leftarrow +\infty$ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
-    \For{$x_{near} \in X_{near}$} 
-      \If{$InSameTree(x_{near}, x_{new})$} 
-        \State $Cost_{temp} \leftarrow CostFromInit(x_{new}) + distance(x_{new}, x_{near}) + ObjectCost(x_{new}, x_{near})$
-        \If{$Cost_{temp} < CostFromInit(x_{near})$}
-           \If{$ReachabilityCheck(x_{new}, x_{near})$}
-              \State $E.rewire(x_{near}, x_{new})$
+    \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
+    \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$} 
+    \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$} 
+    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
+    \If{$\mathit{Cost_{temp} < CostFromInit(\gls{nodeMP}_{near})}$}
+    \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
+    \State $\mathit{E.rewire(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
            \EndIf
         \EndIf
       \Else \algorithmiccomment{Add lowest cost path to the list of paths}
-          \State $Cost_{temp} \leftarrow CostFromInit(x_{new}) + distance(x_{new}, x_{near}) $ \newline\hspace*{10em} $+ CostFromInit(x_{near}) + ObjectCost(x_{new}, x_{near})$
-          \If{$Cost_{temp}  < Cost_{path}$}
-              \If{$ReachabilityCheck(x_{new}, x_{near})$}
-                  \State $Cost_{pathMin} \leftarrow x_{temp}$
-                  \State $x_{pathMin} \leftarrow x_{near}$
+      \State $\mathit{Cost_{temp} \leftarrow CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} $ \newline\hspace*{10em} $+ \mathit{CostFromInit(\gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
+          \If{$\mathit{Cost_{temp}  < Cost_{path}}$}
+          \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
+          \State $\mathit{Cost_{pathMin} \leftarrow \gls{nodeMP}_{temp}}$
+          \State $\mathit{\gls{nodeMP}_{pathMin} \leftarrow \gls{nodeMP}_{near}}$
               \EndIf
           \EndIf
       \EndIf
       \If{$Cost_{pathMin} == \infty$}
-          \State $Continue$
+          \State Continue
       \Else
-          \State $P.addPath(x_{new}, x_{pathMin}, Cost_{pathMin})$
+      \State $\mathit{P.addPath(\gls{nodeMP}_{new}, \gls{nodeMP}_{pathMin}, Cost_{pathMin})}$
       \EndIf
     \EndFor
 }}
-
 \EndWhile
 }}
 \end{algorithmic}

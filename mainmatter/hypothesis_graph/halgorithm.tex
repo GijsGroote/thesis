@@ -2,11 +2,91 @@
 \label{subsec:halgorithm}
 This section will provide a mathematical description of the proposed \ac{halgorithm}, the search and execution loop are discussed. The section will finalise with 4 examples. First, let's look into the math of the \ac{halgorithm}.\bs
 
-\todo[inline]{a mathematically solid describtion of your backward search algorithm}
+The \ac{halgorithm} relies on a backward search technique. The backward search technique can be described as: \textit{start the search at a goal state and work backward until the initial state is encountered~\cite{lavalle_planning_2006}.} A motivation for a backward search over a forward search is that, it might be the case that the branching factor is large when starting from the initial state. In such cases, it might be more efficient to use a backward search.
+
+\begin{table}[H]
+\centering
+\begin{tabular}[t]{l p{10cm}}
+\textit{SubTaskNotFinished(\gls{subtask})}:& Return False if the subtask \gls{subtask} is completed or it is concluded to be unfeasible \\
+\textit{IsConnected($\gls{node}_1, \gls{node}_2$)}:& Return True if there exist a path in the \ac{hgraph} from node $\gls{node}_1$  to node $\gls{node}_2$ through a number of non-failed edges\\
+\textit{ReadyForExecution(\gls{edge})}: & Return True if the edge \gls{edge} is ready to execute\\
+\textit{TargetNotReached(\gls{edge})}: & Return True edge \gls{edge} has not reached it target configuration\\
+\textit{FaultDetected(\gls{edge})}: & Return True if a fault has been detected during execution of edge \gls{edge}\\
+
+\textit{HandleFault(\gls{edge})}: & Update edge \gls{edge} status to FAILED and remove edge from hypothesis \\
+\textit{SteerTowardTarget(\gls{observation})}: & Update controller with observation \gls{observation} and compute response that steers the system to target configuration\\
+\textit{ReadyForExecution(\gls{edge})}: & Check if edge \gls{edge} has the PATH PLANNED status and contains all components to control the system \\
+\textit{incrementEdge}: & Mark current edge as completed, set next edge in \gls{hypothesis} as current edge \\
+\textit{MakeReady(\gls{edge})}: & Perform actions to make the edge \gls{edge} ready for execution \\
+\textit{goBackward(\gls{node})}: & Find the source node that point toward \gls{node} through a number of non-failed edges\\
+\textit{findCorrespondingNode(\gls{node})}: & Find the node containing the same object as \gls{node} \\
+\textit{connectWithEdge($\gls{edge}_1, \gls{edge}_2$)}: & Randomly generate edge between nodes $\gls{node}_1$ and $\gls{node}_2$ or use \ac{kgraph} to suggest an edge\\
+\end{tabular}
+\caption{Functions used by the \cref{pseudocode:proposed_rrt_star}}
+\label{table:functions_for_halgorithm}
+\end{table}
+
+\begin{algorithm}[H]
+  \caption{Pseudocode for the proposed hypothesis algorithm.}\label{pseudocode:halgorithm}
+  \begin{algorithmic}[1]
+
+    \hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
+        \For{$\gls{subtask} \in \gls{task}$} 
+
+        \hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
+            \While{\textit{SubTaskNotFinished(\gls{subtask})}}\algorithmiccomment{Search Loop}
+            \If{\textit{\gls{hgraph}.isConnected(\gls{subtask}.start, \gls{subtask}.target)}}
+            \If{\textit{\gls{hypothesis}.currentEdge.readyForExecution}}
+
+            \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
+                \While{\textit{TargetNotReached(\gls{hypothesis}.currentEdge)}} \algorithmiccomment{Execution Loop}
+                \If{\textit{FaultDetected(\gls{hypothesis}.currentEdge)}}
+                \State \textit{HandleFault(\gls{hypothesis}.currentEdge)}
+                \State break
+                \EndIf
+                \State \textit{\gls{hypothesis}.currentEdge.steerTowardTarget(\gls{observation})}
+                \If{\textit{TargetReached(\gls{hypothesis}.currentEdge)}}
+                \If{\textit{readyForExecution(\gls{hypothesis}.currentEdge)}}
+                  \State \textit{\gls{hypothesis}.incrementEdge}
+                \Else
+                  \State break
+                \EndIf
+                \EndIf
+                \EndWhile
+            }}
+            \Else
+            \State \textit{makeReady(\gls{hypothesis}.currentEdge)}
+            \EndIf
+            \Else
+            \State $\mathit{\gls{node}_{localtarget}} \leftarrow \gls{hgraph}.\mathit{goBackward(\gls{node}.target)}$
+            \State $\mathit{\gls{node}_{localstart}} \leftarrow \gls{hgraph}.\mathit{findCorrespondingNode(\gls{node}_{localtarget})}$ 
+            \State $\mathit{G.connectWithEdge}(\gls{node}_\mathit{localstart}, \gls{node}_\mathit{localtarget})$
+            \EndIf
+            \EndWhile
+        }}
+        \EndFor
+    }}
+  \end{algorithmic}
+\end{algorithm}
+
+\gls{hgraph}
+\gls{kgraph}
+\gls{task}
+\gls{subtask}
+\gls{objClass}
+\gls{edge}
+\gls{node}
+\gls{nodeStatus}
+\gls{edgeStatus}
+\gls{hypothesis}
+\gls{alpha}
+
+
+
 
 During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of succesive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.
 
-A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an eleborate description for every block in the flowchart (see \cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occures. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straigtforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstacted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware. 
+A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an eleborate description for every block in the flowchart (see \cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occures. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straigtforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstacted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware.
 
 \input{mainmatter/hypothesis_graph/hgraph_tikz_figure}
 

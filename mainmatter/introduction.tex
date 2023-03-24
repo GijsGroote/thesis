@@ -95,7 +95,7 @@ Answering the research subquestions provides a solid base to answer the main res
 \label{sec:problem_description}
 To answer the research questions, tests will be performed in a robot environment. A simple environment is desired because that will simplify testing, yet the robot environment should represent many real-world environments in which robots operate, thus a 3-dimensional environment is selected. The environment consists of a flat ground plane since many mobile robots operate in a workspace with a flat floor, such as a supermarket, warehouse or distribution centre. The robots to test should be flat robots that have a low center of gravity, which lowers the chance of tipping over. A 3-dimensional environment is selected. Mostly the environment with a flat floor and a flat robot can be treated as a 2-dimensional problem because the robot and objects can only change position over $x$ and $y$ axis ($xy$ plane parallel to the ground plane) and rotate around the $z$ axis (perpendicular to the ground plane).\bs
 
-Let's start with defining the environment.\\Let the tuple $\left\langle \gls{origin}, \gls{groundPlane}, \gls{Ob}, \gls{E} \right\rangle$ fully define a robot environment where:\bs
+Let's start with defining the environment.\\Let the tuple $\left\langle \gls{origin}, \gls{groundPlane}, \gls{Ob}, \gls{motionEquations} \right\rangle$ fully define a robot environment where:\bs
 
 \par\smallskip\noindent
 \centerline{\begin{minipage}{0.8\textwidth}
@@ -103,7 +103,7 @@ Let's start with defining the environment.\\Let the tuple $\left\langle \gls{ori
   \item[\gls{origin}] Static point in the environment with a $x$-, $y$- and $z$-axis. Any point in the environment has a linear and an angular position and velocity with respect to the origin \vspace{0.5\baselineskip}
  \item[\gls{groundPlane}] A flat plane parallel with the Origin's $x$- and $y$- axis. Objects cannot pass through the ground plane and meet sliding friction when sliding over the ground plane. \vspace{0.5\baselineskip}
  \item[\gls{Ob}] A set of objects, $\gls{Ob} = (ob_1, ob_2, ob_3, \dots, ob_i)$ with $i\geq1$, an object is a 3-dimensional body with shape and uniformly distributed mass. The robot itself is considered an object, an environment thus contains one or more objects. Examples of objects are given in \cref{fig:example_objects}. \vspace{0.5\baselineskip}
-  \item[\gls{E}] A set of motion equations describing the behaviour of objects such as gravity, interaction with the ground plane or interaction with other objects. In recent literature, the motion equations are also named the true dynamics. \vspace{0.5\baselineskip}
+  \item[\gls{motionEquations}] A set of motion equations describing the behaviour of objects such as gravity, interaction with the ground plane or interaction with other objects. In recent literature, the motion equations are also named the true dynamics. \vspace{0.5\baselineskip}
 \end{enumerate}
 \end{minipage}}
 \par\smallskip

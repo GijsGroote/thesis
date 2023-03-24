@@ -30,6 +30,10 @@
 \definecolor{my_orange}{RGB}{249, 165, 44} % deepSaffron #FF9933
 \definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
 
+
+\definecolor{ukraine_yellow}{RGB}{254, 241, 0}
+\definecolor{ukraine_blue}{RGB}{1, 124, 194}
+
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
@@ -299,3 +303,5 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 % column type to center horizontally and provide column width
 \usepackage{array}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}
