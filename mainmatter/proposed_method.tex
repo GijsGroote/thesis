@@ -70,30 +70,30 @@ As the above figure shows, the thesis focus could be augmented with an ontology 
 
 This chapter has terminology that is conveniently grouped in the following table.
 
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \begin{tabular}[t]{l p{10cm}}
-Task:   & Tuple of objects and target configurations.\\
-        & $\text{task} = \left\langle Obj_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
-Object Class & Classification assigned to an object.\\
-             & $\text{object class} = (\textrm{Unknown}, \textrm{Obstacle}, \textrm{Movable})$\\
+Task:   &  Tuple of objects and target configurations.\\
+        & $\text{task} = \gls{task} = \left\langle \gls{objSet}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
 Subtask:& A single object, and a single target configuration.\\
-        & $\text{subtask} = \left\langle \mathit{obj}_{\mathit{subtask}}, c_{\mathit{target}} \right\rangle$\\
+        & $\text{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle$\\
+Object Class & Classification assigned to an object.\\
+             & $\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}$\\
 Node Status:& Status of a node indicates if a node is initialised, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\
-            & \[\textrm{node status} = \mathit{Initialised} \vee \mathit{Completed} \vee \mathit{Failed} \]\\
+            & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\
 Node:   & A node in the \acs{hgraph}, represents an object in a configuration with reachability indicated with a node status.\\
-        & $\textrm{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
+        & $\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
 Edge Status:& Status of a edge, elaborate information on the statuses can be found in \cref{tikz:status_action_edge}.\\
-            & \[\textrm{edge status} = \mathit{Initialised} \vee \mathit{Path Exists} \vee \mathit{System Model} \vee \] \[\mathit{Path Planned} \vee \mathit{Executing} \vee \mathit{Completed} \vee \mathit{Failed}\]\\
+            & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model} \vee \] \[\mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\
 Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\
-        & $ \textrm{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\
+        & $ \textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\
 Hypothesis:& Sequence of successive edges in the \ac{hgraph}, an idea to put a object at it's target configuration. If executed and successfully completed, a subtask is completed.\\
-           & $ \textrm{hypothesis} = \left\langle \textrm{edge}_{1}, \textrm{edge}_{2}, \textrm{edge}_{3}, \dots \textrm{edge}_{m} \right\rangle $, \hspace{0.5cm} $m>0$\\
+           & $ \textrm{hypothesis} = \gls{hypothesis} = \left[\ \gls{edge}_{1}, \gls{edge}_{2}, \gls{edge}_{3}, \dots \gls{edge}_{m} \right]\ $, \hspace{0.5cm} $m>0$\\
 Hypothesis Algorithm:& Graph based algorithm that searches for hypothesis in the \ac{hgraph} to complete subtasks eventually completing a task.\\
 Hypothesis Graph:& Collection of nodes and edges. For every subtask a start and target node exist in the \ac{hgraph}, the \ac{halgorithm} searches for a path through nodes and edges to connect start to target node.\\
-        & $ \textrm{\ac{hgraph}} = \left\langle V, E \right\rangle $\\
+        & $ \textrm{\ac{hgraph}} = \gls{hgraph} = \left\langle \gls{nodesG}, \gls{edgesG} \right\rangle $\\
 Knowledge Graph:& Collection of nodes and edges.  The \ac{kgraph} acts as a knowledge base and can be queried for an action suggestion.\\
-        & $ \textrm{KGraph} = \left\langle V, E \right\rangle $\\
+        & $ \textrm{KGraph} = \gls{kgraph} = \left\langle \gls{nodesG}, \gls{edgesG} \right\rangle $\\
 \end{tabular}
 \caption{Terminology of terms used}
 \label{table:proposed_method_terminology}

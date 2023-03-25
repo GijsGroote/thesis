@@ -2,28 +2,28 @@
 \label{subsec:hgraph_definition}%
 Before defining the \ac{hgraph}, some definitions are defined on which the \ac{hgraph} depends. First, recall the \textbf{configuration} defined in the \cref{sec:problem_description}.\bs
 
-Formally a \textbf{configuration}, $c_{id}(k)$ is a tuple of $\left\langle pos_x(k), pos_y(k), pos_\theta(k)\right\rangle$\\ where $pos_x, pos_y \in \mathbb{R}, \quad  pos_\theta \in [0, 2\pi)$\bs
+Formally a \textbf{configuration}, $\gls{c}_{id}(k)$ is a tuple of $\left\langle \gls{x}(\gls{k}), \gls{y}(\gls{k}), \gls{theta}(\gls{k})\right\rangle$\\ where $\gls{x}, \gls{y} \in \mathbb{R}, \quad  \gls{theta} \in [0, 2\pi)$\bs
 
-An object holds the information about an object.\\Formally, a \textbf{object},  $\mathit{obj}_{id}(k) = \left\langle s(k), \mathit{shape} \right\rangle $\bs
+An object holds the information about an objects configuration and shape of the object.\\Formally, a \textbf{object},  $\gls{obj}_{id}(\gls{k}) = \left\langle \gls{c}(k), \mathit{shape} \right\rangle $\bs
 
-where $\mathit{shape}$ is linked to a 3D representation of the object.\bs
+where $\mathit{shape}$ is linked to a 3D representation of the object, \textit{id} is an identifier for the object.\bs
 
 An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{\mathit{obj}}_{id} =\left\langle \textrm{status}, \mathit{obj}(k)\right\rangle $.\bs
 
 An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of configuration of an object. Edges are split into 2 categories, system identification edges that have as goal to collect \ac{IO} data and generate a system model, and action edges that steer a system toward a target configuration. The different goals make action and system identification edges very different, which is why the destiction was make. At the same time the edges both represent a change in the environent as a result of the robot driving, pushing or collecting \ac{IO} data. The edges are formally defined as:\bs
 
-A \textbf{identification edge}, \[\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{Identification Method}, \textrm{controller}, \textrm{input}\right\rangle\]\bs
+A \textbf{identification edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{Identification Method}, \textrm{controller}, \textrm{input}\right\rangle\]\bs
 
 With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the \ac{hgraph} where the edge start from and point towards respectively, identification method indicates the used method that converts \ac{IO} data to a system model, the controller contains the control method used for driving the robot during the collection of \ac{IO} data and input contains multiple sequences of input to send toward the system. For an identification edge it is important that it is compatible with the controller residing in the corresponding action edge.\bs
 
-A \textbf{action edge}, \[\tau_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\bs
+A \textbf{action edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\bs
 
 With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the \ac{hgraph} where the edge start from and point towards respectively, verb an English verb describing the action the edge represents (driving, pushing), the controller contains the control method used for driving the robot, the dynamic model is the dynamic model used by the control method and the path a list of configurations indicating the path connecting a start- to target node.\bs
 
 Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
-Formally, a \textbf{hypothesis graph}, $G^{hypothesis} = \left\langle V, E \right\rangle $
-\\comprising $V = \{V^{\mathit{obj}}_{i}\}$, \quad $E \in \{\tau_{(i,j)}| V_i, V_j \in \{V^{\mathit{obj}} \}, i \neq j\}$.\bs
+Formally, a \textbf{hypothesis graph}, $\gls{hgraph} = \left\langle \gls{nodesG}, \gls{edgesG} \right\rangle $
+\\comprising $\gls{nodesG} = \{\gls{nodesG}^{\mathit{obj}}_{i}\}$, \quad $\gls{edgesG} \in \{\gls{edge}_{(i,j)}| \gls{edgesG}_i, \gls{edgesG}_j \in \{\gls{nodesG}^{\mathit{obj}} \}, i \neq j\}$.\bs
 
 Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
 
@@ -33,16 +33,16 @@ System identification and tracking a path are so very different, the edges are s
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance = 2cm, auto, initial]
-    \node [state, fill=my_dark_blue] (init_test_num) {IT\#t};
-    \node [state, fill=my_light_blue, below of=init_test_num] (completed_test_num) {CT\#t};
+    \node [state, fill=my_dark_blue] (init_test_num) {PrIS\#t};
+    \node [state, fill=my_light_blue, below of=init_test_num] (completed_test_num) {PoIS\#t};
     \node [state, accepting, fill=my_green, below of=completed_test_num] (completed) {CO};
     \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
 
  % arrows
-    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{Select compatible\\sys. iden. method}} (init_test_num.west);
-    \draw[-stealth] (init_test_num) edge[bend right] node[left]{\shortstack{Go to next start\\push configuration}} (completed_test_num)
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{Select compatible\\sys. iden. method\\Go to first $\gls{c}_{\mathit{start}}$}} (init_test_num.west);
+    \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
 (completed_test_num) edge node[left]{Create system model} (completed);
-    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{Collect \ac{IO} data} (init_test_num);
+    \draw [-stealth] (completed_test_num) edge[bend right] node[right]{\shortstack{Go to next\\start configuration}} (init_test_num);
     \draw [-stealth] (completed_test_num) to node[below]{\shortstack[]{Unable to reach next\\start configuration}}  (failed.west);
     % \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach starting robot configuration}  (failed.north);
 
@@ -50,6 +50,20 @@ System identification and tracking a path are so very different, the edges are s
 \caption{\acs{FSM} displaying the status of an identification edge}%
 \label{tikz:status_identification_edge}
 \end{figure}
+
+
+\todo[inline]{right align this a bit nicer please}
+\begin{flushright}
+\centerline{\begin{minipage}{.6\textwidth}
+\begin{enumerate}
+    \item[PRE INPUT SEQUENCE number t (PrIS\#t)] Go to target configuration to input the input sequence on the system.
+    \item[POST INPUT SEQUENCE number t (PoIS\#t)] Collect the output sequence.
+    \item[COMPLETED (CO)] The edge has driven the system toward its target configuration and its performance has been calculated.
+    \item[FAILED (FAIL)] An error occurred, yielding the edge unusable.
+\end{enumerate}
+\end{minipage}}
+\par\smallskip
+\end{flushright}
 
 An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behaviour of the robot, and system models that describe the push behaviour of the robot and an object. Data collection for a driving model can be collected by sending input to the robot assuming that the robot has enough free space around it such that is does not collide with an object during data collection. To collect \ac{IO} data for a pushing model the robot first drives to a starting configuration next to the object. After the first input sequence is over, the robot drives to the next start position next to the object. After several input sequences the robot has gathered enough \ac{IO} data to generate a system model for pushing.\bs
 
@@ -94,7 +108,7 @@ An action edge, contains a drive or push action. From the point of initialisatio
     \item[SYSTEM MODEL (SM)] A dynamics system model is provided to the controller residing in the edge.
     \item[PATH PLANNED (PP)] Resulting from a sample-based planner, a path from start to target configuration is provided.
     \item[EXECUTING (EX)] The edge is currently receiving observations from the robot environment and sends back robot input.
-    \item[COMPLETED (COMPL)] The edge has driven the system toward its target configuration and its performance has been calculated.
+    \item[COMPLETED (CO)] The edge has driven the system toward its target configuration and its performance has been calculated.
     \item[FAILED (FAIL)] An error occurred, yielding the edge unusable.
 \end{enumerate}
 \end{minipage}}

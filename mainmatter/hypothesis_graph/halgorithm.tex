@@ -1,6 +1,6 @@
 \subsection{\acl{halgorithm}}%
 \label{subsec:halgorithm}
-This section will provide a mathematical description of the proposed \ac{halgorithm}, the search and execution loop are discussed. The section will finalise with 4 examples. First, let's look into the math of the \ac{halgorithm}.\bs
+This section present and discuss the newly proposed \ac{halgorithm}, this section will provide a mathematical description of the proposed \ac{halgorithm} in the form of pseudo code. This section will discuss the search and execution loop that reside in the \ac{halgorithm} and this section will finalise with 4 examples. First, let's look into the \ac{halgorithm} pseudocode.\bs
 
 The \ac{halgorithm} relies on a backward search technique. The backward search technique can be described as: \textit{start the search at a goal state and work backward until the initial state is encountered~\cite{lavalle_planning_2006}.} A motivation for a backward search over a forward search is that, it might be the case that the branching factor is large when starting from the initial state. In such cases, it might be more efficient to use a backward search.
 
@@ -69,21 +69,6 @@ The \ac{halgorithm} relies on a backward search technique. The backward search t
   \end{algorithmic}
 \end{algorithm}
 
-\gls{hgraph}
-\gls{kgraph}
-\gls{task}
-\gls{subtask}
-\gls{objClass}
-\gls{edge}
-\gls{node}
-\gls{nodeStatus}
-\gls{edgeStatus}
-\gls{hypothesis}
-\gls{alpha}
-
-
-
-
 During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of succesive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.
 
 A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an eleborate description for every block in the flowchart (see \cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occures. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straigtforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstacted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware.
@@ -131,10 +116,7 @@ When all tuning parameters are set, the \ac{hgraph} is initialized and a task is
 
 
 \paragraph{The Blacklist}%
-Undesirable behavior is to generate an edge that fails, only to regenerate and fail again. This infinite behavior is prevented by the blacklist. When the \ac{halgorithm} connects two nodes with an action edge, the possible parameterizations (controller and system model) are filtered. Thus any parameterisation that is on the blacklist for this specific node (to which the action edge would point toward) cannot be created again for the lifetime of the \ac{hgraph}. An example where the blacklist can be seen in action is \cref{fig:failure_in_hgraph}.\bs
-
-\todo[inline]{math def for blacklist on the nodes}
-
+An failed edge is labeled as failed, then is could be regenerated again. Entering an infinite loop of being generated, failing, being labeled as failed and being generated again. Such behavior is undesirable and is prevented by the blacklist. The blacklist prevents certain edge parameterisations to be generated to reach a specific node in the \ac{hgraph}. When two nodes are connected with an action edge, the possible parameterizations are filtered. Thus any parameterisation that is on the blacklist for this specific node (to which the action edge would point toward) cannot be created again for the lifetime of the \ac{hgraph}. An example where the blacklist can be seen in action is \cref{fig:failure_in_hgraph}.\bs
 
 \subsection{The Search and the Execution loop}%
 \label{subsec:two_loops}
