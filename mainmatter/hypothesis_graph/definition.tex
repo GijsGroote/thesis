@@ -8,7 +8,7 @@ An object holds the information about an objects configuration and shape of the 
 
 where $\mathit{shape}$ is linked to a 3D representation of the object, \textit{id} is an identifier for the object.\bs
 
-An object node represents an object in a state.\\Formally, a \textbf{objectNode}, $V^{\mathit{obj}}_{id} =\left\langle \textrm{status}, \mathit{obj}(k)\right\rangle $.\bs
+An object node represents an object in a configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \textrm{status}, \gls{obj}(k)\right\rangle $.\bs
 
 An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of configuration of an object. Edges are split into 2 categories, system identification edges that have as goal to collect \ac{IO} data and generate a system model, and action edges that steer a system toward a target configuration. The different goals make action and system identification edges very different, which is why the destiction was make. At the same time the edges both represent a change in the environent as a result of the robot driving, pushing or collecting \ac{IO} data. The edges are formally defined as:\bs
 
@@ -22,8 +22,8 @@ With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the
 
 Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
-Formally, a \textbf{hypothesis graph}, $\gls{hgraph} = \left\langle \gls{nodesG}, \gls{edgesG} \right\rangle $
-\\comprising $\gls{nodesG} = \{\gls{nodesG}^{\mathit{obj}}_{i}\}$, \quad $\gls{edgesG} \in \{\gls{edge}_{(i,j)}| \gls{edgesG}_i, \gls{edgesG}_j \in \{\gls{nodesG}^{\mathit{obj}} \}, i \neq j\}$.\bs
+Formally, a \textbf{hypothesis graph}, $\gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $
+\\comprising $\gls{nodesH} = \{\gls{nodesH}^{\gls{obj}}_{i}\}$, \quad $\gls{edgesH} \in \{\gls{edge}_{(i,j)}| \gls{edgesH}_i, \gls{edgesH}_j \in \{\gls{nodesH}^{\gls{obj}} \}, i \neq j\}$.\bs
 
 Most \ac{hgraph} components have now been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
 

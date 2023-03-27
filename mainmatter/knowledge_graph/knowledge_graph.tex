@@ -1,22 +1,15 @@
-
 \section{Knowledge Graph}%
 \label{sec:kgraph}
+The \ac{hgraph} discussed in previous section has a lifetime that spans over a single task, learned system models are not stored for \ac{hgraph} that are created for future tasks. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor, a metric that combines multiple metrics such as prediction error, tracking error and the success-fail ratio of a edge parameterisation (controller and system model). 
 
-\gls{hgraph}
-\gls{kgraph}
-\gls{task}
-\gls{subtask}
-\gls{objectClass}
-\gls{edge}
-\gls{node}
-\gls{nodeStatus}
-\gls{edgeStatus}
-\gls{hypothesis}
-\gls{alpha}
+\todo[inline]{explainer of the name \ac{kgraph}}
 
-
-
-\todo[inline]{this should get a intro, what does that kgraph do}
 \input{mainmatter/knowledge_graph/definition}
+\input{mainmatter/knowledge_graph/example}
 \input{mainmatter/knowledge_graph/metrics}
+
+
+
+\todo[inline]{conclusion}
+
 
