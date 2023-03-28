@@ -13,9 +13,14 @@ The simulation environment provides many different robots, 2 simple robots are s
 \label{sec:proposed_method_metrics}
 The results are measured in method metrics, not to be confused with the monitoring metrics in \cref{sec:monitoring_metrics} or the edge metrics in \cref{subsec:edge_metrics}. The results are interseting, but most interesting is the progression of the method metrics over time. As will be shown, the effect of learning can be measured by investigating tracking the method metrics over time. Furthermore, the method metrics will be used to compare the proposed method to relative state-of-the-art papers. First the method metrics are presented in~\cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
 
-\begin{table}[htb!]
+
+
+\noindent
+\begin{table}[H]
 \centering
-\begin{tabular}[t]{p{4cm} p{10cm}}
+\begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+   >{\raggedright\arraybackslash}p{0.65\textwidth}}
 Total Average\newline \acl{PE} & The total average \ac{PE} is created by averaging over every hypothesis' average \ac{PE} in a \ac{hgraph}. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
 Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
 Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
@@ -26,53 +31,95 @@ task completion time =\newline runtime + planning time& If equal tasks are given
 \caption{Proposed method metrics used to compare the proposed method with the state-of-the-art methods.}\label{table:proposed_method_metrics}
 \end{table}
 
-\newpage
 \section{Benchmark Tests}%
 \label{sec:benchmark_tests}
-Three benchmark test are now presented, starting with the blockade task. A large part of the proposed method is system identification, for testing however no system identification is performed. Instead a number of hardcoded system models are used, the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \cref{subsec:edge_metrics}. Now these hardcoded system models are shortly discussed.\bs
+Three benchmark test are now presented, starting with the blockade task. A large part of the proposed method is system identification, for testing however no system identification is performed. Instead a number of hard coded system models are used, the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \cref{subsec:edge_metrics}. The hard coded system models are not opting for modeling the drive or push model as accurate as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterisation is unable so provide closed-loop stable control, the edge will fail because an fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand coded system models does thus not change the result.\bs
 
 \todo[inline]{define nonlinear-drive-model}
 \todo[inline]{define lti-drive-model}
 \todo[inline]{define nonlinear-push-model-2}
 \todo[inline]{define nonlinear-push-model-2}
 
-\paragraph{Blockade}
+\paragraph{Blockade} In the blockade environment the robot is tasked with placing a box to a target position that is blocked by an cylinder object.\bs
 \begin{figure}[H]
     \centering
     \includegraphics[width=13cm]{figures/tests/blockade}
-    \caption{The blockade environment with the target ghost position for the blue box.}%
+    \caption{The blockade environment with the target ghost position for the blue box. The green walls are unmovable whilst both the blue box and cylinder are movable.}%
     \label{fig:benchmark_blockade}
 \end{figure}
 
-The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First the \ac{halgorithm} plans to push the box directly to the target position, then it realises a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushes the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remebered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model-2 to push both the box and the cylinder object.\bs
-\todo[inline]{is nonlinear-push-model-2 still the preferred model?}
+The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First the \ac{halgorithm} plans to push the box directly to the target position, then it realises a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushes the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remembered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model-2 to push both the box and the cylinder object. Converging to this conclusion improves the method metrics for the task as can be seen in \cref{fig:results_blockade}\bs
 
-\todo[inline]{results for running the blockade environment multiple times}
+\todo[inline]{is nonlinear-push-model-2 still the preferred model after testing??}
 
-\todo[inline]{duck or cylinder, you've told the reader that there would only be boxes and cylinders}
-\todo[inline]{tell the reader there also is a duck now, because that duck is really nice I think}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{figures/tests/404_not_found}
+
+    \caption{Some test are still under development for the blockade environment}%
+    \label{fig:results_blockade}
+\end{figure}
+\todo[inline]{Test to create results for running the blockade environment, and input into above 404 not found}
 
 \paragraph{Swap}
+In the swap environment the robot should swap the locations of the 2 objects in the environment.\bs
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=13cm]{figures/tests/swap}
     \caption{The swap environment, the robot is tasked with swapping the positions of the cylinder and the box.}%
     \label{fig:benchmark_swap}
 \end{figure}
+The swap task shows that the \ac{halgorithm} can handle overlapping subtasks. The \ac{halgorithm} handles a single subtask at a time and randomly selects which subtask to handle next. The result for the swap task is that, first the robot will place the box on the location of the cylinder. The cylinder is blocking the path and is thus pushed to free the path, then the robot drive back to the box to push the box to its target position. The cylinder can directly be pushed toward its target position, because there is a free path, and the task is succesfully completed. By manual inspection, this is the most efficient action sequence to complete the swap task. But there is an assumption, because the initial environment has a distance between the robot and box (robot-box distance), and robot and cylinder (robot-cylinder distance) that is equal. If the initial robot-box distance is greater than the initial robot-cylinder distance, it would be more efficient to first drive toward the cylinder because that distance is smaller. The selection of subtask is at random, thus ther is a 50\% chance that the robot selects a subtask resulting in driving more than is nessecary to complete the swap subtask.\bs 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{figures/tests/404_not_found}
+    \caption{Some test are still under development for the swap environment}%
+    \label{fig:results_swap}
+\end{figure}
 
-\paragraph{Surrounded}
+\todo[inline]{Test to create results for running the swap environment}
+
+\paragraph{Surrounded} In the surround environment the robot has to learn which box is movable to enscape the enclosure of boxes.\bs
 \begin{figure}[H]
     \centering
     \includegraphics[width=13cm]{figures/tests/surrounded}
-    \caption{The surround environment, the robot should escape the surrounding enclosure. All box objects are unmovable obstacles with the exception of the green box.}%
+    \caption{The surround environment, the robot is tasked with escaping the surrounding enclosure by driving to the target ghost position displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
     \label{fig:benchmark_surround}
 \end{figure}
+The surround task show that having and gaining environment knowledge can greatly improve task execution. Simply knowing if an object can be interacted with may lower task execution time drastically as can be seen in \cref{fig:results_surround}.\bs
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{figures/tests/404_not_found}
+    \caption{Some test are still under development for the surround environement}%
+    \label{fig:results_surround}
+\end{figure}
+
+\todo[inline]{Test to create results for running the surround environment}
 
 \section{Randomisation}%
 \label{sec:randomisation}
-The Randomised environment.\bs
-\todo[inline]{write some rand env intro}
+In the randomised environment the robot is tasked to push a number of object to a target location. The previous 3 benchmark tests are designed around the proposed method, meaning that these test highlight the strong points of the \ac{halgorithm} but prevent the testing the weak points of the proposed methods. Such bias can lead to false positives, which is undesired. The randomised environment provides an more unbiased results. The random environment does not deliver completely unbiased results because there are several parameters that must be chosen to create and set up the random environment, which are.\\
+
+\todo[inline]{tabel below need a dubble chekc}
+
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+{>{\raggedright\arraybackslash}p{0.25\textwidth}%
+>{\raggedright\arraybackslash}p{0.65\textwidth}}
+The \textit{size of the grid} & in \gls{x} and \gls{y} direction.\\
+The \textit{minimal and maximal size of objects} & A box will have sides with length that lie in the specified range from minimal to maximal length. Cylinders will have a diameter and height that is between the specified range, additionally cylinders are not higher than the radius of the cylinder to prevent cylinders tipping over. \\
+The \textit{maximal weight} & which is uniformly distributed for the environment objects, minimal weight is set by default to 0. \\
+The \textit{number of unmovable and movable objects} & For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder, letting randomisation determine the ratio between boxes and cylinders. \\
+The \textit{number of subtasks in a task} & Which must be greater or equal to the number of movable objects. The task has feasible targets that lie in free space, the path estimator discussed in \cref{subsec:path_estimation} is used to determine the target configuration for objects. By creating configuration space for an object the target configuration is chosen to be in free space, then path estimation is used to determine if an object can reach the target configuration from its initial configuration.  
+\end{tabular}
+\end{table}
+
+If the task is completed, a \textit{reshuffle} function reshuffles the objects in the environment, that is the object remain the same objects, but the objects receive a new initial position, and the subtask target configurations are renewed. The reshuffled environments can be seen in \cref{fig:random_environment_reshuffle}.\bs
 
 \begin{figure}[H]
     \centering
@@ -84,9 +131,23 @@ The Randomised environment.\bs
     \centering
     \includegraphics[width=1.0\textwidth]{figures/tests/random_2}
     \end{subfigure}
-    \caption{Two random environment with target ghost configurations for a task that contains 2 subtasks.}%
+    \caption{Two random environment with 2 target ghost configurations for the task containing 2 subtasks.}%
     \label{fig:random_environnment}
 \end{figure}
+
+The parameters chosen for the random environment are.\bs
+
+\begin{center}
+\begin{align*}
+\text{grid size} \quad &\gls{x}=12, \quad \gls{y}=12 \\
+\text{object size} \quad &\mathit{min\_length}=0.2, \quad \mathit{max\_length}=2 \\
+\text{object weight} \quad &\mathit{max\_weight}=1000 \\
+\text{number of objects} \quad &\mathit{num\_unmovable\_obj}=3, \quad \mathit{num\_movable\_obj}=5 \\
+\text{number of subtasks} \quad &\mathit{num\_subtasks}=2
+\end{align*}
+\end{center}
+
+These parameters have been specifically selected, starting with the size of the ground floor. It should be large enough such that objects can be pushed around, a environment to large would result in a longer computational time for path estimation and planning. Thus 12 by 12 is selected because it is reflecting a reasonably large workspace, whilst not exceeding the pre-determined computation time to find a path. The range that determines the size of objects is set such that objects can be as large as the robot itself, and be around 10 times as large as the robot. With these sized the robot is unable to grasp objects, a gripper would be to small to grasp objects. The comperatively large size fits the objective of nonprehensile pushing, there simply is not other method to manipulate such large objects other then pushing. A real life example are can be found in harbors where tug boats push giant cargo ships around that are many times over the size of the tug boat. The ratio of solid obstacles vs. movable objects determine if a task is more navigation (only solid obstacles) or more \ac{NAMO} (only movable objects). A task that tends toward \ac{NAMO} is favored because that is the target environment int this thesis. There should be some unmovable obstacles that reward the robot learning such objects are unmovable (to then not interact with them). Thus there are more movable objects than solid obstacles chosen, whilst still having 2 solid obstacles around. The number of subtasks is set to 2, a low number of subtasks that can be completed in 2-3 minutes. By blocking paths the 2 subtasks interact with other objects and with with each other. Adding more subtasks leads to a bit more interaction, but mostly extends the time to complete a task. 
 
 \begin{figure}[H]
     \centering
@@ -112,9 +173,29 @@ The Randomised environment.\bs
     \caption{A random environments that is reshuffled 4 times. Target ghost configurations are not shown.}
     \label{fig:random_environment_reshuffle}
 \end{figure}
+The randomly shuffled environment shows 
 
-% \section{Knowledge Graph On/Off}%
-% \label{sec:kgraph_on_off}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{figures/tests/404_not_found}
+    \caption{Some test are still under development for the randomisation evironment}%
+    \label{fig:results_randomisation}
+\end{figure}
+
+\todo[inline]{Test to create results for running the random environment}
+
+\section{Knowledge Graph On/Off}%
+\label{sec:kgraph_on_off}
+Influence of the \ac{kgraph} is shown using the random environment. The robot will once complete many random tasks with the help of \ac{kgraph} and once the robot will complete many random tasks without the help of \ac{kgraph}. The results can be compared in \cref{fig:results_random_kgraph_on_off}.\bs
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{figures/tests/404_not_found}
+    \caption{Some test are still under development for the randomisation where the kgraph is once on and once off.}%
+    \label{fig:results_random_kgraph_on_off}
+\end{figure}
+
+\todo[inline]{Test to create results for running (run that many times) the random environment}
 
 \section{Comparison with related papers}%
 \label{sec:compare_with_related_papers}
@@ -123,7 +204,7 @@ The papers to compare with:\newline
 
 \citefield{sabbaghnovin_model_2021}{title}\\
 
-\cite{sabbaghnovin_model_2021}, 
+\cite{sabbaghnovin_model_2021},
 \todo[inline]{See the paper for tests to reproduce with my hgraph}
 
 

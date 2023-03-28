@@ -70,11 +70,15 @@ As the above figure shows, the thesis focus could be augmented with an ontology 
 
 This chapter has terminology that is conveniently grouped in the following table.
 
+
+\noindent
 \begin{table}[H]
 \centering
-\begin{tabular}[t]{l p{10cm}}
+\begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.23\textwidth}%
+   >{\raggedright\arraybackslash}p{0.67\textwidth}}
 Task:   &  Tuple of objects and target configurations.\\
-        & $\text{task} = \gls{task} = \left\langle \gls{objSet}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
+        & $\text{task} = \gls{task} = \left\langle \gls{Obj}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
 Subtask:& A single object, and a single target configuration.\\
         & $\text{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle$\\
 Object Class & Classification assigned to an object.\\

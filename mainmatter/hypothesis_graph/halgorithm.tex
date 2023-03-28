@@ -4,9 +4,12 @@ This section present and discuss the newly proposed \ac{halgorithm}, this sectio
 
 The \ac{halgorithm} relies on a backward search technique. The backward search technique can be described as: \textit{start the search at a goal state and work backward until the initial state is encountered~\cite{lavalle_planning_2006}.} A motivation for a backward search over a forward search is that, it might be the case that the branching factor is large when starting from the initial state. In such cases, it might be more efficient to use a backward search.
 
+\noindent
 \begin{table}[H]
 \centering
-\begin{tabular}[t]{l p{10cm}}
+\begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+   >{\raggedright\arraybackslash}p{0.65\textwidth}}
 \textit{SubTaskNotFinished(\gls{subtask})}:& Return False if the subtask \gls{subtask} is completed or it is concluded to be unfeasible \\
 \textit{IsConnected($\gls{node}_1, \gls{node}_2$)}:& Return True if there exist a path in the \ac{hgraph} from node $\gls{node}_1$  to node $\gls{node}_2$ through a number of non-failed edges\\
 \textit{ReadyForExecution(\gls{edge})}: & Return True if the edge \gls{edge} is ready to execute\\
@@ -69,7 +72,7 @@ The \ac{halgorithm} relies on a backward search technique. The backward search t
   \end{algorithmic}
 \end{algorithm}
 
-During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of succesive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.
+During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of succesive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.\bs
 
 A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an eleborate description for every block in the flowchart (see \cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occures. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straigtforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstacted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware.
 
@@ -78,10 +81,12 @@ A flowchart of the \ac{halgorithm} is presented in \cref{tikz:flowchart_hgraph}.
 \begin{table}[H]
 \centering
 \rowcolors{2}{white}{myLightColor}
-\begin{tabular}[t]{>{\raggedright}p{3.5cm}>{\raggedright\arraybackslash}p{10.5cm}}
-  \textbf{Node name} & \textbf{Description of actions taken}\\\toprule
-  Task Finished & log all metrics for the \ac{hgraph}, then deconstruct \ac{hgraph}.\\
-  Create Start and\newline Target Nodes & Generate a robot node and the start and target nodes for every subtask in the task.\\
+\begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.3\textwidth}%
+    >{\raggedright\arraybackslash}p{0.7\textwidth}}
+\textbf{Node name} & \textbf{Description of actions taken}\\\toprule
+Task Finished & log all metrics for the \ac{hgraph}, then deconstruct \ac{hgraph}.\\
+Create Start and\newline Target Nodes & Generate a robot node and the start and target nodes for every subtask in the task.\\
 Update Current Subtask & Select an unfinished subtask or update current subtask. Use the backward search technique. The \textit{current\_start\_node} and \textit{current\_target\_node} are updated. When all subtask have been addressed, conclude task is finished. \\
 Estimate Path\newline Existence & Check if a path exists between \textit{current\_start\_node} and \textit{current\_target\_node} whilst assuming that the object is holonomic.\\
 Add Node to\newline Drive to Object & Add a node before the \textit{current\_target\_node}.\\

@@ -51,10 +51,17 @@ The most relevant hierarchical approach is presented by \citeauthor{scholz_navig
 
 Both local optimal and hierarchical approaches have been discussed, both having their advantages and disadvantages. Local optimal approaches can theoretically converge to a global optimal plan. To avoid the curse of dimensionality simplifications must be used to sample the joint configuration space in order to be computationally feasible, such simplifications determine the quality of solutions found. Hierarchical structures generally provide solutions which are computationally efficient but are hierarchical, meaning the solutions found are the best feasible solutions in the task hierarchy they search. The quality of the solution depends on the hierarchy which is typically hand-coded and domain-specific~\cite{vega-brown_asymptotically_2020}. The most relevant work for local optimal~\cite{sabbaghnovin_model_2021} and hierarchical~\cite{scholz_navigation_2016} approaches are discussed. What they both~\cite{sabbaghnovin_model_2021,scholz_navigation_2016} have in common, both combine 2 of the 3 topics (learning, the \ac{NAMO} problem, object manipulation toward target positions). Note both relevant works focus on prehensile manipulation, whilst this thesis focuses on nonprehensile push manipulation. Individually a considerable amount of research is done on these 3 topics (\ac{NAMO}~\cite{chen_fast_2018,elbanhawi_samplingbased_2014,ellis_navigation_2022,kingston_samplingbased_2018,lavalle_planning_2006,wang_affordancebased_2020}, nonprehensile push manipulation~\cite{arruda_uncertainty_2017,bauza_dataefficient_2018,mericli_pushmanipulation_2015,stuber_featurebased_2018,stuber_let_2020,toussaint_sequenceofconstraints_2022}, learning object dynamics~\cite{cong_selfadapting_2020,seegmiller_vehicle_2013}), combining two topics received little attention by the scientific community and combining all three topics (to the best of my search) not at all. \Cref{table:sota_and_3_topics} presents state-of-the-art literature and which portion of the 3 topics they include in their research.\bs
 
+\noindent
 \begin{table}[H]
   \centering
   \rowcolors{2}{white}{myEvenLighterColor}
-  \begin{tabular}{P{2.5cm} P{1.5cm} P{1.8cm} P{1.8cm} P{1.8cm} p{1.9cm}}
+  \begin{tabular}
+  {>{\raggedright\arraybackslash}P{2.5cm}%
+    >{\raggedright\arraybackslash}P{1.5cm}%
+    >{\raggedright\arraybackslash}P{1.8cm}%
+    >{\raggedright\arraybackslash}P{1.8cm}%
+    >{\raggedright\arraybackslash}P{1.8cm}%
+    >{\raggedright\arraybackslash}P{1.9cm}}
     Author & Citation & Learns\newline object\newline dynamics & \ac{NAMO} & Specify object target positions & Object\newline Manipulation\\
     \citeauthor{ellis_navigation_2022} &\cite{ellis_navigation_2022} & \cmark& \cmark& \xmark& pushing\\
     \citeauthor{krontiris_dealing_2015} &\cite{krontiris_dealing_2015} & \xmark& \cmark& \cmark& gripping\\
@@ -95,18 +102,20 @@ Answering the research subquestions provides a solid base to answer the main res
 \label{sec:problem_description}
 To answer the research questions, tests will be performed in a robot environment. A simple environment is desired because that will simplify testing, yet the robot environment should represent many real-world environments in which robots operate, thus a 3-dimensional environment is selected. The environment consists of a flat ground plane since many mobile robots operate in a workspace with a flat floor, such as a supermarket, warehouse or distribution centre. The robots to test should be flat robots that have a low center of gravity, which lowers the chance of tipping over. A 3-dimensional environment is selected. Mostly the environment with a flat floor and a flat robot can be treated as a 2-dimensional problem because the robot and objects can only change position over $x$ and $y$ axis ($xy$ plane parallel to the ground plane) and rotate around the $z$ axis (perpendicular to the ground plane).\bs
 
-Let's start with defining the environment.\\Let the tuple $\left\langle \gls{origin}, \gls{groundPlane}, \gls{Ob}, \gls{motionEquations} \right\rangle$ fully define a robot environment where:\bs
+Let's start with defining the environment. Let the tuple $\left\langle \gls{origin}, \gls{groundPlane}, \gls{Obj}, \gls{motionEquations} \right\rangle$ fully define a robot environment where:\bs
 
-\par\smallskip\noindent
-\centerline{\begin{minipage}{0.8\textwidth}
-\begin{enumerate}
-  \item[\gls{origin}] Static point in the environment with a $x$-, $y$- and $z$-axis. Any point in the environment has a linear and an angular position and velocity with respect to the origin \vspace{0.5\baselineskip}
- \item[\gls{groundPlane}] A flat plane parallel with the Origin's $x$- and $y$- axis. Objects cannot pass through the ground plane and meet sliding friction when sliding over the ground plane. \vspace{0.5\baselineskip}
- \item[\gls{Ob}] A set of objects, $\gls{Ob} = (ob_1, ob_2, ob_3, \dots, ob_i)$ with $i\geq1$, an object is a 3-dimensional body with shape and uniformly distributed mass. The robot itself is considered an object, an environment thus contains one or more objects. Examples of objects are given in \cref{fig:example_objects}. \vspace{0.5\baselineskip}
-  \item[\gls{motionEquations}] A set of motion equations describing the behaviour of objects such as gravity, interaction with the ground plane or interaction with other objects. In recent literature, the motion equations are also named the true dynamics. \vspace{0.5\baselineskip}
-\end{enumerate}
-\end{minipage}}
-\par\smallskip
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}
+  {>{\raggedleft\arraybackslash}p{0.13\textwidth}%
+  >{\raggedright\arraybackslash}p{0.77\textwidth}}
+\gls{origin}& Static point in the environment with a $x$-, $y$- and $z$-axis. Any point in the environment has a linear and an angular position and velocity with respect to the origin \vspace{0.5\baselineskip}\\
+\gls{groundPlane}& A flat plane parallel with the Origin's $x$- and $y$- axis. Objects cannot pass through the ground plane and meet sliding friction when sliding over the ground plane. \vspace{0.5\baselineskip}\\
+\gls{Obj}& A set of objects, $\gls{Obj} = (ob_1, ob_2, ob_3, \dots, ob_i)$ with $i\geq1$, an object is a 3-dimensional body with shape and uniformly distributed mass. The robot itself is considered an object, an environment thus contains one or more objects. Examples of objects are given in \cref{fig:example_objects}. \vspace{0.5\baselineskip}\\
+\gls{motionEquations}& A set of motion equations describing the behaviour of objects such as gravity, interaction with the ground plane or interaction with other objects. In recent literature, the motion equations are also named the true dynamics. \vspace{0.5\baselineskip}\\
+\end{tabular}
+\end{table}
 
 A configuration consists of the linear position of an object's center of mass with respect to the environment's origin and the angular position of an object's orientation with respect to the environment's origin.\bs
 
@@ -125,6 +134,9 @@ A task is completed when the robot manages to push every object to its target co
 \label{subsec:assumptions}
 To simplify the pushing and learning problem, several assumptions are taken, which are now listed.\bs
 
+
+\noindent
+\centerline{\begin{minipage}{0.9\textwidth}
 \begin{assumption*}%
 \label{assumption:closed_world}
 \textbf{Closed-World Assumption:} Objects are manipulated, directly or indirectly only by the robot. Objects cannot be manipulated by influences from outside the environment.
@@ -146,6 +158,7 @@ To simplify the pushing and learning problem, several assumptions are taken, whi
 \label{assumption:no_tipping}
 \textbf{Objects do not tip over Assumption:} Movable objects slide if pushed.
 \end{assumption*}\bs
+\end{minipage}}
 
 The assumptions taken serve to simplify the problem of task completion. Note that in \cref{sec:future_work} insight is given to remove all assumptions. By removing assumptions completing tasks becomes a harder problem, but a more realistic problem closer to real-world applications.\bs
 

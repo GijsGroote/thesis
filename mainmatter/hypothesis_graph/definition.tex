@@ -51,19 +51,18 @@ System identification and tracking a path are so very different, the edges are s
 \label{tikz:status_identification_edge}
 \end{figure}
 
-
-\todo[inline]{right align this a bit nicer please}
-\begin{flushright}
-\centerline{\begin{minipage}{.6\textwidth}
-\begin{enumerate}
-    \item[PRE INPUT SEQUENCE number t (PrIS\#t)] Go to target configuration to input the input sequence on the system.
-    \item[POST INPUT SEQUENCE number t (PoIS\#t)] Collect the output sequence.
-    \item[COMPLETED (CO)] The edge has driven the system toward its target configuration and its performance has been calculated.
-    \item[FAILED (FAIL)] An error occurred, yielding the edge unusable.
-\end{enumerate}
-\end{minipage}}
-\par\smallskip
-\end{flushright}
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+  {>{\raggedleft\arraybackslash}p{0.30\textwidth}%
+   >{\raggedright\arraybackslash}p{0.60\textwidth}}
+PRE INPUT SEQUENCE number t (PrIS\#t): & Go to target configuration to input the input sequence on the system. \\
+POST INPUT SEQUENCE number t (PoIS\#t): & Collect the output sequence. \\
+COMPLETED (CO): & The edge has driven the system toward its target configuration and its performance has been calculated. \\
+FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
+\end{tabular}
+\end{table}
 
 An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behaviour of the robot, and system models that describe the push behaviour of the robot and an object. Data collection for a driving model can be collected by sending input to the robot assuming that the robot has enough free space around it such that is does not collide with an object during data collection. To collect \ac{IO} data for a pushing model the robot first drives to a starting configuration next to the object. After the first input sequence is over, the robot drives to the next start position next to the object. After several input sequences the robot has gathered enough \ac{IO} data to generate a system model for pushing.\bs
 
@@ -100,19 +99,21 @@ An action edge, contains a drive or push action. From the point of initialisatio
 \label{tikz:status_action_edge}
 \end{figure}
 
-% \par\smallskip\noindent
-\centerline{\begin{minipage}{0.8\textwidth}
-\begin{enumerate}
-  \item[INITIALISED (IN)] The edge is created with a source and target node which are present in the \ac{hgraph}. A choice of controller is made.
-    \item[PATH EXISTS (PE)] A graph-based search is performed to validate if the target configuration is reachable assuming that the system is holonomic.
-    \item[SYSTEM MODEL (SM)] A dynamics system model is provided to the controller residing in the edge.
-    \item[PATH PLANNED (PP)] Resulting from a sample-based planner, a path from start to target configuration is provided.
-    \item[EXECUTING (EX)] The edge is currently receiving observations from the robot environment and sends back robot input.
-    \item[COMPLETED (CO)] The edge has driven the system toward its target configuration and its performance has been calculated.
-    \item[FAILED (FAIL)] An error occurred, yielding the edge unusable.
-\end{enumerate}
-\end{minipage}}
-\par\smallskip
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+  {>{\raggedleft\arraybackslash}p{0.24\textwidth}%
+   >{\raggedright\arraybackslash}p{0.66\textwidth}}
+INITIALISED (IN): & The edge is created with a source and target node which are present in the \ac{hgraph}. A choice of controller is made. \\
+PATH EXISTS (PE): & A graph-based search is performed to validate if the target configuration is reachable assuming that the system is holonomic. \\
+SYSTEM MODEL (SM): & A dynamics system model is provided to the controller residing in the edge. \\
+PATH PLANNED (PP): & Resulting from a sample-based planner, a path from start to target configuration is provided. \\
+EXECUTING (EX): & The edge is currently receiving observations from the robot environment and sends back robot input. \\
+COMPLETED (CO): & The edge has driven the system toward its target configuration and its performance has been calculated. \\
+FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
+\end{tabular}
+\end{table}
 
 \Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed. 
 Before executing edges, edges must be initialised, which is where next section is dedicated to.\bs

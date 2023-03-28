@@ -19,10 +19,13 @@ The \ac{TE} can be described as:\\ A path consists of a list of configurations, 
 
 $\gls{c}_\mathit{target}$ does not update every time step, whilst \gls{c}(\gls{k}) does update every time step. As a result, a \quotes{good} \ac{TE} is expected to take the form of a saw tooth function inverted over the horizontal x-axis.\bs
 
-\begin{table}[htb!]
+\noindent
+\begin{table}[H]
 \centering
-\begin{tabular}[t]{l p{10cm}}
-  \acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behaviour occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
+\begin{tabular}%
+  {>{\raggedleft\arraybackslash}p{0.23\textwidth}%
+   >{\raggedright\arraybackslash}p{0.67\textwidth}}
+\acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behaviour occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
   \acf{TE}& The system should not diverge too far from to path it is supposed to track, if the robot diverges more than a pre-defined threshold the \ac{hgraph} concludes that there was an error during execution and the edge fails. \\
 \end{tabular}
 \caption{Monitor metrics used to monitor if a fault occurred during the execution of an edge}%

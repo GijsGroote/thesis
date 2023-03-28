@@ -134,17 +134,23 @@ Controllers discussed in \cref{sec:control_methods} can track a path from start 
 \textit{\quotes{The main idea is to avoid the explicit construction of the object space, and instead conduct a search that probes the configuration space with a sampling scheme. This probing is enabled by a collision detection module, which the motion planning algorithm considers as a “black box.”~\cite{lavalle_planning_2006}}}\bs
 
 Generally, the configuration space motion planners plan consists of 2 subspaces, free and obstacle space. The configuration space in this thesis consists of 4 subspaces, namely free, obstacle, unknown and movable space. To solve motion planning problems for such a configuration space a dedicated motion planning algorithm has been developed that extends the existing algorithm extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}. The motion planner consists of.
-\begin{center}
-\begin{tabular}[t]{l p{10cm}}
+
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+{>{\raggedleft\arraybackslash}p{3.5cm}%
+ >{\raggedright\arraybackslash}p{7cm}}
 \gls{nodesMP}:& A set of nodes\\
 \gls{edgesMP}:& A set of edges\\
 \gls{pathsMP}:& A set of paths\\
 \end{tabular}
-\end{center}
+\end{table}
 
 The start connectivity tree consists of the nodes connected by edges containing the starting node, and vice versa for the target connectivity tree containing the target node. The algorithm grows the two \textit{connectivity trees} by randomly sampling configurations and adding them to the start or target connectivity tree. The algorithm explores configuration space by growing these connectivity trees. When the start connectivity tree is close enough (inside the search size of a newly added sample) to the target connectivity tree a path from start to target is found. The goal of the motion planner is to find a path between the start and target configuration that results in the lowest totalPathCost, defined as:
 
 \[\textrm{TotalCost} = \textrm{PathCost} + \textrm{MovableSpaceCost} + \textrm{UnknownSpaceCost}\]
+\todo[inline]{should this get a reference, and should it be refrenced somewehre in text?}
 
 The PathCost corresponds to the sum of euclidean distances between the successive configurations in the path, the MovableSpaceCost and UnknownSpaceCost correspond to a fixed addition cost for a configuration in the path crosses through movable or unknown subspace respectively. Here crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in movable space, MovableSpaceCost will be 0, equivalent to unknown space and UnknownSpaceCost. By optimising the path for the lowest cost the motion planning algorithm is incentivized to find a path around unknown or movable objects. However, if there is no path in free space only, the algorithm plans through movable or unknown space. Newly sampled configurations are added in a structural manner that guarantees an optimal path is found with infinite sampling~\cite{chen_fast_2018}. Where optimality is defined as the path with the lowest possible cost.\bs
 
@@ -153,31 +159,32 @@ The algorithm has 4 tuning parameters that can be tweaked, first, the \textit{st
 
 Now pseudocode of the proposed algorithm is provided in \cref{pseudocode:proposed_rrt_star}. The functions used are elaborated upon in the following table \cref{table:functions_for_proposed_rrt_star}.\bs
 
+
+\noindent
 \begin{table}[H]
-\centering
-\begin{tabular}[t]{l p{10cm}}
-$x$:& A node representing a point in configuration space\\
-$x_{init}$:& Creates a start and target node\\ 
-\textit{NotReachStop}:& True if the stopping criteria is not reached\\ 
-$\mathit{Sample_{random}}$:& Creates a random sample in free-, movable- or unknown space\\
-$\mathit{Nearest}(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
-$\mathit{NearestSet}(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
-$\mathit{Project}(x, x')$:& Project $x$ toward $x'$\\
-$\mathit{CollisionCheck}(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
-$\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
-$\mathit{Distance}(x, x')$:& Returns the distance between sample $x$ and $x'$\\
-$\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
-  $\mathit{ReachabilityCheck}(x, x')$:& Return true if a system model with initial state $x$ is able to reach state $x'$ for a range of allowed input, otherwise, return false.\\
-  $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
-\end{tabular}
+  \centering
+  \begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+   >{\raggedright\arraybackslash}p{0.65\textwidth}}
+  $x$:& A node representing a point in configuration space\\
+  $x_{init}$:& Creates a start and target node\\ 
+  \textit{NotReachStop}:& True if the stopping criteria is not reached\\ 
+  $\mathit{Sample_{random}}$:& Creates a random sample in free-, movable- or unknown space\\
+  $\mathit{Nearest}(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
+  $\mathit{NearestSet}(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
+  $\mathit{Project}(x, x')$:& Project $x$ toward $x'$\\
+  $\mathit{CollisionCheck}(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
+  $\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
+  $\mathit{Distance}(x, x')$:& Returns the distance between sample $x$ and $x'$\\
+  $\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
+    $\mathit{ReachabilityCheck}(x, x')$:& Return true if a system model with initial state $x$ is able to reach state $x'$ for a range of allowed input, otherwise, return false.\\
+    $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
+  \end{tabular}
 \caption{Functions used by the \cref{pseudocode:proposed_rrt_star}}
 \label{table:functions_for_proposed_rrt_star}
 \end{table}
 
 Notice that in \cref{pseudocode:proposed_rrt_star} the coloured sections correspond to the surrounding coloured border in the subfigures of \cref{fig:motion_planner_adding_one_sample}.\bs
-
-
-v and \gls{nodeMP}
 
 \newpage
 \begin{algorithm}[H]
@@ -322,7 +329,7 @@ The added fixed cost for a path crossing through a movable or unknown object mot
     \centering
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/push_or_drive}
+    \includegraphics[width=0.9\textwidth]{figures/push_or_drive}
     \caption{Robot environment with the point robot, 2 yellow unmovable walls and an unknown brown box.}
     \end{subfigure}
 
