@@ -113,7 +113,7 @@ u(k+1)=u(k)+\frac{\sum_{i} w_{i} \delta u_{i}}{\sum_{i} w_{i}}
 \label{equation: mppi_weighted_sum}
 \end{equation}
 
-Where $\delta u_i$ is the difference between $u(k)$ and the input for rollout $i$, the weight of $\text{rollout}_i$ is detemined as: $w_{i}=e^{-\frac{1}{\lambda} \text{cost}_{i}}$, $\lambda$ is a constant parameter. The reader is now somewhat familiar with the \ac{MPPI} concept, Now some applications with \ac{MPPI} and multi-object control are discussed.\bs
+Where $\delta u_i$ is the difference between $u(k)$ and the input for rollout $i$, the weight of $\text{rollout}_i$ is detemined as: $w_{i}=e^{-\frac{1}{\lambda} \text{cost}_{i}}$, $\lambda$ is a constant parameter. The reader is now somewhat familiar with the \ac{MPPI} concept. Below, some applications with \ac{MPPI} and multi-object control are discussed.\bs
 
 \chapter{Implementation in Python}%
 \label{chap:code_implementation}

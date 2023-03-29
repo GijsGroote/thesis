@@ -1,7 +1,7 @@
-\chapter{The Hypothesis and Knowledge graph}%
+\chapter{The Hypothesis and Knowledge Graph}%
 \label{chap:hgraph_and_kgraph}
 
-\textit{This chapter is dedicated to introducing and defining the proposed method, the proposed method consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acl{halgorithm}} acts on the \textbf{\acl{hgraph}} is responsible for searching the joint configuration space for action sequences to complete a specified task, \cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, defined in \cref{subsec:kgraph_definition}. Collected knowledge is rated and ordered from \quotes{good} to \quotes{bad} experiences using various metrics. Such an ordering within collected knowledge makes the \ac{kgraph} a knowledge base that can be queried for action suggestions. \Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\cref{sec:hgraph}, and for the knowledge graph in~\cref{sec:kgraph}.}
+\textit{This chapter is dedicated to introducing and defining the proposed method, the proposed method consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acl{halgorithm}} acts on the \textbf{\acl{hgraph}} is responsible for searching the joint configuration space for action sequences to complete a specified task, \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, defined in \Cref{subsec:kgraph_definition}. Collected knowledge is rated and ordered from \quotes{good} to \quotes{bad} experiences using various metrics. Such an ordering within collected knowledge makes the \ac{kgraph} a knowledge base that can be queried for action suggestions. \Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph}, and for the knowledge graph in~\Cref{sec:kgraph}.}
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
@@ -12,7 +12,7 @@
    
    \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=4.6cm]{figures/example_environment.png}}; 
 
-   \node [below, xshift=0.4cm, yshift=-.1cm, text width=5cm, align=left, outer sep=0cm] at (environment.north) {\textbf{Robot Environement}};
+   \node [below, xshift=0.4cm, yshift=-.1cm, text width=5cm, align=left, outer sep=0cm] at (environment.north) {\textbf{Robot Environment}};
    
     \draw [myEvenLighterColor,
     rounded corners=0.3cm, 
@@ -83,11 +83,11 @@ Subtask:& A single object, and a single target configuration.\\
         & $\text{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle$\\
 Object Class & Classification assigned to an object.\\
              & $\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}$\\
-Node Status:& Status of a node indicates if a node is initialised, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\
+Node Status:& Status of a node indicates if a node is initialized, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\
             & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\
 Node:   & A node in the \acs{hgraph}, represents an object in a configuration with reachability indicated with a node status.\\
         & $\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
-Edge Status:& Status of a edge, elaborate information on the statuses can be found in \cref{tikz:status_action_edge}.\\
+Edge Status:& Status of a edge, elaborate information on the statuses can be found in \Cref{tikz:status_action_edge}.\\
             & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model} \vee \] \[\mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\
 Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\
         & $ \textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\
@@ -97,7 +97,7 @@ Hypothesis Algorithm:& Graph based algorithm that searches for hypothesis in the
 Hypothesis Graph:& Collection of nodes and edges. For every subtask a start and target node exist in the \ac{hgraph}, the \ac{halgorithm} searches for a path through nodes and edges to connect start to target node.\\
         & $ \textrm{\ac{hgraph}} = \gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $\\
 Knowledge Graph:& Collection of nodes and edges.  The \ac{kgraph} acts as a knowledge base and can be queried for an action suggestion.\\
-        & $ \textrm{KGraph} = \gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $\\
+        & $ \textrm{\ac{kgraph}} = \gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $\\
 \end{tabular}
 \caption{Terminology of terms used}
 \label{table:proposed_method_terminology}

@@ -1,14 +1,6 @@
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-todo: this abstract
-
-
-\todo[inline]{Create abstract when main content + results are finished}
-BTW: summerised feedback from Martijn + Corrado:
-abstract should be a stand alone text, a mini version with a small intro (clarify 'gap' in current research), explain where the proposed method is based upon and how it fills the 'gap', discuss results which mostly is compare with existing literure, how is the proposed method comparing? 
-
-
-
+In the field of robotics, much attention has been given to the research topics \textit{learning object dynamics}, \textit{\acf{NAMO}} and \textit{nonprehensile pushing}. However, combining these 3 research topics into one robot framework is insufficiently investigated. The main goal of this thesis is to combine these 3 research topics. A subgoal is to test the effect of learning object dynamics on task execution. A task consists of relocating a subset of the objects in a robot environment and a task can be split into individual subtasks. Finding an action sequence that completes a subtask requires a search in the joint configuration space, a space that emerges when the configuration space of the robot is augmented with the configuration spaces of objects in the environment.\\Upon entering a new environment, objects are classified as \quotes{unknown} and their status can be updated to \quotes{movable} or \quotes{obstacle}. A newly proposed planning algorithm incorporates a search in unknown and movable space in addition to the regular free and obstacle space. The proposed method consists of the \textbf{\acl{halgorithm}}, the \textbf{\acl{hgraph}} and the \textbf{\acl{kgraph}}. The \acl{halgorithm} searches the joint configuration space and creates a \acl{hgraph}, together producing non-deterministic action sequences called a hypothesis. A hypothesis could complete a subtask, during a search for an hypothesis failures can emerge and during execution, faults can be detected. Faults and failures discard the current hypothesis and restart a search for a new hypothesis. A proposed \acl{kgraph} stores feedback on actions in the form of a controller, system model and a reviewing method. Using this reviewing method the \acl{kgraph} is able to make action suggestions to the \acl{halgorithm}.\\ The results show that task execution improves because firstly, the robot gains experience and learns which objects can be manipulated, and secondly the robot finds the best strategy on how to manipulate which object. The proposed method shows comparable results to the state-of-the-art methods, whilst the proposed method combines all three topics and the multiple state-of-the-art methods are all specialized and combine only 2 out of the 3 research topics.
 
 \begin{flushright}
 {\makeatletter\itshape

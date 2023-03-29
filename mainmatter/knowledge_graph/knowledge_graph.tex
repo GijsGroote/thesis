@@ -1,15 +1,11 @@
 \section{Knowledge Graph}%
 \label{sec:kgraph}
-The \ac{hgraph} discussed in previous section has a lifetime that spans over a single task, learned system models are not stored for \ac{hgraph} that are created for future tasks. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor, a metric that combines multiple metrics such as prediction error, tracking error and the success-fail ratio of a edge parameterisation (controller and system model). 
+The \ac{hgraph} discussed in previous section has a lifetime that spans over a single task, learned system models are not stored for \ac{hgraph} that are created for future tasks. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor, a metric that combines multiple metrics such as prediction error, tracking error and the success-fail ratio of a edge parameterization (controller and system model). 
 
-\todo[inline]{explainer of the name \ac{kgraph}}
+\todo[inline]{explainer of the name \ac{kgraph}, Gijs: this is still an open question: Is the name "knowledge graph" correctly chosen? Some comments are that is it misleading because it hints to a knowledge base for which standarts are set. The knowledge graph does not follow these standarts. It is more an ordered list of edge reviews that are bound to a single object.}
 
 \input{mainmatter/knowledge_graph/definition}
 \input{mainmatter/knowledge_graph/example}
 \input{mainmatter/knowledge_graph/metrics}
 
-
-
-\todo[inline]{conclusion}
-
-
+\todo[inline]{GIJS: hey, the conclusion for the kgraph is still missing!}

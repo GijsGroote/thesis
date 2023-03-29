@@ -6,17 +6,17 @@ Formally the \textbf{success factor}, $\gls{successfactor} = \begin{cases} \left
 
 \noindent The success factor is discussed in upcoming paragraph.\bs
 
-\noindent An edge describes the parameterisation that it holds, and how that parameterisation compares to other edges in the \ac{kgraph}.\bs
+\noindent An edge describes the parameterization that it holds, and how that parameterization compares to other edges in the \ac{kgraph}.\bs
 
 Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id_{to}, \gls{successfactor}, \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
 
-\noindent Where (System Model, Controller) together is referred to as edge parameterisation.\bs
+\noindent Where (System Model, Controller) together is referred to as edge parameterization.\bs
 
 \noindent An center node is linked to an object that is its main task.\bs
 
 Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_{id} =\left\langle \mathit{id}, \mathit{obj_{id}}, \gls{objectClass} \right\rangle $\bs
 
-Where \textit{id} a an identifier for the center node, $\mathit{obj_{id}}$ an identifier linked to an object, \gls{objectClass} the classification of that object.\bs
+Where \textit{id} an identifier for the center node, $\mathit{obj_{id}}$ an identifier linked to an object, \gls{objectClass} the classification of that object.\bs
 
 \noindent A side node represents nothing, it is a placeholder for the edge to point toward.\bs
 
@@ -31,14 +31,11 @@ Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side
 
 Now the \ac{kgraph} is defined, lets investigate an example.\bs
 
-\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterisations. Estimating which parameterisation would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterisations can be suggested with the goal of collecting feedback on them. Or even suggest a parameterisation based on the feedback on other parameterisations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorperates much availe
+\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterizations. Estimating which parameterization would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterizations can be suggested with the goal of collecting feedback on them. Or even suggest a parameterization based on the feedback on other parameterizations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.
 
-\todo[inline]{citation on uncertaintyu and specific paramterisation}
-
-$$
+\[
 \begin{cases} \left(0.5-\epsilon_{\textrm {avg}}\right)^{1-\frac{N_\textrm{success}}{N_\textrm{fails}+ N_\textrm{success}}} & \textrm { if } \epsilon_{\textrm {avg }}<0.4 \\ 0.1^{1-\frac{N_\textrm{success}}{N_\textrm{success}+N_\textrm{fails}}} & \textrm{ if } \epsilon_{\textrm{avg}} \geq 0.4 \end{cases}
-$$
+\]
 
-
-\todo[inline]{query the Kgraph}
-\todo[inline]{push action feedback to the kgraph}
+\todo[inline]{Write a paragraph on how to query the Kgraph}
+\todo[inline]{Write a paragraph on how to push action feedback to the kgraph}
