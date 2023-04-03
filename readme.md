@@ -12,7 +12,7 @@ pdflatex report.tex     # create .pdf file
 
 ## thesis presentation
 
-An you can find the latest PDF presentation in [thesis presentation](https://github.com/GijsGroote/thesis/blob/main/thesis-presentation/presentation.pdf).
+An you can find the latest PDF presentation in the [thesis presentation](https://github.com/GijsGroote/thesis/blob/main/thesis-presentation/presentation.pdf).
 
 
 Or compile the PDF presentation yourself:
