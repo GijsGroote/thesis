@@ -1,0 +1,63 @@
+\begin{titlepage}
+
+\begin{center}
+
+%% Print the title
+{\makeatletter
+\largetitlestyle\fontsize{42}{42}\selectfont\@title
+\makeatother}
+
+%% Print the subtitle
+{\makeatletter
+\ifdefvoid{\@subtitle}{}{\bigskip\fontsize{16}{16}\selectfont\@subtitle}
+\makeatother}
+
+\bigskip
+by
+\bigskip
+
+%% Print the name of the author
+{\makeatletter
+\largetitlestyle\fontsize{25}{25}\selectfont\@author
+\makeatother}
+
+\bigskip
+
+%% Print table with names and student numbers
+\setlength\extrarowheight{2pt}
+\begin{tabular}{lc}
+    Student Name & Student Number \\\midrule
+    Gijs S. Groote & 4483987 \\
+\end{tabular}
+
+\vfill
+
+%% Print some more information at the bottom
+\begin{tabular}{ll}
+    Supervisor: & M. Wisse \\
+    Daily Supervisor: & C. Pezzato \\
+    Project Duration: & Nov, 2021 - Sept, 2022 \\
+    Faculty: & Faculty of Cognitive Robotics, Delft
+\end{tabular}
+
+\bigskip
+% \bigskip
+
+%% Add a source and description for the cover and optional attribution for the template
+\begin{tabular}{p{15mm}p{10cm}}
+    Cover: & Simulation environment used during the literature study \cite{spahn_urdf-environment_2022}\\
+    Style: & TU Delft Report Style, with modifications by Daan Zwaneveld
+\end{tabular}
+\end{center}
+
+\begin{figure}[b!]
+\centering
+\resizebox{\textwidth}{!}{%
+    \includegraphics[height=2.5cm]{layout/tudelft/TUDelft_full_color.png}
+    \includegraphics[height=2.5cm]{layout/tudelft/dcsc_logo.png}
+    \quad
+    \includegraphics[height=2.5cm]{layout/tudelft/airlab_logo.png}\quad \quad \quad
+    \includegraphics[height=2.5cm]{layout/tudelft/cor_logo.png}
+}
+\end{figure}
+\end{titlepage}

@@ -1,0 +1,64 @@
+\documentclass{layout/tudelft-report}
+
+%% Setting up the bibliography
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+
+%% Additional packages and commands
+\setlist{itemsep=-2pt} % Reducing white space in lists slightly
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Begin of document %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% Roman page numbering
+\frontmatter
+
+%% Defining the main parameters
+\title{Combining system identification with task, motion and\\manipulation planning}
+
+\subtitle{An application to pushing and navigation tasks} 
+
+\author{G.S. Groote}
+\subject{SC52010: S\&C Literature Research}
+\affiliation{Delft University of Technology}
+
+\coverimage{figures/cover.png} 
+\definecolor{title}{HTML}{4884d6} % Color for title
+
+\makecover
+page intentionally left blank.
+\newpage
+\input{frontmatter/title-report}
+\input{frontmatter/abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%% Arabic page numbering
+\mainmatter
+
+\input{mainmatter/introduction}
+\input{mainmatter/current_state_of_the_art}
+\input{mainmatter/research_plan}
+\input{mainmatter/conclusion}
+% \newpage
+
+% \input{temp_delete}
+% \todo[inline]{there is not future work section, apart from the implementation. It could be mentioned that in the real world pose, geometry and velocity is unknown, sensors, filters and robust controllers would bridge the gap toward the real world (instead of simulation)}
+
+%% Prevent urls running into margins in bibliography
+\setcounter{biburlnumpenalty}{7000}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{7000}
+
+\input{frontmatter/acronyms}
+
+%% Add bibliography
+\printbibliography[heading=bibintoc,title=References]
+
+\end{document}

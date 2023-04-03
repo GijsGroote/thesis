@@ -1,0 +1,237 @@
+\chapter{Proposed Method}
+\label{chapter: proposed_method}
+\textit{The goal of this chapter is to provide a description of the proposed algorithm and to list tests with expected outcomes which, if implemented provide evidence for the effectiveness of the algorithm. The previous chapter has answered the first 2 research subquestions by showing existing methods and their limitations which have been highlighted. This chapter answers the last research subquestion by providing a draft method to be investigated in the thesis, the method can complete tasks while learning system dynamics during task execution in an environment with movable obstacles. The proposed algorithm relies on many existing methods which have been discussed in \cref{chapter: interaction_with_env_and_model_identification,chapter: task_and_motion_planning} and will be rediscussed briefly in \cref{subsection: required_components}. \Cref{section: hgraph} defines the hypothesis graph, as \cref{section: knowledge_graph} defines the knowledge graph. Benchmark tests are listed in \cref{section: btests}. The Discussion is presented in \cref{section: proposed_method_discussion}.\\}
+
+In this literature study the focus lies on the knowledge graph (KGraph), the hypothesis graph (HGraph) and the robot simulation environment. If the literature study focus would be complemented with a high-level planner and an ontology, the robot framework would be theoretically capable of handling high-level tasks, such as grouping objects based on shape, or cleaning.\\
+
+\textbf{\large general outline\\}
+\noindent \Cref{figure: block_framework} displays the general outline control structure for the robot. Upon receiving a task, the \textit{hypothesis graph} is responsible for generating a hypothesis, an action sequence which might lead to successful completion of the given task. Replanning may occur after learning objects are immovable or when control fails to complete a subtask, if all possible hypothesis have been tried, then HGraph concludes that the task cannot be done. \Cref{section: hgraph} is fully dedicated to explaining the hypothesis graph.\\
+
+After execution of an action, the action is evaluated and newly learned knowledge is stored or updated in the \textit{knowledge graph}. Aside from storing knowledge, the knowledge graph provides action suggestions to the hypothesis graph. \cref{section: knowledge_graph} is fully dedicated to explaining the knowledge graph.\\
+
+\begin{figure}[H] \centering
+\begin{tikzpicture}[node distance = 2cm, auto]
+    % Place nodes
+    \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=12.1cm, minimum width=6.8cm, yshift=3.7cm] (focusbox) {}; 
+    \node[yshift=5.5cm, xshift=-0.6cm, align=left] at (focusbox) {\textbf{Literature study focus}};
+   
+   \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=5.0cm]{figures/task_swap_location_balls.png}}; 
+
+   \node [below, xshift=0.2cm, yshift=-.1cm, text width=5cm, align=left, outer sep=0cm] at (environment.north) {\textbf{Robot Environement}};
+   
+    \draw [myEvenLighterColor,
+    rounded corners=0.3cm, 
+    line width=0.3cm]  
+    (environment.north west) -- 
+    (environment.north east) --
+    (environment.south east) --
+    (environment.south west) -- cycle  ;
+    
+    \node [block,
+    above of=environment,
+    minimum height=2cm,
+    minimum width=5cm,
+    node distance=4.3cm,
+    outer sep=0cm] (hgraph) {Hypothesis Algorithm};
+   
+    \node [block, 
+    above of=hgraph, 
+    node distance=3.5cm, 
+    minimum width=5cm,
+    minimum height=2.0cm] (kgraph) {Knowledge Graph};
+      
+    \node [rectangle, draw, 
+    fill=myEvenLighterColor, 
+    text width=5em, text centered, rounded corners, 
+    right of=kgraph, 
+    minimum width=4cm,
+    minimum height=2cm,
+    node distance=8cm] (ontology) {Ontology};
+     
+    \node [rectangle, draw, 
+    fill=myEvenLighterColor, 
+    text width=5em, text centered, rounded corners, 
+    right of=hgraph, 
+    minimum width=4cm,
+    minimum height=2cm,
+    node distance=8cm] (planner) {High-level planner};
+    
+    
+    % Draw edges
+    \draw[-stealth] ([yshift=0.155cm, xshift=0.4 cm]environment.north) -- node [right] {\shortstack[]{sensor\\measurements}}([xshift=0.4 cm]hgraph.south) ;
+    \draw[-stealth] ([xshift=-0.4 cm]hgraph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.4 cm]environment.north) ;
+    \draw[-stealth] (planner.west) -- node [pos=0.37, above] {task}(hgraph.east);
+    \draw[-stealth] ([xshift=-0.4cm]kgraph.south) -- node [left] {\shortstack[]{action\\suggestions}}([xshift= -0.4cm]hgraph.north) ;
+    \draw[stealth-] ([xshift=0.4cm]kgraph.south) -- node [right] {action feedback}([xshift= 0.4cm]hgraph.north) ;
+    \draw[-stealth] (kgraph.east) -- node [above, pos=0.63] {\shortstack[]{environment\\knowledge}}(ontology.west);
+    \draw[stealth-] ([xshift=0.4cm]ontology.south) -- node [right] {\shortstack[]{query}}([xshift=0.4cm]planner.north);
+    \draw[-stealth] ([xshift=-0.4cm]ontology.south) -- node [left] {\shortstack[]{output}}([xshift=-0.4cm]planner.north);
+    \draw[stealth-] (planner.south) |- ++ (2,-1) node[near end, above] {\shortstack[]{High-level\\task}};
+    \end{tikzpicture}%
+    
+\caption{Complete control scheme in Flowchart representation.}
+\label{figure: block_framework}
+\end{figure}
+
+\section{Required Components}
+\label{subsection: required_components}
+% yes the label says subsection, it actually is a section
+This section lists required components used by the proposed method, such as: path-finding algorithms, controllers or system identification methods. The required components are neatly grouped in this section, every component has a specific citation and it is indicated if any modifications must first be applied before it can be used by the proposed method. The required components are minimally explained, and their function and responsibilities are highlighted. \\
+
+\paragraph{Path Non-Existence}
+Before motion planning, the HGraph checks path non-existence, more information on path existence can be found in \cref{subsection: path_existence}. As opposed to motion or manipulation planning two simplifications are made: an obstacle (such as the robot or an environment object) is assumed to be holonomic, and only the unmovable objects are actively present in the configuration space, unknown and movable obstacles are ignored. In configuration space, the free space is discretised with a cell size based on the geometry of the robot or object, a graph-based planner then searches to find a path from starting cell toward the target cell, \cref{figure: path_existence_cite} displays a visual explanation of the path non-existence checker. Paper \cite{akella_simple_2008} describes the method applicable to prove path non-existence, if a path is found toward the target position, the cells containing a path will be converted to sample points in configuration space, serving as a warm start for the motion or manipulation planning algorithms. \\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/path_existance_cite.png}
+    \caption{Path non-existence between $\text{q}_\text{init}$ and $\text{q}_\text{goal}$. (b): A connectivity graph $G$ is built. The path $L$, which connects the cells including $\text{q}_\text{init}$ and $\text{q}_\text{goal}$, is computed from G. Any mixed cell along $L$ is further subdivided. (c): In the new connectivity graph, the cell containing  $\text{q}_\text{init}$ and the cell containing  $\text{q}_\text{goal}$ are not connected. This concludes that there is no collision-free path between $\text{q}_\text{init}$ and $\text{q}_\text{init}$, From \cite{akella_simple_2008}.}
+    \label{figure: path_existence_cite}
+\end{figure}
+
+\paragraph{System identification and Control}
+In \cref{section: interaction_approaches_and_model_iden_methods} various system identification en control methods have been discussed. Some methods are appropriate candidates for a nonholonomic robot and an environment with movable obstacles. The control and system identification methods are not discussed again here, since they have already been discussed in \cref{section: interaction_approaches_and_model_iden_methods}. The system models generated by system identification methods act as forward models or local planners during motion and manipulation planning as discussed in \cref{section: toward_target_pose,section: toward_sequence_target_poses}.\\
+\\
+
+Appropriate candidates for single-body control with system identification methods:
+\begin{itemize}
+    \item \ac{MPC} control and \ac{PEM} \cite{verhaegen_filtering_2007} system identification
+    \item \ac{MPC} control and \ac{IPEM} \cite{seegmiller_vehicle_2013} system identification 
+\end{itemize}
+
+A parameterisable system model improves its model accuracy using the \ac{PEM} (offline) or \ac{IPEM} (online) method, the \ac{MPC} controller however keeps constant parameters such as control horizon and the weight matrices. To have some variation in these constant parameters, the robot has access to multiple \ac{MPC} controllers with various control parameters. \\
+
+Appropriate candidates for multi-body system identification and control are:
+\begin{itemize}
+    \item Reactive \ac{MPC} which requires a single- and multi-body model \cite{toussaint_sequence--constraints_2022}
+    \item \ac{MPC} controller and model fitting a 3D-Gaussian \cite{mericli_push-manipulation_2015}
+    \item \ac{MPPI} controller and uncertainty calibrated forward model \cite{arruda_uncertainty_2017}
+    \item \ac{RMPPI} controller and a \ac{LSTM} \cite{cong_self-adapting_2020}
+\end{itemize}
+
+\paragraph{Motion and Manipulation planning}
+Finding paths between starting and target configurations is performed by a sampling-based method, a double tree $\text{RRT}^*$ search algorithm \cite{chen_fast_2018}, which searches the configuration space for an optimal path toward the target position. A connectivity graph, (initially only the start and target configuration) keeps track of the configurations reachability from the start and target configuration. Randomly sampled samples are compared to some nearest nodes inside the connectivity graph, before adding the newly sampled node, a check is performed by a local planner to validate if constraints are satisfied, if the random sampled configuration is not valid, it is discarded. The connectivity graph grows from the target configuration and the start configuration, when the connectivity graph from start to target is connected a path is found, pseudocode can be found in \cref{pseudocode: rrt_star}.\\
+
+Manipulation planning is similar to motion planning. With motion planning, planning for the robot is performed, with manipulation planning, planning for the objet to push is performed (and the robot is neglected, but kept track of). So manipulation planning only happens as motion planning for the pushable object.\\
+
+The robot configuration is manipulation planning is kept to validate the reachability to newly sampled samples. To elaborate, adding a new sample is accomplished by, sampling a new configuration for the object to manipulate, the sample is placed in configuration space, with a manually tuned metric function samples nearby the new sample are gathered. A local planner validates if these gathered samples are reachable from the new sample. One configuration is reachable from another configuration if for some input and some system model, one configuration becomes the other configuration in a small amount of time (e.g. $<5$ time steps) an example of such a system model is displayed in \cref{equation: differential_equation_differential_robot}. The difference in predictor between motion (single-body predictor) and manipulation planning (multi-body predictor) thus resides in the local planner and where local motion planner requires 2 configurations, manipulation planning  additionally requires at least one robot configuration. To check if 2 configurations are reachable for manipulation planning 2 object configurations and 1 robot configuration is required, if reachable and connected, an extra robot configuration is generated as a result of the local planner, which is needed for checking reachability of future samples, an visual example is displayed in \cref{figure: local_planner_manipulation}. A manipulation path from start to target will have both the objects and the robot's configurations, where the robot configurations only serve the local planner to validate if two object configurations can be connected. Additionally the robot's path should not collide with obstacles, which needs to be checked during planning. \\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/manipulation_local_planner.png}
+    \caption{Local planner connecting 2  cube configurations and generating an new robot configuration}
+    \label{figure: local_planner_manipulation}
+\end{figure}
+
+The $\text{RRT}^*$ algorithm takes a cost for path length into account, resulting in finding the shortest path with infinite samples if a path exists, an additional cost is added if the path overlaps with a movable or unknown obstacle, motivating the algorithm to find a path around unknown or movable obstacles, but to plan through the obstacles planning around is impossible or costs more. If a path overlaps with an obstacle, a subtask is created to first remove the obstacle, and then continue to track the path. \Cref{figure: double_rrt_alg} gives a visual view of the proposed $\text{RRT}^*$ algorithm.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/rrt_with_costs.png}
+    \caption{Schematic view of the proposed double $\text{RRT}^*$ tree taking movable and unknown obstacles into account with cost to reach a sampled configuration displayed.}
+    \label{figure: double_rrt_alg}
+\end{figure}
+
+Note that it remains hard to make predictions on the height of the cost because the object has unknown dynamics, which is why there is a fixed cost for unknown and movable obstacles, unmovable obstacles are captured by the obstacle space. \\
+
+Algorithms \cref{pseudocode: rrt_star} displays the pseudocode for the double $\text{RRT}^*$ algorithm which takes unknown and movable obstacles into account. The following definitions are used by the $\text{RRT}^*$ algorithm. \\
+
+$V$: A set of vertices \\
+\indent $E$: A set of edges\\
+
+The following functions are called by the \cref{pseudocode: rrt_star}.\\ 
+
+\noindent $x_{init}$: Creates a start and target configuration. \\ $NotReachStop$: Returns true if the stopping criteria is not reached. \\ $Sample_{free}$: Creates a random sample in free space, free space includes the movable and unknown obstacles. \\ $Nearest(x, V)$: Finds the nearest vertices using euclidean distance \\ $NearestSet(x, V)$: Find a set of nearest vertices using euclidean distance \\ $Project(x, x')$: Project $x'$ toward $x$ such that it lies close enough to a vertices to be compared using a local planner \\ $CollisionCheck(x)$: returns true if $x$ is in free-space, movable obstacle or unknown obstacle \\  $CostFromInit(x, x')$: Find the total cost from $x$ to the initial vertices via $x'$, cost is determined as a sum of path length and if the path overlaps with movable of unknown objects. \\ $ConstraintsCheck(x, x')$: return true if a local planner is able to connect $x$ and $x'$ using a forward model. \\
+
+\begin{algorithm}[H]
+\caption{Proposed Double tree $\text{RRT}^*$ algorithm taking movable obstacles and constraints into account, edited $\text{RRT}^*$ pseudocode from \cite{chen_fast_2018}}
+\label{pseudocode: rrt_star}
+\begin{algorithmic}[1]
+\State $V \leftarrow x_{init}$
+\While{$NotReachStop$} 
+    \State $Cost_{min} \leftarrow +\infty$
+    \State $x_{rand} \leftarrow Sample_{free}$
+    \State $x_{nearest} \leftarrow Nearest(x_{rand}, V)$
+    \State $x_{temp} \leftarrow Project(x_{nearest}, x_{rand})$
+    \If{$CollisionCheck(x_{temp}) == True$}
+        \State $x_{new} = x_{temp}$
+        \Else
+        \State $Continue$
+    \EndIf
+    \State $X_{near} \leftarrow NearestSet(x_{new}, V) $
+    \For{$x_{near} \in X_{near}$}
+        \If{$CostFromInit(x_{new}, x_{near}) < Cost_{min}$}
+            \If{$ConstraintsCheck(x_{new}, x_{near}) == True $}
+            \State $Cost_{min} \leftarrow CostFromInit(x_{new}, x_{near})$
+            \State $x_{minCost} \leftarrow x_{near}$
+            \EndIf
+        \EndIf
+    \EndFor
+    \If{$Cost_{min} != \infty$}
+        \State $V.add(x_{new})$
+        \State $E.add(x_{minCost}, x_{new})$
+    \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Notation standard}
+For the upcoming \cref{section: hgraph,section: knowledge_graph}, especially for the definitions of the hypothesis and knowledge graph a notation standard is used. A list of hypothesis and knowledge graph related symbols is shown in \cref{table: symbol_list_hgraph}.\\
+
+Subscripts are used to indicate what the variable belongs to. For example, the state variable of the robot is written down as $s_{robot}$. Certain variables indicate the same object, but with different values, this is indicated by different superscripts. For example $s_{robot}^1$ and $s_{robot}^2$ are different states but both indicate the robot's state, formally $||s_{robot}^1-s_{robot}^2|| \neq 0$. $k$ indicates the time step, for example, the state of the robot at time step $k$: $s_{robot}(k)$. For convenience, the time step index is sometimes dropped. \\ 
+
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{p{2cm} l }
+        $k$ & \textrm{time step index}\\
+        $s_{id}(k)$: & \textrm{State}\\
+        $c_{id}(k)$: & \textrm{Configuration}\\
+        $\mathcal{C}_{id}(k)$: & \textrm{configuration set}\\
+        $ob_{id}(k)$: & \textrm{Object}\\
+        $\mathcal{O}_{id}(k):$ & \textrm{Object set}\\
+        $V^{ob}_{id}$: & \textrm{node storing set of objects}\\
+        $V^{conf}_{id}$: & \textrm{node storing set of configurations}\\
+        $V^{\Delta conf}_{id}$: & \textrm{node storing set of configurations and boolean lists}\\
+       $d$: & \textrm{dynamical model}\\
+        $\alpha$: & Success factor\\
+        $\tau_{(i,j)}$: & \textrm{Transition}\\
+        $G^{knowledge}$: & \textrm{knowledge graph}\\
+        $G^{hypothesis}$: & \textrm{hypothesis graph}\\
+        $h$: & \textrm{plan, hypothesis}\\
+        $path$: & \textrm{list of configurations indicating a path, or False}
+   \end{tabular}
+    \caption{List of symbols used in the hypothesis- and knowledge graph, where $id$ is a unique identifier of the object}
+    \label{table: symbol_list_hgraph}
+\end{table}
+
+\input{mainmatter/research_plan/hypothesis_graph}
+
+\input{mainmatter/research_plan/knowledge_graph}
+
+\input{mainmatter/research_plan/benchmark_test}
+
+\section{Discussion}
+\label{section: proposed_method_discussion}
+The general structure of the hypothesis- and knowledge graph have been displayed in \cref{figure: flowchart_hgraph,figure: flowchart_kgraph}, the required components are listed, and benchmark tests display the expected outcome for specific situations and tasks. With a given task the robot will search for an action sequence to complete the task, upon failure of planning, generating new transitions or failure of execution, the robot will retry to find a different path toward completion of the given task. Executed transitions receive feedback which is processed in the knowledge graph. After trying all possibilities without success, the robot concludes it cannot find a solution to the task. \\
+
+\Cref{table: compare_results} compares the expected results with recent literature. As can be seen, only \cite{sabbagh_novin_model_2021} is able to place objects on target positions \textit{and} learn object dynamics, however \cite{sabbagh_novin_model_2021} searches directly in a joint configuration space which is very different approach compared to the proposed solution. The proposed solution theoretically can navigate among movable objects \textit{and} put an object on target location \textit{and} learn object dynamics, which is the main contribution, to combine both 3 with a hierarchical solution.
+
+\begin{table}[H]
+    \centering
+     \rowcolors{2}{white}{myEvenLighterColor}
+    \begin{tabular}{c|c|c|c|c}
+      Citation & \ac{NAMO} & \shortstack[]{Specify object\\target positions} & \text{manipulation} & \shortstack[]{Learns object\\dynamics}\\ \hline
+    \cite{sabbagh_novin_model_2021} & \cmark & \cmark & \shortstack[]{driving, grasp-push,\\grasp-pull} & \cmark\\
+    \cite{wang_affordance-based_2020} & \cmark & \xmark & \shortstack[]{driving, pushing} & 
+    \cmark\\
+    \cite{scholz_navigation_2016} & \cmark & \xmark & \shortstack[]{driving, pushing} & \cmark\\
+    \cite{siciliano_path_2009} & \cmark & \xmark & \shortstack[]{driving,gripping} & \xmark\\
+    \cite{goldberg_asymptotically_2020} & \cmark & \cmark & \shortstack[]{driving,gripping} & \xmark\\
+    
+    proposed solution & \cmark & \cmark & \shortstack[]{driving, pushing} & \cmark\\
+    \end{tabular}
+    \caption{Comparing the proposed method to recent literature}
+    \label{table: compare_results}
+\end{table}
+
+
