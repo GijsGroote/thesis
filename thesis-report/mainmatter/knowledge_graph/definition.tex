@@ -31,11 +31,17 @@ Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side
 
 Now the \ac{kgraph} is defined, lets investigate an example.\bs
 
-\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterizations. Estimating which parameterization would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterizations can be suggested with the goal of collecting feedback on them. Or even suggest a parameterization based on the feedback on other parameterizations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.
+\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterizations. Estimating which parameterization would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterizations can be suggested with the goal of collecting feedback on them. Or even suggest a parameterization based on the feedback on other parameterizations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.\bs
 
+
+$\textrm{success\_factor} = $
 \[
-\begin{cases} \left(0.5-\epsilon_{\textrm {avg}}\right)^{1-\frac{N_\textrm{success}}{N_\textrm{fails}+ N_\textrm{success}}} & \textrm { if } \epsilon_{\textrm {avg }}<0.4 \\ 0.1^{1-\frac{N_\textrm{success}}{N_\textrm{success}+N_\textrm{fails}}} & \textrm{ if } \epsilon_{\textrm{avg}} \geq 0.4 \end{cases}
+  \begin{cases} 0.1^{\epsilon_{\textrm {avg}}}& \textrm { if edge does not yet exist in \ac{kgraph}}\\ 
+    &\\
+  \textrm{success\_factor} + 0.1*(1-\textrm{success\_factor}) & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge was succesfully completed}}\\
+    &\\
+  \textrm{success\_factor} - 0.1*\textrm{success\_factor} & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge failed}}
+\end{cases}
 \]
 
-\todo[inline]{Write a paragraph on how to query the Kgraph}
-\todo[inline]{Write a paragraph on how to push action feedback to the kgraph}
+The \ac{kgraph} has 3 important functions. The \textit{add\_object} function adds object information to the \ac{kgraph}, important for adding unmovable obstacles that cannot be manipulated by the robot. The \textit{add\_review} function is used when an edge successfully completed or failed, the corresponding node in the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs

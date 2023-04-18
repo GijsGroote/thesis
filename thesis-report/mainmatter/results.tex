@@ -1,7 +1,6 @@
 \chapter{Results}%
 \label{chap:results}
-\textit{This chapter presents the test results that test and challenge the proposed method. Three types of test are introduced which are custom made benchmark tests, randomization tests and test taken including and excluding the \ac{kgraph}. The test results provide evidence that support the effectiveness of the proposed method. This chapter starts by introducing \textbf{method metrics} that indicate how a task has been executed by the proposed method in \Cref{sec:proposed_method_metrics}. Then the three types of test are presented in \Cref{sec:benchmark_tests,sec:randomisation,sec:kgraph_on_off}. A comparison is made with the state-of-the-art methods in \Cref{sec:compare_with_related_papers}, the chapter is finalized with a discussion about the results in \Cref{sec:discussion}.\bs}
-\todo[inline]{update intro above}
+\textit{This chapter presents the test results that test and challenge the proposed method. Three types of test are introduced which are custom made benchmark tests, randomization tests and test taken including and excluding the \ac{kgraph}. The test results provide evidence that support the effectiveness of the proposed method. This chapter starts by introducing \textbf{method metrics} that indicate how a task has been executed by the proposed method in \Cref{sec:proposed_method_metrics}. A comparison is made with the state-of-the-art methods in \Cref{sec:compare_with_related_papers}, the chapter is finalized with a discussion about the results in \Cref{sec:discussion}.\bs}
 
 \paragraph{The Simulation Environment}
 Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standard TU Delft laptop: HP ZBook Studio x360 G5, running OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
@@ -27,11 +26,21 @@ task completion time =\newline run time + planning time& If equal tasks are give
 \caption{Proposed method metrics used to compare the proposed method with the state-of-the-art methods.}\label{table:proposed_method_metrics}
 \end{table}
 
+Four system models are used for testing. The goal of this thesis is not to find optimal control, or to model the environment very accurately. The goal is to select the best combination of controller and system model in the available set of controllers and system models. Only a short textual description of the available system models is provided below.\bs
+ 
 
-\todo[inline]{define nonlinear-drive-model}
-\todo[inline]{define lti-drive-model}
-\todo[inline]{define nonlinear-push-model-2}
-\todo[inline]{define nonlinear-push-model-2}
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+   >{\raggedright\arraybackslash}p{0.65\textwidth}}
+\textit{lti-drive-model} & A second order \ac{LTI} model that can be used by both the \ac{MPC} and the \ac{MPPI} drive controller.\\
+\textit{nonlinear-push-model-1} & A nonlinear model describing the next robot configurations in \gls{x} and \gls{y}, and the obon in \gls{x}, \gls{y} and \gls{theta}.\\
+\textit{nonlinear-push-model-2} & A nonlinear model describing the next robot configurations in \gls{x} and \gls{y}, and the object configuration in \gls{x} and \gls{y}.\\
+\end{tabular}
+\caption{Available drive and push system models used for testing.}\label{table:available_system_models}
+\end{table}
 
 % \section{Benchmark Tests}%
 % \label{sec:benchmark_tests}
@@ -193,7 +202,7 @@ Now the \ac{halgorithm} is tasked with pushing a single object toward a target c
     \label{fig:random_push_with_without_kgraph}
 \end{figure}
 
-Initially the randomly selected controller had a lower execution time compared to solving the same task with \ac{kgraph}. After a single task of experience, the \ac{halgorithm} with \ac{kgraph} prefers to use the \ac{MPPI} controller with nonlinear model 2. Resulting in solving a pushing task in under 15 seconds of execution time. 
+Initially the randomly selected controller had a lower execution time compared to solving the same task with \ac{kgraph}. After a single task of experience, the \ac{halgorithm} with \ac{kgraph} prefers to use the \ac{MPPI} controller with \textit{nonlinear-model-2}. Resulting in solving a pushing task in under 15 seconds of execution time. 
 
 % \section{Knowledge Graph On/Off}%
 % \label{sec:kgraph_on_off}

@@ -1,6 +1,6 @@
 \chapter{Conclusions}%
 \label{chap:conclusion}
-\textit{This chapter todo A.\bs}
+\textit{This chapter answers the main and sub research questions. By refering to previously drawn conclusions and insights evidence is provided for that supports the answers to the main and sub research questions.\bs}
 
 Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5\baselineskip}\\
 \textit{\indent\quotes{How do objects' system models learn by a nonprehensile manipulation robot during task \\ \indent execution improve global task planning?}}\vspace{\baselineskip}
@@ -8,19 +8,31 @@ Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5
 \noindent Before answering the main research question, the two research subquestions are answered.\vspace{\baselineskip}
 
 \noindent Recall \hyperref[researchsubquestion:does_it_work]{first research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\indent\quotes{How does a backward search~\cite{krontiris_dealing_2015} while remembering interactions with unknown objects compare to\\\indent not remembering learning interactions over time?}}\vspace{0.5\baselineskip}
+\textit{\indent\quotes{Can the proposed method combine learning and planning for push en drive applications with a technique known as backward search?}\vspace{0.5\baselineskip}}
+\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed method. A quick summary, the \ac{halgorithm} searches in the joint-configuration space. A search directly in joint configuration space is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The \ac{halgorithm} searches from the target configuration toward the current configuration, also known as a backward search. The backward search can be seen in action in \Cref{fig:robot_push_hgraph}. Newly gained environmental knowledge is stored in the \ac{kgraph}, that firstly holds information on objects and if they can be manipulated, and secondly holds information on how it can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
 
-\noindent The backwards search technique used by the hypothesis graph has been shown to successfully handle uncertain action sequences toward task completion. Replanning occurs when edges fail to complete. To obtain a clear overview of the effect of the learned system model, the effectiveness of the hgraph has been monitored over time in various metrics. Two cases have been researched, task execution whilst remembering interaction in the knowledge graph versus task execution without a knowledge graph. The main difference was the time difference because the system identification procedure was executed for every edge in the no KGraph case. Another difference was spotted, over time the KGraph case generates hypotheses which completed more often compared to the no KGraph case. \vspace{\baselineskip}
+The entire system that consists of the \ac{halgorithm}, \ac{hgraph} and the \ac{kgraph} working together, the smallest component is an edge. The \ac{halgorithm} initializes an action edge an prepares it for execution (see action edge status, \Cref{tikz:status_action_edge}). In an action edge the following components are grouped: path estimation, planning and execution. Involving the corresponding system identification edge involves system identification that can be seen in \Cref{fig:blocking_obj_hgraph}. The \ac{kgraph} suggest actions in the form of edge parameteristaions, the effect can clearly be seen in \Cref{fig:random_push_with_without_kgraph,fig:results_random_drive_task} where as an effect of suggested actions, the execution time drops as a result of selecting a better edge parameterisation candidate. To answer the sub research question, object system model improve global task planning in two ways. First by assisting the planner and preventing the creation of unfeasible paths. The system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating a unfeasible path. Secondly, system model that capture the system more accurately yield better controllers. Find that in \Cref{fig:random_push_with_without_kgraph} two \ac{MPPI} controllers are compared in the \ac{kgraph}, the controller using the nonlinear-push-model-2 is preverred over time and yields faster execution times compared to the \ac{MPPI} controller with nonlinear-push-model-1.\bs
 
+Thus the learned system models improve planning and control design that can supported by the lower execution times for task execution.\bs
 
 \noindent Recall the \hyperref[researchsubquestion:does_it_compare]{second research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\quotes{Can the proposed method combine learning and planning for push en drive applications? Can the proposed method complete tasks, and how does it compare against the state of the art?}}\vspace{0.5\baselineskip}
+\textit{\quotes{Can the proposed method combine learning and planning for push en drive applications? Can the proposed method complete tasks, and how does it compare against the state-of-the-art?}}\vspace{0.5\baselineskip}
+
+\todo[inline]{Compare tho the state ofth arte here}
 
 The proposed hypothesis graph with the associated knowledge graph was able to perform as well or better compared to the state of the art. The proposed method was tested against existing methods which only a subset of tasks, or 2 of the 3 topics. In comparison with with\cite{sabbaghnovin_model_2021} the proposed method was shown to perform similarly in prediction errors, and final displacement error. The proposed method is not designed to optimize a global plan, thus unnecessary driving and pushing can occur. 
 \vspace{\baselineskip}
 
+
+
+
+
+
+
 \todo[inline]{anser the main research question}
-Now the main question can be answered...
+Now the main question can be answered. 
+
+Thus the learned system models improve planning and control design that can supported by the lower execution times for task execution.\bs
 
 \section{Future work}%
 \label{sec:future_work}

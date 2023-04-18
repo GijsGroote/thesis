@@ -1,11 +1,12 @@
 \section{Knowledge Graph}%
 \label{sec:kgraph}
-The \ac{hgraph} discussed in previous section has a lifetime that spans over a single task, learned system models are not stored for \ac{hgraph} that are created for future tasks. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor, a metric that combines multiple metrics such as prediction error, tracking error and the success-fail ratio of a edge parameterization (controller and system model). 
+The \ac{hgraph} discussed in previous section has a lifetime that spans over a single task, learned system models are not stored for \ac{hgraph} that are created for future tasks. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor, a metric that combines multiple metrics such as prediction error, tracking error and the success-fail ratio of a edge parameterization (controller and system model).\bs
 
-\todo[inline]{explainer of the name \ac{kgraph}, Gijs: this is still an open question: Is the name "knowledge graph" correctly chosen? Some comments are that is it misleading because it hints to a knowledge base for which standarts are set. The knowledge graph does not follow these standarts. It is more an ordered list of edge reviews that are bound to a single object.}
+The name \quotes{\acl{kgraph}} originates from the environmental knowledge it contains, and its graph structure. Both the \ac{hgraph} and \ac{kgraph} are newly proposed methods build from the ground up, with only inspiration from an already existing technique, a backward search. The \ac{kgraph} does not adhere to any standard that may apply to standardized knowledge bases.\bs
 
 \input{mainmatter/knowledge_graph/definition}
 \input{mainmatter/knowledge_graph/example}
 \input{mainmatter/knowledge_graph/metrics}
 
-\todo[inline]{GIJS: hey, the conclusion for the kgraph is still missing!}
+The \ac{kgraph} fulfills two goals. It stores information whether an object an be manipulated, and stores an ordered list from most successful control and system model combination to least successful per object. Information if objects can be manipulated prevent hypothesis from trying to push unmovable objects. A list of most successful control and system model combinations will suggest the best possible combination to fulfill the drive of pushing action.\bs
+
