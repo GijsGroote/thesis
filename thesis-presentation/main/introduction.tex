@@ -1,4 +1,3 @@
-
 \begin{frame}[fragile]{Thesis Goal} % some commands, e.g. \verb require [fragile]
 \begin{itemize}
   \item Learning System Models\\%\pause, <-- put these in here later
@@ -7,51 +6,49 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Joint Configuration Space}
-  \todo{make  slide}
+\begin{frame}[fragile]{Robot Environment} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{figures/introduction/2_pushes_to_freedom}
+\end{center}
+\end{frame}
 
+
+\begin{frame}[fragile]{Joint Configuration Space}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/introduction/2_pushes_to_freedom_robot_conf_space}\vspace{2mm}
+\includegraphics[width=0.6\textwidth]{figures/introduction/2_pushes_to_freedom_box_conf_space}
+\end{center}
 \end{frame}
 
 
 \begin{frame}[fragile]{Research Question}
-  \todo{make  slide}
+\large
+How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time?\bs
 
+\textbf{Research Subquestions:}
+\begin{enumerate}
+  \item Can the proposed method combine learning and planning for push en drive applications with a technique known as backward search?\\
+  \item How do learning system models and remembering interactions compare to only learning system models? And, how does the proposed method compare against the state-of-the-art?
+\end{enumerate}
 \end{frame}
-
 
 \begin{frame}[fragile]{State-of-The-Art}
-
 \begin{table}[H]
   \centering
-  % \rowcolors{2}{white}{myEvenLighterColor}
   \begin{tabular}
-  % {>{\raggedright\arraybackslash}p{2.0cm}%
-  %   >{\raggedright\arraybackslash}p{1.5cm}%
-  %   >{\raggedright\arraybackslash}p{1.8cm}%
-  %   >{\raggedright\arraybackslash}p{1.8cm}%
-  %   >{\raggedright\arraybackslash}p{1.8cm}%
-  %   >{\raggedright\arraybackslash}p{1.9cm}}
-  {>{\raggedright\arraybackslash}p{1.0cm}%
-    >{\raggedright\arraybackslash}p{1.0cm}%
-    >{\raggedright\arraybackslash}p{1.0cm}%
-    >{\raggedright\arraybackslash}p{1.0cm}%
-    >{\raggedright\arraybackslash}p{1.0cm}%
-    >{\raggedright\arraybackslash}p{1.0cm}}
-    % Author & Citation & Learns\newline object\newline dynamics & \ac{NAMO} & Specify object target positions & Object\newline Manipulation\\
-    % \citeauthor{ellis_navigation_2022} &\cite{ellis_navigation_2022} & \cmark& \cmark& \xmark& pushing\\
-    % \citeauthor{sabbaghnovin_model_2021} &\cite{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
-    % \citeauthor{scholz_navigation_2016} &\cite{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
-    % \citeauthor{vega-brown_asymptotically_2020} &\cite{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\
-    % \citeauthor{wang_affordancebased_2020} &\cite{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
-    Groote & proposed solution &  \xmark/\cmark& \cmark& \cmark& pushing\\
+  {>{\raggedright\arraybackslash}p{2.0cm}%
+    ccc%
+    >{\raggedright\arraybackslash}p{2.5cm}}
+    Author &  Learning & NAMO & Object to Target & Manipulation\\[2mm]
+    \citeauthor{ellis_navigation_2022}  &\cmark& \cmark& \xmark& pushing\\
+    \citeauthor{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
+    \citeauthor{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
+    \citeauthor{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\[2mm]
+    \citeauthor{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
+    Groote & ? & ? & ? & pushing\\
   \end{tabular}
-  \caption{Overview of 3 topics in recent literature and their object manipulation, where \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The proposed method shows \xmark/\cmark for learning system dynamics because it proposes system identification to generate a system model, however for the implementation an hardcoded system model is used.}%
 \end{table}
 \end{frame}
-
-
-
-
 
 \begin{frame}[fragile]{Robot Environment}
   \todo{make slide}

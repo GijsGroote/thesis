@@ -1,4 +1,41 @@
 
-\begin{frame}[fragile]{Example frame 1} % some commands, e.g. \verb require [fragile]
-  resuts slide
+\begin{frame}[fragile]{Results: Randomisation Drive Task} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{figures/results/random_drive_execution_times}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Results: Randomisation Drive Task} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{figures/results/random_drive_with_without_kgraph}
+\end{center}
+\end{frame}
+\begin{frame}[fragile]{Results: Randomisation Push Task} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{figures/results/random_push_execution_times}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Results: Randomisation} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{figures/results/random_push_with_without_kgraph}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Results} % some commands, e.g. \verb require [fragile]
+\begin{table}[H]
+  \centering
+  \begin{tabular}
+  {>{\raggedright\arraybackslash}p{2.0cm}%
+    ccc%
+    >{\raggedright\arraybackslash}p{2.5cm}}
+    Author &  Learning & NAMO & Object to Target & Manipulation\\[2mm]
+    \citeauthor{ellis_navigation_2022}  &\cmark& \cmark& \xmark& pushing\\
+    \citeauthor{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
+    \citeauthor{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
+    \citeauthor{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\[2mm]
+    \citeauthor{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
+    Groote & \xmark/\cmark & \cmark & \cmark & pushing\\
+  \end{tabular}
+\end{table}
 \end{frame}

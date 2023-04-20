@@ -1,78 +1,15 @@
-% !TeX document-id = {2870843d-1baa-4f6a-bd0a-a5c796104a32}
-% !BIB TS-program = biber
-% !TeX encoding = UTF-8
-% TU Delft beamer template
-
+% created by Gijs Groote, May 2023.
 
 \documentclass[aspectratio=43]{beamer}
+% import packages, create commands
+\input{packages} 
 
 
 
-\usepackage[english]{babel}
-\usepackage{csquotes}
-\usepackage{calc}
-\usepackage[absolute,overlay]{textpos}
-\usepackage{graphicx}
-\usepackage{subfig}
-\usepackage{mathtools}
-\usepackage{amsfonts}
-\usepackage{amsthm}
-\usepackage{siunitx}
-\usepackage{MnSymbol,wasysym}
-\usepackage{array}
-\usepackage{qrcode}
-\usepackage{tabularx}
-
-
-\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
-
-\usepackage{pifont}
-\newcommand{\cmark}{\textcolor{green}{\ding{51}}}%
-\newcommand{\xmark}{\textcolor{red}{\ding{55}}}%
-
-\definecolor{myEvenLighterColor}{RGB}{231, 231, 255}
-
-% you can remove todonodes if its not used any more
-\usepackage{todonotes}
-\let\todox\todo
-\setlength{\marginparwidth}{2cm} 
-\renewcommand\todo[1]{\todox[inline]{#1}}
-
-
-\setbeamertemplate{navigation symbols}{} % remove navigation symbols
-\mode<presentation>{\usetheme[verticalbar=false]{tud}}
-
-% BIB SETTINGS
-\usepackage[
-    style=authoryear,
-    backend=biber,
-    maxcitenames=1,
-    uniquelist=false,
-    url=false,
-]{biblatex}
-
-\addbibresource{citations.bib}
-\setlength\bibitemsep{0.3cm} % space between entries in the reference list
-\renewcommand{\bibfont}{\normalfont\scriptsize}
-\setbeamerfont{footnote}{size=\tiny}
-\renewcommand{\cite}[1]{\footnote<.->[frame]{\fullcite{#1}}}
-\setlength{\TPHorizModule}{\paperwidth}
-\setlength{\TPVertModule}{\paperheight}
-
-\newcommand{\absimage}[4][0.5,0.5]{%
-	\begin{textblock}{#3}%width
-		[#1]% alignment anchor within image (centered by default)
-		(#2)% position on the page (origin is top left)
-		\includegraphics[width=#3\paperwidth]{#4}%
-\end{textblock}}
-
-\newcommand{\mininomen}[2][1]{{\let\thefootnote\relax%
-	\footnotetext{\begin{tabular}{*{#1}{@{\!}>{\centering\arraybackslash}p{1em}@{\;}p{\textwidth/#1-2em}}}%
-#2\end{tabular}}}}
 
 \title[]{A Graph-Based Search Approach to Planning and Learning}
 \institute[]{Delft University of Technology, The Netherlands}
-\author{G.S Groote\\{\textit{Supervisors:\\ (daily)\\} C. Pezzato\\ M. Wisse\\ C. Smith}}
+\author[Gijs]{\Large G.S. Groote\\[5mm]{\small Supervisors: C. Pezzato\\ \hspace{15.5mm} M. Wisse\\ \hspace{15mm} C. Smith}}
 \date{\today}
 
 \begin{document}
@@ -83,9 +20,10 @@
 \frame{\titlepage}}
 
 \input{main/introduction}
+\input{main/required_background}
 \input{main/proposed_method}
 \input{main/results}
-\input{main/example_slides}
+% \input{main/example_slides}
 
 \end{document}
 

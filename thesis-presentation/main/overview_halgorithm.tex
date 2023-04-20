@@ -1,10 +1,6 @@
-\newpage
-\vspace*{-1.2cm}
-\hspace{-1.2cm}
-\begin{minipage}{10cm}
-\begin{figure}[H] 
-\centering
-\begin{tikzpicture}]
+\vspace{0.3cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.3, every node/.style={scale=0.3}, node distance = 2cm, auto]
   [node distance = 3cm] 
 
     % Nodes
@@ -164,10 +160,4 @@
     \path[line] (target_node_reached.west) -- node[above] {yes} (end.east);
 
 \end{tikzpicture}
-% \vspace{-5cm}
-\caption{Flowchart displaying the hypothesis graph's workflow.}%
-\label{tikz:flowchart_hgraph}% 
-\end{figure}
-
-\end{minipage}
-\newpage
+\end{center}
