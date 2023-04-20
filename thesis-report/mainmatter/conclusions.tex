@@ -1,44 +1,40 @@
 \chapter{Conclusions}%
 \label{chap:conclusion}
-\textit{This chapter answers the main and sub research questions. By refering to previously drawn conclusions and insights evidence is provided for that supports the answers to the main and sub research questions.\bs}
+\textit{This chapter answers the main and sub research questions. By referring to previously drawn conclusions and insights evidence is provided that supports the answers to the main and sub research questions.\bs}
+
+First, the two research subquestions are answered. Recall \hyperref[researchsubquestion:does_it_work]{first research subquestion}:\vspace{0.5\baselineskip}\\
+\textit{\quotes{Can the proposed method combine learning and planning for push en drive applications with a technique known as backward search?}\vspace{0.5\baselineskip}}\bs
+
+\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed method. It has been shown that the proposed method that consists of the \ac{halgorithm}, the \ac{hgraph} and the \ac{kgraph} work together can combine learning and planning with the technique of backward search. The proposed method searches in the joint-configuration space. A search directly in joint configuration space would result in the curse of dimensionality and is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The structure of the \ac{hgraph} is used to enforce the backward search technique, in which the \ac{halgorithm} searches from the target configuration toward the start configuration. The backward search can be seen in action in \Cref{fig:robot_push_hgraph}. Newly gained environmental knowledge is stored in the \ac{kgraph}, which firstly holds information on objects and if they can be manipulated, and secondly holds information on how they can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
+
+Recalling the second research subquestion, subquestion \hyperref[researchsubquestion:does_it_compare]{second research subquestion}:\vspace{0.5\baselineskip}\\
+\textit{\quotes{Can the proposed method combine learning and planning for push en drive applications? Can the proposed method complete tasks, and how does it compare against the state-of-the-art?}}\vspace{0.5\baselineskip}\bs
+
+
+The proposed method was able to perform as well, better or worse compared to the state-of-the-art, depending on which metric is taken into account. The proposed method was tested against existing methods which only combine a subset of the 3 main topics that the proposed method combines. 
+The results discussed in \Cref{chap:results} are compared to the state-of-the-art papers in \Cref{sec:compare_with_related_papers}. Five state-of-the-art papers are used to compare against the proposed method. In the comparison success rate, planning time, execution time and several calls to the planner are used to compare. From the results, it can be concluded that the proposed method learns relatively fast (prediction error comparison with~\cite{wang_affordancebased_2020}). The proposed method can complete all of its assigned subtasks, giving it a comparable success rate to the state-of-the-art (success rate comparison with~\cite{ellis_navigation_2022}). This thesis does not have small prediction errors or low final position errors, it can be seen that the prediction errors are worse compared to the state-of-the-art (final position errors comparison with~\cite{sabbaghnovin_model_2021}). \bs
+
+The proposed method improves upon the state-of-the-art exactly in its field of focus, improving task execution over time. It has been shown to learn faster compared to the state-of-the-art. Especially when the same or similar task is given to solve multiple times. Execution and planning times are equal or improved compared to the state-of-the-art. Lastly, prediction errors and final position errors are mainly worse compared to the state-of-the-art, which can be improved by better-designed controllers and more accurate system models. 
+
 
 Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5\baselineskip}\\
 \textit{\indent\quotes{How do objects' system models learn by a nonprehensile manipulation robot during task \\ \indent execution improve global task planning?}}\vspace{\baselineskip}
 
-\noindent Before answering the main research question, the two research subquestions are answered.\vspace{\baselineskip}
-
-\noindent Recall \hyperref[researchsubquestion:does_it_work]{first research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\indent\quotes{Can the proposed method combine learning and planning for push en drive applications with a technique known as backward search?}\vspace{0.5\baselineskip}}
-\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed method. A quick summary, the \ac{halgorithm} searches in the joint-configuration space. A search directly in joint configuration space is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The \ac{halgorithm} searches from the target configuration toward the current configuration, also known as a backward search. The backward search can be seen in action in \Cref{fig:robot_push_hgraph}. Newly gained environmental knowledge is stored in the \ac{kgraph}, that firstly holds information on objects and if they can be manipulated, and secondly holds information on how it can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
-
-The entire system that consists of the \ac{halgorithm}, \ac{hgraph} and the \ac{kgraph} working together, the smallest component is an edge. The \ac{halgorithm} initializes an action edge an prepares it for execution (see action edge status, \Cref{tikz:status_action_edge}). In an action edge the following components are grouped: path estimation, planning and execution. Involving the corresponding system identification edge involves system identification that can be seen in \Cref{fig:blocking_obj_hgraph}. The \ac{kgraph} suggest actions in the form of edge parameteristaions, the effect can clearly be seen in \Cref{fig:random_push_with_without_kgraph,fig:results_random_drive_task} where as an effect of suggested actions, the execution time drops as a result of selecting a better edge parameterisation candidate. To answer the sub research question, object system model improve global task planning in two ways. First by assisting the planner and preventing the creation of unfeasible paths. The system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating a unfeasible path. Secondly, system model that capture the system more accurately yield better controllers. Find that in \Cref{fig:random_push_with_without_kgraph} two \ac{MPPI} controllers are compared in the \ac{kgraph}, the controller using the nonlinear-push-model-2 is preverred over time and yields faster execution times compared to the \ac{MPPI} controller with nonlinear-push-model-1.\bs
-
-Thus the learned system models improve planning and control design that can supported by the lower execution times for task execution.\bs
-
-\noindent Recall the \hyperref[researchsubquestion:does_it_compare]{second research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\quotes{Can the proposed method combine learning and planning for push en drive applications? Can the proposed method complete tasks, and how does it compare against the state-of-the-art?}}\vspace{0.5\baselineskip}
-
-\todo[inline]{Compare tho the state ofth arte here}
-
-The proposed hypothesis graph with the associated knowledge graph was able to perform as well or better compared to the state of the art. The proposed method was tested against existing methods which only a subset of tasks, or 2 of the 3 topics. In comparison with with\cite{sabbaghnovin_model_2021} the proposed method was shown to perform similarly in prediction errors, and final displacement error. The proposed method is not designed to optimize a global plan, thus unnecessary driving and pushing can occur. 
-\vspace{\baselineskip}
-
-
-
-
-
-
-
-\todo[inline]{anser the main research question}
-Now the main question can be answered. 
-
-Thus the learned system models improve planning and control design that can supported by the lower execution times for task execution.\bs
+The main research question can be answered in multiple ways. Mostly because object system models and environmental knowledge improves task execution in multiple ways. A classification of an object that is movable or unmovable improves affordance. Probabilistic action sequences that involve pushing unmovable objects cannot occur when object classification is present. Some (not all) system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating an unfeasible path. Thus System models improve paths found by the motion or manipulation planner, this conclusion remains unproven since the evidence is not provided. Lastly, system models in combination with a controller (and edge parameterization) improve task execution in many metrics. For which evidence is proved for metrics prediction error and execution time in \Cref{chap:results}.\bs
 
 \section{Future work}%
 \label{sec:future_work}
-\todo[inline]{how could the closed-world assumption be removed to resample the real world more?}
-\todo[inline]{how could the perfect object sensor assumption be removed to resample the real world more?}
-\todo[inline]{how could the task as commutative assumption be removed to resample the real world more?}
-\todo[inline]{how could the objects do not tip over assumption be removed to resample the real world more?}
-\todo[inline]{The hgraph could think of new hypotheses during execution time if it would operate async, which would greatly improve it.}
+Possible extensions to the proposed method and improvements on the proposed method are grouped in this section.\bs
 
+\subsection{Removing Assumptions}
+Every assumption taken in \Cref{chap:introduction} serves to simplify the problem and to narrow the scope of this thesis. They can however all be removed. Starting with assumption \hyperref[assumption:closed_world]{\textbf{closed-world assumption}}, without this assumption the proposed method must be much more robust. The proposed method can with the help of this assumption conclude many conclusions deterministically. Examples are the feedback on edges and the classification of an object as unmovable or movable. In real-world applications unmovable objects can become movable, to make the transition toward removing the closed-world assumption the proposed method must be converted to a probabilistic variant.\bs
+
+Moving from simulation toward the real world must remove the \hyperref[assumption:perfect_object_sensor]{\textbf{perfect object sensor assumption}}. Sensors and sensor fusion is required to estimate the configuration of the robot itself and objects in the environment. A start is to test the proposed method with noise added to the perfect sensor.\bs
+
+The \hyperref[assumption:order_does_not_matter]{\textbf{tasks are commutative assumption}} assumption makes it possible to randomly select a subtask without influencing the feasibility of the task. Removing this assumption can require an additional rearrangement algorithm~\cite{krontiris_dealing_2015} to be run to determine a feasible order of handling subtasks.\bs
+
+The \hyperref[assumption:no_tipping]{\textbf{objects do not tip over assumption}} prevents objects from tipping over, but at the same time limits the number of objects. There are many possibilities to handle tipped objects. First, adding a tipping detector can detect when an object has tipped over. Then the proposed method can threaten the objects as a new object and reclassify it. Another method would be a dedicated subroutine to place it in an upright position.\bs
+
+%
+% \todo[inline]{The hgraph could think of new hypotheses during execution time if it would operate async, which would greatly improve it.}
+% \todo[inline]{\cite{krontiris_dealing_2015} This thing could be calculated before everything, check the backward search you've commented out entirely}

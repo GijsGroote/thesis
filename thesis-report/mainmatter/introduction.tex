@@ -69,14 +69,13 @@ The most relevant work for local optimal~\cite{sabbaghnovin_model_2021} and hier
     >{\raggedright\arraybackslash}P{1.9cm}}
     Author & Citation & Learns\newline object\newline dynamics & \ac{NAMO} & Specify object target positions & Object\newline Manipulation\\
     \citeauthor{ellis_navigation_2022} &\cite{ellis_navigation_2022} & \cmark& \cmark& \xmark& pushing\\
-    \citeauthor{krontiris_dealing_2015} &\cite{krontiris_dealing_2015} & \xmark& \cmark& \cmark& gripping\\
     \citeauthor{sabbaghnovin_model_2021} &\cite{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
     \citeauthor{scholz_navigation_2016} &\cite{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
     \citeauthor{vega-brown_asymptotically_2020} &\cite{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\
     \citeauthor{wang_affordancebased_2020} &\cite{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
-    Groote & proposed solution &  \cmark& \cmark& \cmark& pushing\\
+    Groote & proposed solution &  \xmark/\cmark& \cmark& \cmark& pushing\\
   \end{tabular}
-  \caption{Overview of 3 topics in recent literature and their object manipulation, where \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation.}%
+  \caption{Overview of 3 topics in recent literature and their object manipulation, where \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The proposed method shows \xmark/\cmark for learning system dynamics because it proposes system identification to generate a system model, however for the implementation an hardcoded system model is used.}%
   \label{table:sota_and_3_topics}
 \end{table}
 
