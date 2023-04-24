@@ -50,18 +50,22 @@ How do learned objects' system models improve global task planning for a robot w
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Robot Environment}
-  \todo{make slide}
-
-\end{frame}
-
 \begin{frame}[fragile]{Assumptions}
-  \todo{make slide}
 
+  \begin{block}{}
+\begin{enumerate}
+  \item \textbf{Closed-World Assumption:} Objects are manipulated, directly or indirectly only by the robot. Objects cannot be manipulated by influences from outside the environment.\\
+\item\textbf{Perfect Object Sensor Assumption:} the robot has full access to the poses and geometry of all objects in the environment at all times.\\
+\item\textbf{Tasks are Commutative Assumption:} Tasks consist of multiple objects with specified target positions. The order in which objects are pushed toward their target position is commutative.\\
+\item\textbf{Objects do not tip over Assumption:} Movable objects slide if pushed.\\
+\end{enumerate}
+\end{block}
 \end{frame}
-
 
 \begin{frame}[fragile]{Task Specification}
-  \todo{make  slide}
+\[\text{task} = \left\langle Ob_{task}, C_{targets} \right\rangle\]
 
+where $Ob_{task} = (ob_1, ob_2, ob_3, \dots, ob_k) \subset Ob$\bs
+
+$C_{target} = (c_1, c_2, c_3, \dots c_k)$ and $k>0$.\bs
 \end{frame}

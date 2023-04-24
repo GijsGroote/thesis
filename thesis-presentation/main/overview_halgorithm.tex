@@ -1,20 +1,20 @@
 \vspace{0.3cm}
 \begin{center}
-\begin{tikzpicture}[scale=0.3, every node/.style={scale=0.3}, node distance = 2cm, auto]
+\begin{tikzpicture}[scale=0.2, every node/.style={scale=0.2}, node distance = 2cm, auto]
   [node distance = 3cm] 
 
     % Nodes
-    \node [block, fill=yellow!50, line width=2pt, dashed] (first) {Create Start and Target Nodes};
+  \node [block, fill=yellow50, line width=2pt, dashed] (first) {Create Start and Target Nodes};
     
     % legend
     \node[text width=2.8cm, yshift=0.6cm, right of=first, node distance=7cm, text centered, rounded corners, minimum height=1em, label={[name=lab, yshift=0.4cm, left]\textbf{Legend}}] (legend1) {\small Update KGraph};
-    \node[rectangle, draw, left of=legend1, fill=green!50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend1color) {};
+    \node[rectangle, draw, left of=legend1, fill=green50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend1color) {};
     
     \node[text width=2.8cm, below of=legend1, text centered, minimum height=1em, node distance=0.7cm] (legend2) {\small Query KGraph};
-    \node[rectangle, draw, left of=legend2, fill=red!40, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend2color) {};
+    \node[rectangle, draw, left of=legend2, fill=red40, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend2color) {};
    
     \node[text width=2.8cm, below of=legend2, text centered, minimum height=1em, node distance=0.7cm] (legend3) {\small Update C-Space};
-\node[rectangle, draw, left of=legend3, fill=yellow!50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend3color) {};
+\node[rectangle, draw, left of=legend3, fill=yellow50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend3color) {};
     
     \node[text width=2.8cm, below of=legend3, text centered, minimum height=1em, node distance=0.7cm] (legend4) {\small action in HGraph};
     \node[rectangle, draw, left of=legend4, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm, line width=2pt, dashed] (legend4color) {};
@@ -29,8 +29,8 @@
     \node [block, above of=subtasks, node distance=2.8cm] (no_solution_found) {Task Finished};
     
     % nodes, Knowledge available
-    \node [decision, fill=red!40, below of=path_existence, node distance=3.2cm, inner sep=0.5mm] (know_avail) { Knowledge Available };
-    \node [decision, fill=red!40, right of=know_avail, node distance=3.5cm, inner sep=0.5mm] (know_good) {Knowledge Usable};
+    \node [decision, fill=red40, below of=path_existence, node distance=3.2cm, inner sep=0.5mm] (know_avail) { Knowledge Available };
+    \node [decision, fill=red40, right of=know_avail, node distance=3.5cm, inner sep=0.5mm] (know_good) {Knowledge Usable};
     \node [decision, right of=know_good, node distance=3.5cm, text width=1.7cm] (movable) {\vspace{0.1cm}\shortstack[]{Object\\Movable}};
     \node [block, left of=know_avail, node distance=3cm, line width=2pt, dashed] (impossible) {Unfeasible Node};
     
@@ -62,7 +62,8 @@
     \node [decision, below of=motion_planning, node distance=4.0cm, line width=2pt, dashed] (global_path) {Path to Target}; 
 1   \node [decision, right of=global_path, node distance=7.4cm, line width=2pt, dashed] (first_action) {First Action Planned};
 
-    \node [decision, right of=first_action, diagonal fill={yellow!50}{green!50}, node distance=3cm] (execute) {Execute};
+% \node [decision, diagonal fill={yellow50}{green50}, right of=first_action, node distance=3cm] (execute) {Execute};
+\node [decision, right of=first_action, node distance=3cm] (execute) {Execute};
      
     % nodes, Target node reached 
     \node [decision, below of=global_path, node distance=3cm, line width=2pt, dashed] (target_node_reached) {Target Node Reached};

@@ -5,6 +5,7 @@
 \usepackage[absolute,overlay]{textpos}
 \usepackage{graphicx}
 \usepackage{subfig}
+
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -23,11 +24,18 @@
 \newcommand{\xmark}{\textcolor{red}{\ding{55}}}%
 
 % custom colors
-\usepackage[table, dvipsnames]{xcolor} 
 \definecolor{myEvenLighterColor}{RGB}{231, 231, 255}
 \definecolor{myDarkColor}{RGB}{178, 178, 255} % blue!30, #b2b2ff
 \definecolor{myLightColor}{RGB}{204, 204, 255} % blue!20, #ccccff 
 \definecolor{myEvenLighterColor}{RGB}{231, 231, 255}
+
+\definecolor{yellow50}{RGB}{255, 253, 231}
+\definecolor{green50}{RGB}{232, 245, 233}
+\definecolor{red40}{RGB}{102, 0, 0}
+
+\definecolor{my_yellow}{RGB}{239, 223, 72}
+\definecolor{my_yellow}{RGB}{239, 223, 72}
+
 
 % \definecolor{my_grey}{RGB}{238,238,228} % #eeeee4
 % \definecolor{my_purple}{RGB}{160, 110, 224} % lavenderIndigo #9457eb
@@ -39,10 +47,6 @@
 % \definecolor{my_yellow}{RGB}{239, 223, 72} % minionYellow #FFD55E 
 % \definecolor{my_orange}{RGB}{249, 165, 44} % deepSaffron #FF9933
 % \definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
-
-
-\definecolor{ukraine_yellow}{RGB}{254, 241, 0}
-\definecolor{ukraine_blue}{RGB}{1, 124, 194}
 
 
 
@@ -66,7 +70,7 @@
 ]{biblatex}
 
 
-\setbeamertemplate{navigation symbols}{} % remove navigation symbols
+% \setbeamertemplate{navigation symbols}{} % remove navigation symbols
 \mode<presentation>{\usetheme[verticalbar=false]{tud}}
 
 
@@ -104,3 +108,5 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{line} = [draw, -latex']
 
 
+% \usepackage[table, dvipsnames]{xcolor} 
+\usepackage{xcolor} 
