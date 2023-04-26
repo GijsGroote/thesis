@@ -1,6 +1,6 @@
 \chapter{Results}%
 \label{chap:results}
-\textit{This chapter presents the test results that test and challenge the proposed method.  The randomization tests, which additionally test the influence of the \ac{kgraph} and test taken including and excluding the \ac{kgraph}. The test results provide evidence that supports the effectiveness of the proposed method. This chapter starts by introducing \textbf{method metrics} that indicate how a task has been executed by the proposed method in \Cref{sec:proposed_method_metrics}. A comparison is made with the state-of-the-art methods in \Cref{sec:compare_with_related_papers}. \bs}
+\textit{This chapter presents the test results that test and challenge the proposed framework.  The randomization tests, which additionally test the influence of the \ac{kgraph} and test taken including and excluding the \ac{kgraph}. The test results provide evidence that supports the effectiveness of the proposed framework. This chapter starts by introducing \textbf{method metrics} that indicate how a task has been executed by the proposed framework in \Cref{sec:proposed_method_metrics}. A comparison is made with the state-of-the-art methods in \Cref{sec:compare_with_related_papers}. \bs}
 
 \paragraph{The Simulation Environment}
 Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standard TU Delft laptop: HP ZBook Studio x360 G5, running OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
@@ -8,7 +8,7 @@ The simulation environment provides many different robots, 2 simple robots are s
 
 \section{Proposed Method Metrics}%
 \label{sec:proposed_method_metrics}
-The results are measured in method metrics, not to be confused with the monitoring metrics in \Cref{sec:monitoring_metrics} or the edge metrics in \Cref{subsec:edge_metrics}. The results are interesting, but most interesting is the progression of the method metrics over time. As will be shown, the effect of learning can be measured by investigating and tracking the method metrics over time. Furthermore, the method metrics will be used to compare the proposed method to relative state-of-the-art papers. First, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
+The results are measured in method metrics, not to be confused with the monitoring metrics in \Cref{sec:monitoring_metrics} or the edge metrics in \Cref{subsec:edge_metrics}. The results are interesting, but most interesting is the progression of the method metrics over time. As will be shown, the effect of learning can be measured by investigating and tracking the method metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to relative state-of-the-art papers. First, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
 
 \noindent
 \begin{table}[H]
@@ -23,12 +23,13 @@ The ratio between the number of hypotheses and the number of tasks & Expected is
 The ratio between the number of successful and the number of total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because, with better recommendations, more edges will be completed.\\
 task completion time =\newline run time + planning time& If equal tasks are given multiple times, the total task completion time should drop pretty drastically. Multiple factors help to lower the task completion time, firstly system identification has to be performed only once, and there is no need to lose time on redoing system identification. Secondly, the \ac{hgraph} is expected to improve generated hypothesis, or better said, the same mistake should not be made multiple times, resulting in fewer failing hypotheses and lowering task completion time.\\
 \end{tabular}
-\caption{Proposed method metrics used to compare the proposed method with the state-of-the-art methods.}\label{table:proposed_method_metrics}
+\caption{Proposed method metrics used to compare the proposed framework with the state-of-the-art.}\label{table:proposed_method_metrics}
 \end{table}
 
 Three system models are used for testing. The goal of this thesis is not to find optimal control, or to model the environment very accurately. The goal is to select the best combination of controller and system model in the available set of controllers and system models. Only a short textual description of the available system models is provided below.\bs
  
 
+\todo{Martijn: you don't explain what these models are, nor do you re-use these model names anywhere in the thesis.}
 \noindent
 \begin{table}[H]
 \centering
@@ -55,13 +56,13 @@ Three system models are used for testing. The goal of this thesis is not to find
 
 % \section{Benchmark Tests}%
 % \label{sec:benchmark_tests}
-% Three benchmark test are presented, starting with the blockade task. A large part of the proposed method is system identification, for testing however no system identification is performed. Instead, several hard-coded system models are used, and the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \Cref{subsec:edge_metrics}. The hard-coded system models are not opting for modelling the drive or push model as accurately as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterization is unable to provide closed-loop stable control, the edge will fail because a fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand-coded system models does thus not change the result.\bs
+% Three benchmark test are presented, starting with the blockade task. A large part of the proposed framework is system identification, for testing however no system identification is performed. Instead, several hard-coded system models are used, and the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \Cref{subsec:edge_metrics}. The hard-coded system models are not opting for modelling the drive or push model as accurately as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterization is unable to provide closed-loop stable control, the edge will fail because a fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand-coded system models does thus not change the result.\bs
 %
 %
 % \paragraph{Blockade} In the blockade environment the robot is tasked with placing a box in a target position that is blocked by a cylinder object.\bs
 % \begin{figure}[H]
 %     \centering
-%     \includegraphics[width=0.9\textwidth]{figures/tests/blockade}
+%     \includegraphics[width=0.9\textwidth]{figures/results/blockade}
 %     \caption{The blockade environment with the target ghost position for the blue box. The green walls are unmovable whilst both the blue box and cylinder are movable.}%
 %     \label{fig:benchmark_blockade}
 % \end{figure}
@@ -74,7 +75,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{figures/tests/404_not_found}
 %
-%     \caption{Some tests are still under development for the blockade environment}%
+%     \caption{Some results are still under development for the blockade environment}%
 %     \label{fig:results_blockade}
 % \end{figure}
 % \todo[inline]{Test to create results for running the blockade environment, and input into above 404 not found}
@@ -84,7 +85,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 %
 % \begin{figure}[H]
 %     \centering
-%     \includegraphics[width=0.9\textwidth]{figures/tests/swap}
+%     \includegraphics[width=0.9\textwidth]{figures/results/swap}
 %     \caption{The swap environment, the robot is tasked with swapping the positions of the cylinder and the box.}%
 %     \label{fig:benchmark_swap}
 % \end{figure}
@@ -92,7 +93,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 %
 % \begin{figure}[H]
 %     \centering
-%     \includegraphics[width=0.9\textwidth]{figures/tests/404_not_found}
+%     \includegraphics[width=0.9\textwidth]{figures/results/404_not_found}
 %     \caption{Some tests are still under development for the swap environment}%
 %     \label{fig:results_swap}
 % \end{figure}
@@ -102,7 +103,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 % \paragraph{Surrounded} In the surround environment the robot has to learn which box is movable to escape the enclosure of boxes.\bs
 % \begin{figure}[H]
 %     \centering
-%     \includegraphics[width=0.9\textwidth]{figures/tests/surrounded}
+%     \includegraphics[width=0.9\textwidth]{figures/results/surrounded}
 %     \caption{The surround environment, the robot is tasked with escaping the surrounding enclosure by driving to the target ghost position displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
 %     \label{fig:benchmark_surround}
 % \end{figure}
@@ -110,7 +111,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 %
 % \begin{figure}[H]
 %     \centering
-%     \includegraphics[width=0.9\textwidth]{figures/tests/404_not_found}
+%     \includegraphics[width=0.9\textwidth]{figures/results/404_not_found}
 %     \caption{Some test are still under development for the surround environment}%
 %     \label{fig:results_surround}
 % \end{figure}
@@ -119,7 +120,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 
 \section{Randomization}%
 \label{sec:randomisation}
-In the randomized environment, the robot is tasked to push a number of objects to a target location. The previous 3 benchmark tests are designed around the proposed method, meaning that these tests highlight the strong points of the \ac{halgorithm} but prevent the testing of the weak points of the proposed methods. Such bias can lead to false positives, which are undesired. The randomized environment provides a more unbiased result. The random environment does not deliver completely unbiased results because several parameters must be chosen to create and set up the random environment, which are.\\
+In the randomized environment, the robot is tasked to push a number of objects to a target location. The previous 3 benchmark tests are designed around the proposed framework, meaning that these tests highlight the strong points of the \ac{halgorithm} but prevent the testing of the weak points of the proposed frameworks. Such bias can lead to false positives, which are undesired. The randomized environment provides a more unbiased result. The random environment does not deliver completely unbiased results because several parameters must be chosen to create and set up the random environment, which are.\\
 
 \noindent
 \begin{table}[H]
@@ -141,13 +142,13 @@ If the task is completed, a \textit{reshuffle} function reshuffles the objects i
     \centering
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/tests/random_1}
+    \includegraphics[width=0.9\textwidth]{figures/results/random_1}
     \end{subfigure}
 
     \vspace{0.2cm}
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/tests/random_2}
+    \includegraphics[width=0.9\textwidth]{figures/results/random_2}
     \end{subfigure}
     \caption{Two random environments with 2 target ghost configurations for the task containing 2 subtasks.}%
     \label{fig:random_environnment}
@@ -157,22 +158,22 @@ If the task is completed, a \textit{reshuffle} function reshuffles the objects i
     \centering
     \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/tests/random1}
+    \includegraphics[width=\textwidth]{figures/results/random1}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/tests/random2}
+    \includegraphics[width=\textwidth]{figures/results/random2}
     \end{subfigure}
 
     \vspace{0.2cm}
     \begin{subfigure}{.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/tests/random3}
+    \includegraphics[width=\textwidth]{figures/results/random3}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/tests/random4}
+    \includegraphics[width=\textwidth]{figures/results/random4}
     \end{subfigure}
     \caption{A random environment that is reshuffled 4 times. Target ghost configurations are not shown.}
     \label{fig:random_environment_reshuffle}
@@ -200,6 +201,7 @@ The following figure shows a driving task containing 3 subtasks for the robot, w
     \caption{Robot tasked to drive toward 3 target configurations, the environment is reshuffled after completing a task.}%
     \label{fig:rand_drive_times}
 \end{figure}
+\todo{Martijn: To do that properly, you should have done so many experiments that this influence of random path lengths is averaged out. Gijs: reach statistical relevance please}
 
 What is not shown in the above figure is that the \ac{kgraph} over times prefers the \ac{MPC} controller over the \ac{MPPI} controller (both using the \textit{lti-model-1}) because of its lower average prediction error. The \ac{MPC} controller is a bit faster compared to the \ac{MPPI} controller thus the execution time decreases over time. The execution time is strongly correlated with the path length because driving to a target further away takes longer. It is thus only useful to investigate the trend that \Cref{fig:rand_drive_times} and not individual data points.\bs
 
@@ -211,6 +213,7 @@ Then the same environments and tasks are solved 10 times without the \ac{kgraph}
     \caption{Execution times for driving toward target configurations with and without \ac{kgraph}.}%
     \label{fig:results_random_drive_task}
 \end{figure}
+\todo{Martijn: It is unclear what this image presents atm, and: If you repeat the experiment, will the graph look completely different?}
 
 The figure above shows similar running times at the first few solved tasks. During these first tasks the \ac{kgraph} is filled with edge feedback, but the \ac{kgraph} has not gained enough feedback to suggest action parameterizations, this period can be referred to as the learning phase. After this learning phase, the \ac{kgraph} suggests the \ac{MPC} controller over the \ac{MPPI} controller, because of its relatively higher \textit{success factor}. The action suggestions improve overall execution time, note that selecting random controllers can result in equal execution time. In these cases, (4, 7 or 9 tasks in experience in \cref{fig:results_random_drive_task}) the randomly selected controllers all were \ac{MPC} controllers.\bs
 
@@ -223,6 +226,7 @@ Now the \ac{halgorithm} is tasked with pushing a single object toward a target c
     \label{fig:rand_push_full_pred}
 \end{figure}
 
+\todo{Martijn: averaged over how many experiments? related to that 1.5 and 2 }
 The \ac{MPPI} controller with \textit{nonlinear-push-model-1} has an average \ac{PE} between 1.5 and 2 and can be seen in the figure above as the most left data point in the prediction error plot. The same controller with \textit{nonlinear-push-model-2} has an average lower \ac{PE} between 0.4 and 0.6 and can be seen in the following data points (1, 2, 3 and 4). The \textit{success factor} is calculated based on the average prediction error so it is expected that the \ac{kgraph} suggests the controller with the lower prediction error. It is expected that the \ac{PE} goes down, which is exactly what \Cref{fig:rand_push_full_pred} shows. The \ac{halgorithm} tests both edge parameterisations to conclude that the \ac{MPPI} controller and \textit{nonlinear-push-model-2} is the better of the two.  
 
 \begin{figure}[H]
@@ -283,7 +287,7 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. A table that m
 \citeauthor{wang_affordancebased_2020} &\cite{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing & \underline{computation and} \underline{execution time}\\
     Groote & proposed solution &  \xmark/\cmark& \cmark& \cmark& pushing & see \Cref{table:proposed_method_metrics}\\
   \end{tabular}
-  \caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The test metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed method.}%
+  \caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The test metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
 \label{table:sota_vs_results_proposed method}
 \end{table}
 
@@ -292,16 +296,16 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. A table that m
 , allowing us to conclude that the results are comparable.
 
 \paragraph{Comparing Computation and Execution Time}
-Three state-of-the-art papers that use computation and execution time as the testing metrics are compared to the proposed method. To accomplish a fair comparison the environments that have been used in the citations are rebuilt in the pybullet software. The results are then directly compared to conclude that the proposed method is as good as or even better in terms of computation time and execution time for similar tasks.\bs
+Three state-of-the-art papers that use computation and execution time as the testing metrics are compared to the proposed framework. To accomplish a fair comparison the environments that have been used in the citations are rebuilt in the pybullet software. The results are then directly compared to conclude that the proposed framework is as good as or even better in terms of computation time and execution time for similar tasks.\bs
 
-\citeauthor{wang_affordancebased_2020} drives toward a target configuration that is blocked by a chair. The task is performed 3 times where the robot may remember its interactions with the chair from previous runs. The task is successfully completed all three times with a total time of 200 seconds for the first run to 180 seconds for the third run. Execution time increased from 70 to 85 seconds during these runs. Even with increasing execution times, the solution is found faster because the experience from previous runs could be used that lowered search time~\cite{wang_affordancebased_2020}. To compare against these results the environment is recreated in the pybullet software. The proposed method was run only once, during this run it classified a wall object as unmovable, and the pushable box object with dimensions equal to that of the chair was classified as movable and moved out of the way. Overall execution time was 45 seconds whilst computation time took 65 seconds. The proposed method successfully completed this similar task whilst having a lower computation and execution time. This allows concluding that the proposed method improves upon the paper from \citeauthor{wang_affordancebased_2020} with a decent margin.\bs
+\citeauthor{wang_affordancebased_2020} drives toward a target configuration that is blocked by a chair. The task is performed 3 times where the robot may remember its interactions with the chair from previous runs. The task is successfully completed all three times with a total time of 200 seconds for the first run to 180 seconds for the third run. Execution time increased from 70 to 85 seconds during these runs. Even with increasing execution times, the solution is found faster because the experience from previous runs could be used that lowered search time~\cite{wang_affordancebased_2020}. To compare against these results the environment is recreated in the pybullet software. The proposed framework was run only once, during this run it classified a wall object as unmovable, and the pushable box object with dimensions equal to that of the chair was classified as movable and moved out of the way. Overall execution time was 45 seconds whilst computation time took 65 seconds. The proposed framework successfully completed this similar task whilst having a lower computation and execution time. This allows concluding that the proposed framework improves upon the paper from \citeauthor{wang_affordancebased_2020} with a decent margin.\bs
 
-\citeauthor{vega-brown_asymptotically_2020} has a task that pushes two boxes into a goal region. It takes around 300 seconds to return a hypothesis~\cite{vega-brown_asymptotically_2020}. Both pushing tasks can be compared with two separate pushing tasks from the random push environment. By doubling the time to push a single object to its target configuration, $2 \cdot 30 = 60$ seconds both tasks could be compared. However, the point of \citeauthor{vega-brown_asymptotically_2020} paper is that a global minimal task is sought. The proposed method randomly selects a subtask and tries to complete it to then move to the next randomly selected subtask. A global minimum is thus not sought and both papers can therefore not be compared properly.\bs
+\citeauthor{vega-brown_asymptotically_2020} has a task that pushes two boxes into a goal region. It takes around 300 seconds to return a hypothesis~\cite{vega-brown_asymptotically_2020}. Both pushing tasks can be compared with two separate pushing tasks from the random push environment. By doubling the time to push a single object to its target configuration, $2 \cdot 30 = 60$ seconds both tasks could be compared. However, the point of \citeauthor{vega-brown_asymptotically_2020} paper is that a global minimal task is sought. The proposed framework randomly selects a subtask and tries to complete it to then move to the next randomly selected subtask. A global minimum is thus not sought and both papers can therefore not be compared properly.\bs
 
-\citeauthor{sabbaghnovin_model_2021} grasp-pushes and grasp-pulls a walker object to two new target configurations~\cite{sabbaghnovin_model_2021}. The task is mimicked by pushing a box object of equal dimensions to the same target configurations. Compared to \citeauthor{sabbaghnovin_model_2021} average of 125 and 160 seconds to complete task 1 and task 2 the proposed method takes an average of only 27 and 33 seconds respectively (10 seconds computation time) to complete similar tasks. The decrease in total time allows to conclude that the proposed methods improve upon the method proposed by~\citeauthor{sabbaghnovin_model_2021}.\bs
+\citeauthor{sabbaghnovin_model_2021} grasp-pushes and grasp-pulls a walker object to two new target configurations~\cite{sabbaghnovin_model_2021}. The task is mimicked by pushing a box object of equal dimensions to the same target configurations. Compared to \citeauthor{sabbaghnovin_model_2021} average of 125 and 160 seconds to complete task 1 and task 2 the proposed framework takes an average of only 27 and 33 seconds respectively (10 seconds computation time) to complete similar tasks. The decrease in total time allows to conclude that the proposed frameworks improve upon the method proposed by~\citeauthor{sabbaghnovin_model_2021}.\bs
 
 \paragraph{Comparing Prediction Error}
-\citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters, thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error of the proposed method is worse compared to this state-of-the-art method. The reason is that the proposed method focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs 
+\citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters, thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error of the proposed framework is worse compared to this state-of-the-art. The reason is that the proposed framework focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs 
 
 % \paragraph{Comparing Number of Replanning times}
 % \todo[inline]{\cite{scholz_navigation_2016}}

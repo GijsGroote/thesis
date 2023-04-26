@@ -1,0 +1,46 @@
+\section{Control Methods}%
+\label{sec:control_methods}
+This section elaborates why control is required and which control methods are best suitable for various control applications. During this thesis, the effect of the robot interacting with objects is captured by system models. In addition to predicting output with system models, control methods leverage the prediction that system models provide to perform actions, in this thesis drive and push actions. A requirement for a controller is that it should yield a stable closed-loop control because that guarantees converging toward a set point. Controllers are later, in the proposed framework selected for yielding desired metrics such as a low prediction error, low tracking error and low final placement error, such metrics are grouped in \Cref{sec:monitoring_metrics}. The two control methods that are used during testing are discussed below.\bs
+
+\paragraph{\acl{MPC}}
+The basic concept of \ac{MPC} is to use a dynamic model to forecast system behaviour and optimise the forecast to produce the best decision for the control move at the current time. Models are therefore central to every form of \ac{MPC}~\cite{rawlings_model_2020}. The best feasible input is found every time step by optimising the objective function whilst respecting constraints. Tuning is accomplished by modifying the weight matrices in the objective function, or by modifying the constraint set. Solving an objective function to find the best feasible input generally yields robust control. System models for driving the robot can be estimated with \ac{LTI} models without compromising on model accuracy making \ac{MPC} controllers a suitable candidate for driving actions. A more elaborate description of \ac{MPC} control can be found in \Cref{chap:appendix_control_methods}.
+
+\paragraph{\acl{MPPI} Control}
+The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future several \quotes{rollouts} for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalized undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. The main advantage \ac{MPPI} has over \ac{MPC} control is that it is better suited for nonlinear system models. Whilst drive applications can be accurately estimated by linear models, push applications are harder to estimate with a linear model. Thus \ac{MPPI} is selected mainly for push applications. A more elaborate description of \ac{MPPI} control can be found in \Cref{chap:appendix_control_methods}.\bs
+
+% Not all control methods are compatible with every system identification method, the following table conveniently displays which control methods are compatible with the system identification methods that are implemented during the thesis.\bs
+%
+% \begin{figure}[H]
+% \begin{minipage}{0.5\linewidth}
+% \begin{table}[H]
+% \centering
+% \begin{tabular}[t]{l c c}
+%   control sys.~iden. & \acs{PEM} & \acs{IPEM} \\
+%   \toprule
+%   \ac{MPC} & \cmark& \cmark\\
+%   \ac{MPPI} & \cmark& \cmark\\
+% \end{tabular}
+% \caption{Drive Control}%
+% \label{table:compatible_modules_drive}
+% \end{table}
+% \end{minipage}
+% \begin{minipage}{0.5\linewidth}
+% \begin{table}[H]
+% \centering
+% \begin{tabular}[t]{l c c }
+%   control sys.~iden. & \acs{PEM} & \acs{LSTM}\\
+%   \toprule
+%   \ac{MPC} & \cmark& \xmark\\
+%   \ac{MPPI} & \cmark& \cmark\\
+% \end{tabular}
+% \caption{Push Control}%
+% \label{table:compatible_modules_push}
+% \end{table}
+% \end{minipage}
+% \caption{Compatibility between control and system identification methods for drive and push control.}%
+% \label{table:compatible_modules}
+% \end{figure}
+%
+% \todo[inline]{Update the table above to the sys. iden. that are implemented OR explain why they are not implemented at all}
+
+The properties of \ac{MPC} suggest that it is best suitable for drive actions because of easy tuning and robustness. \Ac{MPPI} control is compatible with nonlinear system models, making it best suitable for push actions. It is worth mentioning that the goal of this thesis is not to find the best optimal controller. The goal is to gradually over time choose control methods in combination with system models that result in better performance, the performance is measured with various metrics to which \Cref{subsec:edge_metrics} is dedicated.\bs

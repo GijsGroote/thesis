@@ -1,0 +1,13 @@
+\section{System Identification}%
+\label{sec:sys_iden}
+Understanding the world by a robot is captured by models, \textit{system models} that estimate the behavior of real-world systems. For example what trajectory does an object take after receiving a push? The trajectory is dependent on the properties of the object (e.g.~mass, geometry), and interaction with its surroundings (e.g sliding friction). These properties and interactions are captured by a system model. Just as applicable constraints that are captured by a system model, see both robots in \Cref{fig:example_robots}, the holonomic point robot in \Cref{subfig:example_point_robot} can drive without constraints, and the boxer robot in \Cref{subfig:example_boxer_robot} can drive forward, backwards and can rotate. A system model for robot driving for the boxer robot should thus capture that it is not able to drive directly sideways.\bs
+
+Robots encounter a wide variety of objects becayse every object can be different in type, weight and dimensions. System identification methods are required to capture the variety of objects that the robot can encounter.\bs
+
+
+\todo{Visualise test push sequence to collect IO data, once with the robot to generate a system model for drive applications}
+\todo{Visualise test push sequence to collect IO data, once with the robot and object to generate a system model for push applications}
+
+Note that theoretically a system identification module is included in the proposed robot framework. For the implementation the system identification module is left out for time related reasons. Firstly creating the implementation module itself takes time. Secondly, collecting enough \ac{IO} data to generate a system model is timewise very costly. Thus by using several hard-coded system models instead om implementing a system identification module time is saved. The replacement moves focus from \quotes{which system identification method yields a system model that most accurately describes a dynamic model?} to \quotes{which system model in the set of available models most accurately describes a dynamic model?}.\bs
+
+Implementing a system identification module in moved to the future work section. To keep the option of implementing the system identification module open, the system identification module is kept in the proposed robot framework.\bs

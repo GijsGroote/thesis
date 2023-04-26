@@ -64,6 +64,9 @@
 
 %% to create notes to self
 \usepackage{todonotes}
+\let\todox\todo
+\setlength{\marginparwidth}{2cm} 
+\renewcommand\todo[1]{\todox[inline]{#1}}
 
 %% for glossary
 \usepackage[printonlyused, withpage]{acronym}
