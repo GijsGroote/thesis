@@ -99,60 +99,34 @@ Combining two topics received little attention by the scientific community and c
 
 \todo{Martijn: Rightkmost column should be checks and marksa}
 \todo{Choose: Specify object target positions or nonprehensile pushing}
+
 \noindent
 \begin{table}[H]
   \centering
   \rowcolors{2}{white}{myEvenLighterColor}
   \begin{tabular}
     {>{\raggedright\arraybackslash}P{2.5cm}%
-      >{\raggedright\arraybackslash}P{1.5cm}%
-      >{\raggedright\arraybackslash}P{1.8cm}%
-      >{\centering\arraybackslash}P{1.5cm}%
-      >{\centering\arraybackslash}P{1.5cm}%
-      >{\centering\arraybackslash}P{1.5cm}%
-      >{\centering\arraybackslash}P{1.5cm}
+      >{\raggedright\arraybackslash}P{2.0cm}%
+      >{\centering\arraybackslash}P{1.4cm}%
+      |>{\centering\arraybackslash}P{1.4cm}%
+      >{\centering\arraybackslash}P{1.4cm}%
+      |>{\centering\arraybackslash}P{1.4cm}%
+      >{\centering\arraybackslash}P{1.4cm}
     }
-    &&& \multicolumn{2}{c}{\ac{NAMO}} & \multicolumn{2}{c}{\shortstack[c]{Specify object\\target positions}}\\
+    &&& \multicolumn{2}{c|}{\ac{NAMO}} & \multicolumn{2}{c}{\shortstack[c]{Specify object\\target positions}}\\
   Author&
   Citation&
   Learns\newline object\newline dynamics&
-  \vspace{-0.2cm}\rotatebox{45}{prehesile}&
-  \vspace{-0.4cm}\rotatebox{45}{nonprehesile}&
-  \vspace{-0.2cm}\rotatebox{45}{prehesile}&
-  \vspace{-0.4cm}\rotatebox{45}{nonprehesile}\\\toprule
-  \multirow{5}{c|}{%
-    \citeauthor{ellis_navigation_2022}\\
-    \citeauthor{sabbaghnovin_model_2021}\\
-    \citeauthor{scholz_navigation_2016}\\
-    \citeauthor{vega-brown_asymptotically_2020}\\
-    \citeauthor{wang_affordancebased_2020}\\ 
-Groote}&
-  \multirow{5}{c|}{%
-    \cite{ellis_navigation_2022}\\
-    \cite{sabbaghnovin_model_2021}\\
-    \cite{scholz_navigation_2016}\\
-    \cite{vega-brown_asymptotically_2020}\\
-    \cite{wang_affordancebased_2020}\\ 
-Proposed Framework}&
-
-  % \multicolumn{1}{c|}{%
-  %   \cmark\\
-  %   \cmark\\
-  %   \cmark\\
-  %   \xmark\\
-  % \xmark/\cmark}\\
-  % \multicolumn{2}{c|}{%
-  % \xmark& \cmark\\
-  % \cmark& \xmark\\
-  % \cmark& \xmark\\
-  % \xmark& \cmark\\
-  % \xmark& \cmark}\\
-  % \multicolumn{2}{c}{%
-  % \xmark& \xmark\\
-  % \cmark& \xmark\\
-  % \xmark& \xmark\\
-  % \cmark& \xmark\\
-  % \xmark& \xmark}\\
+  \vspace{-0.2cm}\rotatebox{50}{prehesile}&
+  \vspace{-0.4cm}\rotatebox{50}{nonprehesile}&
+  \vspace{-0.2cm}\rotatebox{50}{prehesile}&
+  \vspace{-0.4cm}\rotatebox{50}{nonprehesile}\\\hline
+  \citeauthor{ellis_navigation_2022} &          \cite{ellis_navigation_2022} &          \cmark& \xmark& \cmark& \xmark& \xmark\\
+  \citeauthor{sabbaghnovin_model_2021} &        \cite{sabbaghnovin_model_2021} &        \cmark& \cmark& \xmark& \cmark& \xmark\\
+  \citeauthor{scholz_navigation_2016} &         \cite{scholz_navigation_2016} &         \cmark& \cmark& \xmark& \xmark& \xmark\\
+  \citeauthor{vega-brown_asymptotically_2020} & \cite{vega-brown_asymptotically_2020} & \xmark& \cmark& \xmark& \cmark& \xmark\\
+  \citeauthor{wang_affordancebased_2020} &      \cite{wang_affordancebased_2020} & \xmark& \xmark& \cmark& \xmark& \xmark\\
+  Groote & Proposed Framework & \xmark/\cmark& \xmark& \cmark& \xmark& \cmark
 \end{tabular}
 \caption{Overview of 3 topics in recent literature and their object manipulation, where \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The proposed framework shows \xmark/\cmark for learning system dynamics because it proposes system identification to generate a system model, however for the implementation an hardcoded system model is used.}%
 \label{table:sota_and_3_topics}
