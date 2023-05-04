@@ -308,3 +308,4 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}
+
