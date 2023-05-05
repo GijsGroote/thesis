@@ -92,7 +92,7 @@ An example configuration space for the point robot is presented below.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/required_background/planning/two_push_to_freedom_env}
-    \caption{Environment with the point robot, unmovable yellow walls and movable brown boxes.}%
+    \caption{Environment with the point robot, unmovable yellow walls and movable brown boxes. Initially the robot classifies all boxes as inkown since it is not provided information weither the walls and boxes are moveable or unmovable.}%
     \label{fig:two_pushes_to_freedom_env}
 \end{figure}
 
@@ -102,19 +102,20 @@ The point robot has a cylindrical shape thus a 2-dimensional configuration space
   \centering
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=1.10\textwidth]{figures/required_background/planning/c_space_point_robot_grid_size_0_1}
+    \includegraphics[width=1.05\textwidth]{figures/required_background/planning/c_space_point_robot_grid_size_0_1}
     \caption{$\gls{cspace}^{circle}$ with $\gls{cellSize} = 0.1$}%
     \label{fig:c_space_two_pushes_small}
   \end{subfigure}
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=1.10\textwidth]{figures/required_background/planning/c_space_point_robot_grid_size_0_01}
-    \caption{$\gls{cspace}^{circle}$ with $\gls{cellSize} = 0.01$}%
+    \includegraphics[width=1.05\textwidth]{figures/required_background/planning/c_space_point_robot_grid_size_0_05}
+    \caption{$\gls{cspace}^{circle}$ with $\gls{cellSize} = 0.05$}%
     \label{fig:c_space_two_pushes_smaller}
   \end{subfigure}
   \caption{The configuration space for the point robot with different cell sizes. The robot\\environment corresponds to the environment presented in \Cref{fig:two_pushes_to_freedom_env}.}
   \label{fig:two_pushes_to_freedom_conf_space}
 \end{figure}
+
 \todo{MARTIJN: I understand what you did here, but you don't explain or illustrate it well. The only difference one can see is the tiny difference at the corners of the walls.}
 
 The resolution of the configuration space at \Cref{fig:c_space_two_pushes_smaller} is higher compared to \Cref{fig:c_space_two_pushes_small} because of the smaller grid size. The difference in resolution is especially visible at the corners of the walls. A high resolution is better at detecting paths through small corridors and tight corners, but it comes at the cost of a longer creation and search time.
