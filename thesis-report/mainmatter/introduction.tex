@@ -40,7 +40,6 @@ The first challenge with the composite configuration space is that is grows expo
 
 The second challenge is due to constraint sets, in configuration space a single constraint set applies. As an example, nonholonomic robots must respect a set of constraints due to the robots inability to drive in any direction. The class of robots that can be described by a bicycle model~\cite{polack_kinematic_2017} are nonholonomic. These robots cannot drive sideways, such as the boxer robot in \Cref{subfig:example_boxer_robot}. The nonholonomic constraints must be respected during planning, for the planner to yield feasible paths. In configuration space there exist only a single mode of dynamics~\cite{hauser_multimodal_2010}, and path planners such as \acs{PRM}~\cite{hsu_path_1997}, \acs{PRM*}, \acs{RRT} or \acs{RRT*}~\cite{karaman_samplingbased_2011} connect start to target configuration in configuration space whilst respecting the constraint set. In composite space there exist multiple modes of dynamics that must be respected. A drive action is connected to a different set of constraints than a push action. These different modes of dynamics make the composite configuration space \textit{piecewise-analytic}. Path planners have great difficulty crossing the boundary from one mode of dynamics to another mode of dynamics~\cite{vega-brown_asymptotically_2020}.\bs
 
-\todo{Corrado: talk about multi-modal planning}
 
 
 % What's Purpose: multiple modes of dynamics, piecewise analytic
@@ -65,10 +64,18 @@ The last problem that is introduced is the uncertainty of actions in unknown env
 
 tasks introduces a introduces a \ac{NP-hard} planning problem~\cite{wilfong_motion_1991}. Such an environment that consists of multiple objects
 
-To summarise, the main challenge is to find an action sequence for a given task to relocate objects that consist of push and drive actions. To find such an action sequence a path from the start configuration to a desired target configuration in the composite configuration space is sought, where all specified objects are at their specified target position. The emerging challenges are the enormity of the composite configuration space, the different modes of dynamics that make the composite configuration space piecewise analytic, and lastly the uncertainty introduced by the lack of environmental knowledge.\bs
 
-\todo{Corrado: Why now and not before for instance? Instead of saying this, you can say that a number of researchers tackled this problems. In the following we provide a categorization and a summary of the methods, advantages and disadvantages of the most relevant sota}
-Now the state-of-the-art methods are discussed that can be categorized into two categories, namely locally optimal and hierarchical approaches, first locally optimal approaches are discussed.\bs
+\todo{Corrado: talk about multi-modal planning}
+
+
+To summarise, the main challenge is to \textit{find an action sequence for a given task to relocate objects that consist of push and drive actions in new and unforeseen environments}. To find such an action sequence a search cannot be performed in the composite configuration space because of two reasons. First the composite space grows exponentially with the number of movable objects. Secondly, the composite configuration space piecewise-analytic, path planners have great difficulty to cross boundaries from one mode of dyanamic to another. A multi-modal planning algorithm is sought, that can robustly find paths in composite configuration space, whilst avoiding the emerging challenges with composite space and handling the uncertainty introduced by the lack of environmental knowledge. A number of researchers tackled this problems. In the following we provide a categorization and a summary of the methods, advantages and disadvantages of the most relevant state-or-the-art methods.\bs
+
+
+
+
+
+
+
 
 % What's Purpose: there are not much state-of-the-art methods, but these are them
 \paragraph{Locally Optimal Approaches}
