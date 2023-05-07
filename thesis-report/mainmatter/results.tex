@@ -4,19 +4,21 @@
 
 \paragraph{The Simulation Environment}
 Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standard TU Delft laptop: HP ZBook Studio x360 G5, running OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
-The simulation environment provides many different robots, 2 simple robots are selected to perform tests, they are displayed in \Cref{fig:example_robots}, and various objects are displayed in \Cref{fig:example_objects}.
+The simulation environment provides many different robots, of which two simple robots are selected to perform tests, they are displayed in \Cref{fig:example_robots}, and various objects are displayed in \Cref{fig:example_objects}.
 
 \section{Proposed Method Metrics}%
 \label{sec:proposed_method_metrics}
+\todo{Corrado: I’m confused, what metric is exactly used? Write it explicitly, GIJS: first sentece here}
 The results are measured in method metrics, not to be confused with the monitoring metrics in \Cref{sec:monitoring_metrics} or the edge metrics in \Cref{subsec:edge_metrics}. The results are interesting, but most interesting is the progression of the method metrics over time. As will be shown, the effect of learning can be measured by investigating and tracking the method metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to relative state-of-the-art papers. First, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
 
+\todo{Corrado: I’m very confused by what metric is used for what part and why some metric (from earlier) are not used but still presented }
 \noindent
 \begin{table}[H]
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
-Total Average\newline \acl{PE} & The total average \ac{PE} is created by averaging over every hypothesis' average \ac{PE} in a \ac{hgraph}. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
+Total Average\newline \acl{PE} & The total average \ac{PE} is calculated by augmenting every prediction error into a single list, then the mean and standart deviation are calculated over that list. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
 % Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
 % Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
 The ratio between the number of hypotheses and the number of tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between the total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
@@ -42,6 +44,7 @@ Three system models are used for testing. The goal of this thesis is not to find
 \end{tabular}
 \caption{Available drive and push system models used for testing.}\label{table:available_system_models}
 \end{table}
+\todo{Corrado: Missing the details. You need to add these models in order for someone to be able to reproduce the results or at least understand them GIJS: Add the formula's for these models}
 
 
 % \todo[inline]{make the environment that shows learning object is unmovable}
@@ -120,7 +123,10 @@ Three system models are used for testing. The goal of this thesis is not to find
 
 \section{Randomization}%
 \label{sec:randomisation}
-In the randomized environment, the robot is tasked to push a number of objects to a target location. The previous 3 benchmark tests are designed around the proposed framework, meaning that these tests highlight the strong points of the \ac{halgorithm} but prevent the testing of the weak points of the proposed frameworks. Such bias can lead to false positives, which are undesired. The randomized environment provides a more unbiased result. The random environment does not deliver completely unbiased results because several parameters must be chosen to create and set up the random environment, which are.\\
+In the randomized environment, the robot is tasked to push a number of objects to a target location.  The randomized environment provides a more unbiased result. The random environment does not deliver completely unbiased results because several parameters must be chosen to create and set up the random environment, which are.\\
+\todo{Corrado: above sentece Feels contradictory }
+\todo{Corrado: For every plot put the control parameterisation on every plot!}
+% The previous 3 benchmark tests are designed around the proposed framework, meaning that these tests highlight the strong points of the \ac{halgorithm} but prevent the testing of the weak points of the proposed frameworks. Such bias can lead to false positives, which are undesired.
 
 \noindent
 \begin{table}[H]
@@ -130,13 +136,16 @@ In the randomized environment, the robot is tasked to push a number of objects t
 >{\raggedright\arraybackslash}p{0.65\textwidth}}
 The \textit{size of the grid} & in \gls{x} and \gls{y} direction.\\
 The \textit{minimal and maximal size of objects} & A box will have sides with a length that lie in the specified range from minimal to maximal length. Cylinders will have a diameter and height that is within the specified range, additionally, cylinders are not higher than the radius of the cylinder to prevent cylinders from tipping over. \\
-The \textit{maximal weight} & which is uniformly distributed for the environment objects, minimal weight is set by default to 0. \\
-The \textit{number of unmovable and movable objects} & For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder, letting randomization determine the ratio between boxes and cylinders. \\
-The \textit{number of subtasks in a task} & Which must be greater or equal to the number of movable objects. The task has feasible targets that lie in free space, and the path estimator discussed in \Cref{subsec:path_estimation} is used to determine the target configuration for objects. By creating configuration space for an object the target configuration is chosen to be in free space, and then path estimation is used to determine if an object can reach the target configuration from its initial configuration.
+The \textit{maximal weight} & which is uniformly distributed for the environment objects, minimal weight is set by default to 1. \\
+The \textit{number of unmovable objects} & Specify the amount of unmovable objects.\\
+The \textit{number of movable objects} & Specify the amount of movable objects.\\
+The \textit{box or cylinder object} & For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder, letting randomization determine the ratio between boxes and cylinders. \\
+The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.
 \end{tabular}
 \end{table}
 
 If the task is completed, a \textit{reshuffle} function reshuffles the objects in the environment, that is the object remain the same objects, but the objects receive a new initial position, and the subtask target configurations are renewed. The reshuffled environments can be seen in \Cref{fig:random_environment_reshuffle}.\bs
+
 
 \begin{figure}[H]
     \centering
@@ -181,19 +190,20 @@ If the task is completed, a \textit{reshuffle} function reshuffles the objects i
 
 The \ac{halgorithm} will be tested with both driving and pushing tasks. Starting with driving tasks for which the parameters are set to be.\bs
 
+\todo{add to the table below: max speed = 1.0, known obstacle cost = 2, unknown obst cost = 3.5}
 \begin{center}
 \begin{align*}
-\text{grid size} \quad &\gls{x}=12, \quad \gls{y}=12 \\
-\text{object size} \quad &\mathit{min\_length}=0.2, \quad \mathit{max\_length}=2 \\
-\text{object weight} \quad &\mathit{max\_weight}=1000 \\
+\text{grid size} \quad &\gls{x}=12 m, \quad \gls{y}=12 m \\
+\text{object size} \quad &\mathit{min\_length}=0.2 m, \quad \mathit{max\_length}=2 m \\
+\text{object weight} \quad &\mathit{max\_weight}=1000 g = 1 \mathit{kg}\\
 \text{number of objects} \quad &\mathit{num\_unmovable\_obj}=3, \quad \mathit{num\_movable\_obj}=5 \\
 \text{number of subtasks} \quad &\mathit{num\_subtasks}=3
 \end{align*}
 \end{center}
 
-These parameters have been specifically selected, starting with the size of the ground floor. The ground floor should be large enough such that objects can be pushed around, note that, for a driving task, pushing is involved when a path must be freed. Environments must thus not be too small. A ground floor too large would result in a longer computational time for path estimation and planning which is undesired. A 12 by 12 is selected because it is reflecting a reasonably large workspace, whilst computation times for planning are kept similar to computation times. The range that determines the size of objects is set such that objects can be as large as the robot itself, and be around 10 times as large as the robot. With these sizes the robot is unable to grasp objects, a gripper would be too small to grasp objects. The comparatively large size fits the objective of nonprehensile pushing, there simply is no other method to manipulate such large objects other than pushing. A real-life example are can be found in harbours where tug boats push giant cargo ships around that are many times over the size of the tug boat. The ratio of solid obstacles vs.~movable objects determines if a task is more navigation (only solid obstacles) or more \ac{NAMO} (only movable objects). A task that tends toward \ac{NAMO} is favoured because that is the target environment in this thesis. There should be some unmovable obstacles that reward the robot learning such objects are unmovable (to then not interact with them). Thus there are more movable objects than solid obstacles chosen, whilst still having 2 solid obstacles around. The number of subtasks is set to 3, a low number of drive subtasks that can be completed in under 2 minutes.\bs
+These parameters have been specifically selected, starting with the size of the ground floor. The ground floor should be large enough such that objects can be pushed around, note that, for a driving task, pushing is involved when a path must be freed. Environments must thus not be too small. A ground floor too large would result in a longer computational time for path estimation and planning which is undesired. A 12 by 12 is selected because it is reflecting a reasonably large workspace, whilst computation times for planning are kept similar to computation times \todo{Corrado: sentene above is unclear}. The range that determines the size of objects is set such that objects can be as large as the robot itself, and be around 10 times as large as the robot. With these sizes the robot is unable to grasp objects, a gripper would be too small to grasp objects. The comparatively large size fits the objective of nonprehensile pushing, there simply is no other method to manipulate such large objects other than pushing. A real-life example are can be found in harbours where tug boats push giant cargo ships around that are many times over the size of the tug boat. The ratio of solid obstacles vs.~movable objects determines if a task is more navigation (only solid obstacles) or more \ac{NAMO} (only movable objects). A task that tends toward \ac{NAMO} is favoured because that is the target environment in this thesis. There should be some unmovable obstacles that reward the robot learning such objects are unmovable (to then not interact with them). Thus there are more movable objects than solid obstacles chosen, whilst still having 2 solid obstacles around. The number of subtasks is set to 3, a low number of drive subtasks that can be completed in under 2 minutes.\bs
 
-The following figure shows a driving task containing 3 subtasks for the robot, which translates into driving to three target configurations. The randomly generated task in the random environment is reshuffled and then solved 10 times. The sequence of tasks is performed with the \ac{kgraph} suggestions. 
+The following figure shows a driving task containing 3 subtasks for the robot, which translates into driving to three target configurations. The randomly generated task in the random environment is reshuffled and then solved 10 times. The sequence of tasks is performed with the \ac{kgraph} suggestions. \todo{Corrado: What are these suggestions?}.\bs 
 
 \begin{figure}[H]
     \centering
@@ -203,8 +213,10 @@ The following figure shows a driving task containing 3 subtasks for the robot, w
 \end{figure}
 \todo{Martijn: To do that properly, you should have done so many experiments that this influence of random path lengths is averaged out. Gijs: reach statistical relevance please}
 
+\todo{Corrado: Show this in a graph. There is no mention to MPC or mppi in the graph make such a graph!}
 What is not shown in the above figure is that the \ac{kgraph} over times prefers the \ac{MPC} controller over the \ac{MPPI} controller (both using the \textit{lti-model-1}) because of its lower average prediction error. The \ac{MPC} controller is a bit faster compared to the \ac{MPPI} controller thus the execution time decreases over time. The execution time is strongly correlated with the path length because driving to a target further away takes longer. It is thus only useful to investigate the trend that \Cref{fig:rand_drive_times} and not individual data points.\bs
 
+\todo{Corrado: How are the suggestions built? Add a numerical example}
 Then the same environments and tasks are solved 10 times without the \ac{kgraph} suggestions. The randomly generated tasks and environments are repeatable by fixing the seed. The fixed seed ensures that the randomly generated environments can be created multiple times, once to solve with \ac{kgraph} suggestions and once to solve without help from the \ac{kgraph}.\bs
 
 \begin{figure}[H]
@@ -215,7 +227,7 @@ Then the same environments and tasks are solved 10 times without the \ac{kgraph}
 \end{figure}
 \todo{Martijn: It is unclear what this image presents atm, and: If you repeat the experiment, will the graph look completely different?}
 
-The figure above shows similar running times at the first few solved tasks. During these first tasks the \ac{kgraph} is filled with edge feedback, but the \ac{kgraph} has not gained enough feedback to suggest action parameterizations, this period can be referred to as the learning phase. After this learning phase, the \ac{kgraph} suggests the \ac{MPC} controller over the \ac{MPPI} controller, because of its relatively higher \textit{success factor}. The action suggestions improve overall execution time, note that selecting random controllers can result in equal execution time. In these cases, (4, 7 or 9 tasks in experience in \cref{fig:results_random_drive_task}) the randomly selected controllers all were \ac{MPC} controllers.\bs
+The figure above shows similar running times at the first few solved tasks. During these first tasks the \ac{kgraph}\todo{Corrado: How exactly } is filled with edge feedback, but the \ac{kgraph} has not gained enough feedback to suggest action parameterizations, this period can be referred to as the learning phase. After this learning phase, the \ac{kgraph} suggests the \ac{MPC} controller over the \ac{MPPI} controller, because of its relatively higher \textit{success factor} \todo{Corrado: You need to show these values otherwise it’s very vague}. The action suggestions improve overall execution time, note that selecting random controllers can result in equal execution time. In these cases, (4, 7 or 9 tasks in experience in \cref{fig:results_random_drive_task}) the randomly selected controllers all were \ac{MPC} controllers.\bs
 
 Now the \ac{halgorithm} is tasked with pushing a single object toward a target configuration. Except for the number of subtasks all parameters that determine the random environment will remain as previously set for the random driving task.\bs
 
@@ -227,7 +239,7 @@ Now the \ac{halgorithm} is tasked with pushing a single object toward a target c
 \end{figure}
 
 \todo{Martijn: averaged over how many experiments? related to that 1.5 and 2 }
-The \ac{MPPI} controller with \textit{nonlinear-push-model-1} has an average \ac{PE} between 1.5 and 2 and can be seen in the figure above as the most left data point in the prediction error plot. The same controller with \textit{nonlinear-push-model-2} has an average lower \ac{PE} between 0.4 and 0.6 and can be seen in the following data points (1, 2, 3 and 4). The \textit{success factor} is calculated based on the average prediction error so it is expected that the \ac{kgraph} suggests the controller with the lower prediction error. It is expected that the \ac{PE} goes down, which is exactly what \Cref{fig:rand_push_full_pred} shows. The \ac{halgorithm} tests both edge parameterisations to conclude that the \ac{MPPI} controller and \textit{nonlinear-push-model-2} is the better of the two.  
+The \ac{MPPI} controller with \textit{nonlinear-push-model-1} has an average \ac{PE} between 1.5 and 2 and can be seen in the figure above as the most left data point in the prediction error plot. The same controller with \textit{nonlinear-push-model-2} has an average lower \ac{PE} between 0.4 and 0.6 and can be seen in the following data points (1, 2, 3 and 4). The \textit{success factor} \todo{Corrado: unclear how suc factor is defines, How exactly… put a reference to the formula number} is calculated based on the average prediction error so it is expected that the \ac{kgraph} suggests the controller with the lower prediction error. It is expected that the \ac{PE} goes down, which is exactly what \Cref{fig:rand_push_full_pred} shows. The \ac{halgorithm} tests both edge parameterisations to conclude that the \ac{MPPI} controller and \textit{nonlinear-push-model-2} is the better of the two.  
 
 \begin{figure}[H]
     \centering
@@ -235,6 +247,8 @@ The \ac{MPPI} controller with \textit{nonlinear-push-model-1} has an average \ac
     \caption{Planning times for pushing an object toward the target a configuration.}%
     \label{fig:random_push_all_times}
 \end{figure}
+
+\todo{Corrado: A plot should be self contained, but there is no mention to the models used and there is no way to see that for myself from the graph }
 
 The \ac{MPPI} controller with \textit{nonlinear-push-model-2} does not only have a lower \ac{PE} but is also faster compared to the \ac{MPPI} controller combined with \textit{nonlinear-push-model-1}. Execution time for driving toward the object and pushing that object to its target location takes around 15 seconds, with a search time to find that hypothesis being between 10 to 15 seconds. The result is that task execution time lowers, bear in mind that this result has to be taken with a grain of salt because the execution time is correlated with the path length (how far the object is from the robot, and how far should the object be pushed). It is better to look at the figure below that displays the execution time of both solving the same task with help of the \ac{kgraph} and without its help.
 
@@ -263,6 +277,7 @@ The \ac{kgraph} suggestion work in favour of the execution time as can be seen i
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}
+\todo{Corrado: This should be structured better, it is an important part}
 
 In the introduction \Cref{table:sota_and_3_topics} was presented. A table that mainly shows which subset of the 3 main topics are included in which scientific paper. The 3 topics are learning system models, the \ac{NAMO} problem and nonprehesile pushing. The table is presented again with the addition of the main testing method that is used by the state-of-the-art paper.
 
@@ -293,20 +308,21 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. A table that m
 \todo{update this table with the table from waaaaay above}
 
 \paragraph{Comparing Success Rate}
-\citeauthor{ellis_navigation_2022} claims to push with a success rate of a 100\%~\cite{ellis_navigation_2022}. The test environment that \citeauthor{ellis_navigation_2022} has used is very similar to the random pushing task discussed in \Cref{sec:randomisation}. For both the random driving task and the random pushing task the success rate is 100\%. Meaning that every driving or pushing subtask was successfully completed. It is even so that for the result of the random push task (displayed in \Cref{fig:rand_push_full_pred,fig:random_push_all_times,fig:random_push_with_without_kgraph}) the number of hypotheses is equal to the number of subtasks. Meaning that every subtask is completed by the first hypothesis generated. Both similar experiments from \citeauthor{ellis_navigation_2022} and this thesis have a 100\% success rate for similar 
+\citeauthor{ellis_navigation_2022} claims to push with a success rate \todo{Corrado: perhaps eleborate on that 100 percent, how does ellis define that?} of a 100\%~\cite{ellis_navigation_2022}. The test environment that \citeauthor{ellis_navigation_2022} has used is very similar to the random pushing task discussed in \Cref{sec:randomisation}. For both the random driving task and the random pushing task the success rate is 100\%. Meaning that every driving or pushing subtask was successfully completed. It is even so that for the result of the random push task (displayed in \Cref{fig:rand_push_full_pred,fig:random_push_all_times,fig:random_push_with_without_kgraph}) the number of hypotheses is equal to the number of subtasks \todo{Corrado: How do I see this? unclear to tthe reader}. Meaning that every subtask is completed by the first hypothesis generated. Both similar experiments from \citeauthor{ellis_navigation_2022} and this thesis have a 100\% success rate for similar 
 , allowing us to conclude that the results are comparable.
 
 \paragraph{Comparing Computation and Execution Time}
-Three state-of-the-art papers that use computation and execution time as the testing metrics are compared to the proposed framework. To accomplish a fair comparison the environments that have been used in the citations are rebuilt in the pybullet software. The results are then directly compared to conclude that the proposed framework is as good as or even better in terms of computation time and execution time for similar tasks.\bs
+Three state-of-the-art papers that use computation and execution time as the testing metrics are compared to the proposed framework. To accomplish a fair comparison the environments that have been used in the \todo{Corrado: Where do I see this?} citations are rebuilt in the pybullet software. The results are then directly compared to conclude that the proposed framework is as good as or even better in terms of computation time and execution time for similar tasks.\bs
 
-\citeauthor{wang_affordancebased_2020} drives toward a target configuration that is blocked by a chair. The task is performed 3 times where the robot may remember its interactions with the chair from previous runs. The task is successfully completed all three times with a total time of 200 seconds for the first run to 180 seconds for the third run. Execution time increased from 70 to 85 seconds during these runs. Even with increasing execution times, the solution is found faster because the experience from previous runs could be used that lowered search time~\cite{wang_affordancebased_2020}. To compare against these results the environment is recreated in the pybullet software. The proposed framework was run only once, during this run it classified a wall object as unmovable, and the pushable box object with dimensions equal to that of the chair was classified as movable and moved out of the way. Overall execution time was 45 seconds whilst computation time took 65 seconds. The proposed framework successfully completed this similar task whilst having a lower computation and execution time. This allows concluding that the proposed framework improves upon the paper from \citeauthor{wang_affordancebased_2020} with a decent margin.\bs
+\citeauthor{wang_affordancebased_2020} drives toward a target configuration that is blocked by a chair. \todo{Corrado: By Wang or you?} The task is performed 3 times where the robot may remember its interactions with the chair from previous runs. The task is successfully completed all three times with a total time of 200 seconds for the first run to 180 seconds for the third run. Execution time increased from 70 to 85 seconds during these runs \todo{Corrado: Why?}. Even with increasing execution times, the solution is found faster because the experience from previous runs could be used that lowered search time~\cite{wang_affordancebased_2020}. To compare against these results the environment is recreated in the pybullet software \todo{Corrado: Show the recreated env then!}. The proposed framework was run only once, during this run it classified a wall object as unmovable, and the pushable box object with dimensions equal to that of the chair was classified as movable and moved out of the way. Overall execution time was 45 seconds whilst computation time took 65 seconds. The proposed framework successfully completed this similar task whilst having a lower computation and execution time. This allows concluding that the proposed framework improves upon the paper from \citeauthor{wang_affordancebased_2020} with a decent margin.\bs
+\todo{Corrado: Put a screenshot side by side of your environment and Wang one}
 
-\citeauthor{vega-brown_asymptotically_2020} has a task that pushes two boxes into a goal region. It takes around 300 seconds to return a hypothesis~\cite{vega-brown_asymptotically_2020}. Both pushing tasks can be compared with two separate pushing tasks from the random push environment. By doubling the time to push a single object to its target configuration, $2 \cdot 30 = 60$ seconds both tasks could be compared. However, the point of \citeauthor{vega-brown_asymptotically_2020} paper is that a global minimal task is sought. The proposed framework randomly selects a subtask and tries to complete it to then move to the next randomly selected subtask. A global minimum is thus not sought and both papers can therefore not be compared properly.\bs
+\citeauthor{vega-brown_asymptotically_2020} has a task that pushes two boxes into a goal region. It takes around 300 seconds to return a hypothesis~\cite{vega-brown_asymptotically_2020}. \todo{Corrado: What do you mean? for the next sentce}Both pushing tasks can be compared with two separate pushing tasks from the random push environment. By doubling the time to push a single object to its target configuration, $2 \cdot 30 = 60$ seconds both tasks could be compared. However, the point of \citeauthor{vega-brown_asymptotically_2020} paper is that a global minimal task is sought. The proposed framework randomly selects a subtask and tries to complete it to then move to the next randomly selected subtask. A global minimum is thus not sought and both papers can therefore not be compared properly.\todo{Corrado: Then why including it in the comparison?}\bs
 
-\citeauthor{sabbaghnovin_model_2021} grasp-pushes and grasp-pulls a walker object to two new target configurations~\cite{sabbaghnovin_model_2021}. The task is mimicked by pushing a box object of equal dimensions to the same target configurations. Compared to \citeauthor{sabbaghnovin_model_2021} average of 125 and 160 seconds to complete task 1 and task 2 the proposed framework takes an average of only 27 and 33 seconds respectively (10 seconds computation time) to complete similar tasks. The decrease in total time allows to conclude that the proposed frameworks improve upon the method proposed by~\citeauthor{sabbaghnovin_model_2021}.\bs
+\citeauthor{sabbaghnovin_model_2021} grasp-pushes and grasp-pulls a walker object to two new target configurations~\cite{sabbaghnovin_model_2021}. The task is mimicked by pushing a box object of equal dimensions to the same target configurations. Compared to \citeauthor{sabbaghnovin_model_2021} average of 125 and 160 seconds to complete task 1 and task 2 the proposed framework takes an average of only 27 and 33 seconds respectively (10 seconds computation time) to complete similar tasks. The decrease in total time allows to conclude that the proposed frameworks improve upon the method proposed by~\citeauthor{sabbaghnovin_model_2021}.\bs \todo{Corrado: So your pushing controllers are performin better than prehensile manipulation? amazing, but doub}
 
 \paragraph{Comparing Prediction Error}
-\citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters, thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error of the proposed framework is worse compared to this state-of-the-art. The reason is that the proposed framework focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs 
+\citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters,\todo{Corrado: But then how can you compare success rate if you have different metrics for success?} thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error \todo{Corrado: Not position errro?}of the proposed framework is worse compared to this state-of-the-art. The reason is that the proposed framework focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs 
 
 % \paragraph{Comparing Number of Replanning times}
 % \todo[inline]{\cite{scholz_navigation_2016}}

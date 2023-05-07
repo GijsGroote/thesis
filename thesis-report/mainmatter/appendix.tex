@@ -21,6 +21,7 @@ Problems in class P have a solution which can be found in polynomial time, probl
 \label{chap:appendix_control_methods}
 
 \section{\ac{MPC} Control}
+\label{sec:appendix_mpc}
 In recent literature involving predictive methods \acf{MPC} methods are dominating, before moving on to \ac{MPC} and variations of \ac{MPC}, \ac{MPC} will briefly be explained.  The basic concept of \ac{MPC} is to use a dynamic model to forecast system behaviour and optimise the forecast to produce the best decision for the control move at the current time. Models are therefore central to every form of \ac{MPC}. Because the optimal control move depends on the initial state of the dynamic system~\cite{rawlings_model_2020}. A dynamical model can be presented in various forms, let's consider a familiar differential equation. 
 $$ \frac{dx}{dt} = f(x(t), u(t)) $$
 $$ y = h(x(t), u(t)) $$ 
@@ -88,6 +89,7 @@ V_{N}(x_{0}, y_{ref}, u_k, u_{k+1}, \dots , u_{k+N})
 \end{figure}
 
 \section{\ac{MPPI} Control}
+\label{sec:appendix_mppi}
 Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose. Which was followed by \ac{MPPI} control combined with various system models, identification methods~\cite{abraham_modelbased_2020,cong_selfadapting_2020,arruda_uncertainty_2017}. The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future a number of "rollouts" for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalised undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. If a goal state is not reached, the control loop starts with the next iteration. An example is provided, see  \cref{figure: mppi_car_with_rollouts}. 
 
 \begin{figure}[H]
