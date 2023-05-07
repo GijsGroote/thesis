@@ -1,7 +1,7 @@
 \subsection{Examples}%
 \label{subsec:hgraph_example}
 
-Before displaying example \ac{hgraph}'s a legend is presented below.\bs
+Before displaying example \ac{hgraph}'s, a legend is presented below.\bs
 
 \begin{figure}[H]
     \centering
@@ -139,7 +139,13 @@ Upcoming figure will display the hypothesis generated to push an object to a tar
     \caption{\ac{hgraph} for pushing the green box to the target configuration}%
     \label{fig:robot_push_hgraph}
 \end{figure}
-Especially in \Cref{subfig:robot_push_2,subfig:robot_push_3} the backward search is clearly visible, the \ac{halgorithm} searches from target node to the robot node. \Cref{fig:robot_push_hgraph} is extensive because every necessary steps is included whilst some could be skipped. First, identifying a system model for robot driving twice, if the system model created in edge Sys. Iden.~pointing toward node robot\_model is reused, then the edge Sys. Iden.~pointing toward robot\_model\_1 would be unnecessary. Second, if system models would already be available for driving and pushing, no single system identification edge would be required. A \textit{empty\_edge} can be seen in \Cref{subfig:robot_push_7,subfig:robot_push_8,subfig:robot_push_9}, the empty\_edge serves to connect a node to another node (box\_model to robot\_copy in \Cref{fig:robot_push_hgraph}). The empty\_edge can be traversed without execution, holds no controller, system model or status.\bs
+Especially in \Cref{subfig:robot_push_2,subfig:robot_push_3} the backward search is clearly visible, the \ac{halgorithm} searches from target node to the robot node. \Cref{fig:robot_push_hgraph} is extensive because every necessary 
+
+\todo{Corrado: bit unclear here, rewrite, IDK what's happenign here right}
+steps is included whilst some could be skipped. First, identifying a system model for robot driving twice, if the system model created in edge Sys. Iden.~pointing toward node robot\_model is reused, then the edge Sys. Iden.~pointing toward robot\_model\_1 would be unnecessary. Second, if system models would already be available for driving and pushing, no single system identification edge would be required. A \textit{empty\_edge} can be seen in \Cref{subfig:robot_push_7,subfig:robot_push_8,subfig:robot_push_9}, the empty\_edge serves to connect a node to another node (box\_model to 
+
+\todo{Corrado: why is there a robot copy?}
+robot\_copy in \Cref{fig:robot_push_hgraph}). The empty\_edge can be traversed without execution, holds no controller, system model or status.\bs
 
 \paragraph{Encountering a Blocked Path}%
 During propagation of an action edge's status, motion or manipulation planning occurs. If an object is blocking the path, planning will detect it and the \ac{halgorithm} tries to free the path. In the next example the \ac{halgorithm} detects a blocking object and frees the path by pushing the blocking object to a new configuration, and can be visualized in \Cref{fig:blocking_obj_hgraph}.\bs
@@ -182,7 +188,7 @@ During propagation of an action edge's status, motion or manipulation planning o
 \end{figure}
 
 \paragraph{Encountering Failure}%
-In the last example, the first hypothesis fails to complete and the \ac{halgorithm} tries to generate a new hypothesis that also fails to complete. Several faults and failures are modeled, the \ac{halgorithm} response to faults and failure is the same. If during the propagation of an edge's status any kind of failure arises, the failed edge and corresponding edges are marked as failed. Equally during execution, if a fault is detected, the execution halts and the edge and corresponding edges are marked as \quotes{failed}, the procedure can be seen in \Cref{fig:failure_in_hgraph}.\bs
+In the last example, \Cref{fig:failure_in_hgraph} the first hypothesis fails to complete and the \ac{halgorithm} tries to generate a new hypothesis that also fails to complete. Several faults and failures are modeled \todo{Corrado: where please ref?}, the \ac{halgorithm} response to faults and failure is the same. If during the propagation of an edge's status any kind of failure arises, the failed edge and corresponding edges are marked as failed. Equally during execution, if a fault is detected, the execution halts and the edge and corresponding edges are marked as \quotes{failed}, the procedure can be seen in \Cref{fig:failure_in_hgraph}.\bs
 
 \begin{figure}[H]
     \centering

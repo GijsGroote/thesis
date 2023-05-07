@@ -1,7 +1,9 @@
 \chapter{The Hypothesis and Knowledge Graph}%
 \label{chap:hgraph_and_kgraph}
 
-\textit{This chapter is dedicated to introducing and defining the proposed framework, the proposed framework consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acl{halgorithm}} acts on the \textbf{\acl{hgraph}} is responsible for searching the composite configuration space for action sequences to complete a specified task, \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, defined in \Cref{subsec:kgraph_definition}. Collected knowledge is rated and ordered from \quotes{good} to \quotes{bad} experiences using various metrics. Such an ordering within collected knowledge makes the \ac{kgraph} a knowledge base that can be queried for action suggestions. \Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph}, and for the knowledge graph in~\Cref{sec:kgraph}.}
+\textit{This chapter is dedicated to introducing and defining the proposed framework, the proposed framework consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching the composite configuration space for action sequences to complete a specified task. \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, and used for suggesting actions from experience, defined in \Cref{subsec:kgraph_definition}.\bs}
+
+\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph}, and for the knowledge graph in~\Cref{sec:kgraph}.\bs
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
@@ -65,6 +67,12 @@
 \caption{Flowchart representation of the proposed framework.}%
 \label{tikz:flowchart_proposed_method}
 \end{figure}
+
+\todo{Corrado: This part needs restructuring and in particu an overview section like:
+
+3.1 overview of the proposed method.
+
+Here you explain the general idea, add the picture above, and after that you summarize the terminology in a table. Ideally, the terms should appear with their high level meaning in such an overview, and then they are summarized schematically }
 
 As the above figure shows, the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs 
 

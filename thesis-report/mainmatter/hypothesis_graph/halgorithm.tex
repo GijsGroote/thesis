@@ -1,5 +1,12 @@
 \subsection{Hypothesis Algorithm}%
 \label{subsec:halgorithm}
+
+\todo{Corrado: Also this subsection needs restructuring. It is very much unreadable if all definitions are given at once, I can’t memorize them
+
+I would do the same as in one of my previous comments, that is, explain step by step what’s going on first, introduce in the text the terminology, then show the algorithm pseudo code and then summarize the terms in the table.
+
+Example: the algorithm is composed by two main parts, a search loop and an execution loop. In the search loop …}
+
 This section present and discuss the newly proposed \ac{halgorithm}, this section will provide a mathematical description of the proposed \ac{halgorithm} in the form of pseudo code. This section will discuss the search and execution loop that reside in the \ac{halgorithm} and this section will finalize with 4 examples. First, let's look into the \ac{halgorithm} pseudocode.\bs
 
 The \ac{halgorithm} relies on a backward search technique. The backward search technique can be described as: \textit{start the search at a goal state and work backward until the initial state is encountered~\cite{lavalle_planning_2006}.} A motivation for a backward search over a forward search is that, it might be the case that the branching factor is large when starting from the initial state. In such cases, it might be more efficient to use a backward search.
@@ -74,7 +81,9 @@ The \ac{halgorithm} relies on a backward search technique. The backward search t
 
 During a backward search, edges are added pointing toward the target node (or to nodes that point toward the target node). Trying to connect the robot node through a list of successive directed edges to a target node. If such a path has been found in the \ac{hgraph}, a hypothesis has been found and the robot can start executing edges.\bs
 
-A flowchart of the \ac{halgorithm} is presented in \Cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an elaborate description for every block in the flowchart (see \Cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occurs. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. With the flowchart is straightforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstracted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware.
+\todo{Corrado: This is a lot to ask to a reader, you have the tendency so summarize everything in big tables and pictures and that’s okay if you are 100 on top of the topic but most readers will have no clue about what you did, so you need to help them build incrementally an idea of your method}
+A flowchart of the \ac{halgorithm} is presented in \Cref{tikz:flowchart_hgraph}. Compared to the mathematical description of the \ac{halgorithm} the flowchart provides more detail, including an elaborate description for every block in the flowchart (see \Cref{table:explainer_hgraph_figures_nodes}). The flowchart includes path estimation, planning and the behavior when failure occurs. A connection point to the \ac{kgraph} and robot environment are included. The blocks in the flowchart indicate which action they take and where, such as the configuration space, the \ac{kgraph} or the \ac{hgraph}. \todo{Corrado: rephrase what is below:}
+With the flowchart is straightforward to see how the \ac{halgorithm} connects to the status of edges, with the mathematical description of the \ac{halgorithm} that is harder so see. Compared to the flowchart the mathematical description is a abstracted version, leaving many details out that are related to the robot in this thesis. An abstracted mathematical description is simpler and encompasses a broader field of robots. So could the mathematical description also be applied to another robot such as a movable robot with robot arm and gripper. The flowchart encompasses to many details to be applied after such an change in robot hardware.
 
 \input{mainmatter/hypothesis_graph/hgraph_tikz_figure}
 
@@ -117,7 +126,8 @@ Target Node Reached& Check if the target node is reached.\\
 \label{table:explainer_hgraph_figures_nodes}
 \end{table}
 
-When all tuning parameters are set, the \ac{hgraph} is initialized and a task is provided, there is only a single access point toward the \ac{hgraph}. A function \textit{respond(observation)} that provides the \ac{halgorithm} with sensor measurements of the environment with the argument \textit{observation}. The function \textit{respond($\cdot$)} returns control in put for the robot. In this theses, the sensor measurements are the configuration of objects in the environment. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor} that makes access to the exact configuration of every object possible.\bs
+\todo{Corrado: What tuning parameters? It’s the first time in the text you talk about tuning parameters }
+When all tuning parameters are set, the \ac{hgraph} is initialized and a task is provided, there is only a single access point toward the \ac{hgraph}. A function \textit{respond(observation)} that provides the \ac{halgorithm} with sensor measurements of the environment with the argument \textit{observation}. The function \textit{respond($\cdot$)} returns control input for the robot. In this theses, the sensor measurements are the configuration of objects in the environment. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor} that makes access to the exact configuration of every object possible.\bs
 
 
 \paragraph{The Blacklist}%

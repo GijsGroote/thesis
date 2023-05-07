@@ -12,12 +12,14 @@ Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id
 
 \noindent Where (System Model, Controller) together is referred to as edge parameterization.\bs
 
+\todo{Corrado: yeah this is what? center node? Gijs: oke okeyyy}
 \noindent An center node is linked to an object that is its main task.\bs
 
 Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_{id} =\left\langle \mathit{id}, \mathit{obj_{id}}, \gls{objectClass} \right\rangle $\bs
 
 Where \textit{id} an identifier for the center node, $\mathit{obj_{id}}$ an identifier linked to an object, \gls{objectClass} the classification of that object.\bs
 
+\todo{Corrado: nothing? rephraseR}
 \noindent A side node represents nothing, it is a placeholder for the edge to point toward.\bs
 
 Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle id \right\rangle $\bs
@@ -27,13 +29,18 @@ Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle i
 Formally, a \textbf{\acl{kgraph}}, $\gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $
 \\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{edgesK}^\mathit{center}_\mathit{ids}, j \in \gls{edgesK}^\mathit{side}_\mathit{ids} \}$.\bs
 
+\todo{Corrado: Weren’t these edges? so me confused}
 Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs 
 
 Now the \ac{kgraph} is defined, lets investigate an example.\bs
 
-\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterizations. Estimating which parameterization would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterizations can be suggested with the goal of collecting feedback on them. Or even suggest a parameterization based on the feedback on other parameterizations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.\bs
+\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to collect and suggest edge parameterizations. Estimating which parameterization would be the best candidate is an entire field of research on its own. So could action suggestions incorporate uncertainty, specific  parameterizations can be suggested with the goal of collecting feedback on them. 
+
+\todo{Corrado: What does this mean? next sentence}
+Or even suggest a parameterization based on the feedback on other parameterizations~\cite{kopicki_learning_2017}. A simple metric, the success factor has been chosen, based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with, feedback must be created with only information on prediction error, tracking error and weather there was a fault detected. Then action suggestions must be made based on collected feedback and an object that should change start configuration to a target configurations (connecting 2 nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.\bs
 
 
+\todo{Corrado: You have it hear and at teh beginning, choose a single success factor please}
 $\textrm{success\_factor} = $
 \[
   \begin{cases} 0.1^{\epsilon_{\textrm {avg}}}& \textrm { if edge does not yet exist in \ac{kgraph}}\\ 
