@@ -1,21 +1,35 @@
 \section{Planning}%
 \label{sec:planning}
-\todo{Gijs: Local planning (connecting 2 configurations, or last minute real time planning), path planning -> path estimation and motion/manipulation palnning, motion planning/manipulation planning -> action planning, global planning -> finding an actino sequence. How can you make this clear to the reader??}
+This section explains \textit{path planning}, which consists of 2 steps. Firstly, path estimation, and secondly, motion or manipulation planning. The path estimator can detect non-existent paths and concludes such paths as unfeasible~\cite{zhang_simple_2008}. If a path exists, the double tree \ac{RRT*} planning algorithm is responsible for finding a path from starting point to a target point in configuration space whilst respecting applicable constraints~\cite{chen_fast_2018}.\bs
 
-\todo{Corrado: Do not say planner, make sure the call it a action, global or local planner!}
-This section explains planning for a single drive or push action as \textit{path planning}. Path planning consists of 2 steps, firstly, path estimation, and secondly, motion or manipulation planning. The path estimator can detect non-existent paths and concludes such paths as unfeasible. \todo{Corrado: what is the remainder of actions?} For the remainder of actions, motion or manipulation planning is responsible for finding a path from starting point to a target point in configuration space. The planner has to account for multiple subspaces in configuration space (free, obstacle, movable and unknown space). An existing motion planner~\cite{chen_fast_2018} extends to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. \todo{Corrado: If this is new, put it in new. sepearte from required background an proposed shit} The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs
+To clarify termology used in this thesis, the following \Cref{table:termology_planning} is presented.\bs
+\noindent
+\begin{table}[H]
+  \centering
+  \begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+   >{\raggedright\arraybackslash}p{0.65\textwidth}}
+  Global Planning:& Planning for a task by focussing on one single subtask at a time. \\
+  Local Planning:& Validating if two closeby configurations that are maximal \textit{step\_size} apart can be connected whilst respecting constraints using a system model.\\
+  Path Estimation:& Estimating the existence of a path for a push or drive action.\\
+  Motion Planning:& Planning a drive action\\
+  Manipulation Planning:& Planning for an push action.\\
+  Action Planning:& Planning for an drive or push action.\\
+  Path Planning:& Path estimation and action planning for an drive or push action.\\
+  \end{tabular}
+\caption{Terminology of Planning Terms used in this Thesis.}%
+\label{table:termology_planning}
+\end{table}
 
 \subsection{Estimating Path Existence}%
 \label{subsec:path_estimation}
 In this subsection, motivation and explanation for estimating path existence are presented. We can describe the path estimation algorithm as \textit{The idea is to discretize the configuration space. The emerging cells act as nodes in the graph, cells connect through edges to nearby cells. Graph-based planners start from the cell containing the starting configuration and search for the cell containing the target configuration while avoiding cells in obstacle space.\bs}
 
-\todo{Corrado: Maybe make clear that your space is 2d}
 If the path estimator concludes the existence of a path planning problem, then it is validated that it is geometrically possible for an object to go from start to target configuration in small successive steps without colliding with an unmovable obstacle. The check prevents the planner from attempting a search for a start and target configuration for a problem that is unfeasible due to not being detected by the path estimator because it does not check for nonholonomic constraints. By neglecting nonholonomic constraints, the path estimator is magnitudes faster than the planner; the planner is responsible for checking the nonholonomic constraints.
 
-\todo{Corrado: The configuration space for a 3d object is not 2d. You should say that you assume to work on a plane and thus you can represent the configuration space of a sphere or cuboid as it’s 2d projection on the plane, assuming cuboids do not tip over }
-
 \paragraph{Discritizing the Configuration Space}
-For general geometric shapes, a configuration space can be constructed and discretized. During this thesis, configuration space was implemented for cylinders and rectangular prisms. First, the configuration space for a cylindrical-shaped object in a 3-dimensional environment is presented. That configuration space for cylindrical objects is defined as a $(x, y)$-plane, and the $z$-axis is omitted. During the projection from a 3-dimensional environment to a 2-dimensional plane, cylinders (flat side facing down) become circles, and rectangular prisms become rectangles. The definition of configuration space is presented below for a circular object, such as the point robot, without loss of generality.\bs
+For general geometric shapes, a configuration space can be constructed and discretized. During this thesis, configuration space was implemented for cylinders and rectangular prisms. First, the configuration space for a cylindrical-shaped object in a 3-dimensional environment is presented. That configuration space for cylindrical objects is defined as a $(x, y)$-plane, and the $z$-axis is omitted. During the projection from a 3-dimensional environment to a 2-dimensional plane, cylinders (flat side facing down) become circles, and rectangular prisms become rectangles. The definition of configuration space is presented below for a circular object, such as the point robot, without loss of generality. In this thesis, three dimensional objects can be projected to the xy-plane. As a result a three dimensional spherical robot or object can has a configuration space that is two dimensional (\gls{x} and \gls{y} dimension). Objects in the shape of rectangular prisms that are projected onto the xy-plane become rectangles, and have a three dimensional configuration space (\gls{x}, \gls{y} and \gls{theta} dimension).\bs
+\bs
 
 A grid of cells represents configuration space. Let \gls{cellSize} be the width and height of a square cell. Let \gls{xGridLength} be the vertical (north to south) length and let \gls{yGridLength} be the horizontal length (west to east) of the configuration space, point $(0, 0)$ is at the center of the grid.\bs
 
@@ -29,11 +43,10 @@ The configuration space for a circular object is defined as:\bs
 \end{bmatrix}
 \]
 
-with $0 \leq i \leq i_{\textrm{max}} = \frac{\gls{xGridLength}}{\gls{cellSize}}, \quad 0 \leq j < j_{\textrm{max}} = \frac{\gls{yGridLength}}{\gls{cellSize}}$.\bs
-\todo{Gijs: maybe make this the same as the cell thingy here below, with x and y}
 
-Where $c_{(i,j)}$ in matrix \gls{cspace} represents to which subspace the cell at indices $(i, j)$ belongs. The four subspaces considered in this thesis are free-, obstacle-, movable- and unknown space indicated with the integers 0, 1, 2 and 3, respectively. Multiple subspaces can reside in a single cell; by default, a cell represents free space. The subspaces are ordered from least to most important: free, movable, unknown, and obstacle space. A cell displays the subspace with the highest order of importance that resides in the cell. Thus a cell that contains part unknown and part obstacle space will evaluate as obstacle space since obstacle space has a higher order of importance than the unknown space.\bs
-\todo{Corrado: What is an higher order of importantece, just say what you want to say, no fancy fancy pleas}
+with $0 \leq i \leq i_{\textrm{max}} = \frac{\gls{xGridLength}}{\gls{cellSize}}, \quad 0 \leq j < j_{\textrm{max}} = \frac{\gls{yGridLength}}{\gls{cellSize}}$.\bs
+
+Where $c_{(i,j)}$ in matrix \gls{cspace} represents to which subspace the cell at indices $(i, j)$ belongs. The four subspaces considered in this thesis are free-, obstacle-, movable- and unknown space indicated with the integers 0, 1, 2 and 3, respectively. Multiple subspaces can reside in a single cell; by default, a cell represents free space. The subspaces are ordered from least to most important: free, movable, unknown, and obstacle space. A cell displays the subspace with the highest order of importance that resides in the cell. Thus a cell that contains part unknown and part obstacle space will evaluate as obstacle space since obstacle space is more important than the unknown space.\bs
 
 A mapping function $f_\mathit{chart\_to\_idx}(i,j)$ maps the\\Cartesian $(x,y)$ coordinates to their associated $(i,j)$ indices:
 
@@ -47,14 +60,9 @@ A mapping function $f_\mathit{idx\_to\_chart}(i, j)$ maps the\\indices $(i, j)$ 
 \[f_\mathit{chart\_to\_idx}(i,j): \gls{Rnonnegative}^2  \mapsto \gls{R}^2 \]
 
 Defined for:
-% \[ \mathit{(i, j)} \in [0, \frac{\gls{xGridLength}}{\gls{cellSize}}] \times [0, \frac{\gls{yGridLength}}{\gls{cellSize}}]\]
-
-
 \[i = \{\frac{\gls{xGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq i \leq \frac{\gls{xGridLength}}{\gls{cellSize}},\quad j = \{\frac{\gls{yGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq j \leq \frac{\gls{yGridLength}}{\gls{cellSize}}\}\]
 
-
-\todo{Corrado: put this earlier, it avoids confusions}
-For rectangular objects, the orientation of the object becomes important because the orientation, together with the $\mathit{(x, y)}$ coordinates, determines which subspace the object resides. The configuration space for rectangular objects is thus 3-dimensional, whilst circular objects have a 2-dimensional configuration space.\bs
+For rectangular objects, the orientation of the object becomes relevant because the orientation, together with the $\mathit{(x, y)}$ coordinates, determines which subspace the object resides. The configuration space for rectangular objects is thus 3-dimensional, whilst circular objects have a 2-dimensional configuration space.\bs
 
 The configuration space for a rectangular object is defined as:\bs
 

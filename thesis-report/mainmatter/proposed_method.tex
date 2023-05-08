@@ -1,3 +1,10 @@
+\chapter{Planning in four subspaces}%
+\label{chap:proposed_planning}
+This chapter presents an existing motion planner~\cite{chen_fast_2018} that is extended to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs
+
+% \input{mainmatter/hypothesis_graph/proposed_planning_algorithm}
+
+
 \chapter{The Hypothesis and Knowledge Graph}%
 \label{chap:hgraph_and_kgraph}
 
@@ -95,7 +102,9 @@ Node Status:& Status of a node indicates if a node is initialized, the \ac{halgo
             & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\
 Node:   & A node in the \acs{hgraph}, represents an object in a configuration with reachability indicated with a node status.\\
         & $\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
-Edge Status:& Status of a edge, elaborate information on the statuses can be found in \Cref{tikz:status_action_edge}.\\
+Edge Status:& Status of a edge, elaborate information on the statuses can be found in \Cref{tikz:status_action_edge}.
+\todo{Corrado: Mmm, I would avoid referring to external things, this should be self contained GIJS: repeat status and ref as well }
+\\
             & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model} \vee \] \[\mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\
 Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\
         & $ \textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\

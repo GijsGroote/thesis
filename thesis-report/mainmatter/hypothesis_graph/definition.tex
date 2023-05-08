@@ -70,9 +70,13 @@ FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{table}
 \todo{Corrado: would be nicer to have that PRE INPUT SECU named something that is really better}
 
-An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behavior of the robot, and system models that describe the push behavior of the robot and an object. Data collection for a driving model can be collected by sending input to the robot assuming that the robot has enough free space around it such that is does not collide with an object during data collection. To collect \ac{IO} data for a pushing model the robot first drives to a starting configuration next to the object. After the first input sequence is over, the robot drives to the next start position next to the object. After several input sequences the robot has gathered enough \ac{IO} data to generate a system model for pushing.\bs
+An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behavior of the robot, and system models that describe the push behavior of the robot and an object. 
+\todo{Corrado: The following part is: I find this very vague. It is also true that you did not implement any of this methods in practice so I’m unsure how to go about it.. maybe explaining the logic for determining movable and unmovable? }
+Data collection for a driving model can be collected by sending input to the robot assuming that the robot has enough free space around it such that is does not collide with an object during data collection. To collect \ac{IO} data for a pushing model the robot first drives to a starting configuration next to the object. After the first input sequence is over, the robot drives to the next start position next to the object. After several input sequences the robot has gathered enough \ac{IO} data to generate a system model for pushing.\bs
 
-An action edge, contains a drive or push action. From the point of initialization an action edge starts collecting all necessary ingredients such that is can be executed (track a path). These ingredients are estimating path existence, being given a system model and searching for a path. To collect such ingredients the edge performs path estimation, is given a system model, performs motion or manipulation planning. Then finally, the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the action edge's status can be visualized in \Cref{tikz:status_action_edge}.\bs
+An action edge, contains a drive or push action. 
+\todo{Corrado: same thing belwo, thisi  Vague. Rephrase at the level of a msc document. Consider, from a, clear, precise }
+From the point of initialization an action edge starts collecting all necessary ingredients such that is can be executed (track a path). These ingredients are estimating path existence, being given a system model and searching for a path. To collect such ingredients the edge performs path estimation, is given a system model, performs motion or manipulation planning. Then finally, the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the action edge's status can be visualized in \Cref{tikz:status_action_edge}.\bs
 \todo{Corrado: SOmewhere here must be an equetion that if eveolves to true, determines if a subtask was completed}
 
 \begin{figure}[H]
@@ -112,7 +116,7 @@ An action edge, contains a drive or push action. From the point of initializatio
 \begin{tabular}%
   {>{\raggedleft\arraybackslash}p{0.24\textwidth}%
    >{\raggedright\arraybackslash}p{0.66\textwidth}}
-INITIALIZED (IN): & The edge is created with a source and target node which are present in the \ac{hgraph}. A choice of controller is made. \\
+INITIALIZED (IN): & The edge is created with a source and target node which are present in the \ac{hgraph}. \todo{Corrado: how then?} A choice of controller is made. \\
 PATH EXISTS (PE): & A graph-based search is performed to validate if the target configuration is reachable assuming that the system is holonomic. \\
 SYSTEM MODEL (SM): & A dynamics system model is provided to the controller residing in the edge. \\
 PATH PLANNED (PP): & Resulting from a sample-based planner, a path from start to target configuration is provided. \\
