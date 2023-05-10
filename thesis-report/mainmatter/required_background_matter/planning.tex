@@ -62,7 +62,6 @@ A mapping function $f_\mathit{idx\_to\_chart}(i, j)$ maps the\\indices $(i, j)$ 
 Defined for:
 \[i = \{\frac{\gls{xGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq i \leq \frac{\gls{xGridLength}}{\gls{cellSize}},\quad j = \{\frac{\gls{yGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq j \leq \frac{\gls{yGridLength}}{\gls{cellSize}}\}\]
 
-For rectangular objects, the orientation of the object becomes relevant because the orientation, together with the $\mathit{(x, y)}$ coordinates, determines which subspace the object resides. The configuration space for rectangular objects is thus 3-dimensional, whilst circular objects have a 2-dimensional configuration space.\bs
 
 The configuration space for a rectangular object is defined as:\bs
 
@@ -135,35 +134,49 @@ The point robot has a cylindrical shape; thus, a 2-dimensional configuration spa
 
 The resolution of the configuration space at \Cref{fig:c_space_two_pushes_smaller} is higher compared to \Cref{fig:c_space_two_pushes_small} because of a smaller grid size. A high resolution is better at detecting paths through small corridors and tight corners, but it comes at the cost of a more extended creation and search time.
 
-\paragraph{Path Existence Algorithm} In the context of this thesis, we can describe path existence as \textit{For an object's configuration space, there exists a list of neighbouring cells from starting to target configuration that does not lie in obstacle space.\bs}
+\paragraph{Path Existence Algorithm} In the context of this thesis, we can describe path existence as: \textit{For an object's descritized configuration space, there exists a list of neighbouring cells from starting to target configuration that does not lie in obstacle space.\bs}
 
-\todo{Corrado: Will I find somewhere the details about this? They are required for me to be able to reproduce this, GIJS: related to the shortest path, cite dijkstra please.}
-A path in configuration space is detected using the implemented\\$f_\mathit{shortest\_path}(\gls{c}_\mathit{start}, \gls{c}_\mathit{target}, \mathit{detect\_blocking\_objects})$ function. This function returns the shortest path from the $\gls{c}_\mathit{start}$ to the $\gls{c}_\mathit{target}$. \textit{detect\_blocking\_objects} is a boolean flag that if \textit{True} returns a list blocking objects classified as movable or unknown. If no path is found, the $f_\textit{shortest\_path}$ function raises an error.\bs
-\todo{Corrado: can be converted? yeah,cool how? How, and what does this mean, create an example please}
-
-The \textit{shortest\_path} function uses the Dijkstra algorithm~\cite{dijkstra_note_1959} on the discretizing configuration space to find a shortest path. This path can be converted to provide an initial number of path planner samples, also referred to as a \quotes{warm start}.\bs
+A path in configuration space is detected using the implemented\\$f_\mathit{shortest\_path}(\gls{c}_\mathit{start}, \gls{c}_\mathit{target}, )$ function. This function takes a start- and target configuration, $\gls{c}_\mathit{start}$ and $\gls{c}_\mathit{target}$ and returns the shortest path between them that lies in free space. The \textit{shortest\_path} function searches for the shortest path using the Dijkstra algorithm~\cite{dijkstra_note_1959} on the discreted configuration space. The shortest path validates the existence of a path (note that only geometric constraints are respected), and can help path planning discussed in \Cref{sec:planning}. The shortest path helps path planning by providing an initial number of path planner samples before the path planner creates samples by random sampling. Such a conversion is also referred to as a \quotes{warm start}. If no path can be found, the $f_\textit{shortest\_path}$ function raises an error that will prevent path planning from occuring.\bs
 
 \paragraph{Unfeasible solutions and an undecidable problem}
-\todo{Corrado: What’s the difference between path estimator and path existence algorithm?, GIJS: CHECK all please now}
-The path estimation algorithm does not take system constraints into account. Thus, the path estimation algorithm can find a list of neighbouring cells from the start to the target configuration and conclude that a path exists. In reality, this path is unfeasible. An example is driving the boxer robot displayed in \Cref{subfig:example_boxer_robot} through a narrow, sharp corner. Whilst geometrically, the robot would fit through the corner, the nonholonomic constraints of the robot prevent it from steering through such a tight corner. It is for the action planner to detect that the path is unfeasible.\\
+The path estimator does not take system constraints into account. Thus, the path estimator can find a list of neighbouring cells from the start to the target configuration and conclude that a path exists. In reality, this path is unfeasible. An example is driving the boxer robot displayed in \Cref{subfig:example_boxer_robot} through a narrow, sharp corner. Whilst geometrically, the robot would fit through the corner, the nonholonomic constraints of the robot prevent it from steering through such a tight corner. It is for the action planner to detect that the path is unfeasible.\\
 
-The path estimator suffers from another drawback, finding proof that there exists a path that is undecidable~\cite{zhang_simple_2008}. This is due to the chosen cell size during discretizing the configuration space. An example is a corridor having the same width as the robot. The robot fits exactly through this corridor. Detecting such a path requires many neighbouring cells that lie exactly in the centre line of the corridor. Only with a cell size going to zero and the number of cells going to infinity such a path is guaranteed to be detected. Path non-existence, on the other hand, is easy to prove because the path estimation algorithm provides an upper bound on existing paths and a lower bound on non-existing paths~\cite{zhang_simple_2008}.\bs
-\todo{Corrado: I don’t understand this. How are the bounds connected to the fact that you can prove existence? jj}
+The path estimator suffers from another drawback, finding proof that there exists a path that is undecidable~\cite{zhang_simple_2008}. This is due to the chosen cell size during discretizing the configuration space. An example is a corridor having the same width as the robot. The robot fits exactly through this corridor. Detecting such a path requires many neighbouring cells that lie exactly in the centre line of the corridor. Only with a cell size going to zero and the number of cells going to infinity such a path is guaranteed to be detected. Path non-existence, on the other hand, is easy to prove because the path estimator provides an upper bound on existing paths and a lower bound on non-existing paths~\cite{zhang_simple_2008}.\bs
 
-\todo{Corrado: I’m not following, does the path existence algorithm consider non holonomic constraints? If so, how is this different than a global planner? GIJS: about the non-existend paths}
-The path existence algorithm can detect non-existence paths. Thus checking path existence before motion or manipulation planning filters out several non-existent paths saving time and resources. \todo{Corrado: Even if,...The sentence does not fit the flow } Even if, in exceptional cases, the path estimation algorithm can yield unfeasible paths and can fail to detect existing paths. Checking path existence before path planning filters some non-exist paths and is additionally motivated by two reasons. First, path estimation is orders of magnitude faster compared to motion or manipulation planning. Secondly, the path estimation algorithm can provide a number of initial samples to the motion or manipulation planner that can act as a \quotes{warm start}.
 
-\todo{A path is a list of successive configurations beginning with the start and ending with the target configuration. During planning, constraints are respected by checking the reachability of the configurations added to the path with a system model.}
+\begin{figure}[H] 
+\centering
+\begin{tikzpicture}]
+
+    % Nodes
+    \node [decision] (first) {Does a Path exist if only geometric constraints are respected?};
+    
+    \node [block, below left=1cm and 2cm of first, minimum width=14em, text width=12em] (path_exists) { A path does exist, but can be unfeasible due to violating the constraints other than the geometric constraints };
+    \node [block, below right=1cm and 2cm of first, minimum width=14em, text width=12em] (path_does_not_exists) { It is estimated a path does not exist, however due to the \textit{finite} descritization and locations of emerged cells, an existing path was not found};
+
+    \draw[-stealth] (first.west) [out=180, in=90] to node[above] {yes} (path_exists.north);
+    \draw[-stealth] (first.east) [out=0, in=90] to node[above] {no} (path_does_not_exists.north);
+
+\end{tikzpicture}
+% \vspace{-5cm}
+\caption{Flowchart displaying Path existence fallacy.}%
+\label{tikz:flowchart_path_estimator}% 
+\end{figure}
+
+\todo{Make above thingy better Corrado: I don’t understand this. How are the bounds connected to the fact that you can prove existence? jj}
+
+The path existence algorithm can detect non-existence paths. Thus checking path existence before motion or manipulation planning filters out several non-existent paths saving time and resources. Even if, in exceptional cases, the path estimator can yield unfeasible paths and fails to detect existing paths. Checking path existence before path planning filters some non-exist paths and is additionally motivated by two reasons. First, path estimation is orders of magnitude faster compared to path planning. Secondly, the path estimation algorithm can provide a number of initial samples to the path planner that can act as a \quotes{warm start}.
+
 
 \subsection{Motion Planning}%
 \label{subsec:motion_planning}
-Controllers discussed in \Cref{sec:control_methods} can track a path from start to target, given that all necessary ingredients are provided. Providing a path is the planners' responsibility; planners seek inside the configuration space for a path from the start to the target configuration. A practical example of such a path is a list of successive points in configurations space. The first point is the start configuration, and the last is the target configuration. How far the successive points can lie apart is a tuning parameter of the planner. Seeking a path from start to target inside a configuration space whilst avoiding obstacles for the robot to track is referred to as \textit{motion planning}. Finding a path between the start and target configuration for pushing applications whilst avoiding collisions is referred to as \textit{manipulation planning}. This and the upcoming subsection present two new sample-based planners (one for drive and one for push applications); they are based upon an existing double tree \ac{RRT*} planner~\cite{chen_fast_2018}. The existing planner plans in free and obstacle space; a modification extends the planner to incorporate movable and unknown space. First, this section presents the new motion planning algorithm, and the next section, \Cref{subsec:manipulation_planning} dedicates itself to manipulation planning. The new planning algorithms are sample-based, which can be described as.\bs
-
-\todo{Corrado: Move the italic stuff to before the additional modification. And make it entirely go to the proposed method. That makes sure that is is aaaa god damn addition, jeez/Tu}
+Controllers discussed in \Cref{sec:control_methods} can track a path from start to target, given that all necessary ingredients are provided. Providing a path is the planners' responsibility; planners seek inside the configuration space for a path from the start to the target configuration. A practical example of such a path is a list of successive points in configurations space. The first point is the start configuration, and the last is the target configuration. How far the successive points can lie apart is a tuning parameter of the planner. Seeking a path from start to target inside a configuration space whilst avoiding obstacles for the robot to track is referred to as \textit{motion planning}.\bs
 
 \textit{\quotes{The main idea is to avoid the explicit construction of the object space and instead conduct a search that probes the configuration space with a sampling scheme. This probing is enabled by a collision detection module, which the motion planning algorithm considers a “black box.”~\cite{lavalle_planning_2006}}}\bs
 
-Generally, the configuration space consists of 2 subspaces, free- and obstacle space. The configuration space in this thesis consists of 4 subspaces: free, obstacle, unknown and movable space. A dedicated path planning algorithm has been developed to solve planning problems for such a configuration space with four subspaces. The newly developed path planner extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}. The motion planner consists of the following.
+
+
+ The path planner consists of the following.\bs
 
 \begin{center}
 \begin{align*}
@@ -173,19 +186,25 @@ Generally, the configuration space consists of 2 subspaces, free- and obstacle s
 \end{align*}
 \end{center}
 
-The start connectivity tree consists of the nodes connected by edges containing the starting node, and vice versa for the target connectivity tree containing the target node. The algorithm grows the two \textit{connectivity trees} by randomly sampling configurations and adding them to the start or target connectivity tree. The algorithm explores configuration space by growing these connectivity trees. When the start connectivity tree is close enough (inside the search size of a newly added sample) to the target connectivity tree, a path from start to target is found. The goal of the motion planner is to find a path between the start and target configuration that results in the lowest totalPathCost, defined as:
 
-\[\textrm{TotalPathCost} = \textrm{PathCost} + \textrm{MovableSpaceCost} + \textrm{UnknownSpaceCost}\]
 
-The PathCost corresponds to the sum of euclidean distances between the successive configurations in the path. The MovableSpaceCost and UnknownSpaceCost correspond to a fixed addition cost for a configuration in the path that crosses through movable or unknown subspace, respectively. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in movable space, MovableSpaceCost will be 0, equivalent to unknown space and UnknownSpaceCost. Optimizing the path for the lowest cost incentivizes the motion planning algorithm to find a path around unknown or movable objects. Newly sampled configurations are added structurally, guaranteeing an optimal path is found with infinite sampling~\cite{chen_fast_2018}. Where optimality is defined as the path with the lowest possible cost.\bs
+The goal of the motion planner is to find a path between the start and target configuration that results in the lowest totalPathCost, defined as:
 
-\paragraph{Tuning Parameters}
-\todo{Corrado: Did not see any algorithm so far. It’s hard to map these parameters to something I did not see yet jk}
-The algorithm has four tuning parameters that can be tweaked; first, the \textit{step size}, the maximal normalized distance between connected samples in the connectivity trees, see \Cref{subfig:mp_step_size} \todo{Corrado: Put more of simple images as you go instead of a gigantic one later on }for a visual example. Choosing a high step size will increase search speed because the connectivity trees grow faster. A higher step size comes at the cost of smoothness; the resulting path will be bumpier with sharper corners.\todo{Corrado: Additionally, .. not Not a sentence } Additionally, the path has an increased chance of collision with obstacles because, for two connected configurations in a path, the individual configurations can both lie in free space. The space between configurations is not checked, and an obstacle could be in between the configurations, especially when cutting corners around obstacles. The second tuning parameter is the \textit{search size}, which is a subspace around the newly sampled sample (see, \Cref{subfig:mp_search_size}). In this subspace, a parent node is sought, and rewiring occurs. A parent node connects a new node with an edge to a connectivity tree. After connecting the new node to its parent node, rewiring occurs, changing the parent node by removing and adding an edge. If that results in a lower cost for that node, rewiring can be visually seen in \Cref{subfig:mp_rewire}. Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time. The third and fourth tuning parameters are the fixed costs for crossing through movable or unknown space, \Cref{fig:mp_push_or_drive} clearly shows the effect of varying such costs.\bs
+
+
+\todo{Corrado: make this a sum of path cost thigy}
+\[\textrm{TotalPathCost} = \textrm{PathCost}\]
+
+The start connectivity tree consists of the nodes connected by edges containing the starting node, and vice versa for the target connectivity tree containing the target node. The algorithm grows the two \textit{connectivity trees} by randomly sampling configurations and adding them to the start or target connectivity tree. The algorithm explores configuration space by growing these connectivity trees. When the start connectivity tree is close enough (inside the search size of a newly added sample) to the target connectivity tree, a path from start to target is found. 
+
+
+
+
+The PathCost corresponds to the sum of euclidean distances between the successive configurations in the path. Newly sampled configurations are added structurally, guaranteeing an optimal path is found with infinite sampling~\cite{chen_fast_2018}. Where optimality is defined as the path with the lowest possible cost.\bs
+
+
 
 The Pseudocode of the proposed algorithm is provided in \Cref{pseudocode:proposed_rrt_star}. The variables and /Rfunctions used are elaborated upon in the following \Cref{table:functions_for_proposed_rrt_star}.\bs
-
-\todo{Corrado: You need to use visuals as you go and not dump everything at the end.}
 
 
 \noindent
@@ -208,24 +227,16 @@ The Pseudocode of the proposed algorithm is provided in \Cref{pseudocode:propose
     $\mathit{ReachabilityCheck}(x, x')$:& Return true if a system model with initial state $x$ can reach state $x'$ for a range of allowed input; otherwise, return false. \todo{Corrado: How exactly? }\\
     $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
   \end{tabular}
-\caption{Functions used by the \Cref{pseudocode:proposed_rrt_star}}
+\caption{Functions used by the \Cref{pseudocode:proposed_rrt_star}.}
 \label{table:functions_for_proposed_rrt_star}
 \end{table}
 
-Notice that in \Cref{pseudocode:proposed_rrt_star}, the coloured sections correspond to the surrounding coloured border in the subfigures of \Cref{fig:motion_planner_adding_one_sample}.\bs
 
 
-\todo{Corrado: I understand your attempt but reading the thesis as a whole asking to match colors with a picture is a lot to ask to a reader. I suggest the following: 
-
-Before starting explaining just add an overall algorithm which is basically algorithm 1 where you have 1 sub-algorithm name per color. 
-
-Then, when you explain the figure and the tuning parameters, as you go in the text you add pictures and sub algorithm. So a reader can incrementally add details to an already explained structure 
-/}
-
-\newpage
+% ALL
 \begin{algorithm}[H]
-\caption{Pseudocode for modified double tree \ac{RRT*} algorithm}%
-\label{pseudocode:proposed_rrt_star}
+\caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green colored sections.}%
+\label{pseudocode:proposed_rrt_star_all}
 \begin{algorithmic}[1]
 
 \hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
@@ -233,7 +244,44 @@ Then, when you explain the figure and the tuning parameters, as you go in the te
 \While{\textit{NotReachStop}} 
 
 \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-    \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
+   \algorithmiccomment{Create, check and project a new random sample}
+}}
+
+\hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
+    \algorithmiccomment{Find and connect new node to parent node}
+}}
+
+\hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
+ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
+}}
+\EndWhile
+}}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/1mp_init.drawio.png}
+    \caption{Snapshot of the configuration space during a search\\from start to the target configuration.}
+    \label{fig:motion_planner_adding_one_sample_one}
+\end{figure}
+
+Notice that in \Cref{pseudocode:proposed_rrt_star}, the coloured sections correspond to the surrounding coloured border in the subfigures of \Cref{fig:motion_planner_adding_one_sample}.\bs
+
+
+
+
+
+\paragraph{Tuning Parameters}
+The algorithm has four tuning parameters that can be tweaked; first, the \textit{step size}, the maximal normalized distance between connected samples in the connectivity trees, see \Cref{subfig:mp_step_size} for a visual example. Choosing a high step size will increase search speed because the connectivity trees grow faster. A higher step size comes at the cost of smoothness; the resulting path will be bumpier with sharper corners.\todo{Corrado: Additionally, .. not Not a sentence } Additionally, the path has an increased chance of collision with obstacles because, for two connected configurations in a path, the individual configurations can both lie in free space. The space between configurations is not checked, and an obstacle could be in between the configurations, especially when cutting corners around obstacles. The second tuning parameter is the \textit{search size}, which is a subspace around the newly sampled sample (see, \Cref{subfig:mp_search_size}).\bs
+
+% ONE
+\begin{algorithm}[H]
+\caption{Pseudocode to create, check and project a new random sample.}%
+\label{pseudocode:proposed_rrt_star_one}
+\begin{algorithmic}[1]
+  \hspace{-0.9cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
+    \State $Cost_\mathit{min} \leftarrow +\infty$ 
     \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
     \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
     \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
@@ -244,9 +292,34 @@ Then, when you explain the figure and the tuning parameters, as you go in the te
         \State Continue
     \EndIf
 }}
+\end{algorithmic}
+\end{algorithm}
 
-\hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
-    \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$ \algorithmiccomment{Find and connect new node to parent node}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/2mp_new_rand_sample.drawio.png}
+    \caption{A new random sample is generated.\newline}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/3mp_project_sample.drawio.png}
+    \caption{The new sample is projected toward the closest sample.\bs}%
+    \label{subfig:mp_step_size}
+    \end{subfigure}
+
+    \caption{Create, find and connect new node to parent node.}
+    \label{fig:motion_planner_adding_one_sample_one}
+\end{figure}
+
+% TWO
+\begin{algorithm}[H]
+\caption{Pseudocode to find and connect new node to parent node.}%
+\label{pseudocode:proposed_rrt_star_two}
+\begin{algorithmic}[1]
+\hspace{-0.9cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
+    \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$ 
     \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
     \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new}) + ObjectCost(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
     \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
@@ -263,9 +336,25 @@ Then, when you explain the figure and the tuning parameters, as you go in the te
     \State $E.\mathit{add}(\gls{nodeMP}_\mathit{minCost}, \gls{nodeMP}_\mathit{new})$
     \EndIf
 }}
+\end{algorithmic}
+\end{algorithm}
 
-\hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
-    \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth, cfbox=my_yellow 5pt 0pt]{figures/required_background/mp/4mp_connect_to_tree.drawio.png}
+    \caption{The new sample is connected to the node in search space\\that results in the lowest cost.}%
+    \label{fig:motion_planner_adding_one_sample_two}
+\end{figure}
+
+In this subspace, a parent node is sought, and rewiring occurs. A parent node connects a new node with an edge to a connectivity tree. After connecting the new node to its parent node, rewiring occurs, changing the parent node by removing and adding an edge. If that results in a lower cost for that node, rewiring can be visually seen in \Cref{subfig:mp_rewire}. Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time.
+
+% THREE
+\begin{algorithm}[H]
+\caption{Pseudocode to check if the newly added node can lower cost for nearby nodes.}%
+\label{pseudocode:proposed_rrt_star_three}
+\begin{algorithmic}[1]
+\hspace{-0.9cm}\colorbox{my_green}{\parbox{\linewidth}{%
+    \State $\mathit{Cost_{path}} \leftarrow +\infty$ 
     \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$} 
     \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$} 
     \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
@@ -290,40 +379,13 @@ Then, when you explain the figure and the tuning parameters, as you go in the te
       \EndIf
     \EndFor
 }}
-\EndWhile
-}}
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
 An example of the proposed algorithm is provided; see \Cref{fig:motion_planner_adding_one_sample}. In this example, one sample is added to the starting connectivity tree. Adding this sample involves many steps: generating a new random sample, projecting the sample to the nearest node, rewiring nearby samples and connecting the start to the target tree.\bs
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.93\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/1mp_init.drawio.png}
-    \caption{Snapshot of the configuration space during a search\\from start to the target configuration.}
-    \end{subfigure}
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/2mp_new_rand_sample.drawio.png}
-    \caption{A new random sample is generated.\newline}
-    \end{subfigure}
-
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/3mp_project_sample.drawio.png}
-    \caption{The new sample is projected toward the closest sample.\bs}%
-    \label{subfig:mp_step_size}
-    \end{subfigure}
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=0.93\textwidth, cfbox=my_yellow 5pt 0pt]{figures/required_background/mp/4mp_connect_to_tree.drawio.png}
-    \caption{The new sample is connected to the node in search space\\that results in the lowest cost.}%
-    \label{subfig:mp_search_size}
-    \end{subfigure}
-
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/required_background/mp/5mp_rewire.drawio.png}
@@ -335,9 +397,8 @@ An example of the proposed algorithm is provided; see \Cref{fig:motion_planner_a
     \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/required_background/mp/6mp_search_other_tree.drawio.png}
     \caption{A path from start to target configuration is found. \bs}
     \end{subfigure}
-
-    \caption{Visualization of the Double tree \acs{RRT*} motion planner that adds a single sample to the connectivity graph. The colour of the box surrounding subfigures corresponds to the coloured sections in \Cref{pseudocode:proposed_rrt_star}. 3-dimensional configuration space displayed as 2-dimensional configuration space ($x$ and $y$ are visible, $\theta$ is not visible).}
-    \label{fig:motion_planner_adding_one_sample}
+    \caption{Check if the newly added node can lower cost for nearby nodes.}
+    \label{fig:motion_planner_adding_one_sample_tree}
 \end{figure}
 
 \begin{figure}[H]
@@ -358,57 +419,3 @@ An example of the proposed algorithm is provided; see \Cref{fig:motion_planner_a
 \end{figure}
 \todo{Corrado: The caption here above is vague}
 
-The added fixed cost for a path crossing through a movable or unknown object motivates the motion planner to find the shortest path around objects but prefers moving an object over making a large detour. Tuning the additional fixed cost for a path crossing through movable or unknown space balances the robot's decision between how long of a detour the robot is willing to drive, compared to pushing an object to free the path. Removing an unknown object bears more uncertainty than a movable object, which is why the additional cost to remove an unknown object is higher than that of a movable object. 
-\todo{Corrado: So what’s your approach? Is there a systematic way or approach you used to tune this?}
-
-\begin{figure}[H]
-
-    \centering
-    \begin{subfigure}{\textwidth}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/required_background/push_or_drive} \caption{Robot environment with the point robot, two yellow unmovable walls and an unknown brown box.}
-    \end{subfigure}
-
-    \begin{subfigure}{1.11\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/required_background/mp/mp_high_fixed_cost}
-    \caption{planned path around the brown box and yellow obstacles, with $\textrm{unknownSpaceCost} = 2$.}
-    \end{subfigure}
-
-    \begin{subfigure}{1.11\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/required_background/mp/mp_low_fixed_cost}
-    \caption{planned path going through the brown box, $\textrm{unknownSpaceCost} = 0.5$.}
-    \end{subfigure}
-    \caption{The robot tasked with driving toward the other side of the brown box.}%
-    \label{fig:mp_push_or_drive}
-\end{figure}
-
-\todo{Corrado: a top view would be nice of that above thingy... easy to map to the ones just below}
-
-The \todo{Corrado: It’s not a property of your proposed method per se but rather one of double rat star right?} proposed motion planning algorithm searches the configuration space from the start to target connectivity trees. Exploring faster than the single tree \ac{RRT*} algorithm \todo{Corrado: Do you have a reference for this? } because two trees grow and explore faster than a single tree. The proposed algorithm rewires nodes, lowering the cost for existing paths and convert to the optimal lowest-cost path with infinite sampling. System constraints are ensured by the \textit{ReachabilityCheck}\todo{Corrado: ReachabilityCheck, is nto explained at all} that validates if a node is reachable from another node using system models.\bs
-
-
-The proposed algorithm yields feasible paths (according to the system model used to check reachability) that respect the system constraints. The algorithm prevents planning a path through blocking objects except when no other option is available or a large detour can be prevented. There are no performance tests taken on the modified motion planner other than visual inspection.
-\todo{Corrado: So why should we believe the things you said so far about your proposed algorithm?}
-For performance tests and comparison with equivalent sample-based state-of-the-art motion planners, see~\cite{chen_fast_2018}. Now that motion planning is discussed for drive actions, manipulation will be discussed for push actions.
-
-
-
-\subsection{Manipulation Planning}%
-\label{subsec:manipulation_planning}
-With a push, two objects are primarily involved, the pushed object and the robot. Generally, and in this thesis, the pushed object's configuration is more important than the robot's configuration. The robot is only a means to push the object toward the target configuration. At which final configuration the robot itself ends up is of lesser importance. As long as during the push, the robot does not collide with objects other than the pushed object, and constraints on the robot must be respected.\bs
-
-To plan a path that respects the constraints, \todo{Corrado: What does this mean? ->} the robot's configuration is generated for every newly added sample in the manipulation planning algorithm. 
-
-\todo{Gijs For reachbailbpcheck, These lines just point out the name of the function again , there is no added information }
-The \textit{ReachabilityCheck()} (see \Cref{table:functions_for_proposed_rrt_star} and line 33 in \Cref{pseudocode:proposed_rrt_star}) generates the robot configuration to validate if a new sample is reachable from an existing sample. This additional configuration is stored to create only feasible paths that respect the applied constraints. When the stopping criteria are reached and the shortest path is found, the generated robot configurations are discarded. \Cref{fig:manipulation_plannig_local_planner} displays a visual example of the procedure.\bs
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/required_background/manipulation_local_planner}
-    \caption{Generating a new robot configuration whilst adding a sample to the connectivity tree during manipulation planning.}%
-    \label{fig:manipulation_plannig_local_planner}
-\end{figure}
-
-\todo{Corrado: This does not explain much. What is the strait line and how was that determines? Is that le global path ? What does the local planner arrow mean? A local planner by definition does not come up with a path to follow itself GIJS: that is about he image}

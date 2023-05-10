@@ -4,32 +4,7 @@ The algorithm has four tuning parameters that can be tweaked; first, the \textit
 
 The Pseudocode of the proposed algorithm is provided in \Cref{pseudocode:proposed_rrt_star}. The variables and /Rfunctions used are elaborated upon in the following \Cref{table:functions_for_proposed_rrt_star}.\bs
 
-
-\todo{Corrado: I understand your attempt but reading the thesis as a whole asking to match colors with a picture is a lot to ask to a reader. I suggest the following: 
-
-Before starting explaining just add an overall algorithm which is basically algorithm 1 where you have 1 sub-algorithm name per color. 
-
-Then, when you explain the figure and the tuning parameters, as you go in the text you add pictures and sub algorithm. So a reader can incrementally add details to an already explained structure 
-/}
-
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=1.10\textwidth]{figures/required_background/mp/7mp_path_found.drawio.png}
-    \caption{Motion planner found a path found marked in red.}
-    \end{subfigure}%
-
-    \begin{subfigure}{\textwidth}
-    \hspace{-0.7cm}
-    \includegraphics[width=1.1\textwidth]{figures/required_background/mp/mp_the_real_deal.png}
-    \caption{A visualization of the implemented \acs{RRT*} algorithm\\when the stopping criteria was reached.}
-    \end{subfigure}
-    \label{fig:motion_planner_comparison}%
-    \caption{Comparing schematic example to a visualization of the real algorithm.}
-\end{figure}
-\todo{Corrado: The caption here above is vague}
+\todo{Corrado: above check, take what is needed only}
 
 The added fixed cost for a path crossing through a movable or unknown object motivates the motion planner to find the shortest path around objects but prefers moving an object over making a large detour. Tuning the additional fixed cost for a path crossing through movable or unknown space balances the robot's decision between how long of a detour the robot is willing to drive, compared to pushing an object to free the path. Removing an unknown object bears more uncertainty than a movable object, which is why the additional cost to remove an unknown object is higher than that of a movable object. 
 \todo{Corrado: So what’s your approach? Is there a systematic way or approach you used to tune this?}
