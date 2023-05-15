@@ -1,7 +1,3 @@
-\chapter{Planning in four subspaces}%
-\label{chap:proposed_planning}
-This chapter presents an existing motion planner~\cite{chen_fast_2018} that is extended to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs
-
 \input{mainmatter/hypothesis_graph/proposed_planning_algorithm}
 
 
@@ -10,56 +6,57 @@ This chapter presents an existing motion planner~\cite{chen_fast_2018} that is e
 
 \textit{This chapter is dedicated to introducing and defining the proposed framework, the proposed framework consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching the composite configuration space for action sequences to complete a specified task. \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, and used for suggesting actions from experience, defined in \Cref{subsec:kgraph_definition}.\bs}
 
+\section{Overview of the proposed framework}
 \Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph}, and for the knowledge graph in~\Cref{sec:kgraph}.\bs
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
 \begin{tikzpicture}[node distance = 2cm, auto]
     % Place nodes
-    \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=11.0cm, minimum width=5.8cm, yshift=3.25cm] (focusbox) {}; 
+    \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=11.0cm, minimum width=5.8cm, yshift=3.25cm] (focusbox) {};
     \node[yshift=5.8cm, xshift=-1.5cm, align=left] at (focusbox) {\textbf{Thesis focus}};
-   
-   \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=4.6cm]{figures/proposed_method/example_environment.png}}; 
+
+   \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=4.6cm]{figures/proposed_method/example_environment.png}};
 
    \node [below, xshift=0.4cm, yshift=-.1cm, text width=5cm, align=left, outer sep=0cm] at (environment.north) {\textbf{Robot Environment}};
-   
+
     \draw [myEvenLighterColor,
-    rounded corners=0.3cm, 
-    line width=0.3cm]  
-    (environment.north west) -- 
+    rounded corners=0.3cm,
+    line width=0.3cm]
+    (environment.north west) --
     (environment.north east) --
     (environment.south east) --
     (environment.south west) -- cycle  ;
-    
+
     \node [block,
     above of=environment,
     minimum height=2cm,
     minimum width=5cm,
     node distance=4.1cm,
     outer sep=0cm] (hgraph) {Hypothesis Algorithm};
-   
-    \node [block, 
-    above of=hgraph, 
-    node distance=3.3cm, 
+
+    \node [block,
+    above of=hgraph,
+    node distance=3.3cm,
     minimum width=5cm,
     minimum height=2.0cm] (kgraph) {Knowledge Graph};
-      
-    \node [rectangle, draw, 
-    fill=myEvenLighterColor, 
-    text width=5em, text centered, rounded corners, 
-    right of=kgraph, 
+
+    \node [rectangle, draw,
+    fill=myEvenLighterColor,
+    text width=5em, text centered, rounded corners,
+    right of=kgraph,
     minimum width=4cm,
     minimum height=2cm,
     node distance=7.2cm] (ontology) {Ontology};
-     
-    \node [rectangle, draw, 
-    fill=myEvenLighterColor, 
-    text width=5em, text centered, rounded corners, 
-    right of=hgraph, 
+
+    \node [rectangle, draw,
+    fill=myEvenLighterColor,
+    text width=5em, text centered, rounded corners,
+    right of=hgraph,
     minimum width=4cm,
     minimum height=2cm,
     node distance=7.2cm] (planner) {High-level planner};
-    
+
     % Draw edges
     \draw[-stealth] ([yshift=0.155cm, xshift=0.4 cm]environment.north) -- node [xshift=-.05cm, right] {\shortstack[]{sensor\\measurements}}([xshift=0.4 cm]hgraph.south) ;
     \draw[-stealth] ([xshift=-0.4 cm]hgraph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.4 cm]environment.north) ;
@@ -75,51 +72,15 @@ This chapter presents an existing motion planner~\cite{chen_fast_2018} that is e
 \label{tikz:flowchart_proposed_method}
 \end{figure}
 
-\todo{Corrado: This part needs restructuring and in particu an overview section like:
-
-3.1 overview of the proposed method.
-
-Here you explain the general idea, add the picture above, and after that you summarize the terminology in a table. Ideally, the terms should appear with their high level meaning in such an overview, and then they are summarized schematically }
-
-As the above figure shows, the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs 
-
-This chapter has terminology that is conveniently grouped in the following table.
-
-
-\noindent
-\begin{table}[H]
-\centering
-\begin{tabular}%
-  {>{\raggedright\arraybackslash}p{0.23\textwidth}%
-   >{\raggedright\arraybackslash}p{0.67\textwidth}}
-Task:   &  Tuple of objects and target configurations.\\
-        & $\text{task} = \gls{task} = \left\langle \gls{Obj}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
-Subtask:& A single object, and a single target configuration.\\
-        & $\text{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle$\\
-Object Class & Classification assigned to an object.\\
-             & $\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}$\\
-Node Status:& Status of a node indicates if a node is initialized, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\
-            & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\
-Node:   & A node in the \acs{hgraph}, represents an object in a configuration with reachability indicated with a node status.\\
-        & $\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
-Edge Status:& Status of a edge, elaborate information on the statuses can be found in \Cref{tikz:status_action_edge}.
-\todo{Corrado: Mmm, I would avoid referring to external things, this should be self contained GIJS: repeat status and ref as well }
-\\
-            & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model} \vee \] \[\mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\
-Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\
-        & $ \textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\
-Hypothesis:& Sequence of successive edges in the \ac{hgraph}, an idea to put a object at it's target configuration. If executed and successfully completed, a subtask is completed.\\
-           & $ \textrm{hypothesis} = \gls{hypothesis} = \left[\ \gls{edge}_{1}, \gls{edge}_{2}, \gls{edge}_{3}, \dots \gls{edge}_{m} \right]\ $, \hspace{0.5cm} $m>0$\\
-Hypothesis Algorithm:& Graph based algorithm that searches for hypothesis in the \ac{hgraph} to complete subtasks eventually completing a task.\\
-Hypothesis Graph:& Collection of nodes and edges. For every subtask a start and target node exist in the \ac{hgraph}, the \ac{halgorithm} searches for a path through nodes and edges to connect start to target node.\\
-        & $ \textrm{\ac{hgraph}} = \gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $\\
-Knowledge Graph:& Collection of nodes and edges.  The \ac{kgraph} acts as a knowledge base and can be queried for an action suggestion.\\
-        & $ \textrm{\ac{kgraph}} = \gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $\\
-\end{tabular}
-\caption{Terminology of terms used}
-\label{table:proposed_method_terminology}
-\end{table}
+As the above figure shows, the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs
 
 \input{mainmatter/hypothesis_graph/hypothesis_graph}
+\input{mainmatter/hypothesis_graph/halgorithm}
+
+
+
+
 \input{mainmatter/knowledge_graph/knowledge_graph}
+
+
 

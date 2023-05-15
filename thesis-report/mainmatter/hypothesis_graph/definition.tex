@@ -1,4 +1,4 @@
-\subsection{Definitioln of the \ac{hgraph}}%
+\subsection{Definition of the \ac{hgraph}}%
 \label{subsec:hgraph_definition}%
 Before defining the \ac{hgraph}, some definitions are provided on which the \ac{hgraph} depends. First, recall the \textbf{configuration} definition.\bs
 
@@ -10,16 +10,11 @@ where $\mathit{shape}$ is linked to a 3D representation of the object, \textit{i
 
 An object node represents an object in a configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \textrm{status}, \gls{obj}(k)\right\rangle $.\bs
 
-An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of configuration of an object. Edges are split into 2 categories, \textit{system identification edges} that have as goal to collect \ac{IO} data and generate a system model, and \textit{action edges} that steer a system toward a target configuration.\todo{Corrado: Not fully convinced sys and act edges must be differetn} The different goals make action and system identification edges very different, which is why the distinction was make. At the same time the edges both represent a change in the environment as a result of the robot driving, pushing or collecting \ac{IO} data. The edges are formally defined as:\bs
+An edge describes the details of how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents a change of configuration of an object. Edges are split into 2 categories because of very different goals, \textit{system identification edges} that have as goal to collect \ac{IO} data and generate a system model, and \textit{action edges} that steer a system toward a target configuration. The edges are formally defined as:\bs
 
 A \textbf{identification edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{Identification Method}, \textrm{controller}, \textrm{input}\right\rangle\]\bs
 
-\todo{Corrado: next sentence: Rephrase in a  simpler way}
-With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the \ac{hgraph} where the edge start from and point towards respectively, identification method indicates the used method that converts \ac{IO} data to a system model, the controller contains the control method used for driving the robot during the collection of \ac{IO} data and input contains multiple sequences of input to send toward the system. For an identification edge it is important that it is compatible with the controller residing in the corresponding action edge.\todo{Corrado: Which corresponding action edge? What do you mean? 
-
-And also, what does compatible mean and how do you determine that?}\bs
-
-\todo{Corrado: Sometimes edgse capital -> edge set make that clear, otherwise uncleark}
+With $id_{from}$ and $id_{to}$ indicating the node identifier where the edge points from and towards respectively, identification method indicates the used method, the controller contains the control method used for driving the robot during the collection of \ac{IO} data and input contains multiple sequences of input to send to apply to the system. The yielded system model must meet the controller requirements, otherwise they are not compatible.\bs
 
 A \textbf{action edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\bs
 
@@ -28,7 +23,7 @@ With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the
 Now the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
 Formally, a \textbf{hypothesis graph}, $\gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $
-\\comprising $\gls{nodesH} = \{\gls{nodesH}^{\gls{obj}}_{i}\}$, \quad $\gls{edgesH} \in \{\gls{edge}_{(i,j)}| \gls{edgesH}_i, \gls{edgesH}_j \in \{\gls{nodesH}^{\gls{obj}} \}, i \neq j\}$.\bs
+\\ Where \gls{nodesH} is a set of nodes and \gls{edgesH} a set of edges, defined as: $\gls{nodesH} = \{\gls{nodesH}^{\gls{obj}}_{i}\}$, \quad $\gls{edgesH} \in \{\gls{edge}_{(i,j)}| \gls{edgesH}_i, \gls{edgesH}_j \in \{\gls{nodesH}^{\gls{obj}} \}, i \neq j\}$.\bs
 
 Most \ac{hgraph} components have been defined. The status of an identification edge or action edge still remains undefined and requires some further explanation.\bs
 
@@ -68,16 +63,10 @@ COMPLETED (CO): & The edge has driven the system toward its target configuration
 FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
-\todo{Corrado: would be nicer to have that PRE INPUT SECU named something that is really better}
 
-An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behavior of the robot, and system models that describe the push behavior of the robot and an object. 
-\todo{Corrado: The following part is: I find this very vague. It is also true that you did not implement any of this methods in practice so I’m unsure how to go about it.. maybe explaining the logic for determining movable and unmovable? }
-Data collection for a driving model can be collected by sending input to the robot assuming that the robot has enough free space around it such that is does not collide with an object during data collection. To collect \ac{IO} data for a pushing model the robot first drives to a starting configuration next to the object. After the first input sequence is over, the robot drives to the next start position next to the object. After several input sequences the robot has gathered enough \ac{IO} data to generate a system model for pushing.\bs
+An identification edge corresponds to an action edge, because its goal is to generate an system model to then hand over its corresponding action edge. The system identification method is selected after the action edge is selected such that the system identification method yields a system model compatible with the controller that resides in the action edge. Two types of system models generated, system models that describe the driving behavior of the robot, and system models that describe the push behavior of the robot and an object.\bs
 
-An action edge, contains a drive or push action. 
-\todo{Corrado: same thing belwo, thisi  Vague. Rephrase at the level of a msc document. Consider, from a, clear, precise }
-From the point of initialization an action edge starts collecting all necessary ingredients such that is can be executed (track a path). These ingredients are estimating path existence, being given a system model and searching for a path. To collect such ingredients the edge performs path estimation, is given a system model, performs motion or manipulation planning. Then finally, the edge is ready to be executed and send input toward the robot, an \ac{FSM} of the action edge's status can be visualized in \Cref{tikz:status_action_edge}.\bs
-\todo{Corrado: SOmewhere here must be an equetion that if eveolves to true, determines if a subtask was completed}
+After initialization an action edge starts propagating its status as indicated in \Cref{tikz:status_action_edge}. An action edges eventual goal is to track a path. First, the existance of a path is estimated, a system model must be provided and action planning must be performed. \bs
 
 \begin{figure}[H]
 \centering
@@ -116,7 +105,7 @@ From the point of initialization an action edge starts collecting all necessary 
 \begin{tabular}%
   {>{\raggedleft\arraybackslash}p{0.24\textwidth}%
    >{\raggedright\arraybackslash}p{0.66\textwidth}}
-INITIALIZED (IN): & The edge is created with a source and target node which are present in the \ac{hgraph}. \todo{Corrado: how then?} A choice of controller is made. \\
+INITIALIZED (IN): & The edge is created with a source and target node which are present in the \ac{hgraph}. A choice of controller is made by random selection. \\
 PATH EXISTS (PE): & A graph-based search is performed to validate if the target configuration is reachable assuming that the system is holonomic. \\
 SYSTEM MODEL (SM): & A dynamics system model is provided to the controller residing in the edge. \\
 PATH PLANNED (PP): & Resulting from a sample-based planner, a path from start to target configuration is provided. \\
@@ -126,5 +115,5 @@ FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
 
-\Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed. 
+\Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed.
 Before executing edges, edges must be initialized, which is where next section is dedicated to.\bs

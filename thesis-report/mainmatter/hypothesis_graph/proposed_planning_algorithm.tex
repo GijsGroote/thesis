@@ -1,5 +1,31 @@
+
+\chapter{Planning in four subspaces}%
+\label{chap:proposed_planning}
+This chapter presents an existing motion planner~\cite{chen_fast_2018} that is extended to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs
+
+
+Finding a path between the start and target configuration for pushing applications whilst avoiding collisions is referred to as \textit{manipulation planning}. This and the upcoming subsection present two new sample-based planners (one for drive and one for push applications); they are based upon an existing double tree \ac{RRT*} planner~\cite{chen_fast_2018}. The existing planner plans in free and obstacle space; a modification extends the planner to incorporate movable and unknown space. First, this section presents the new motion planning algorithm, and the next section, \Cref{subsec:manipulation_planning} dedicates itself to manipulation planning. The new planning algorithms are sample-based, which can be described as.
+
+
+Generally, the configuration space consists of 2 subspaces, free- and obstacle space. The configuration space in this thesis consists of 4 subspaces: free, obstacle, unknown and movable space. A dedicated path planning algorithm has been developed to solve planning problems for such a configuration space with four subspaces. The newly developed path planner extends the existing double tree \ac{RRT*} algorithm~\cite{chen_fast_2018}.
+
+
+The goal of the motion planner is to find a path between the start and target configuration that results in the lowest totalPathCost, defined as:
+
+\[\textrm{TotalPathCost} = \textrm{PathCost} + \textrm{MovableSpaceCost} + \textrm{UnknownSpaceCost}\]
+
+
+ The MovableSpaceCost and UnknownSpaceCost correspond to a fixed addition cost for a configuration in the path that crosses through movable or unknown subspace, respectively. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in movable space, MovableSpaceCost will be 0, equivalent to unknown space and UnknownSpaceCost. Optimizing the path for the lowest cost incentivizes the motion planning algorithm to find a path around unknown or movable objects.
+
+ The third and fourth tuning parameters are the fixed costs for crossing through movable or unknown space, \Cref{fig:mp_push_or_drive} clearly shows the effect of varying such costs.
+
+
+
 \paragraph{Tuning Parameters}
 \todo{Corrado: Did not see any algorithm so far. It’s hard to map these parameters to something I did not see yet jk}
+
+
+
 The algorithm has four tuning parameters that can be tweaked; first, the \textit{step size}, the maximal normalized distance between connected samples in the connectivity trees, see \Cref{subfig:mp_step_size} \todo{Corrado: Put more of simple images as you go instead of a gigantic one later on }for a visual example. Choosing a high step size will increase search speed because the connectivity trees grow faster. A higher step size comes at the cost of smoothness; the resulting path will be bumpier with sharper corners.\todo{Corrado: Additionally, .. not Not a sentence } Additionally, the path has an increased chance of collision with obstacles because, for two connected configurations in a path, the individual configurations can both lie in free space. The space between configurations is not checked, and an obstacle could be in between the configurations, especially when cutting corners around obstacles. The second tuning parameter is the \textit{search size}, which is a subspace around the newly sampled sample (see, \Cref{subfig:mp_search_size}). In this subspace, a parent node is sought, and rewiring occurs. A parent node connects a new node with an edge to a connectivity tree. After connecting the new node to its parent node, rewiring occurs, changing the parent node by removing and adding an edge. If that results in a lower cost for that node, rewiring can be visually seen in \Cref{subfig:mp_rewire}. Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time. The third and fourth tuning parameters are the fixed costs for crossing through movable or unknown space, \Cref{fig:mp_push_or_drive} clearly shows the effect of varying such costs.\bs
 
 The Pseudocode of the proposed algorithm is provided in \Cref{pseudocode:proposed_rrt_star}. The variables and /Rfunctions used are elaborated upon in the following \Cref{table:functions_for_proposed_rrt_star}.\bs

@@ -1,15 +1,55 @@
 \chapter{Conclusions}%
 \label{chap:conclusion}
-\textit{This chapter answers the main and sub research questions. By referring to previously drawn conclusions and insights evidence is provided that supports the answers to the main and sub research questions.\bs}
-\todo{Corrado: This part should be re structured according to the new research questions you’ll have after addressing all comments. I’ll give more feedback on the final conclusions in the version when available }
+\textit{This chapter provides an analysis addressing the main- and sub research questions. By referencing previously established insights, evidence is presented to support the conclusions drawn in this chapter.\bs}
 
-First, the two research subquestions are answered. Recall \hyperref[researchsubquestion:does_it_work]{first research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\quotes{Can the proposed framework combine learning and planning for push en drive applications with a technique known as backward search?}\vspace{0.5\baselineskip}}\bs
+This thesis \todo{2 sentence summary}
 
-\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed framework. It has been shown that the proposed framework that consists of the \ac{halgorithm}, the \ac{hgraph} and the \ac{kgraph} work together can combine learning and planning with the technique of backward search. The proposed framework searches in the joint-configuration space.\todo{Corrado: NExt senctende: What does this imply?} A search directly in composite space would result in the curse of dimensionality and is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The structure of the \ac{hgraph} is used to enforce the backward search technique, in which the \ac{halgorithm} searches from the target configuration toward the start configuration. Newly gained environmental knowledge is stored in the \ac{kgraph}, which firstly holds information on objects and if they can be manipulated, and secondly holds information on how they can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
 
-Recalling the second research subquestion, subquestion \hyperref[researchsubquestion:does_it_compare]{second research subquestion}:\vspace{0.5\baselineskip}\\
-\textit{\quotes{Can the proposed framework combine learning and planning for push en drive applications? Can the proposed framework complete tasks, and how does it compare against the state-of-the-art?}}\vspace{0.5\baselineskip}\bs
+
+This thesis starts with answering the main research question, that is: \textit{How to combine learning and planning for push and drive applications?} The answer has been given in \Cref{chap:required_background,chap:hgraph_and_kgraph}, 
+
+
+
+\paragraph{Answering the Main Research Question}\mbox{}\\
+
+The main research question:
+\begin{center}
+  {\large How to combine learning and planning for push and drive applications?}
+\end{center}
+
+The main research question can be answered in multiple ways. Mostly because object system models and environmental knowledge improves task execution in multiple ways. A classification of an object that is movable or unmovable improves affordance. Probabilistic action sequences that involve pushing unmovable objects cannot occur when object classification is present. Some (not all) system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating an unfeasible path. Thus System models improve paths found by the motion or manipulation planner, this conclusion remains unproven since the evidence is not provided. Lastly, system models in combination with a controller (and edge parameterization) improve task execution in many metrics. For which evidence is proved for metrics prediction error and execution time in \Cref{chap:results}.\bs
+\todo{Martijn: Overall comment: I read the main question in the introduction, and then immediately switched to here to read the answer. I honestly cannot follow this text.}
+
+
+
+\todo{answer}
+
+\paragraph{Answering the Research Subquestion}\mbox{}\\
+
+Research subquestion~\ref{researchsubquestion:does_it_work}:
+\begin{center}
+\large How to combine learning and planning for push and drive applications?
+\end{center}
+
+\todo{answer}
+
+
+\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed framework. It has been shown that the proposed framework that consists of the \ac{halgorithm}, the \ac{hgraph} and the \ac{kgraph} work together can combine learning and planning with the technique of backward search. The proposed framework searches in the composite configuration space.\todo{Corrado: NExt senctende: What does this imply?} A search directly in composite space would result in the curse of dimensionality and is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The structure of the \ac{hgraph} is used to enforce the backward search technique, in which the \ac{halgorithm} searches from the target configuration toward the start configuration. Newly gained environmental knowledge is stored in the \ac{kgraph}, which firstly holds information on objects and if they can be manipulated, and secondly holds information on how they can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
+
+Research subquestion~\ref{researchsubquestion:does_it_remember}:
+\begin{center}
+\large To what extend is the combination of the three topics; \\learning object dynamics, the \ac{NAMO} problem and nonprehensile pushing influenced by environmental experience?
+\end{center}
+
+\todo{answer}
+
+Research subquestion~\ref{researchsubquestion:does_it_compare}:
+\begin{center}
+\large How does the proposed framework compare against the state-of-the-art?
+\end{center}
+
+\todo{answer}
+
 
 
 
@@ -19,16 +59,7 @@ The results discussed in \Cref{chap:results} are compared to the state-of-the-ar
 The proposed framework improves upon the state-of-the-art exactly in its field of focus, improving task execution over time. It has been shown to learn faster compared to the state-of-the-art. Especially when the same or similar task is given to solve multiple times. Execution and planning times are equal or improved compared to the state-of-the-art. Lastly, prediction errors and final position errors are mainly worse compared to the state-of-the-art, which can be improved by better-designed controllers and more accurate system models. 
 
 
-Recall the \hyperref[researchquestion:main]{main research question}. \vspace{0.5\baselineskip}\\
-\textit{\indent\quotes{How do objects' system models learn by a nonprehensile manipulation robot during task \\ \indent execution improve global task planning?}}\vspace{\baselineskip}
-\todo{Martijn: This is not the same as the question in the introduction!
 
-How do learned objects’ system models improve global task planning
-for a robot with nonprehensile push manipulation abilities over time?}
-
-\todo{Martijn: what does that mean, "improve affordance"? }
-The main research question can be answered in multiple ways. Mostly because object system models and environmental knowledge improves task execution in multiple ways. A classification of an object that is movable or unmovable improves affordance. Probabilistic action sequences that involve pushing unmovable objects cannot occur when object classification is present. Some (not all) system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating an unfeasible path. Thus System models improve paths found by the motion or manipulation planner, this conclusion remains unproven since the evidence is not provided. Lastly, system models in combination with a controller (and edge parameterization) improve task execution in many metrics. For which evidence is proved for metrics prediction error and execution time in \Cref{chap:results}.\bs
-\todo{Martijn: Overall comment: I read the main question in the introduction, and then immediately switched to here to read the answer. I honestly cannot follow this text.}
 
 \section{Future work}%
 \label{sec:future_work}
