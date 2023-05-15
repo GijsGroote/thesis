@@ -1,63 +1,34 @@
 \chapter{Conclusions}%
 \label{chap:conclusion}
-\textit{This chapter provides an analysis addressing the main- and sub research questions. By referencing previously established insights, evidence is presented to support the conclusions drawn in this chapter.\bs}
-
-This thesis \todo{2 sentence summary}
+This thesis aims to combine three topics in robotics; learning object dynamics, the \ac{NAMO} problem and nonprehensile pushing, into a single robot framework. The overwelming research in the individual topics stand is contrast to the sparse number of recent papers that combine the three aforementioned topics. This absence of research can be motivated by the emerged challenges when combining the three topics such as the uncertainty in plannign and the complexity class of the combined problem.\bs
 
 
+This main research question, that is: \textit{How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time?} is answered in \Cref{chap:results} that presents the results. In this chapter the proposed robot framework is tested by providing a robot with a multiple tasks in various environments. These tests point out that task execution improves when the classification of an object is known, and when experience is gathered and leveraged in the robot environment. 
 
-This thesis starts with answering the main research question, that is: \textit{How to combine learning and planning for push and drive applications?} The answer has been given in \Cref{chap:required_background,chap:hgraph_and_kgraph}, 
+A classification of an object improves the success rate of generated action sequences, mainly because, probabilistic action sequences that may involve pushing unmovable objects cannot occur when object classification is present. During task execution the proposed framework gathers experience by storing action feedback after successful or unsuccessful actions. As a result the proposed framework converges toward an best strategy to manipulate objects. The best strategy consists of the best combination of controller and system model that yield desirable metrics (success rate and \acl{PE}) out of the available combinations of controllers and system models. \todo{Do you want to include path planning improves because of feasibility is checked by system models that act as a local planner?}
 
+Research subquestion~\ref{researchsubquestion:does_it_work}, that is: \textit{How to combine learning and planning for push and drive applications?} is answered in \Cref{chap:required_background,chap:proposed_planning,chap:hgraph_and_kgraph}. Here it is shown how the proposed framework that consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph} work together to combine learning and planning with the technique of backward search. The curse of dimensionality and an \ac{NP-hard} problem are prevented by searching only in a single mode of dynamics instead of dicretly in the composite space.
+\todo{rewreite below}
 
+Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The structure of the \ac{hgraph} is used to enforce the backward search technique, in which the \ac{halgorithm} searches from the target configuration toward the start configuration. Newly gained environmental knowledge is stored in the \ac{kgraph}, which firstly holds information on objects and if they can be manipulated, and secondly holds information on how they can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
 
-\paragraph{Answering the Main Research Question}\mbox{}\\
-
-The main research question:
-\begin{center}
-  {\large How to combine learning and planning for push and drive applications?}
-\end{center}
-
-The main research question can be answered in multiple ways. Mostly because object system models and environmental knowledge improves task execution in multiple ways. A classification of an object that is movable or unmovable improves affordance. Probabilistic action sequences that involve pushing unmovable objects cannot occur when object classification is present. Some (not all) system constraints that are captured by the system model, find in \Cref{pseudocode:proposed_rrt_star}, line 33 the \textit{reachablilityCheck} where the learned system model prevents the planner from creating an unfeasible path. Thus System models improve paths found by the motion or manipulation planner, this conclusion remains unproven since the evidence is not provided. Lastly, system models in combination with a controller (and edge parameterization) improve task execution in many metrics. For which evidence is proved for metrics prediction error and execution time in \Cref{chap:results}.\bs
-\todo{Martijn: Overall comment: I read the main question in the introduction, and then immediately switched to here to read the answer. I honestly cannot follow this text.}
+is answered in \Cref{chap:required_background,chap:hgraph_and_kgraph}. Here it has been shown that the proposed framework that consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph} work together can combine learning and planning with the technique of backward search. The curse of dimensionality and an \ac{NP-hard} problem are prevented by searching only in a single mode of dynamics instead of dicretly in the composite space.
 
 
 
-\todo{answer}
-
-\paragraph{Answering the Research Subquestion}\mbox{}\\
-
-Research subquestion~\ref{researchsubquestion:does_it_work}:
-\begin{center}
-\large How to combine learning and planning for push and drive applications?
-\end{center}
+Research subquestion~\ref{researchsubquestion:does_it_remember}, that is: \textit{
+To what extend is the combination of the three topics; learning object dynamics, the \ac{NAMO} problem and nonprehensile pushing influenced by environmental experience?}
 
 \todo{answer}
 
 
-\Cref{chap:hgraph_and_kgraph} is dedicated to presenting the proposed framework. It has been shown that the proposed framework that consists of the \ac{halgorithm}, the \ac{hgraph} and the \ac{kgraph} work together can combine learning and planning with the technique of backward search. The proposed framework searches in the composite configuration space.\todo{Corrado: NExt senctende: What does this imply?} A search directly in composite space would result in the curse of dimensionality and is prevented by search only in a single mode of dynamics. Where a search is performed for a drive or push action. The \ac{hgraph} is a graph-based structure that presents how the \ac{halgorithm} is trying to complete a subtask. The structure of the \ac{hgraph} is used to enforce the backward search technique, in which the \ac{halgorithm} searches from the target configuration toward the start configuration. Newly gained environmental knowledge is stored in the \ac{kgraph}, which firstly holds information on objects and if they can be manipulated, and secondly holds information on how they can be best manipulated. The \ac{kgraph} can be filled with newly learned environmental knowledge and can be queried for action suggestions.\bs
-
-Research subquestion~\ref{researchsubquestion:does_it_remember}:
-\begin{center}
-\large To what extend is the combination of the three topics; \\learning object dynamics, the \ac{NAMO} problem and nonprehensile pushing influenced by environmental experience?
-\end{center}
+Research subquestion~\ref{researchsubquestion:does_it_compare}, that is: \textit{How does the proposed framework compare against the state-of-the-art?}
 
 \todo{answer}
-
-Research subquestion~\ref{researchsubquestion:does_it_compare}:
-\begin{center}
-\large How does the proposed framework compare against the state-of-the-art?
-\end{center}
-
-\todo{answer}
-
-
-
-
 The proposed framework was able to perform as well, better or worse compared to the state-of-the-art, depending on which metric is taken into account. The proposed framework was tested against existing methods which only combine a subset of the 3 main topics that the proposed framework combines. 
 The results discussed in \Cref{chap:results} are compared to the state-of-the-art papers in \Cref{sec:compare_with_related_papers}. Five state-of-the-art papers are used to compare against the proposed framework. In the comparison success rate, planning time, execution time and several calls to the planner are used to compare. From the results, it can be concluded that the proposed framework learns relatively fast (prediction error comparison with~\cite{wang_affordancebased_2020}). The proposed framework can complete all of its assigned subtasks, giving it a comparable success rate to the state-of-the-art (success rate comparison with~\cite{ellis_navigation_2022}). This thesis does not have small prediction errors or low final position errors, it can be seen that the prediction errors are worse compared to the state-of-the-art (final position errors comparison with~\cite{sabbaghnovin_model_2021}). \bs
 
 The proposed framework improves upon the state-of-the-art exactly in its field of focus, improving task execution over time. It has been shown to learn faster compared to the state-of-the-art. Especially when the same or similar task is given to solve multiple times. Execution and planning times are equal or improved compared to the state-of-the-art. Lastly, prediction errors and final position errors are mainly worse compared to the state-of-the-art, which can be improved by better-designed controllers and more accurate system models. 
-
 
 
 
