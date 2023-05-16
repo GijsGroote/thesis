@@ -83,14 +83,14 @@ After initialization an action edge starts propagating its status as indicated i
     \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{Select controller} (init.west);
     \draw[-stealth] (init) edge node[left]{Graph-based path estimation} (path_exist)
       (path_exist) edge[bend right] node[left]{Load in system model} (system_model)
-(system_model) edge[bend right] node[left]{Motion planning} (path_planned)
+(system_model) edge[bend right] node[left]{Path planning} (path_planned)
 (path_planned) edge[bend right] node[left]{Go to execution loop} (executing)
 (executing) edge[bend right] node[left]{Completed} (completed);
 
     \draw [-stealth] (init.east) [out=0, in=90] to node[xshift=0.1cm, right]{Path non-existence proven}  ([yshift=-0.03cm,xshift=0.2cm]failed.north);
     \draw [-stealth] (path_exist.east) [out=0, in=90] to node[xshift=-0.6cm,yshift=0.55cm, above]{\shortstack[l]{System\\identification\\error}}  ([yshift=-0.03cm,xshift=-0.2cm]failed.north);
-    \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{Motion\\planning\\error}} (failed.west);
-    node[right]{motion planning error}
+    \draw [-stealth] (system_model.east) [out=0, in=180] to node[xshift=0.1cm, yshift=0.3cm, above]{\shortstack[l]{Path\\planning\\error}} (failed.west);
+    node[right]{path planning error}
     ([yshift=-0.3cm]failed.west);
     \draw [-stealth] (executing.east) [out=0, in=-90] to node[xshift=0.1cm,right]{Fault detected}(failed.south);
 
