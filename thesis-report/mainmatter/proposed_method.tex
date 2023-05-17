@@ -1,13 +1,12 @@
 \input{mainmatter/hypothesis_graph/proposed_planning_algorithm}
 
-
 \chapter{The Hypothesis and Knowledge Graph}%
 \label{chap:hgraph_and_kgraph}
 
-\textit{This chapter is dedicated to introducing and defining the proposed framework, the proposed framework consist of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching the composite configuration space for action sequences to complete a specified task. \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally is responsible for collecting new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, and used for suggesting actions from experience, defined in \Cref{subsec:kgraph_definition}.\bs}
+\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching the composite configuration space for action sequences to complete a specified task. \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally collects new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, and used for suggesting actions from experience, defined in \Cref{subsec:kgraph_definition}.\bs}
 
 \section{Overview of the proposed framework}
-\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph}, and for the knowledge graph in~\Cref{sec:kgraph}.\bs
+\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in-depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph} and for the knowledge graph in~\Cref{sec:kgraph}.\bs
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
@@ -72,15 +71,8 @@
 \label{tikz:flowchart_proposed_method}
 \end{figure}
 
-As the above figure shows, the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs
+The above figure shows that the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs
 
 \input{mainmatter/hypothesis_graph/hypothesis_graph}
 \input{mainmatter/hypothesis_graph/halgorithm}
-
-
-
-
 \input{mainmatter/knowledge_graph/knowledge_graph}
-
-
-
