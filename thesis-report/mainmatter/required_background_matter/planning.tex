@@ -206,7 +206,6 @@ Pseudocode of the \ac{RRT*} algorithm is provided in \Cref{pseudocode:proposed_r
   $\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
   $\mathit{Distance}(x, x')$:& Returns the distance between sample $x$ and $x'$\\
   $\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
-    $\mathit{ReachabilityCheck}(x, x')$:& Return true if a system model with initial state $x$ can reach state $x'$ for a range of allowed input; otherwise, return false.\\
     $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
   \end{tabular}
 \caption{Functions used by the \Cref{pseudocode:proposed_rrt_star_all}.}
@@ -311,10 +310,8 @@ Notice that in \Cref{pseudocode:proposed_rrt_star_all}, the coloured sections co
     \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
     \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new}) + ObjectCost(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
     \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
-    \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
     \State $\mathit{Cost_{min}} \leftarrow \gls{nodeMP}_\mathit{temp}$
     \State $\gls{nodeMP}_\mathit{minCost} \leftarrow \gls{nodeMP}_\mathit{near}$
-            \EndIf
         \EndIf
     \EndFor
     \If{$\mathit{Cost_{min}} == \infty$}
@@ -350,17 +347,13 @@ In this subspace, a parent node is sought, and rewiring occurs. A parent node co
     \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$} 
     \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
     \If{$\mathit{Cost_{temp} < CostFromInit(\gls{nodeMP}_{near})}$}
-    \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
     \State $\mathit{E.rewire(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
-           \EndIf
         \EndIf
       \Else \algorithmiccomment{Add lowest cost path to the list of paths}
       \State $\mathit{Cost_{temp} \leftarrow CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} $ \newline\hspace*{10em} $+ \mathit{CostFromInit(\gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
           \If{$\mathit{Cost_{temp}  < Cost_{path}}$}
-          \If{$\mathit{ReachabilityCheck(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$}
           \State $\mathit{Cost_{pathMin} \leftarrow \gls{nodeMP}_{temp}}$
           \State $\mathit{\gls{nodeMP}_{pathMin} \leftarrow \gls{nodeMP}_{near}}$
-              \EndIf
           \EndIf
       \EndIf
       \If{$Cost_{pathMin} == \infty$}

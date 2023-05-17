@@ -1,0 +1,24 @@
+\section{Future work}%
+\label{sec:future_work}
+
+\subsection{System identification module}
+The thesis provides an module that collects \ac{IO} data for the robot, and for pushing an object from multiple sides. It has been fully intergrated into the proposed robot framework, but has been replace by analytic models during testing. The appendix provides a categorization that categorized system models in three categoreis; data-driven model, hybrid models and analytic models.  To convert \ac{IO} data to a dynamical system model for robot driving or the robot pushing is for system identification methods. 
+
+
+Possible extensions to the proposed framework and improvements on the proposed framework are grouped in this section.\bs
+\todo{proposed planner with local checks}
+
+\todo{system identificaiton instead of analytic models}
+
+\subsection{Removing Assumptions}
+Every assumption taken in \Cref{chap:introduction} serves to simplify the problem and to narrow the scope of this thesis. They can however all be removed. Starting with assumption \hyperref[assumption:closed_world]{\textbf{closed-world assumption}}, without this assumption the proposed framework must be much more robust. The proposed framework can with the help of this assumption conclude many conclusions deterministically. Examples are the feedback on edges and the classification of an object as unmovable or movable. In real-world applications unmovable objects can become movable, to make the transition toward removing the closed-world assumption the proposed framework must be converted to a probabilistic variant.\bs
+
+Moving from simulation toward the real world must remove the \hyperref[assumption:perfect_object_sensor]{\textbf{perfect object sensor assumption}}. Sensors and sensor fusion is required to estimate the configuration of the robot itself and objects in the environment. A start is to test the proposed framework with noise added to the perfect sensor.\bs
+
+The \hyperref[assumption:order_does_not_matter]{\textbf{tasks are commutative assumption}} assumption makes it possible to randomly select a subtask without influencing the feasibility of the task. Removing this assumption can require an additional rearrangement algorithm~\cite{krontiris_dealing_2015} to be run to determine a feasible order of handling subtasks.\bs
+
+The \hyperref[assumption:no_tipping]{\textbf{objects do not tip over assumption}} prevents objects from tipping over, but at the same time limits the number of objects. There are many possibilities to handle tipped objects. First, adding a tipping detector can detect when an object has tipped over. Then the proposed framework can threaten the objects as a new object and reclassify it. Another method would be a dedicated subroutine to place it in an upright position.\bs
+
+%
+% \todo[inline]{The hgraph could think of new hypotheses during execution time if it would operate async, which would greatly improve it.}
+% \todo[inline]{\cite{krontiris_dealing_2015} This thing could be calculated before everything, check the backward search you've commented out entirely}

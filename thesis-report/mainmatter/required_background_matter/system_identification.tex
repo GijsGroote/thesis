@@ -2,6 +2,14 @@
 \label{sec:sys_iden}
 Understanding the world by a robot is captured by models, \textit{system models} that estimate the behaviour of real-world systems. For example, what trajectory does an object take after receiving a push? The trajectory depends on the object's properties (e.g.~mass, geometry) and interaction with its surroundings (e.g. sliding friction). A system model captures these properties and interactions. When modelling how the states of a system evolve into the future for a range of inputs, an estimation can be made. Estimating which states are reachable in the future when several inputs are applied and which are not. A system model thus captures constraints. As an example, see both robots in \Cref{fig:example_robots}, the holonomic point robot in \Cref{subfig:example_point_robot} can drive without constraints, and the boxer robot in \Cref{subfig:example_boxer_robot} can drive forward, backwards and can rotate. A system model for robot driving for the boxer robot should thus be nonholonomic. Robots encounter a wide variety of objects because every object can be different in type, weight and dimensions. System identification methods are required to capture the variety of objects that the robot can encounter.\bs
 
+\todo{I will not explain a full method, but an interface that coule be extended. For now it has been replaice by analytic models.
+
+Data-driven, parameterized system models, analytic models
+
+Basically to make the reader undertand }
+
+\todo{sylbolic model, classification of objects, affordance identification}
+
 
 \todo{Corrado: The following part is: I find this very vague. It is also true that you did not implement any of this methods in practice so I’m unsure how to go about it.. maybe explaining the logic for determining movable and unmovable? 
 
@@ -12,7 +20,7 @@ Data collection for a driving model can be collected by sending input to the rob
 
 \todo{Corrado: Agree with Martijn, this section is empty and adds little. Either it should be removed or be extended but in case of extensions we should be careful with what to put. Perhaps removing it and adding more explanation on the system models used later on in the method or experiments will do }
 
-Note that theoretically, a system identification module is included in the proposed robot framework. For the implementation, the system identification module is left out for time-related reasons. Firstly creating the implementation module itself takes time. Secondly, collecting enough \ac{IO} data to generate a system model is timewise very costly. Thus, time is saved by using several hard-coded system models instead of implementing a system identification module. The replacement moves to focus from \quotes{which system identification method yields a system model that most accurately describes a dynamic model?} to \quotes{which system model in the set of available models most accurately describes a dynamic model?}.\bs
+Note that theoretically, a system identification module is included in the proposed robot framework. For the implementation, the system identification module is left out for time-related reasons. Firstly creating the implementation module itself takes time. Secondly, collecting enough \ac{IO} data to generate a system model is timewise very costly. Thus, time is saved by using several analytic system models instead of implementing a system identification module. The replacement moves to focus from \quotes{which system identification method yields a system model that most accurately describes a dynamic model?} to \quotes{which system model in the set of available models most accurately describes a dynamic model?}.\bs
 
-To keep the option of implementing the system identification module wide open, system identification is included in the proposed framework. In the implementation, it is replaced by hard-coded system models. Implementing a system identification module is moved to the future work section.\bs
+To keep the option of implementing the system identification module wide open, system identification is included in the proposed framework. In the implementation, it is replaced by analytic system models. Implementing a system identification module is moved to the future work section.\bs
 mplementing a system identification module in moved to the future work section. To keep the option of implementing the system identification module open, the system identification module is kept in the proposed robot framework.\bs

@@ -1,15 +1,13 @@
 \chapter{Results}%
 \label{chap:results}
-\textit{This chapter presents the test results that test and challenge the proposed framework.  The randomization tests, which additionally test the influence of the \ac{kgraph} and test taken including and excluding the \ac{kgraph}. The test results provide evidence that supports the effectiveness of the proposed framework. This chapter starts by introducing \textbf{method metrics} that indicate how a task has been executed by the proposed framework in \Cref{sec:proposed_method_metrics}. A comparison is made with the state-of-the-art methods in \Cref{sec:compare_with_related_papers}. \bs}
+\textit{This chapter presents various robot environments and tasks that challenge the proposed framework. The test results provide evidence that supports the claims in the conclusion \Cref{chap:conclusion}. This chapter starts by introducing \textbf{method metrics} in \Cref{sec:proposed_method_metrics} that measure task performance. Then the proposed framework solves driving and pushing tasks in randomized environments in \Cref{sec:randomization}. The chapter finishes with a comparison with the state-of-the-art in \Cref{sec:compare_with_related_papers}.\bs}
 
 \paragraph{The Simulation Environment}
-Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments ran on standard TU Delft laptop: HP ZBook Studio x360 G5, running OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
-The simulation environment provides many different robots, of which two simple robots are selected to perform tests, they are displayed in \Cref{fig:example_robots}, and various objects are displayed in \Cref{fig:example_objects}.
+Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments are taken on laptop with specifications. Laptop: HP ZBook Studio x360 G5, OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
 
 \section{Proposed Method Metrics}%
 \label{sec:proposed_method_metrics}
-
-The results are measured in method metrics (\ac{pe}, search-, exeute- and total time to complete a task). The method metrics must not be confused with the monitoring metrics in \Cref{sec:monitoring_metrics} or the edge metrics in \Cref{subsec:edge_metrics}. The results are interesting, but most interesting is the progression of the method metrics over time. As will be shown, the effect of learning can be measured by investigating and tracking the method metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to relative state-of-the-art papers. First, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
+The propsed frameworks task performance is measured in metrics named the method metrics, these include the \ac{PE}, search-, execute- and total time to complete a task. Note that two other metrics have been defined; the monitoring metrics in \Cref{sec:monitoring_metrics}, and the edge metrics in \Cref{subsec:edge_metrics}. The results are interesting, but most interesting is the progression of the method metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to state-of-the-art. Now, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
 
 \noindent
 \begin{table}[H]
@@ -17,32 +15,35 @@ The results are measured in method metrics (\ac{pe}, search-, exeute- and total 
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
-Total Average\newline \acl{PE} & The total average \ac{PE} is calculated by augmenting every prediction error into a single list, then the mean and standart deviation are calculated over that list. Since the \ac{PE} is high when unexpected behaviour occurs, seeing the total average \ac{PE} lower would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
+\acl{PE} [meter[ & The \ac{PE} is calculated every time step, then the \ac{PE} is augmented into a single list. That list is then later analysed by calculating for example the mean and standart deviation. The \ac{PE} is high when unexpected behaviour occurs, unexpected behaviour can be expected when entering a new environment. When the \ac{PE} lowers that would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
 % Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
 % Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
 % The ratio between the number of hypotheses and the number of tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between the total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
 % The ratio between the number of successful and the number of total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because, with better recommendations, more edges will be completed.\\
-task completion time =\newline run time + planning time& If equal tasks are given multiple times, the total task completion time should drop pretty drastically. Multiple factors help to lower the task completion time, firstly system identification has to be performed only once, and there is no need to lose time on redoing system identification. Secondly, the \ac{hgraph} is expected to improve generated hypothesis, or better said, the same mistake should not be made multiple times, resulting in fewer failing hypotheses and lowering task completion time.\\
+search time [sec]& The time the proposed framework spends searching for hypotheses. The search time is very dependent on the environment and the number of subtask in the task. The search time can be used for comparison if both tasks are equal.\\ 
+execution time [sec] & The time the proposed framework spends executing hypotheses. Just as the search time, conclusions can be drawn when comparing the execution time between similar tasks.\\ 
+task time & search time + execution time. \\
 \end{tabular}
-\caption{Proposed method metrics used to compare the proposed framework with the state-of-the-art.}\label{table:proposed_method_metrics}
+\caption{Method metrics used to measure task performance by the proposed robot framework, and motivation why the metric is relevant.}\label{table:proposed_method_metrics}
 \end{table}
 
-
-The  point robot is used during tests, the robot takes an velocity input along the \gls{x}- and in \gls{y}-axis, defined as:\bs
+The simulation environment provides many different robots, of which one robot is selected to perform tests, the point robot, which is are displayed in \Cref{fig:example_robots}. The point robot takes an velocity input along the \gls{x}- and in \gls{y}-axis.\bs
+robot input is defined as:\bs
 
 \[ u(k) = {[ u_{\gls{x}}(k), u_{\gls{y}}(k) ]}^\top \]
 
-For tests, three system models are used, a \ac{LTI} model describing robot driving, and two nonlinear model describing the robot pushing an object. First a short textual description of the available system models is provided below. Second, the state space model is provided for the three implemented models.\bs
 
-\noindent
+During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} drive controller, and a \ac{MPPI} push controller that were introduced in \Cref{sec:control_methods}. Three system models are used, a \ac{LTI} model describing robot driving, and two nonlinear model describing the robot pushing an object. First a short textual description of the available system models is provided below. Second, the state space model is provided for the three implemented models.\bs
+
+
 \begin{table}[H]
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
-\textit{lti-drive-model} & A second order \ac{LTI} model that can be used by both the \ac{MPC} and the \ac{MPPI} drive controller. The next robot configuration is based on the current configuration and system input in \gls{x} and \gls{y} direction. \\
-\textit{nonlinear-push-model-1} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y} direction and the orientation \gls{theta} based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
-\textit{nonlinear-push-model-2} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y}, and the object configuration in \gls{x} and \gls{y} direction based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
+\textit{lti-drive-model} & A second order \ac{LTI} model that can be used by both the \ac{MPC} and the \ac{MPPI} drive controller. The next robot configuration is based on the current configuration and robot system input in \gls{x} and \gls{y} direction. \\
+\textit{nonlinear-push-model-1} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y} direction and the next robot configuration in \gls{x} and \gls{y} direction. The next object and robot configuration are based on the current configurations and robot system input in \gls{x} and \gls{y} direction.\\
+\textit{nonlinear-push-model-2} & A nonlinear model describing the next object configuration in \gls{x}, \gls{y} direction and the orientation \gls{theta}, and the robot configuration in \gls{x} and \gls{y} direction based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
 \end{tabular}
 \caption{Available drive and push system models.}\label{table:available_system_models}
 \end{table}
@@ -105,11 +106,11 @@ x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \label{eq:nonlinear-push-model-2}
 \end{equation}
 
-Where \textit{st} indictates the distance from the contact point between the robot and pushed object, perpendicular to the line that coinsides with the object and the robots center of mass. A positive \textit{st} indicates the object will rotate anticlockwise, a negative \textit{st} indicates a clockwise rotation. The width of an object is defined as \textit{H}and is set to 2 meter, \textit{vp} is the velocity of the robot perpendicular to the objectdefined as
+Where \textit{st} indictates the distance from the contact point between the robot and pushed object, perpendicular to the line that coinsides with the object and the robots center of mass. A positive \textit{st} indicates the object will rotate anticlockwise, a negative \textit{st} indicates a clockwise rotation. The width of an object is defined as \textit{H} and is set to 2 meter, \textit{vp} is the velocity of the robot perpendicular to the objectdefined as
 
 \[ \mathit{vp} = u_{\gls{x}} \sin(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\cos(\gls{theta}_{\mathit{obj}}(k)) \]
 
-The goal of this thesis is not to find optimal control, or to model the environment with astonishing accurately. The goal is to select the best combination of controller and system model in the available set of controllers and system models.
+The goal of this thesis is not to find optimal control, or to model the environment with great accuracy. The goal is to select the best combination of controller and system model in the available set of controllers and system models.
 
 % \begin{figure}[H]
 %     \centering
@@ -122,7 +123,7 @@ The goal of this thesis is not to find optimal control, or to model the environm
 
 % \section{Benchmark Tests}%
 % \label{sec:benchmark_tests}
-% Three benchmark test are presented, starting with the blockade task. A large part of the proposed framework is system identification, for testing however no system identification is performed. Instead, several hard-coded system models are used, and the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \Cref{subsec:edge_metrics}. The hard-coded system models are not opting for modelling the drive or push model as accurately as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterization is unable to provide closed-loop stable control, the edge will fail because a fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand-coded system models does thus not change the result.\bs
+% Three benchmark test are presented, starting with the blockade task. A large part of the proposed framework is system identification, for testing however no system identification is performed. Instead, several analytic system models are used, and the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \Cref{subsec:edge_metrics}. The analytic system models are not opting for modelling the drive or push model as accurately as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterization is unable to provide closed-loop stable control, the edge will fail because a fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand-coded system models does thus not change the result.\bs
 %
 %
 % \paragraph{Blockade} In the blockade environment the robot is tasked with placing a box in a target position that is blocked by a cylinder object.\bs
@@ -186,7 +187,8 @@ The goal of this thesis is not to find optimal control, or to model the environm
 
 \section{Randomization}%
 \label{sec:randomization}
-In the randomized environment the task and the environment are initialised by randomization, after tasks completion, the environment is reshuffled. A reshuffled gives the objects in environment and task a new initial pose and resets the robot position. By solving a task, reshuffeling the environment and solving another reshuffled task, the robot gains experience that is stored in the \ac{kgraph}. A set of multiple tasks where initially the \ac{kgraph} is named a \textit{run}, and at the end of a run the \ac{kgraph} is filled with the gained experience. \Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, an driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push an movable object toward a random target pose. First the of search- and execution time of a task is investigated, and its development when the robot gains more experience. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterisations, and once without suggestions and by random sampling over the availabel edge parameterizations.\bs
+In the randomized environment the task and the environment are initialised by randomization, after tasks completion, the environment is reshuffled. A reshuffled gives the objects in environment and task a new initial pose and resets the robot position. By solving a task, reshuffeling the environment and solving another reshuffled task, the robot gains experience that is stored in the \ac{kgraph}. A set of multiple tasks where initially the \ac{kgraph} is empty, is named a \textit{run}, and at the end of a run the \ac{kgraph} is filled with the gained experience. \Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, an driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push an movable object toward a random target pose. First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterisations, and once without suggestions, by randomly selecting an available edge parameterization.\bs
+
 
 \noindent
 \begin{table}[H]
@@ -201,14 +203,11 @@ The \textit{number of unmovable objects} & Specify the amount of unmovable objec
 The \textit{number of movable objects} & Specify the amount of movable objects.\\
 The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.
 \end{tabular}
-\caption{The tuning parameters that must be specified for the random environment}%
+\caption{The tuning parameters that must be specified to create a random environment}%
 \label{table:configure_rand_env}
 \end{table}
 
-The ratio between the number of cylinders and boxes is determined by randomization. For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder.
-
-The environment can be \textit{reshuffled}, and can be visualise in \Cref{fig:random_environment_reshuffle}. Reshuffling the environment changes 3 aspects of the environment, first, the robots position is reset to the origin \gls{origin}. Second, every object is set to a new initial position whilst their properties are unchanged. Thirth and last, objects in the task receive new target poses.  The reshuffle functionality can be visualised in \Cref{fig:random_environment_reshuffle}. By solving a similar task in an reshuffled random environment multiple times, the robot gains experience and task exection can be investigated. With the investigation trends in task execution is monitored, to see improvement whilst gaining experience.\bs
-
+The ratio between the number of cylinders and boxes is determined by randomization. For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder. The environment can be \textit{reshuffled}, which can be visualised in \Cref{fig:random_environment_reshuffle}. Reshuffling the environment changes 3 aspects of the environment, first, the robots position is reset to the origin \gls{origin}. Second, every object is set to a new initial position whilst their properties remain unchanged. Thirdly, objects in the task receive new target poses.  The reshuffle functionality can be visualised in \Cref{fig:random_environment_reshuffle}. By solving a similar task in an reshuffled random environment multiple times, the robot gains experience and task exection can be investigated. With the investigation trends in task execution is monitored, to see improvement whilst gaining experience.\bs
 
 \begin{figure}[H]
     \centering
@@ -231,7 +230,7 @@ The environment can be \textit{reshuffled}, and can be visualise in \Cref{fig:ra
     \centering
     \includegraphics[width=\textwidth]{figures/results/random4}
     \end{subfigure}
-    \caption{A random environment initialised by tuning parameters presented in \Cref{table:configure_rand_drive_env_values}. After initialisation the environment objects initial poses are reshuffled three times.}%
+    \caption{A random environment initialised by tuning parameters presented in \Cref{table:configure_rand_drive_env_values}. After initialisation the environment is reshuffled three times.}%
     \label{fig:random_environment_reshuffle}
 \end{figure}
 
@@ -260,7 +259,7 @@ These parameters have been specifically selected, starting with the size of the 
 
 Lastly, a number of tuning parameters must be set for the \ac{halgorithm}. These are the maximal robot speed, set to 1 $m/s$, the \textit{cell size} for the path estimator set to 0.1 meter, the action planner takes four tuning paramters; the \textit{step size} set to 0.2 meter, the \textit{search size} set to 0.35 meter, an \textit{known obstacle space cost} set to 2 meter and an \textit{unknown obstacle space cost} set to 3.5 meter.\bs
 
-All parameters are set, results can be analysed, the following two figures show the execution-, search- and total times over the ten runs. First, a boxplot displaying task execution whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}, second, a boxplot displays task execution withouth using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_no_kgraph}.\bs
+All parameters are set, results can be analysed, the following two figures show the execution-, search- and total times over the ten runs. First, a boxplot displaying task execution whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}. Second, a boxplot that displays task execution without using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_no_kgraph}.\bs
 
 \begin{figure}[H]
     \centering
@@ -405,20 +404,20 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
 \end{table}
 
 
-The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-model-2} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The nonlinear-push-model-2 parameterization does not only have a lower execution time compared to the nonlinear-push-model-1 parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
+The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-model-1} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The nonlinear-push-model-1 parameterization does not only have a lower execution time compared to the nonlinear-push-model-2 parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_push_pe_vs}
-    \caption{Box plot of the \acl{pe}, a comparison between \ac{kgraph} action suggestions and randomly selection.}%
+    \caption{Box plot of the \acl{PE}, a comparison between \ac{kgraph} action suggestions and randomly selection.}%
     \label{fig:random_push_pe_vs}
 \end{figure}
 
-The proposed framework has been compared against itself, now it is compared to the state-of-the-art in the upcoming section.\bs
+The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}
-In the introduction \Cref{table:sota_and_3_topics} was presented. That table presents state-of-the-art methods and the subset of the three main topics that they include (the three topics; learning system models, the \ac{NAMO} problem and nonprehesile pushing). Now that table is augmented with an extra column augmented to the table. This extra column indicates the testing methric that state-of-the-arts uses and underlines the metric that is compared between the proposed framework and the state-of-the-art.\bs
+In the introduction \Cref{table:sota_and_3_topics} was presented. That table presents state-of-the-art methods and the subset of the three main topics that they include (the three topics; learning system models, the \ac{NAMO} problem and nonprehesile pushing). Now that table presented again in \Cref{table:sota_vs_results_proposed}, an additional column is augmented to the table on the right side. This extra column indicates the testing metric that state-of-the-arts uses and underlines the metric that is compared between the proposed framework and the state-of-the-art.\bs
 
 \noindent
 \begin{table}[H]
@@ -445,22 +444,19 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
   method metric\\\toprule
   \citeauthor{ellis_navigation_2022} &          \cite{ellis_navigation_2022} &          \cmark& \xmark& \cmark& \xmark& \xmark& success rate\\
   \citeauthor{sabbaghnovin_model_2021} &        \cite{sabbaghnovin_model_2021} &        \cmark& \cmark& \xmark& \cmark& \xmark& success rate, execution time prediction error, final position error\\
-  \citeauthor{scholz_navigation_2016} &         \cite{scholz_navigation_2016} &         \cmark& \cmark& \xmark& \xmark& \xmark& \underline{runtime}, \underline{planning time}, \underline{number of}\underline{replannings} number of calls to update model\\
+  \citeauthor{scholz_navigation_2016} &         \cite{scholz_navigation_2016} &         \cmark& \cmark& \xmark& \xmark& \xmark& runtime, planning time, number ofreplannings number of calls to update model\\
   \citeauthor{vega-brown_asymptotically_2020} & \cite{vega-brown_asymptotically_2020} & \xmark& \cmark& \xmark& \cmark& \xmark& computation time\\
   \citeauthor{wang_affordancebased_2020} &      \cite{wang_affordancebased_2020} & \cmark& \xmark& \cmark& \xmark& \xmark& \underline{computation and} \underline{execution time}\\
   Groote & Proposed Framework & \xmark/\cmark& \xmark& \cmark& \xmark& \cmark&
 \end{tabular}
-\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The \textit{grasp-push} and \textit{grasp-pull} refer to prehensile push and pull manipulation, \textit{gripped} refers to fully gripping and lifting objects for manipulation, \textit{pushing} refers to nonprehensile push manipulation. The test metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
-\label{table:sota_vs_results_proposed method}
+\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The method metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
+\label{table:sota_vs_results_proposed}
 \end{table}
 
-A comparison with two state-of-the-art papers is made, that is accomplished by recreating the environment that the state-of-the-art has used during testing. With \citeauthor{scholz_navigation_2016} the number of replannings are compared, with \citeauthor{wang_affordancebased_2020} the computation and execution time is compared.\bs
+A comparison with one state-of-the-art paper is made, that is accomplished by recreating the environment that the state-of-the-art has used during testing. With \citeauthor{wang_affordancebased_2020} the computation- (or search) and execution time is compared.\bs
 
-
-
-
-\paragraph{Comparing Success Rate with \citeauthor{ellis_navigation_2022}}
-\todo{This can use some extra review here, it is unclear}
+% \paragraph{Comparing Success Rate with \citeauthor{ellis_navigation_2022}}
+% \todo{This can use some extra review here, it is unclear}
 % \citeauthor{ellis_navigation_2022} claims to push with a success rate \todo{Corrado: perhaps eleborate on that 100 percent, how does ellis define that?} of a 100\%~\cite{ellis_navigation_2022}. The test environment that \citeauthor{ellis_navigation_2022} has used is very similar to the random pushing task discussed in \Cref{sec:randomisation}. For both the random driving task and the random pushing task the success rate is 100\%. Meaning that every driving or pushing subtask was successfully completed. It is even so that for the result of the random push task (displayed in \Cref{fig:rand_push_full_pred,fig:random_push_all_times,fig:random_push_with_without_kgraph}) the number of hypotheses is equal to the number of subtasks \todo{Corrado: How do I see this? unclear to tthe reader}. Meaning that every subtask is completed by the first hypothesis generated. Both similar experiments from \citeauthor{ellis_navigation_2022} and this thesis have a 100\% success rate for similar
 % , allowing us to conclude that the results are comparable.
 
@@ -481,7 +477,7 @@ A comparison with two state-of-the-art papers is made, that is accomplished by r
 
 
 \paragraph{Comparing Computation and Execution time with \citeauthor{wang_affordancebased_2020}}
-\citeauthor{wang_affordancebased_2020} combines the \ac{NAMO} problem with learning object dynamcs. Their papar tests their method with a task to drive toward a target pose, where a chair is blocking the path~\cite{wang_affordancebased_2020}. The environment is mimicked with three walls and a red box on the spot where is chair stands. The origal and mimicked robot environments can be seen in \Cref{fig:wang}.\bs 
+\citeauthor{wang_affordancebased_2020} combines the \ac{NAMO} problem with learning object dynamcs. He tests his method with a task to drive toward a target pose, where a chair is blocking the path~\cite{wang_affordancebased_2020}. \citeauthor{wang_affordancebased_2020} proposed framework takes an affordance approach compared with a contact-implicit motion planning algorithm~\cite{wang_affordancebased_2020}. A test is performed in a real-world environment, where the robo drive toward a target pose, whilst the path is blocked by a chair. The real-world robot environment is implicitly presented as simulation environment. The environment is mimicked with three walls and a red box on the spot where is chair stands. The implicit representation of the real-world environment and the mimicked robot environments can be seen in \Cref{fig:wang}.\bs
 
 \begin{figure}[H]
     \centering
@@ -498,12 +494,11 @@ A comparison with two state-of-the-art papers is made, that is accomplished by r
     \caption{Recreated simulation environment.}%
     \label{subfig:wang_mimick}
     \end{subfigure}
-    \caption{Two similar environments and tasks, the robots are taskedto drive toward a target position indicated with the green ghost poses. In both environment a direct path is blocked by the red box.}%
+    \caption{Two similar environments and tasks, the robots are tasked to drive toward a target position indicated with the green ghost poses. In both environment a direct path is blocked by the red box.}%
     \label{fig:wang}
 \end{figure}
 
-
-\citeauthor{wang_affordancebased_2020} solves the task three times, the average search-, execute- and total time over these three executions is displayed in \Cref{table:wang_vs_mimick}. Note that \citeauthor{wang_affordancebased_2020} splits the search time in two categories (time to estimate affordance of an object and time to optimize the trajectory. The recreated or mimicked environmnet displayed in \Cref{subfig:wang_mimick} is solved ten times, every time starting without environmental knowledge and thus an emtpy \ac{kgraph}. The avarage search, execute- and total time over these then executions is also displayed in \Cref{table:wang_vs_mimick}.\bs
+\citeauthor{wang_affordancebased_2020} solves the task three times, the average search-, execute- and total time over these three executions is displayed in \Cref{table:wang_vs_mimick}. Note that, during testing \citeauthor{wang_affordancebased_2020} splits the search time in two categories; time to estimate affordance of an object and time to optimize the trajectory. The recreated or mimicked environment is displayed in \Cref{subfig:wang_mimick} and is solved ten times, every time starting without environmental knowledge and thus an emtpy \ac{kgraph}. The avarage search, execute- and total time over these then executions is also displayed in \Cref{table:wang_vs_mimick}.\bs
 
 \begin{table}[H]
     \centering
@@ -520,18 +515,15 @@ A comparison with two state-of-the-art papers is made, that is accomplished by r
     \label{table:wang_vs_mimick}
 \end{table}
 
-
-In this experiment we compare against Wang. The goal is to reach a target location,but the robotis reuiredto free the path first. The visialized in fig.
-
-\todo{Some conclusion on the table above}
+The proposed framework outperforms the contact-implicit motion planning framework proposed by \citeauthor{wang_affordancebased_2020}. Mainly the search time improves by a margin. The execution time improves, but because \citeauthor{wang_affordancebased_2020} tests in an real-world environment where motion equations are more complex compared to the simulated environment, an improvement in the execution time is expected.\bs
 
 
 % \paragraph{Comparing Prediction Error}
 % \citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters,\todo{Corrado: But then how can you compare success rate if you have different metrics for success?} thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error \todo{Corrado: Not position errro?}of the proposed framework is worse compared to this state-of-the-art. The reason is that the proposed framework focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs
 
-\paragraph{Comparing Number of Replanning times}
-\todo[inline]{\cite{scholz_navigation_2016}}
-\todo{recreate this envionrment, run 10 tests and compare the search and execution time, as well at the number of call toward the planner}
-\todo{additinoally execute this environment a twice in a row, show that the execution number of call to the planner drops, theand the execution time drops}
+% \paragraph{Comparing Number of Replanning times}
+% \todo[inline]{\cite{scholz_navigation_2016}}
+% \todo{recreate this envionrment, run 10 tests and compare the search and execution time, as well at the number of call toward the planner}
+% \todo{additinoally execute this environment a twice in a row, show that the execution number of call to the planner drops, theand the execution time drops}
 
 

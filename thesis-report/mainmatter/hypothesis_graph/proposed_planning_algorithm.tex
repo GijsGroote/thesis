@@ -69,20 +69,20 @@ For performance tests and comparison with equivalent sample-based state-of-the-a
 
 
 
-\subsection{Manipulation Planning}%
-\label{subsec:manipulation_planning}
-With a push, two objects are primarily involved, the pushed object and the robot. Generally, and in this thesis, the pushed object's configuration is more important than the robot's configuration. The robot is only a means to push the object toward the target configuration. At which final configuration the robot itself ends up is of lesser importance. As long as during the push, the robot does not collide with objects other than the pushed object, and constraints on the robot must be respected.\bs
+% \subsection{Manipulation Planning}%
+% \label{subsec:manipulation_planning}
+% With a push, two objects are primarily involved, the pushed object and the robot. Generally, and in this thesis, the pushed object's configuration is more important than the robot's configuration. The robot is only a means to push the object toward the target configuration. At which final configuration the robot itself ends up is of lesser importance. As long as during the push, the robot does not collide with objects other than the pushed object, and constraints on the robot must be respected.\bs
 
-To plan a path that respects the constraints, \todo{Corrado: What does this mean? ->} the robot's configuration is generated for every newly added sample in the manipulation planning algorithm. 
+% To plan a path that respects the constraints, \todo{Corrado: What does this mean? ->} the robot's configuration is generated for every newly added sample in the manipulation planning algorithm. 
 
-\todo{Gijs For reachbailbpcheck, These lines just point out the name of the function again , there is no added information }
-The \textit{ReachabilityCheck()} (see \Cref{table:functions_for_proposed_rrt_star} and line 33 in \Cref{pseudocode:proposed_rrt_star}) generates the robot configuration to validate if a new sample is reachable from an existing sample. This additional configuration is stored to create only feasible paths that respect the applied constraints. When the stopping criteria are reached and the shortest path is found, the generated robot configurations are discarded. \Cref{fig:manipulation_plannig_local_planner} displays a visual example of the procedure.\bs
+% \todo{Gijs For reachbailbpcheck, These lines just point out the name of the function again , there is no added information }
+% The \textit{ReachabilityCheck()} (see \Cref{table:functions_for_proposed_rrt_star} and line 33 in \Cref{pseudocode:proposed_rrt_star}) generates the robot configuration to validate if a new sample is reachable from an existing sample. This additional configuration is stored to create only feasible paths that respect the applied constraints. When the stopping criteria are reached and the shortest path is found, the generated robot configurations are discarded. \Cref{fig:manipulation_plannig_local_planner} displays a visual example of the procedure.\bs
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/required_background/manipulation_local_planner}
-    \caption{Generating a new robot configuration whilst adding a sample to the connectivity tree during manipulation planning.}%
-    \label{fig:manipulation_plannig_local_planner}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{figures/required_background/manipulation_local_planner}
+%     \caption{Generating a new robot configuration whilst adding a sample to the connectivity tree during manipulation planning.}%
+%     \label{fig:manipulation_plannig_local_planner}
+% \end{figure}
 
-\todo{Corrado: This does not explain much. What is the strait line and how was that determines? Is that le global path ? What does the local planner arrow mean? A local planner by definition does not come up with a path to follow itself GIJS: that is about he image}
+% \todo{Corrado: This does not explain much. What is the strait line and how was that determines? Is that le global path ? What does the local planner arrow mean? A local planner by definition does not come up with a path to follow itself GIJS: that is about he image}
