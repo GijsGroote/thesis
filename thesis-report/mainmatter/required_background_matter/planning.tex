@@ -136,7 +136,7 @@ The resolution of the configuration space at \Cref{fig:c_space_two_pushes_smalle
 
 \paragraph{Path Existence Algorithm} In the context of this thesis, we can describe path existence as: \textit{For an object's descritized configuration space, there exists a list of neighbouring cells from starting to target configuration that does not lie in obstacle space.\bs}
 
-A path in configuration space is detected using the implemented\\$f_\mathit{shortest\_path}(\gls{c}_\mathit{start}, \gls{c}_\mathit{target}, )$ function. This function takes a start- and target configuration, $\gls{c}_\mathit{start}$ and $\gls{c}_\mathit{target}$ and returns the shortest path between them that lies in free space. The \textit{shortest\_path} function searches for the shortest path using the Dijkstra algorithm~\cite{dijkstra_note_1959} on the discreted configuration space. The shortest path validates the existence of a path (note that only geometric constraints are respected), and can help path planning discussed in \Cref{sec:planning}. The shortest path helps path planning by providing an initial number of path planner samples before the path planner creates samples by random sampling. Such a conversion is also referred to as a \quotes{warm start}. If no path can be found, the $f_\textit{shortest\_path}$ function raises an error that will prevent path planning from occuring.\bs
+A path in configuration space is detected using the implemented\\$f_\mathit{shortest\_path}(\gls{c}_\mathit{start}, \gls{c}_\mathit{target}, )$ function. This function takes a start- and target configuration, $\gls{c}_\mathit{start}$ and $\gls{c}_\mathit{target}$ and returns the shortest path between them that lies in free space. The \textit{shortest\_path} function searches for the shortest path using the Dijkstra algorithm~\cite{dijkstra_note_1959} on the discreted configuration space. The shortest path validates the existence of a path (note that only geometric constraints are respected), and can help path planning discussed in \Cref{sec:planning}. The shortest path helps path planning by providing an initial number of path planner nodes before the path planner creates nodes by random sampling. Such a conversion is also referred to as a \quotes{warm start}. If no path can be found, the $f_\textit{shortest\_path}$ function raises an error that will prevent path planning from occuring.\bs
 
 \paragraph{Unfeasible solutions and an undecidable problem}
 The path estimator does not take system constraints into account. Thus, the path estimator can find a list of neighbouring cells from the start to the target configuration and conclude that a path exists. In reality, this path is unfeasible. An example is driving the boxer robot displayed in \Cref{subfig:example_boxer_robot} through a narrow, sharp corner. Whilst geometrically, the robot would fit through the corner, the nonholonomic constraints of the robot prevent it from steering through such a tight corner. It is for the action planner to detect that the path is unfeasible.\\
@@ -162,7 +162,7 @@ The path estimator suffers from another drawback, finding proof that there exist
 \label{tikz:flowchart_path_estimator}% 
 \end{figure}
 
-The path existence algorithm can detect non-existence paths. Thus checking path existence before motion or manipulation planning filters out several non-existent paths saving time and resources. Even if, in exceptional cases, the path estimator can yield unfeasible paths and fails to detect existing paths. Checking path existence before path planning filters some non-exist paths and is additionally motivated by two reasons. First, path estimation is orders of magnitude faster compared to path planning. Secondly, the path estimation algorithm can provide a number of initial samples to the path planner that can act as a \quotes{warm start}.
+The path existence algorithm can detect non-existence paths. Thus checking path existence before motion or manipulation planning filters out several non-existent paths saving time and resources. Even if, in exceptional cases, the path estimator can yield unfeasible paths and fails to detect existing paths. Checking path existence before path planning filters some non-exist paths and is additionally motivated by two reasons. First, path estimation is orders of magnitude faster compared to path planning. Secondly, the path estimation algorithm can provide a number of initial nodes to the path planner that can act as a \quotes{warm start}.
 
 
 \subsection{Motion Planning}%
@@ -179,44 +179,23 @@ where \gls{nodesMP} is a set of nodes, \gls{edgesMP} a set of edges and \gls{pat
 
 \[\mathit{path} = [\gls{c}_\mathit{start}, \gls{c}_2, \gls{c}_3, \cdots, \gls{c}_{n-1}, \gls{c}_\mathit{target}]\]
 
-where $n$ is the number of configurations in the path.\bs
+where $n \in \mathbb{Z}_{\geq 2}$ is the number of configurations in the path.\bs
 
 The goal of the path planner is to find a path between a given start- and target configuration that results in the lowest \textit{TotalPathCost}, defined as:\bs
 
-\[\mathit{TotalPathCost} = \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1})\]
+\[\mathit{TotalPathCost} = \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1}) \sum_{i=1}^{n-1} = \left\|\gls{c}_i-\gls{c}_{i+1}\right\|\]
 
-The \textit{Distance} function is defined in \Cref{table:functions_for_proposed_rrt_star}.\bs
+Now pseudocode of the \ac{RRT*} algorithm is presented that is split into three parts that are grouped by color as can be seen in \Cref{pseudocode:proposed_rrt_star_all}. Notice that the colour correspond to the later pseudocode and example figures. Each part is then discussed, as well as a number of variables and functions used in that respected part. When discussing each part an example is analysed in which the path planner adds a single node to the connectivity graph. The variables and functions are neatly grouped after discussing the exmaple in \Cref{table:functions_for_proposed_rrt_star}.\bs
 
-Pseudocode of the \ac{RRT*} algorithm is provided in \Cref{pseudocode:proposed_rrt_star_all} and is split into three parts. First a number of variables and functions are presented in \Cref{table:functions_for_proposed_rrt_star}. Then an example of the path planner is presented in which a single configuration is added.\bs
+A node $x$ in the path planner consists of the following tuple:\bs
+\[x = \left\langle \gls{c}, \mathit{cost\_to\_source}, \mathit{key}, \mathit{prev\_node\_key}, \mathit{in\_tree} \right\rangle\]
 
-\noindent
-\begin{table}[H]
-  \centering
-  \begin{tabular}%
-  {>{\raggedright\arraybackslash}p{0.22\textwidth}%
-   >{\raggedright\arraybackslash}p{0.68\textwidth}}
-   $x$:& A node consisting of the following tuple: $ \left\langle \gls{c}, \mathit{cost\_to\_source}, \mathit{key}, \mathit{prev\_sample\_key}, \mathit{in\_tree} \right\rangle$ where \gls{c} a point in configuration space, \textit{cost\_to\_source} the cost toward the source node $x_{init}$, \textit{key} a unique key for the node, \textit{prev\_sample\_key} they parent key to which the node is directly connected, \textit{in\_tree} an indicator that the node is connected to the \textit{start-} or \textit{target} connectivity tree.\\
-   $x_{init}$:& The two initial nodes, $x_{\mathit{start}}$ and $x_{\mathit{target}}$\\ 
-  \textit{NotReachStop}:& True if the stopping criteria are not reached\\ 
-  $\mathit{Sample_{random}}$:& Creates a random sample in free-, movable- or unknown space\\
-  $\mathit{Nearest}(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
-  $\mathit{NearestSet}(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
-  $\mathit{Project}(x, x')$:& Project $x$ toward $x'$\\
-  $\mathit{CollisionCheck}(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
-  $\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
-  $\mathit{Distance}(x, x')$:& Returns the distance between sample $x$ and $x'$\\
-  $\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
-    $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
-  \end{tabular}
-\caption{Functions used by the \Cref{pseudocode:proposed_rrt_star_all}.}
-\label{table:functions_for_proposed_rrt_star}
-\end{table}
-
+Where \gls{c} is a point in configuration space, \textit{cost\_to\_source} the cost toward the source node, \textit{key} a unique key for the node, \textit{prev\_node\_key} they parent key to which the node is directly connected with an edge, \textit{in\_tree} an indicator that the node is connected to the \textit{start-} or \textit{target} connectivity tree. The path planner starts by adding the first two initial nodes, the start- and target node. The path planner then enters a loop that adds randomly sampled nodes, untill the stopping criteria is reached with the \textit{NotReachStop} function.\bs
 
 % ALL
 \begin{algorithm}[H]
 \caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green colored sections.}%
-\label{pseudocode:proposed_rrt_star_all}
+\label{pseudocode:proposed_rrt_star_all}%
 \begin{algorithmic}[1]
 
 \hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
@@ -224,7 +203,7 @@ Pseudocode of the \ac{RRT*} algorithm is provided in \Cref{pseudocode:proposed_r
 \While{\textit{NotReachStop}} 
 
 \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-   \algorithmiccomment{Create, check and project a new random sample}
+   \algorithmiccomment{Create, check and project a new random node}
 }}
 
 \hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
@@ -240,31 +219,22 @@ Pseudocode of the \ac{RRT*} algorithm is provided in \Cref{pseudocode:proposed_r
 \end{algorithm}
 
 
+The example that adds a single node starts in \Cref{fig:motion_planner_adding_one_node_all}. In this example, one node is added to the starting connectivity tree. Adding this node involves many steps: generating a new random node, projecting the node to the nearest node, rewiring nearby nodes and connecting the start to the target tree.\bs
 
-An example of the proposed algorithm is provided; see \Cref{fig:motion_planner_adding_one_sample}. In this example, one sample is added to the starting connectivity tree. Adding this sample involves many steps: generating a new random sample, projecting the sample to the nearest node, rewiring nearby samples and connecting the start to the target tree.\bs
-
-The start connectivity tree consists of the nodes connected by edges containing the starting node, and vice versa for the target connectivity tree containing the target node. The algorithm grows the two \textit{connectivity trees} by randomly sampling configurations and adding them to the start or target connectivity tree. The algorithm explores configuration space by growing these connectivity trees. 
-
+The start connectivity tree consists of the nodes connected by edges containing the starting node, and vice versa for the target connectivity tree containing the target node. The algorithm grows the two \textit{connectivity trees} by randomly sampling configurations and adding them to the start or target connectivity tree. The algorithm explores configuration space by growing these connectivity trees.\bs
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/1mp_init.drawio.png}
     \caption{Snapshot of the configuration space during a search\\from start to the target configuration.}
-    \label{fig:motion_planner_adding_one_sample_all}
+    \label{fig:motion_planner_adding_one_node_all}
 \end{figure}
 
-When the start connectivity tree is close enough (inside the search size of a newly added sample) to the target connectivity tree, a path from start to target is found. 
-
-
-Newly sampled configurations are added structurally, guaranteeing an optimal path is found with infinite sampling~\cite{chen_fast_2018}. Where optimality is defined as the path with the lowest possible cost.\bs
-
-
-Notice that in \Cref{pseudocode:proposed_rrt_star_all}, the coloured sections correspond to the surrounding coloured border in the subfigures of \Cref{fig:motion_planner_adding_one_sample_all}.\bs
-
+When the start connectivity tree is close enough (inside the search size of a newly added node) to the target connectivity tree, a path from start to target is found. The $\mathit{Sample_{random}}$ creates a random node in free- or unknown space. This random node is projected to the closes existing node using two functions. First, the $\mathit{Nearest}(x, V)$ returns the nearest nodes from $x$ in $V$. Second, the $\mathit{Project}(x, x')$ projects $x$ toward $x'$. Newly noded configurations are added structurally, guaranteeing an optimal path is found with infinite sampling~\cite{chen_fast_2018}. Where optimality is defined as the path with the lowest possible cost. The projected random node can reside in free- or obstacle space, ensuring that the node is in free space is validated with the $\mathit{CollisionCheck}(x)$ function that returns true if $x$ is in free space.\bs
 
 % ONE
 \begin{algorithm}[H]
-\caption{Pseudocode to create, check and project a new random sample.}%
+\caption{Pseudocode to create, check and project a new random node.}%
 \label{pseudocode:proposed_rrt_star_one}
 \begin{algorithmic}[1]
   \hspace{-0.9cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
@@ -282,23 +252,31 @@ Notice that in \Cref{pseudocode:proposed_rrt_star_all}, the coloured sections co
 \end{algorithmic}
 \end{algorithm}
 
+The algorithm has two tuning parameters that can be tweaked; first, the \textit{step size}, the maximal normalized distance between connected nodes in the connectivity trees, see \Cref{subfig:mp_step_size} for a visual example. Choosing a high step size will increase search speed because the connectivity trees grow faster. A higher step size comes at the cost of smoothness; the resulting path will be bumpier with sharper corners. Additionally, the path has an increased chance of collision with obstacles because, for two connected configurations in a path, the individual configurations can both lie in free space whilst a direct line between the configurations crosses through obstacle space. The second tuning parameter is the \textit{search size}, which is a subspace around the newly noded node (see, \Cref{fig:motion_planner_adding_one_node_tree}).\bs
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/2mp_new_rand_sample.drawio.png}
-    \caption{A new random sample is generated.\newline}
+    \caption{A new random node is generated.\newline}
     \end{subfigure}
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=0.93\textwidth, cfbox=my_light_blue 5pt 0pt]{figures/required_background/mp/3mp_project_sample.drawio.png}
-    \caption{The new sample is projected toward the closest sample.\bs}%
+    \caption{The new node is projected toward the closest node.\bs}%
     \label{subfig:mp_step_size}
     \end{subfigure}
 
     \caption{Create, find and connect new node to parent node.}
-    \label{fig:motion_planner_adding_one_sample_one}
+    \label{fig:motion_planner_adding_one_node_one}
 \end{figure}
+
+The new node resides in free space and should now be added to either the start- or target connectivity graph. Adding the new node to either connectivity graph is an operation that creates a new edge between the new node and a to be determined parent node. The operation requires three functions, first a $\mathit{NearestSet}(x, V)$ function that returns set of nearest nodes from $x$ in $V$ that lie in the search space. The parent node is selected from the set of nearest nodes, from this set the node that results in the lowest totalcost is sought, defined as:\bs
+
+\[\mathit{totalCost} = \mathit{CostFromInit(\gls{nodeMP}_{near})} + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})\]
+
+The second and thirth functions are the $\mathit{Distance}(x, x')$ function that returns the distance between node $x$ and $x'$, and a $\mathit{CostToInit}(x)$ function that finds the total cost from $x$ to the initial node.\bs 
 
 % TWO
 \begin{algorithm}[H]
@@ -327,14 +305,20 @@ Notice that in \Cref{pseudocode:proposed_rrt_star_all}, the coloured sections co
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth, cfbox=my_yellow 5pt 0pt]{figures/required_background/mp/4mp_connect_to_tree.drawio.png}
-    \caption{The new sample is connected to the node in search space\\that results in the lowest cost.}%
-    \label{fig:motion_planner_adding_one_sample_two}
+    \caption{The new node is connected to the node in search space\\that results in the lowest cost.}%
+    \label{fig:motion_planner_adding_one_node_two}
 \end{figure}
 
 
-The algorithm has two tuning parameters that can be tweaked; first, the \textit{step size}, the maximal normalized distance between connected samples in the connectivity trees, see \Cref{subfig:mp_step_size} for a visual example. Choosing a high step size will increase search speed because the connectivity trees grow faster. A higher step size comes at the cost of smoothness; the resulting path will be bumpier with sharper corners. Additionally, the path has an increased chance of collision with obstacles because, for two connected configurations in a path, the individual configurations can both lie in free space whilst a direct line between the configurations crosses through obstacle space. The second tuning parameter is the \textit{search size}, which is a subspace around the newly sampled sample (see, \Cref{fig:motion_planner_adding_one_sample_tree}).\bs
 
-In this subspace, a parent node is sought, and rewiring occurs. A parent node connects a new node with an edge to a connectivity tree. After connecting the new node to its parent node, rewiring occurs, changing the parent node by removing and adding an edge. If that results in a lower cost for that node, rewiring can be visually seen in \Cref{subfig:mp_rewire}. Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time.
+The new node is connected to a parent node as can be seen in \Cref{fig:motion_planner_adding_one_node_tree}. A final step remains to be done, connecting the two trees or rewiring. For this step the $\mathit{InSameTree}(x, x')$ indicates if both $x$ and $x'$ are in the same tree or not. For every node in the set of nearest nodes that is in the same tree as the new node, it is validaded if rewireing would result in a lower totalCost for that node. The rewire procedure changes the parent node by removing and adding an edge, rewiring can be visually seen in \Cref{subfig:mp_rewire}. The nodes in the set of nearest nodes that are in the other three, 
+
+
+and checks if the closeby node is in the same tree as the newly connected node, or in the other three with the 
+
+
+
+ Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time.\bs
 
 % THREE
 \begin{algorithm}[H]
@@ -371,16 +355,16 @@ In this subspace, a parent node is sought, and rewiring occurs. A parent node co
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/required_background/mp/5mp_rewire.drawio.png}
-    \caption{Nodes for which the cost can be lowered\\from the new sample are rewired.}%
+    \caption{Nodes for which the cost can be lowered\\from the new node are rewired.}%
     \label{subfig:mp_rewire}
     \end{subfigure}
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=0.93\textwidth, cfbox=my_green 5pt 0pt]{figures/required_background/mp/6mp_search_other_tree.drawio.png}
-    \caption{A path from start to target configuration is found. \bs}
+    \caption{TODO that specific egdge is wrognA path from start to target configuration is found. \bs}
     \end{subfigure}
     \caption{Check if the newly added node can lower cost for nearby nodes.}
-    \label{fig:motion_planner_adding_one_sample_tree}
+    \label{fig:motion_planner_adding_one_node_tree}
 \end{figure}
 
 \begin{figure}[H]
@@ -399,4 +383,28 @@ In this subspace, a parent node is sought, and rewiring occurs. A parent node co
     \label{fig:motion_planner_comparison}%
     \caption{Comparing schematic example to a visualization of the implemented algorithm.}
 \end{figure}
+
+
+\noindent
+\begin{table}[H]
+  \centering
+  \begin{tabular}%
+  {>{\raggedright\arraybackslash}p{0.22\textwidth}%
+   >{\raggedright\arraybackslash}p{0.68\textwidth}}
+   $x$:& A node consisting of the following tuple: $ \left\langle \gls{c}, \mathit{cost\_to\_source}, \mathit{key}, \mathit{prev\_node\_key}, \mathit{in\_tree} \right\rangle$ where \gls{c} a point in configuration space, \textit{cost\_to\_source} the cost toward the source node $x_{init}$, \textit{key} a unique key for the node, \textit{prev\_node\_key} they parent key to which the node is directly connected, \textit{in\_tree} an indicator that the node is connected to the \textit{start-} or \textit{target} connectivity tree.\\
+   $x_{init}$:& The two initial nodes, $x_{\mathit{start}}$ and $x_{\mathit{target}}$\\ 
+  \textit{NotReachStop}:& True if the stopping criteria are not reached\\ 
+  $\mathit{Sample_{random}}$:& Creates a random node in free-, movable- or unknown space\\
+  $\mathit{Nearest}(x, V)$:& Returns the nearest nodes from $x$ in $V$\\
+  $\mathit{NearestSet}(x, V)$:& Returns set of nearest nodes from $x$ in $V$\\
+  $\mathit{Project}(x, x')$:& Project $x$ toward $x'$\\
+  $\mathit{CollisionCheck}(x)$:& Returns true if $x$ is in free-, movable- or unknown space\\
+  $\mathit{ObjectCost}(x', x)$:& Returns a fixed additional cost if $x$ enters movable- or unknown space from $x'$, otherwise returns 0\\
+  $\mathit{Distance}(x, x')$:& Returns the distance between node $x$ and $x'$\\
+  $\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
+    $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
+  \end{tabular}
+\caption{Functions used by the \Cref{pseudocode:proposed_rrt_star_all}.}
+\label{table:functions_for_proposed_rrt_star}
+\end{table}
 

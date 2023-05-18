@@ -108,6 +108,8 @@ the \textit{connectwithedge($\gls{node}_1, \gls{node}_2$)} function connects two
 
 Push action edges require more than only initializing and preparing for execution. The robot must first drive toward a push position against or close to the object to push. By default, creating a push action edge will spawn a $\gls{node}_\mathit{best\_push\_position}$ node connected with an emptyEdge. The \textit{best\_push\_position} depends on the object's planned path. Thus, a path is planned, and then the best push position is determined. \Cref{fig:robot_push_2} shows the $\gls{node}_\mathit{best\_push\_position\_againts\_box}$ node that is connected to the $\gls{node}_\mathit{copy\_box\_target}$. 
 
+\todo{make somehting to teset class of objects}
+
 \paragraph{Valid Hypotheses}
 Before a hypothesis can be executed, the hypothesis must be valid. A hypothesis is valid when two conditions are met. First, it starts at the start node and points toward the target node over a sequence of edges with a non-failing status that all point toward nodes with a non-failing status. Second, the first edge in the hypothesis must be ready for execution which the next paragraph will elaborate upon further. To indicate a node or edge has a status other than the FAILED status, that node or edge is called a non-failed node or -edge. To check if an hypothesis is valid the \textit{isconnected($\gls{node}_1, \gls{node}_2$)} is created. This function checks if there exists a path in the \ac{hgraph} from $\gls{node}_1$ to $\gls{node}_2$ over a sequence of non-failing nodes and -edges. In the pushing task example, the first occurrence of a valid hypothesis is presented in \Cref{subfig:robot_push_4}.\bs
 
@@ -157,23 +159,23 @@ For push action, that margin is set to 2 meters, measured in Euclidean distance 
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_5}
-    \caption{}\label{subfig:robot_push_5}
+    \caption{}\label{subfig:robot_push_6}
     \end{subfigure}
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_6}
-    \caption{}\label{subfig:robot_push_6}
+    \caption{}\label{subfig:robot_push_7}
     \end{subfigure}
 
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_7}
-    \caption{}\label{subfig:robot_push_7}
+    \caption{}\label{subfig:robot_push_8}
     \end{subfigure}
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_8}
-    \caption{}\label{subfig:robot_push_8}
+    \caption{}\label{subfig:robot_push_9}
     \end{subfigure}
     \caption{todo}%
     \label{fig:robot_push_3}
@@ -194,6 +196,41 @@ For push action, that margin is set to 2 meters, measured in Euclidean distance 
 
 
 \paragraph{Fault Detection}
+\todo{This entire section should be merged with the text belwo}
+
+\section{Monitoring Metrics}%
+\label{sec:monitoring_metrics}
+In the next chapter, the proposed framework is discussed, for this section, it is important to know that the proposed framework contains the \ac{halgorithm} which is responsible for finding action sequences, motion/manipulation planning, and execution of drive and push actions. During the execution time of a drive or push action, the \acl{halgorithm} is unable to perform any other action. This blocking behavior has some implications, mainly a controller can steer the system to a state from which it cannot independently reach the target state, as a result, it will never halt. For example, a controller tries to drive the robot toward a target state but there is an unmovable obstacle in the way. Another example is the controller is closed-loop unstable and never reaches its target state. Both examples do not occur is well defined simulation environmnents, because of the \textit{closed-world assumption} defined in \Cref{assumption:closed_world}. In the real world, an unexpected blocking obstacle or unstable controller is more likely to occur.\bs
+
+Detecting controller faults is a large robotic topic~\cite{khalastchi_fault_2019}, properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead, two simple metrics will be monitored during execution. The first monitoring metric is \ac{PE}, the second monitoring metric is \ac{TE}. Definitions of the monitoring metrics are summarised in \Cref{table:monitoring_edge_metrics}, it also provides insight in which monitoring metric would catch what faulty behavior. The \ac{PE} and \ac{TE} are defined as:\bs
+
+\[ \gls{pe}(\gls{k}) ::= ||\gls{Cest}(\gls{k}|\gls{k}-1) - \gls{c}(\gls{k})|| \]
+
+Where $\gls{Cest}(\gls{k}|\gls{k}-1)$ is a prediction of the configuration and $\gls{c}(\gls{k})$ is the actual configuration.\bs
+
+The \acl{PE} can be described as:\\
+Every time step a prediction one step into the future is made with the use of the system model and system input. Then the system input is applied to the system and the actual configuration is measured. The difference between predicted and actual configuration is defined as:\bs
+
+\[ \gls{te}(\gls{k}) ::= ||\gls{c}_\mathit{target} - \gls{c}(\gls{k})|| \]
+
+Where $\gls{c}_\mathit{target}$ is the target configuration in the path that the controller tries to steer toward, and \gls{c}(\gls{k}) is the actual configuration.\bs
+
+The \acl{TE} can be described as:\\ A path consists of a list of configurations, a controller tracks the path by steering the system to the upcoming configuration in the path when reached the configuration is updated to the next configuration in the path. The difference between the current configuration and the current configuration the controller tries to steer toward is the \ac{TE}.\bs
+
+$\gls{c}_\mathit{target}$ does not update every time step, whilst \gls{c}(\gls{k}) does update every time step. As a result, a \quotes{good} \ac{TE} is expected to take the form of a saw tooth function inverted over the horizontal x-axis.\bs
+
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}%
+  {>{\raggedleft\arraybackslash}p{0.23\textwidth}%
+   >{\raggedright\arraybackslash}p{0.67\textwidth}}
+\acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behavior occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
+\acf{TE}& The system should not diverge too far from to path it is supposed to track, if the robot diverges more than a pre-defined threshold the \ac{hgraph} concludes that there was an error during execution and the edge fails. \\
+\end{tabular}
+\caption{Monitor metrics used to monitor if a fault occurred during the execution of an edge}%
+\label{table:monitoring_edge_metrics}
+\end{table}
 During the execution of edges, the progress is monitored every timestep by the \textit{FaultDetected(\gls{edge})} function. A fault is concluded when the \acf{PE} or the \acf{TE} crosses a predefined threshold. The \textit{HandleFault(\gls{edge})} function then updates the executing edge's status to FAILED, and the \ac{halgorithm} switches from the execution loop to the search loop in search for a new hypothesis. The predefined thresholds are split for drive and push actions because driving actions, on average, have much lower \ac{PE} and \ac{TE}. For drive action edges, if the average of the last 25 recorded \ac{PE}'s is higher than 0.05 meter, or the \ac{TE} is higher than 2 meters, a fault is concluded. Only a \ac{TE} is used for push actions, which is split into two parts. One ensures the object follows the path, and another ensures that the robot does not deviate too far from the object. If, for a pushing edge, the object deviates more than 2 meters from the path or the robot deviates more than 2 meters from its push position determined by the object pose, a fault is concluded.\bs
 
 \paragraph{The Blocklist}%

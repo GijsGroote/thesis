@@ -1,6 +1,7 @@
 
 \chapter{Planning in four subspaces}%
 \label{chap:proposed_planning}
+\todo{make sure nodes are in this thing, not samples}
 This chapter presents an existing motion planner~\cite{chen_fast_2018} that is extended to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs
 
 
@@ -86,3 +87,73 @@ For performance tests and comparison with equivalent sample-based state-of-the-a
 % \end{figure}
 
 % \todo{Corrado: This does not explain much. What is the strait line and how was that determines? Is that le global path ? What does the local planner arrow mean? A local planner by definition does not come up with a path to follow itself GIJS: that is about he image}
+
+
+\todo{display which sections are changed compared to previous algorithm}
+\begin{algorithm}[H]
+\caption{TOOD: Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green colored sections.}%
+\label{pseudocode:modified_proposed_rrt_star}
+\begin{algorithmic}[1]
+
+\hspace{-0.9cm}
+\colorbox{my_grey}{\parbox{\linewidth}{%
+\State $\gls{nodesMP} \leftarrow x_{init}$
+\While{\textit{NotReachStop}} 
+
+\hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
+    \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
+    \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
+    \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
+    \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
+
+    \If{$\mathit{CollisionCheck(\gls{nodeMP}_{temp})}$}
+    \State $\gls{nodeMP}_\mathit{new} = \gls{nodeMP}_\mathit{temp}$
+    \Else
+        \State Continue
+    \EndIf
+}}
+
+\hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
+    \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$ \algorithmiccomment{Find and connect new node to parent node}
+    \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
+    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new}) + ObjectCost(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
+    \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
+    \State $\mathit{Cost_{min}} \leftarrow \gls{nodeMP}_\mathit{temp}$
+    \State $\gls{nodeMP}_\mathit{minCost} \leftarrow \gls{nodeMP}_\mathit{near}$
+        \EndIf
+    \EndFor
+    \If{$\mathit{Cost_{min}} == \infty$}
+        \State Continue
+    \Else
+    \State $\gls{nodesMP}.add(\gls{nodeMP}_\mathit{new})$
+    \State $E.\mathit{add}(\gls{nodeMP}_\mathit{minCost}, \gls{nodeMP}_\mathit{new})$
+    \EndIf
+}}
+
+\hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
+    \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
+    \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$} 
+    \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$} 
+    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
+    \If{$\mathit{Cost_{temp} < CostFromInit(\gls{nodeMP}_{near})}$}
+    \State $\mathit{E.rewire(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
+        \EndIf
+      \Else \algorithmiccomment{Add lowest cost path to the list of paths}
+      \State $\mathit{Cost_{temp} \leftarrow CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} $ \newline\hspace*{10em} $+ \mathit{CostFromInit(\gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
+          \If{$\mathit{Cost_{temp}  < Cost_{path}}$}
+          \State $\mathit{Cost_{pathMin} \leftarrow \gls{nodeMP}_{temp}}$
+          \State $\mathit{\gls{nodeMP}_{pathMin} \leftarrow \gls{nodeMP}_{near}}$
+          \EndIf
+      \EndIf
+      \If{$Cost_{pathMin} == \infty$}
+          \State Continue
+      \Else
+      \State $\mathit{P.addPath(\gls{nodeMP}_{new}, \gls{nodeMP}_{pathMin}, Cost_{pathMin})}$
+      \EndIf
+    \EndFor
+}}
+\EndWhile
+}}
+\end{algorithmic}
+\end{algorithm}
+
