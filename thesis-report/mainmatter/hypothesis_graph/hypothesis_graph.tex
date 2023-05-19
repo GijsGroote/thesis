@@ -1,8 +1,8 @@
 \section{Hypothesis Graph}%
 \label{sec:hgraph}
-The \acf{hgraph} consists of a set of nodes and edges. The node corresponds to an object at a configuration, and the edges correspond to actions. Overall, the \ac{hgraph} represents a search in the composite configuration space. The \ac{halgorithm} creates and updates nodes and edges in the \ac{hgraph} and is discussed in \Cref{subsec:halgorithm}. A search in the composite configuration space is avoided because an edge only operates in a single mode of dynamics, in the scope of this thesis, a driving mode or pushing mode. The \ac{hgraph} is explicitly created for a task with a single start and a single target node for every subtask in the task. When the \ac{halgorithm} halts, and the task is completed, the \ac{hgraph} is no longer needed and is discarded.\bs
+The \acf{hgraph} consists of a set of nodes and edges. The node corresponds to an object at a configuration, and the edges correspond to actions. Overall, the \ac{hgraph} represents a search in the composite configuration space. The \ac{halgorithm} creates and updates nodes and edges in the \ac{hgraph} and is discussed in \Cref{sec:halgorithm}. A search in the composite configuration space is avoided because an edge only operates in a single mode of dynamics, in the scope of this thesis, a driving mode or pushing mode. The \ac{hgraph} is explicitly created for a task with a single start and a single target node for every subtask in the task. When the \ac{halgorithm} halts, and the task is completed, the \ac{hgraph} is no longer needed and is discarded.\bs
 
-The upcoming section defines and discusses the \ac{hgraph} in \Cref{subsec:hgraph_definition}. The \ac{halgorithm} is then discussed in \Cref{subsec:halgorithm}, where an explanation is provided on how the \ac{halgorithm} searches for a solution in the composite configuration space. The section is concluded with an extensive example.\bs
+The upcoming section defines and discusses the \ac{hgraph} in \Cref{subsec:hgraph_definition}. The \ac{halgorithm} is then discussed in \Cref{sec:halgorithm}, where an explanation is provided on how the \ac{halgorithm} searches for a solution in the composite configuration space. The section is concluded with an extensive example.\bs
 
 \input{mainmatter/hypothesis_graph/definition}
 \input{mainmatter/hypothesis_graph/examples_hgraph}
@@ -15,31 +15,30 @@ This chapter has terminology that is conveniently grouped in the following table
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.23\textwidth}%
    >{\raggedright\arraybackslash}p{0.67\textwidth}}
-Task:   &  Tuple of objects and target configurations.\\
-        & $\text{task} = \gls{task} = \left\langle \gls{Obj}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle$\\
-Subtask:& A single object and a single target configuration.\\
-        & $\text{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle$\\
-Object Class & Classification assigned to an object.\\
-             & $\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}$\\
-Node Status:& Status of a node indicates if a node is initialized, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\
-            & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\
-Node:   & A node in the \acs{hgraph} represents an object in a configuration with reachability indicated with a node status.\\
-        & $\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle$\\
-Edge Status:& Status of an edge,\\
-            & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model} \vee \] \[\mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\
+Task:   &  Tuple of objects and corresponging target configurations.\\[-0.3cm]
+        & \[\textrm{task} = \gls{task} = \left\langle \gls{Obj}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle\]\\[-0.3cm]
+Subtask:& A single object and a single target configuration.\\[-0.3cm]
+        & \[\textrm{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle\]\\[-0.3cm]
+Object Class & Classification assigned to an object.\\[-0.3cm]
+             & \[\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}\]\\[-0.3cm]
+Node:   & A node in the \acs{hgraph} represents an object in a configuration with node status that indicates if the \ac{halgorithm} manages to place the object to that configuration.\\[-0.3cm]
+        & \[\textrm{node} = \gls{node} = \left\langle \textrm{status}, \mathit{obj}, c \right\rangle\]\\[-0.3cm]
+Node Status:& Status of a node indicates if a node is initialized, the \ac{halgorithm} was able to bring the object to the configuration or whether the \ac{halgorithm} fails to bring the object to its configuration.\\[-0.3cm]
+            & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Failed} \]\\[-0.3cm]
   & elaborate information on the edge statuses can be found in \Cref{tikz:status_action_edge}.\\
-Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\
-        & $ \textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle$\\
-Hypothesis:& Sequence of successive edges in the \ac{hgraph}, an idea to put an object at its target configuration. If executed and completed, a subtask is completed.\\
-           & $ \textrm{hypothesis} = \gls{hypothesis} = \left[\ \gls{edge}_{1}, \gls{edge}_{2}, \gls{edge}_{3}, \dots \gls{edge}_{m} \right]\ $, \hspace{0.5cm} $m>0$\\
+Edge:   & Edge connecting a node to another node in the \acs{hgraph} or \ac{kgraph}.\\[-0.3cm]
+        & \[\textrm{edge} = \gls{edge} = \left\langle \textrm{status}, id_{\mathit{from}}, id_{\mathit{to}}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\\[-0.3cm]
+Edge Status:& Status of an edge,\\[-0.3cm]
+            & \[\gls{edgeStatus} = \mathrm{Initialised} \vee \mathrm{Path Exists} \vee \mathrm{System Model}\] \[ \vee \mathrm{Path Planned} \vee \mathrm{Executing} \vee \mathrm{Completed} \vee \mathrm{Failed}\]\\[-0.3cm]
+Non-Failed Status:& Node- or edge status other than FAILED.\\
+Hypothesis:& Sequence of successive edges in the \ac{hgraph}, an idea to put an object at its target configuration. If executed and completed, a subtask is completed.\\[-0.3cm]
+           & \[\textrm{hypothesis} = \gls{hypothesis} = \left[\ \gls{edge}_{1}, \gls{edge}_{2}, \gls{edge}_{3}, \dots \gls{edge}_{m} \right]\,  m>0\]\\[-0.3cm]
 Hypothesis Algorithm:& Graph-based algorithm that searches for hypothesis in the \ac{hgraph} to complete subtasks, eventually completing a task.\\
-Hypothesis Graph:& Collection of nodes and edges. For every subtask, a start and target node exist in the \ac{hgraph}, and the \ac{halgorithm} searches for a path through nodes and edges to connect the start to the target node.\\
-        & $ \textrm{\ac{hgraph}} = \gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $\\
-Knowledge Graph:& Collection of nodes and edges. The \ac{kgraph} acts as a knowledge base and can be queried for an action suggestion.\\
-        & $ \textrm{\ac{kgraph}} = \gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $\\
+Hypothesis Graph:& Collection of nodes and edges. For every subtask, a start and target node exist in the \ac{hgraph}, and the \ac{halgorithm} searches for a path through nodes and edges to connect the start to the target node.\\[-0.3cm]
+                 & \[\textrm{\ac{hgraph}} = \gls{hgraph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle \]\\[-0.3cm]
+Knowledge Graph:& Collection of nodes and edges. The \ac{kgraph} acts as a knowledge base and can be queried for an action suggestion.\\[-0.3cm]
+                & \[\textrm{\ac{kgraph}} = \gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle \]\\[-0.3cm]
 \end{tabular}
-\caption{Terminology of terms used}
+\caption{The proposed-framwork-related terminology is juxtaposed in the left column\\alongside its corresponding description in the right column.}%
 \label{table:proposed_method_terminology}
 \end{table}
-
-\todo{add non-failed status}

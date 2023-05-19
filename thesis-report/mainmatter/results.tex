@@ -24,7 +24,7 @@ search time [sec]& The time the proposed framework spends searching for hypothes
 execution time [sec] & The time the proposed framework spends executing hypotheses. Just as the search time, conclusions can be drawn when comparing the execution time between similar tasks.\\ 
 task time & search time + execution time. \\
 \end{tabular}
-\caption{Method metrics used to measure task performance by the proposed robot framework, and motivation why the metric is relevant.}\label{table:proposed_method_metrics}
+\caption{Method metrics employed to measure task performance by the proposed robot framework in the left column. Motivation on relevance of th metric is provided in the corresponding right column.}\label{table:proposed_method_metrics}
 \end{table}
 
 The simulation environment provides many different robots, of which one robot is selected to perform tests, the point robot, which is are displayed in \Cref{fig:example_robots}. The point robot takes an velocity input along the \gls{x}- and in \gls{y}-axis.\bs
@@ -45,7 +45,7 @@ During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} drive 
 \textit{nonlinear-push-model-1} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y} direction and the next robot configuration in \gls{x} and \gls{y} direction. The next object and robot configuration are based on the current configurations and robot system input in \gls{x} and \gls{y} direction.\\
 \textit{nonlinear-push-model-2} & A nonlinear model describing the next object configuration in \gls{x}, \gls{y} direction and the orientation \gls{theta}, and the robot configuration in \gls{x} and \gls{y} direction based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
 \end{tabular}
-\caption{Available drive and push system models.}\label{table:available_system_models}
+\caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column. With a short description in the corresponding right column.}\label{table:available_system_models}
 \end{table}
 
 State space representation of the \textit{lti-drive-model}:\bs
@@ -203,7 +203,7 @@ The \textit{number of unmovable objects} & Specify the amount of unmovable objec
 The \textit{number of movable objects} & Specify the amount of movable objects.\\
 The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.
 \end{tabular}
-\caption{The tuning parameters that must be specified to create a random environment}%
+\caption{The tuning parameters to initialize a random environment}%
 \label{table:configure_rand_env}
 \end{table}
 
@@ -251,7 +251,7 @@ For the driving task the random environment is created with the following tuning
 \text{number of tasks in a run}  &$\mathit{num\_tasks}=10$\\
 \text{number of subtasks in a task}  &$\mathit{num\_subtasks}=3$
 \end{tabular}
-\caption{The selected tuning parameters for the randomised drive environment.}%
+\caption{The selected tuning parameters for the randomized drive environment.}%
 \label{table:configure_rand_drive_env_values}
 \end{table}
 
@@ -308,7 +308,7 @@ Two driving edge parameterisations are available, the \ac{MPC} and the \ac{MPPI}
       & \ac{MPC} selected from total drive actions [\%] &42&42&36&36&50&48&49&58&48&33\\
       & \ac{MPPI} selected from total drive actions [\%]&58&58&64&64&50&52&51&42&52&67\\
     \end{tabular}
-    \caption{Selecting the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model} parameterization for drive actions.}%
+    \caption{The selection of the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model}) parameterization for drive actions during the randomized driving tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}%
     \label{table:rand_drive_mpc_vs_mppi}
 \end{table}
 
@@ -331,7 +331,7 @@ The push task in the randomized environment consists of a single subtask. To com
 \text{number of tasks in a run}  &$\mathit{num\_tasks}=6$\\
 \text{number of subtasks in a task}  &$\mathit{num\_subtasks}=1$
 \end{tabular}
-\caption{The selected tuning parameters for the randomised push environment.}%
+\caption{The selected tuning parameters for the randomized push environment.}%
 \label{table:configure_rand_push_env_values}
 \end{table}
 
@@ -399,7 +399,7 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
       & \textit{nonlinear-push-model-1} selected in total push actions [\%]&44&38&70&50&40&56\\
       & \textit{nonlinear-push-model-2} selected in total push actions [\%]&56&62&30&50&60&44\\
     \end{tabular}
-    \caption{Influence of \ac{kgraph} suggestions in selecting the (\ac{MPPI}, \textit{nonlinear-push-model-1}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model-2}) parameterization for push actions.}%
+    \caption{The selection of the (\ac{MPPI}, \textit{nonlinear-push-model-1}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model-2}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}
     \label{table:rand_push_model1_vs_model2}
 \end{table}
 
@@ -511,7 +511,7 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
     execution time [sec]  & 67 & 4 \\
     total time [sec] & 176 & 30
     \end{tabular}
-    \caption{Average execute-, search and total times for a repeated task solved three times. The task involves learning object dynamcis and the \ac{NAMO} problem and can be visualise in \Cref{fig:wang}.}%
+    \caption{Average execute-, search and total times for a task that involves learning object dynamcis and the \ac{NAMO} problem. The results are average over three solved tasks for \citeauthor{wang_affordancebased_2020}, and ten solved tasks for the proposed framework. A visualization of the task if presented in \Cref{fig:wang}.}%
     \label{table:wang_vs_mimick}
 \end{table}
 

@@ -1,11 +1,8 @@
 \chapter{Required Background}%
 \label{chap:required_background}
-\textit{This chapter presents the components on which the proposed framework relies. These components are system identification, control methods, planning and fault detection. System identification converts \ac{IO} data into a system model as described in \Cref{sec:sys_iden}. In the scope of this thesis, a system model is required by control methods to create stable control and track a reference signal. Control methods are presented in \Cref{sec:control_methods}. Path planning is a core component of the proposed framework and is responsible for finding a path in configuration space. Such a path acts as a reference signal for the controller. Path planning is split into path estimation in \Cref{subsec:path_estimation}, motion planning in \Cref{subsec:motion_planning} and manipulation planning in \Cref{subsec:manipulation_planning}.
-An existing path planner is presented in this chapter. In the next chapter, the planner is extended such that it can detect objects that are blocking the path.
- Lastly, fault detection halts persisting faulty behaviour and will be elaborated upon in \Cref{sec:monitoring_metrics}.\bs}
+\textit{This chapter presents the components on which the proposed framework relies. These components are system identification, control methods and planning. System identification converts \ac{IO} data into a system model, \Cref{sec:sys_iden} presents a categorization of system models and describes the prodecure on how to collect \ac{IO} data. In the scope of this thesis, a system model is required by control methods to create stable control and track a reference signal, discussed in \Cref{sec:control_methods}. Path planning is a core component of the proposed framework and is responsible for finding a path in configuration space. Such a path acts as a reference signal for the controller. Path planning is split into path estimation in \Cref{subsec:path_estimation} and path planning in \Cref{subsec:motion_planning}. An existing path planner~\cite{wang_affordancebased_2020} is extensively discussed, to then expand upon in \Cref{chap:proposed_planning}.\bs}
 
 % \input{mainmatter/required_background/backward_search}
 \input{mainmatter/required_background_matter/system_identification}
 \input{mainmatter/required_background_matter/control_methods}
 \input{mainmatter/required_background_matter/planning}
-\input{mainmatter/required_background_matter/fault_detection}

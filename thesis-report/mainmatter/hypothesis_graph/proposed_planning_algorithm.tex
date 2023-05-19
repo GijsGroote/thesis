@@ -101,7 +101,7 @@ For performance tests and comparison with equivalent sample-based state-of-the-a
 \While{\textit{NotReachStop}} 
 
 \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-    \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, check and project a new random sample}
+    \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, proejct and validate a new random sample}
     \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
     \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
     \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
@@ -131,7 +131,7 @@ For performance tests and comparison with equivalent sample-based state-of-the-a
 }}
 
 \hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
-    \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{Check if the newly added node can lower cost for nearby nodes}
+    \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{\parbox[t]{.7\linewidth}{Check if the newly added node can lower cost for nearby nodes and if a both connectivity trees can be connected}}
     \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$} 
     \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$} 
     \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
@@ -157,3 +157,14 @@ For performance tests and comparison with equivalent sample-based state-of-the-a
 \end{algorithmic}
 \end{algorithm}
 
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}{\textwidth}
+    \hspace{-0.7cm}
+    \includegraphics[width=1.1\textwidth]{figures/required_background/mp/mp_the_real_deal.png}
+    \caption{A visualization of the implemented \acs{RRT*} algorithm as the stopping criteria were reached for an environment with two unmovable objects. The start connectivity tree is shown in blue, the target connectivity tree in green, connecting the start- to target connectivity en yellow and the lowest cost path in red.}
+    \end{subfigure}
+    \label{fig:motion_planner_comparison}%
+    \caption{Comparing schematic example to a visualization of the implemented algorithm.}
+\end{figure}

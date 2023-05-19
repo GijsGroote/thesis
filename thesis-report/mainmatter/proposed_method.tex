@@ -1,12 +1,11 @@
 \input{mainmatter/hypothesis_graph/proposed_planning_algorithm}
 
-\chapter{The Hypothesis and Knowledge Graph}%
+\chapter{Proposed Robot Framework}%
 \label{chap:hgraph_and_kgraph}
-
-\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching the composite configuration space for action sequences to complete a specified task. \Cref{subsec:hgraph_definition} is dedicated to the \ac{halgorithm} and the \ac{hgraph}. The \ac{halgorithm} additionally collects new knowledge of the environment. Gathered new environment knowledge is stored in the \textbf{\acl{kgraph}}, and used for suggesting actions from experience, defined in \Cref{subsec:kgraph_definition}.\bs}
+\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching and execution action sequences to complete a specified task. \Cref{sec:hgraph} is dedicated to introducing and defining the \ac{hgraph}. Then the \ac{halgorithm} in discussed and defined in \Cref{sed:halgorithm}. The chapter finilizes with the \ac{kgraph} in \Cref{sec:kgraph}.\bs}
 
 \section{Overview of the proposed framework}
-\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the knowledge-, hypothesis graph and the robot environment. A more in-depth analysis of the hypothesis graph is given in~\Cref{sec:hgraph} and for the knowledge graph in~\Cref{sec:kgraph}.\bs
+\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the \ac{kgraph}, \ac{halgorithm} and the robot environment.\bs
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
@@ -76,3 +75,11 @@ The above figure shows that the thesis focus could be augmented with an ontology
 \input{mainmatter/hypothesis_graph/hypothesis_graph}
 \input{mainmatter/hypothesis_graph/halgorithm}
 \input{mainmatter/knowledge_graph/knowledge_graph}
+
+What by now hopefully became clear to the reader is that the \ac{halgorithm} autonomously searches for hypotheses in the \ac{hgraph} to solve a task, one subtask at a time. The \ac{halgorithm} switches between the search and execution loop. Switching from the search loop toward the execution loop when a hypothesis is found and switching back when a hypothesis is completed, or a fault is detected.\bs
+
+The limited number of possible edge parameterizations (every combination of a system identification method with a compatible control method) guarantees that the robot tries to complete a subtask. However, it concludes that it cannot complete a subtask if all possible edges have failed.\bs
+
+This thesis proposes to combine the three topics (one, learning object dynamics, two, the \ac{NAMO} problem, and three, nonprehensile push manipulation to target pose). The \ac{halgorithm} can solve \ac{NAMO} problems because the robot can drive toward target positions even if reaching such a position requires objects to be moved first. The proposed algorithm learns to classify objects by updating the object's class from unknown to movable or obstacle. The \ac{halgorithm} can push objects to target positions by identifying a system model and then pushing the object toward its target position. However, the system model that system identification yields is of short use because it is only given to the corresponding action edge. The executed edges will be reviewed and stored in a knowledge base named the \acf{kgraph} in the next section. The ac{kgraph} is filled with action reviews such that it can suggest a parameterization based on the stored action reviews.\bs
+
+\todo{was there in here somehow an indication that classifes objects? unknown to movable unmovable}
