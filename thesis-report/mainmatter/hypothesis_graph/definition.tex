@@ -1,4 +1,4 @@
-\subsection{Definition of the \ac{hgraph}}%
+\subsection{Definition of the Hypothesis Graph}%
 \label{subsec:hgraph_definition}%
 Before defining the \ac{hgraph}, some definitions are provided on which the \ac{hgraph} depends. First, recall the \textbf{configuration} definition.\bs
 
@@ -10,7 +10,7 @@ where $\mathit{shape}$ is linked to a 3D representation of the object, \textit{i
 
 An object node represents an object in a configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \textrm{status}, \gls{obj}(k)\right\rangle $.\bs
 
-An edge describes how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents an object's configuration change. Edges are split into two categories because of very different goals, \textit{system identification edges} that have as a goal to collect \ac{IO} data and generate a system model, and \textit{action edges} that steer a system toward a target configuration. The edges are formally defined as:\bs
+An edge describes how a node transitions to another node in the \ac{hgraph}. In the robot environment, an edge represents an object's configuration change. Edges are split into three categories since they accomplish different goals. \textit{System identification edges} that have as a goal to collect \ac{IO} data and to generate a system model with that data, \textit{action edges} steer a system toward a target configuration and \textit{emtpy edges} connect nodes that contain different objects. The edges are formally defined as:\bs
 
 A \textbf{identification edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{Identification Method}, \textrm{controller}, \textrm{input}\right\rangle\]\bs
 
@@ -18,9 +18,13 @@ With $id_{from}$ and $id_{to}$ indicating the node identifier where the edge poi
 
 A \textbf{action edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\bs
 
-\todo{emtpy edge}
-
 With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the \ac{hgraph} where the edge starts from, and points to, verb is an English verb describing the action the edge represents (driving, pushing), the controller contains the control method used for driving the robot, the dynamic model is the dynamic model used by the control method and the path a list of configurations indicating the path connecting a start- to target node.\bs
+
+A \textbf{empty edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}\right\rangle\]\bs
+
+Where the status for an emtpy edge can be INITIALIZED or FAILED.\bs
+
+Connecting nodes with edges is eleborated upon in the upcoming section. Two nodes can only be connected if they both contain the same object. The empty edge main goal is to connect nodes that contain different object, to involve multiple objects in a single  action sequence.\bs
 
 Now that the nodes and edges have been defined, the \ac{hgraph} can be defined.\bs
 
@@ -49,7 +53,7 @@ The edges are split into two categories, identification edges and action edges. 
     % \draw [-stealth] (init_test_num) [out=0, in=90] to node[above]{Unable to reach starting robot configuration}  (failed.north);
 
 \end{tikzpicture}
-\caption{\acs{FSM} displaying the status of an identification edge}%
+\caption{\acl{FSM} displaying the status of an identification edge}%
 \label{tikz:status_identification_edge}
 \end{figure}
 
@@ -97,7 +101,7 @@ After initialization, an action edge starts propagating its status as indicated 
     \draw [-stealth] (executing.east) [out=0, in=-90] to node[xshift=0.1cm,right]{Fault detected}(failed.south);
 
 \end{tikzpicture}
-\caption{\acs{FSM} displaying the status of an action edge}%
+\caption{\acl{FSM} displaying the status of an action edge}%
 \label{tikz:status_action_edge}
 \end{figure}
 
@@ -160,6 +164,6 @@ The following figure presents an legend for the \ac{hgraph}s that will be presen
     \includegraphics[width=0.7\textwidth]{figures/proposed_method/connecting_nodes/legend/completed_edge}
     \caption{Edge with status COMPLETED (CO)}%
     \end{subfigure}
-    \caption{Legend for \ac{hgraph}'s nodes an edges}%
+    \caption{Legend for the \acl{hgraph}. }%
     \label{fig:hgraph_legend}
 \end{figure}

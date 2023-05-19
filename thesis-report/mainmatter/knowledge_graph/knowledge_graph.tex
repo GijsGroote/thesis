@@ -6,6 +6,31 @@ The name \quotes{\acl{kgraph}} originates from the environmental knowledge it co
 
 \input{mainmatter/knowledge_graph/definition}
 \input{mainmatter/knowledge_graph/example}
-\input{mainmatter/knowledge_graph/metrics}
 
-The \ac{kgraph} fulfils two goals. It stores information on whether an object can be manipulated and stores edge parameterizations from the highest success factor to the lowest success factor per object. Information if objects can be manipulated to prevent the \ac{halgorithm} from trying to push unmovable objects.\bs
+% \subsection{Edge Metrics}%
+% \label{subsec:edge_metrics}
+% \todo{Corrado: rephrase good and bad to sound like a professional cunt}
+% The \ac{kgraph} keeps an ordered list of `good' and `bad' edge arguments (controller and system model). `Good' and `bad' are defined by edge metrics; these metrics are created after the completion of an edge, regardless of whether the edge was completed or failed. An indication is given on why specific metrics matter in \Cref{table:review_edge_metrics}.
+
+% \noindent
+% \begin{table}[H]
+% \centering
+% \begin{tabular}%
+% {>{\raggedright\arraybackslash}p{0.25\textwidth}%
+% >{\raggedright\arraybackslash}p{0.65\textwidth}}
+% \acf{PE}&  To better compare prediction errors the \ac{PE} is summarized and average \ac{PE}. The average \ac{PE} indicates an accurate system model but can give misleading results since \ac{PE} is also an indicator of unexpected collisions. Prediction error should thus only be used if there are no collisions detected. The average \ac{PE} has more flaws since outliers mostly determine the average. For the largest part, some unfortunate outliers in the \ac{PE} might determine the average \ac{PE}. The average \ac{PE} will thus not be used because it is not robust enough.\\
+% % \acf{TE}& For a low \ac{TE}, the system model must be close to the real motion equations to yield a feasible path, the controller must be well tuned to be able to track that path and the controller and system model must be in collaboration, because the controller uses the system model to calculate system input. A low \ac{TE} tells multiple things, whilst a high \ac{TE} would indicate improvements could be gained in the controller, the system model or their collaboration.\\
+% ratio num\_succesfully completed edges and num\_total edges & Over time, the \ac{kgraph} can recommend the same edge arguments multiple times. Logging the ratio of succeeding edges vs total edges builds an evident portfolio. Still, this metric has to be taken with a grain of salt because edges with equal edge arguments perform similar actions e.g.~pushing an object through a wide corridor is compared to pushing the same object through a narrow corridor. One could say \quotes{comparing apples with pears}\todo{Corrado: But then you would have task-specific metrics right? Meaning a knowledge graph for when you do pushes in open space and one for small corridors? I don’t know if this would scale. To make sense of the metric this metric should be task specific though }.\\
+% the final position and \newline displacement error & The quality of the result is measured in the final position and displacement error. The importance should thus be stressed when ordering edge arguments.\\
+% planning time& With system identification, path estimation, motion or manipulation planning, the planning time can vary in orders of magnitude between simple or more complex approaches.\\
+% run time& Also known as execution time, would be a quality indicator if start- and target states were equal. Edges are recommended to solve similar tasks where the path length between the start and target state differs. Thus planning time is not of any use to rank edges.\\
+% completion time = \newline run time + planning time & With the same argumentation as run time, completion time is not used to rank edges.\\
+% \end{tabular}
+% \caption{The edge metrics employed to establish a ranking of edge parameterizations.}
+% \label{table:review_edge_metrics}
+% \end{table}
+
+% \todo{Corrado: So why do we have all these metrics if you do not consider them? Shouldn’t you normalize the metrics such that they are at least comparable with each other in similar yet differe tasks?}
+
+
+The \ac{kgraph} fulfills two goals. It stores information on whether an object can be manipulated and stores edge parameterizations from the highest success factor to the lowest success factor per object. Information if objects can be manipulated to prevent the \ac{halgorithm} from trying to push unmovable objects.\bs

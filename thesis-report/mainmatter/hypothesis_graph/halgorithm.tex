@@ -1,12 +1,12 @@
-\section{hypothesis algorithm}%
+\section{Hypothesis Algorithm}%
 \label{sec:halgorithm}
-this section starts with a simple example that generates and executes the hypothesis to drive toward a target pose. Then the search and execution loop are discussed, that constitude the principal components of the proposed \ac{halgorithm}. Stepwise, the terminology is elaborated upon whilst an an example of a pushing task is discussed. Then two more examples are provided that involve a blocked path and detecting faults during task execution. Finally, the pseudocode can be resented, supported by a proposed \ac{halgorithm} flowchart.\bs
+this section starts with a simple example that generates and executes the hypothesis to drive toward a target pose. Then the search and execution loop are discussed, that constitute the principal components of the proposed \ac{halgorithm}. Step wise, the terminology is elaborated upon whilst an example of a pushing task is discussed. Then two more examples are provided that involve a blocked path and detecting faults during task execution. Finally, the pseudocode can be resented, supported by a proposed \ac{halgorithm} flowchart.\bs
 
-Two arguments initialize the \ac{halgorithm}, first, a set of object geometry that contains the dimensions of the objects in the robot environment for inernal representation, and second a task to solve.\bs
+Two arguments initialize the \ac{halgorithm}, first, a set of object geometry that contains the dimensions of the objects in the robot environment for internal representation, and second a task to solve.\bs
 
-Additionally several parameters must be specified, such as the grid size, maximum allowed input to the robot and tuning parameters for the path estimator, the path planner and controllers. When all arguements and parameters are provided, the \ac{halgorithm} can be is initialized. There is only a single access point toward the \ac{halgorithm}, the \textit{Respond(observation)} function. This function takes an environment \textit{observation} that updates the internal objects' poses. The function \textit{Respond($\cdot$)} returns control input for the robot. In this thesis, the sensor measurements coinside with the poses objects in the environment. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor}, makes access to every object's exact configuration possible.\bs
+Additionally several parameters must be specified, such as the grid size, maximum allowed input to the robot and tuning parameters for the path estimator, the path planner and controllers. When all arguments and parameters are provided, the \ac{halgorithm} can be is initialized. There is only a single access point toward the \ac{halgorithm}, the \textit{Respond(observation)} function. This function takes an environment \textit{observation} that updates the internal objects' poses. The function \textit{Respond($\cdot$)} returns control input for the robot. In this thesis, the sensor measurements coincide with the poses objects in the environment. Recall that the perfect-sensor assumption, assumption~\ref{assumption:perfect_object_sensor}, makes access to every object's exact configuration possible.\bs
 
-Now a relatively simple example is presented to indicate how the \ac{halgorithm} operates, later every step will be extensively eleborated. The task in the example consists of driving to a single target pose. The leftmost subfigure in \cref{fig:robot_drive_hgraph} visualizes the initialization of a start and target node, which are connected with a drive action edge in the center figure. To make the drive edge ready for execution in the center subfigure, a system model must be provided to the controller residing in the drive action edge. Motivating the \textit{sys. iden} edge and the \textit{robot\_model} node in the rightmost subfigure.\bs
+Now a relatively simple example is presented to indicate how the \ac{halgorithm} operates, later every step will be extensively elaborated. The task in the example consists of driving to a single target pose. The leftmost subfigure in \cref{fig:robot_drive_hgraph} visualizes the initialization of a start and target node, which are connected with a drive action edge in the center figure. To make the drive edge ready for execution in the center subfigure, a system model must be provided to the controller residing in the drive action edge. Motivating the \textit{sys. iden} edge and the $\gls{c}_\textit{robot\_model}$ node in the rightmost subfigure.\bs
 
 \begin{figure}[h]
     \centering
@@ -22,7 +22,7 @@ Now a relatively simple example is presented to indicate how the \ac{halgorithm}
     \centering
     \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/robot_to_target/robot_iden_drive_target}
     \end{subfigure}
-    \caption{the \ac{hgraph} in multiple stages when the \ac{halgorithm} searches for an hypothesis to a drive task.}%
+    \caption{Multiple stages of the \ac{hgraph} when the \ac{halgorithm} searches for an hypothesis to a driving task.}%
     \label{fig:robot_drive_hgraph}
 \end{figure}
 
@@ -42,22 +42,22 @@ Now that an hypothesis is created that consists of an identification- and an act
     \centering
     \includegraphics[width=0.9\textwidth]{figures/proposed_method/connecting_nodes/robot_to_target/execute_robot_to_target_3}
     \end{subfigure}
-    \caption{executing the hypothesis found in \cref{fig:robot_drive_hgraph}.}
+    \caption{Multiple stages of the \ac{hgraph} when the \ac{halgorithm} executes the hypothesis found in \cref{fig:robot_drive_hgraph}.}
     \label{fig:execute_robot_to_target}
 \end{figure}
 
-The generated and executed example for a driving task just discussed is provided to show a simple example. It leaves many details out, which are now elaborated. Start with initializing start- and target nodes, then the search- and execution loop are eleborated.\bs
+The generated and executed example for a driving task just discussed is provided to show a simple example. It leaves many details out, which are now elaborated. Start with initializing start- and target nodes, then the search- and execution loop are elaborated.\bs
 
-\paragraph{Initialisation of the \ac{halgorithm}}
+\paragraph{Initialization of the \ac{halgorithm}}
 the \ac{halgorithm} is initialized with a task that consists of one or more subtasks. Start- and target nodes are created for every subtask, and their status is set to INITIALIZED. Then the goal of the \ac{halgorithm} is to connect every starting node to its corresponding target node with a hypothesis. The target node's status is set to COMPLETED when a hypothesis is completed successfully. If the \ac{halgorithm} could not find a hypothesis that completes a subtask, the \ac{halgorithm} concludes it cannot complete that subtask, and the target node's status is set to FAILED.\bs
 
 \paragraph{The Search and the Execution Loop}
-the proposed algorithm comprises two main parts, a search loop and an execution loop. The \ac{halgorithm} searches for a hypothesis in the search loop. In the executions loop, the \ac{halgorithm} tests hypotheses by executing the edges which form the hypothesis. This chapter finaized with a flowchart in \cref{tikz:flowchart_halgorithm} that will be familiar to the following figure where the two main loops can be identified.\bs
+the proposed algorithm comprises two main parts, a search loop and an execution loop. The \ac{halgorithm} searches for a hypothesis in the search loop. In the executions loop, the \ac{halgorithm} tests hypotheses by executing the edges which form the hypothesis. This chapter finalized with a flowchart in \cref{tikz:flowchart_halgorithm} that will be familiar to the following figure where the two main loops can be identified.\bs
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=7cm]{figures/proposed_method/two_loops_identified}
-    \caption{the search (above) and execution (below) loop, that make up the two main parts of the proposed \ac{halgorithm}. The full flowchart is presented in \cref{tikz:flowchart_halgorithm}}%
+    \caption{The search (above) and execution (below) loop, that make up the main part of the proposed \ac{halgorithm}.}%
     \label{fig:two_loops_identified}
 \end{figure}
 
@@ -71,65 +71,62 @@ When elaborating the \ac{halgorithm}, an example presents a visual example with 
 determining if there exists an unfinished subtask is validated with the \textit{SubtaskNotFinished(\gls{task})} function. It checks the status for every target node in \ac{hgraph}. The three statuses are; initialized, completed and failed. A target node with an initialized status corresponds to an uncompleted subtask and is returned by the \textit{SubtaskNotFinished(\gls{task})} function. If all existing target nodes have either a completed or failed status, the \ac{halgorithm} concludes that the task is completed.\bs
 
 \paragraph{creating a hypothesis for a subtask}
-suppose the \textit{SubtaskNotFinished} returns a target node corresponding to an unfinished subtask. In that case, the \ac{halgorithm} starts searching for a hypothesis connecting the start node to the target node. In \cref{subfig:robot_push_1}, the nodes to connect are the \textit{box} node to the \textit{box\_target} node. These two nodes are a start- and a target node, the nodes to connect are not necessarily start- and target nodes themselves, as seen in \cref{subfig:robot_push_2}. Here the \textit{robot} node must be connected to the \textit{box} node. These nodes are both starting nodes. The first challenge is to find the two nodes to connect from an unfinished target node.\bs
+suppose the \textit{SubtaskNotFinished} returns a target node corresponding to an unfinished subtask. In that case, the \ac{halgorithm} starts searching for a hypothesis connecting the start node to the target node. In \cref{subfig:robot_push_1}, the nodes to connect are the \textit{box} node to the $\gls{c}_\textit{box\_target}$ node. These two nodes are a start- and a target node, the nodes to connect are not necessarily start- and target nodes themselves, as seen in \cref{subfig:robot_push_2}. Here the $\gls{c}_\textit{robot}$ node must be connected to the $\gls{c}_\textit{box}$ node. These nodes are both starting nodes. The first challenge is to find the two nodes to connect from an unfinished target node.\bs
 
  The \ac{halgorithm} relies on a backward search technique. The backward search technique can be described as \textit{start the search at a goal state and work backwards until the initial state is encountered~\cite{lavalle_planning_2006}.} A motivation for a backward search over a forward search is that it might be the case that the branching factor is significant when starting from the initial state. In such cases, it might be more efficient to use a backward search. If the \textit{SubtaskNotFinished} returns an unfinished subtask, the \ac{halgorithm} starts searching for a hypothesis connecting the start node to the corresponding target node. The first step is to find the right nodes in the \ac{hgraph}, which is now discussed.\bs
 
- the \textit{GoBackward($\gls{node}_\mathit{target}$)} function takes the a target node $\gls{node}_\mathit{target}$ that corresponds to a unfinised subtask. It then traverses backwards via non-failed edges to find the node that points toward the target node. The function stops traversing back when it encounters a node with a FAILED status or when no edge exists to traverse backwards over. It returns the last node, that node points toward the target node over a sequence of edges with a status other than failed, and all these edges point toward nodes with a status other than failed. In \cref{subfig:robot_push_1} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} function retuns the $\gls{node}_\mathit{box\_target}$ node, in \cref{subfig:robot_push_2} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} returns the $\gls{node}_\mathit{box}$ node.\bs
+The \textit{GoBackward($\gls{node}_\mathit{target}$)} function takes a target node $\gls{node}_\mathit{target}$ that corresponds to a unfinished subtask. It then traverses backwards via non-failed edges to find the node that points toward the target node. The function stops traversing back when it encounters a node with a FAILED status or when no edge exists to traverse backwards over. It returns the last node, that node points toward the target node over a sequence of edges with a status other than failed, and all these edges point toward nodes with a status other than failed. In \cref{subfig:robot_push_1} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} function returns the $\gls{node}_\mathit{box\_target}$ node, in \cref{subfig:robot_push_2} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} returns the $\gls{node}_\mathit{box}$ node.\bs
 
-The \textit{GoBackward($\gls{node}_\mathit{target}$)} finds a node to connect to, a corresponding node is sought to connect from, which the \textit{FindCorrespondingNode(\gls{node})} does. \textit{FindCorrespondiNgnode(GoBackward(\gls{node}))} takes a node as parameter and returns an existing node that contains the same object as its arguments node; if such a node does not exist, a new node is created. In both \cref{subfig:robot_push_2,subfig:robot_push_3}, \textit{FindCorrespondingNode(GoBackward($\gls{node}_\mathit{target}$))} returns node $\gls{node}_\mathit{box}$. The nodes that the \ac{halgorithm} desires to connect are renamed to prevent long function names: 
-\[\gls{node}_\mathit{to} =  \mathit{gobackward(\gls{node}_\mathit{target})}\]
-\[\gls{node}_\mathit{from} = \mathit{findcorrespondingnode(gobackward(\gls{node}_\mathit{target}))}\]
+The \textit{GoBackward($\gls{node}_\mathit{target}$)} finds a node to connect to, a corresponding node is sought to connect from, which the \textit{FindCorrespondingNode(\gls{node})} does. \textit{FindCorrespondingNode(GoBackward(\gls{node}))} takes a node as parameter and returns an existing node that contains the same object as its arguments node; if such a node does not exist, a new node is created. In both \cref{subfig:robot_push_2,subfig:robot_push_3}, \textit{FindCorrespondingNode(GoBackward($\gls{node}_\mathit{target}$))} returns node $\gls{node}_\mathit{box}$. The nodes that the \ac{halgorithm} desires to connect are renamed to prevent long function names: 
+\[\gls{node}_\mathit{to} =  \mathit{GoBackward(\gls{node}_\mathit{target})}\]
+\[\gls{node}_\mathit{from} = \mathit{FindCorrespondingNode(GoBackward(\gls{node}_\mathit{target}))}\]
 
 \begin{figure}[h]
     \centering
     \begin{subfigure}{.3\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_1}
-    \caption{}\label{subfig:robot_push_1}
+    \includegraphics[width=0.9\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_1}
+    \caption{Initialize start- and target nodes.}\label{subfig:robot_push_1}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.32\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_2_new}
-    \caption{}\label{subfig:robot_push_2}
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_2_new}
+    \caption{Creation of a push action edge.}\label{subfig:robot_push_2}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \includegraphics[width=1.1\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_2}
-    \caption{}\label{subfig:robot_push_3}
+    \begin{subfigure}{.35\textwidth}
+    \includegraphics[width=1.2\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_2}
+    \caption{Creation of a identification edge.}\label{subfig:robot_push_3}
     \end{subfigure}
-    \caption{initialize start and target nodes and the start of a created hypothesis to complete a pushing task.}%
+    \caption{First stages of the \ac{hgraph} when the \ac{halgorithm} creates an hypothesis for a pushing task.}%
     \label{fig:robot_push_1}
 \end{figure}
 
 \paragraph{creating edges}
 the \textit{ConnectWithEdge($\gls{node}_1, \gls{node}_2$)} function connects two nodes with an edge, such as the nodes $\gls{node}_\mathit{from}, \gls{node}_\mathit{to}$ just introduced. In this thesis the robot can take two actions, drive and push. It is required that both nodes contain the same object. The push action edge generated and displayed in \cref{subfig:robot_push_2} is between two nodes containing the \textit{box} object. An \textit{EmtpyEdge} is introduced to involve nodes that contain different objects. The emptyEdge serves only to connect nodes that contain different objects and can have status initialized or failed. The \ac{halgorithm} can traverse over emptyEdge if the status is INITIALIZED.\bs
 
-
-Push action edges require more than only initializing and preparing for execution. The robot must first drive toward a push position against or close to the object to push. By default, creating a push action edge will spawn a $\gls{node}_\mathit{best\_push\_position}$ node connected with an emptyEdge. The \textit{best\_push\_position} depends on the object's planned path. Thus, a path is planned, and then the best push position is determined. \Cref{fig:robot_push_2} shows the $\gls{node}_\mathit{best\_push\_position\_againts\_box}$ node that is connected to the $\gls{node}_\mathit{copy\_box\_target}$. 
-
-\todo{make somehting to teset class of objects}
+Push action edges require more than only initializing and preparing for execution, also they spawn new nodes by default and validate if objects are movable. The robot must first drive toward a push position against or close to the object to push. When a push action edge has planned a path, and updates its status to PATH IS PLANNED, the \ac{halgorithm} then creates a $\gls{node}_\mathit{best\_push\_position}$ node, which configuration depends on the object's planned path. Thus, a path is planned, and then the best push position is determined. The newly created node is connected before the push action edge, where an empty edge points from $\gls{node}_\mathit{best\_push\_position}$ to $\gls{edge}_\mathit{drive}$'s source node. The first occurrence of an $\gls{node}_\mathit{best\_push\_position}$ can be visualized in \Cref{subfig:robot_push_4}. When it is unknown if objects are movable or unmovable, a push action edge performs a tests to determine the class of an object. If the push action is unable to move the object in the first 50 time steps, the object is classified as UNMOVABLE, otherwise it is classified as MOVABLE.\bs
 
 \paragraph{Valid Hypotheses}
 Before a hypothesis can be executed, the hypothesis must be valid. A hypothesis is valid when two conditions are met. First, it starts at the start node and points toward the target node over a sequence of edges with a non-failing status that all point toward nodes with a non-failing status. Second, the first edge in the hypothesis must be ready for execution which the next paragraph will elaborate upon further. To indicate a node or edge has a status other than the FAILED status, that node or edge is called a non-failed node or -edge. To check if an hypothesis is valid the \textit{IsConnected($\gls{node}_1, \gls{node}_2$)} is created. This function checks if there exists a path in the \ac{hgraph} from $\gls{node}_1$ to $\gls{node}_2$ over a sequence of non-failing nodes and -edges. In the pushing task example, the first occurrence of a valid hypothesis is presented in \Cref{subfig:robot_push_4}.\bs
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.45\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_4_new}
-    \caption{}\label{subfig:robot_push_4}
+    \caption{Executing the hypothesis and generated new nodes.}\label{subfig:robot_push_4}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.45\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_5_new}
-    \caption{}\label{subfig:robot_push_5}
+    \caption{Executing the pushing edge.}\label{subfig:robot_push_5}
     \end{subfigure}
-    \caption{The hypothesis for a pushing task becomes valid. The hypothesis contains an edge that sends actions to the robot, and thus the hypothesis is executed.}%
+    \caption{The hypothesis for a pushing task becomes valid and is executed. Then a path for the pushing edge\\is planned which generates new nodes to drive toward the best push pose against the box.}%
     \label{fig:robot_push_2}
 \end{figure}
 
 \paragraph{Preparing edges for Execution}
-Initialized identification edges are immediately ready to send input toward the robot to collect \ac{IO} data. In contrast to identification edges, action edges must first take several actions in preparation before they are ready to send input toward the robot. The status of an edge indicates at which step of preparing the action edge is, indicated in \Cref{tikz:status_action_edge}. After initialization, the action edge must perform path estimation, load in a system model, perform path planning and then it is ready for execution. Two functions are created to make edges ready for execution. The \textit{ReadyForExecution(\gls{edge})} validates if an edge is ready for execution depending on its status. Identification edges are ready for execution when they bear the INITIALIZED status, and action edges are ready when they bear the PATH PLANNED status. The \textit{MakeReady(\gls{edge})} function takes an edge and takes action depending on its status presented in the following table.\bs
+In contrast to identification edges, action edges must first take several actions in preparation before they are ready to send input toward the robot. The status of an edge indicates at which step of preparing the action edge is and can be visualized in \Cref{tikz:status_action_edge}. After initialization, the action edge performs path estimation, loads in a system model, performs path planning and then, it is ready for execution. Two functions are created to make edges ready for execution. The \textit{ReadyForExecution(\gls{edge})} validates if an edge is ready for execution. Identification edges are ready for execution when they bear a non-failed status, action edges are ready for execution when they bear the PATH PLANNED or EXECUTING status. The \textit{MakeReady(\gls{edge})} function takes an edge and takes action depending on its status presented in the following table.\bs
 
 \begin{table}[H]
     \centering
@@ -139,7 +136,7 @@ Initialized identification edges are immediately ready to send input toward the 
       Action edge status& action taken by \textit{MakeReady} function\\\toprule
       INITIALIZED& Create a path estimator and estimate path existence. If no path can be estimated, the status is updated to FAILED. If a path can be estimated, a shortest path is found that acts as a \quotes{warm start} for the path planner.\\
       PATH EXISTS& Load in a system model.\\
-      SYSTEM MODEL& Create path planner and plan path. The edge status is updated to FAILED if no path can be found. If a path is found, it acts as a reference signal for the controller. Additionally, the path the planner finds can indicate that an object is blocking. In such cases, the \ac{halgorithm} must first push that object to free the path. An example of such a case is provided in \Cref{fig:blocking_obj_hgraph}.
+      SYSTEM MODEL& Create path planner and plan path. The edge status is updated to FAILED if no path can be found. If a path is found, it acts as a reference signal for the controller. In the case of an push action edge, a $\gls{node}_\mathit{best\_push\_position}$ is created. Additionally, the path the planner finds can indicate that an object is blocking. In such cases, the \ac{halgorithm} must first push that object to free the path. An example of such a case is provided in \Cref{fig:blocking_obj_hgraph}.
     \end{tabular}
     \caption{The action edge status is presented in the left column, the corresponding action taken by the \textit{MakeReady} function to prepare an action edge for execution in the right column. An action edge increments its status as indicated in \Cref{tikz:status_action_edge}.}%
     \label{table:make_action_edge_ready}
@@ -147,94 +144,48 @@ Initialized identification edges are immediately ready to send input toward the 
 
 \paragraph{Hypothesis Execution}
 When the \ac{halgorithm} creates a valid hypothesis, it switches from the search loop to the execution loop. Executing a hypothesis is managed by three functions. The first edge in the hypothesis is ready for execution and thus contains a controller and a path to track. That edge is executed, and its controller sends input toward the robot to track the path. The \textit{SteerTowardTarget(\gls{edge})} calculates the input that steers the robot toward the path. The \textit{TargetNotReached(\gls{edge})} validates if the robot has reached the target, which is the last configuration in the path. A margin is set by which the \textit{TargetNotReached(\gls{edge})} concludes that the robot is close enough to the final target pose. For drive actions, that margin is set to 0.1 meters measured in Euclidean instance between the robot and the robot's target position.
-For push action, that margin is set to 2 meters, measured in Euclidean distance between the object and the object's target position. These values are tuned by trial and error and is one of the improvements that can be made in future work. The large margin for pushing tasks is set to ensure that the target pose is reached. With a lower margin, the object is often pushed further than the target position. As discussed in the upcoming paragraph, the robot will detect that the object deviated too much from the path. The robot then drives toward the object's opposite side to again, push it over the target position. After the successful completion of an edge, the next edge in the hypothesis is selected by the \textit{IncrementEdge} function. Two possible outcomes exist, the next edge is ready for execution, the \ac{halgorithm} remains in the execute loop, or the next edge is not yet ready. The \ac{halgorithm} goes from the execution loop toward the search loop to prepare the next edge for execution.\bs
 
-
-
-\todo{updated figures below}
+For push action, that margin is set to 2 meters, measured in Euclidean distance between the object and the object's target position. These values are tuned by trial and error and is one of the improvements that can be made in future work. The large margin for pushing tasks is set to ensure that the target pose is reached. With a lower margin, the object is often pushed further than the target position. A fault is then detected because the deviated too much from the path, the robot then drives toward the object's opposite side to again, push it over the target position. Fault detection is discussed in upcoming paragraph. After the successful completion of an edge, the next edge in the hypothesis is selected by the \textit{IncrementEdge} function. Two possible outcomes exist, the next edge is ready for execution, then the \ac{halgorithm} remains in the execute loop. Or, the next edge is not yet ready, then the \ac{halgorithm} goes from the execution loop toward the search loop to prepare the next edge for execution.\bs
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_5}
-    \caption{}\label{subfig:robot_push_6}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_6}
-    \caption{}\label{subfig:robot_push_7}
-    \end{subfigure}
-
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_7}
-    \caption{}\label{subfig:robot_push_8}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_8}
-    \caption{}\label{subfig:robot_push_9}
-    \end{subfigure}
-    \caption{todo}%
-    \label{fig:robot_push_3}
+    \includegraphics[width=0.5\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_6}
+    \caption{The \ac{hgraph} after the pushing task was successfully completed.}%
+    \label{fig:robot_push_5}
 \end{figure}
 
+\paragraph{Completing Hypotheses and Edges}
+When the last edge in an hypothesis is completed, that subtask is completed. The \ac{hgraph} randomly selects a next subtask to complete until there are no unfinished subtasks left, the \ac{halgorithm} then concludes that the task is completed. Opposed to successful completion, subtasks can unsuccessfully complete, which is discussed in the upcoming paragraph.\bs
 
-
-
-\paragraph{Successfull Completing Hypotheses and Edges}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/robot_push/robot_push_9}
-    \caption{TODO\ac{hgraph} for pushing the green box to the target configuration}%
-    \label{fig:robot_push_4}
-\end{figure}
-
-
-\paragraph{Fault Detection}
-\todo{This entire section should be merged with the text belwo}
-
-\todo{this below is not a section please c'mon}
-\section{Monitoring Metrics}%
+\paragraph{Fault Detection}%
 \label{sec:monitoring_metrics}
-In the next chapter, the proposed framework is discussed, for this section, it is important to know that the proposed framework contains the \ac{halgorithm} which is responsible for finding action sequences, motion/manipulation planning, and execution of drive and push actions. During the execution time of a drive or push action, the \acl{halgorithm} is unable to perform any other action. This blocking behavior has some implications, mainly a controller can steer the system to a state from which it cannot independently reach the target state, as a result, it will never halt. For example, a controller tries to drive the robot toward a target state but there is an unmovable obstacle in the way. Another example is the controller is closed-loop unstable and never reaches its target state. Both examples do not occur is well defined simulation environmnents, because of the \textit{closed-world assumption} defined in \Cref{assumption:closed_world}. In the real world, an unexpected blocking obstacle or unstable controller is more likely to occur.\bs
+The proposed framework implements a fault metric named the \textit{monitored metrics} which are presented shortly, first motivation for the monitoring metrics is given. When the \ac{halgorithm} resides in the execution loop, it cannot search for action sequences, which is performed in the search loop. During the execution of an action, the \acl{halgorithm} is unable to perform any other action. This blocking behavior has some implications, mainly that the controller can steer the system to a configuration from which it cannot independently reach the target configuration, as a result, it will never halt. For example, a controller tries to drive the robot toward a target configuration but there is an unmovable obstacle in the way. Another example is the controller is closed-loop unstable and never reaches its target configuration. Both examples do not occur is well defined simulation environments, because of the \textit{closed-world assumption}. In the real world, an unexpected blocking obstacle or unstable controllers are more likely to occur.\bs
 
-Detecting controller faults is a large robotic topic~\cite{khalastchi_fault_2019}, properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead, two simple metrics will be monitored during execution. The first monitoring metric is \ac{PE}, the second monitoring metric is \ac{TE}. Definitions of the monitoring metrics are summarised in \Cref{table:monitoring_edge_metrics}, it also provides insight in which monitoring metric would catch what faulty behavior. The \ac{PE} and \ac{TE} are defined as:\bs
+Detecting controller faults is a large robotic topic~\cite{khalastchi_fault_2019}, properly implementing a fault detection and diagnosis module is out of the scope of this thesis. Instead, two simple metrics will be monitored during execution, by the \textit{FaultDetected(\gls{edge})} function. Upon detection of a fault, the \textit{HandleFault(\gls{edge})} function then updates the executing edge's status to FAILED, and the \ac{halgorithm} switches from the execution loop to the search loop in search for a new hypothesis. The first monitoring metric is \acl{PE}, and can be described as:\\
+With the current configuration of the system, calculated system input and a system model, a prediction info the future is made every time step. Then the system input is applied to the system, the time step incremented and the configuration is measured. The prediction error is than the difference between predicted and measured configuration.\bs
+
+The \ac{PE} is defined as:
 
 \[ \gls{pe}(\gls{k}) ::= ||\gls{Cest}(\gls{k}|\gls{k}-1) - \gls{c}(\gls{k})|| \]
 
-Where $\gls{Cest}(\gls{k}|\gls{k}-1)$ is a prediction of the configuration and $\gls{c}(\gls{k})$ is the actual configuration.\bs
+Where $\gls{Cest}(\gls{k}|\gls{k}-1)$ is a prediction of the configuration and $\gls{c}(\gls{k})$ is the measured configuration.\bs
 
-The \acl{PE} can be described as:\\
-Every time step a prediction one step into the future is made with the use of the system model and system input. Then the system input is applied to the system and the actual configuration is measured. The difference between predicted and actual configuration is defined as:\bs
+During execution a sudden high \ac{PE} indicates unexpected behavior occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. A few high prediction errors are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an fault detected during execution and the edge's status is updated to FAILED.\bs
 
-\[ \gls{te}(\gls{k}) ::= ||\gls{c}_\mathit{target} - \gls{c}(\gls{k})|| \]
+The second monitoring metric is the \acl{TE} that can be described as:\\ A controller tracks a path that consists of a list of configurations by steering the system to the upcoming configuration in the list. When that configuration is reached, the upcoming configuration is updated to the next configuration in the path. The \ac{TE} is the difference between the current configuration of the system and the upcoming configuration.\bs
 
-Where $\gls{c}_\mathit{target}$ is the target configuration in the path that the controller tries to steer toward, and \gls{c}(\gls{k}) is the actual configuration.\bs
+The \ac{TE} is defined as:
 
-The \acl{TE} can be described as:\\ A path consists of a list of configurations, a controller tracks the path by steering the system to the upcoming configuration in the path when reached the configuration is updated to the next configuration in the path. The difference between the current configuration and the current configuration the controller tries to steer toward is the \ac{TE}.\bs
+\[ \gls{te}(\gls{k}) ::= ||\gls{c}_\mathit{upcoming} - \gls{c}(\gls{k})|| \]
 
-$\gls{c}_\mathit{target}$ does not update every time step, whilst \gls{c}(\gls{k}) does update every time step. As a result, a \quotes{good} \ac{TE} is expected to take the form of a saw tooth function inverted over the horizontal x-axis.\bs
+Where $\gls{c}_\mathit{upcoming}$ is the target configuration in the path that the controller tries to steer toward, and \gls{c}(\gls{k}) is the measured configuration.\bs
 
-\noindent
-\begin{table}[H]
-\centering
-\begin{tabular}%
-  {>{\raggedleft\arraybackslash}p{0.23\textwidth}%
-   >{\raggedright\arraybackslash}p{0.67\textwidth}}
-\acf{PE}&  During executing a sudden high \ac{PE} indicates unexpected behavior occurs, such as when the robot has driven into an object which it was not expecting. A high \ac{PE}, which persists indicates that the robot is continuously blocked. Single collisions are allowed, but when the \ac{PE} exceeds a pre-defined threshold and persists over a pre-defined time, the \ac{hgraph} concludes that there was an error during execution and the edge failed.\\
-\acf{TE}& The system should not diverge too far from to path it is supposed to track, if the robot diverges more than a pre-defined threshold the \ac{hgraph} concludes that there was an error during execution and the edge fails. \\
-\end{tabular}
-\caption{Monitor metrics used to monitor if a fault occurred during the execution of an edge}%
-\label{table:monitoring_edge_metrics}
-\end{table}
-During the execution of edges, the progress is monitored every timestep by the \textit{FaultDetected(\gls{edge})} function. A fault is concluded when the \acf{PE} or the \acf{TE} crosses a predefined threshold. The \textit{HandleFault(\gls{edge})} function then updates the executing edge's status to FAILED, and the \ac{halgorithm} switches from the execution loop to the search loop in search for a new hypothesis. The predefined thresholds are split for drive and push actions because driving actions, on average, have much lower \ac{PE} and \ac{TE}. For drive action edges, if the average of the last 25 recorded \ac{PE}'s is higher than 0.05 meter, or the \ac{TE} is higher than 2 meters, a fault is concluded. Only a \ac{TE} is used for push actions, which is split into two parts. One ensures the object follows the path, and another ensures that the robot does not deviate too far from the object. If, for a pushing edge, the object deviates more than 2 meters from the path or the robot deviates more than 2 meters from its push position determined by the object pose, a fault is concluded.\bs
+The system should not diverge too far from to path it is supposed to track, if the robot diverges more than a pre-defined threshold the \ac{hgraph} concludes that there was an error during execution and the edge fails. $\gls{c}_\mathit{upcoming}$ does not update every time step, whilst \gls{c}(\gls{k}) does update every time step. As a result, a \quotes{good} \ac{TE} is expected to take the form of a saw tooth function inverted over the horizontal x-axis.\bs
+
+The predefined thresholds are split for drive and push actions because driving actions have much lower average \ac{PE} and \ac{TE} compared to push actions. For drive action edges, when the average of the last 25 recorded \ac{PE}'s is higher than 0.05 meter, or the \ac{TE} is higher than 2 meters, a fault is concluded. For push actions only a \ac{TE} is used, which is split into two parts. One ensures the object follows the path, and another ensures that the robot does not deviate too far from the object. If, for a pushing edge, the object deviates more than 2 meters from the path or the robot deviates more than 2 meters from its push position determined by the object pose, a fault is concluded.\bs
 
 \paragraph{The Blocklist}%
-The blocklist prevents the regeneration of failed edges in the \ac{hgraph}. The infinite loop of creating an edge that fails only to be regenerated is prevented. The blocklist keeps a list of edge parameterization with the node identifier; newly generated edges are checked against this blocklist. If they are on the blocklist, initialization of the edge is prevented. The possible parameterizations are filtered when two nodes are connected with an action edge. Thus, any parameterization on the blocklist for a specific node (to which the action edge would point to) cannot be created again for the lifetime of the \ac{hgraph}.\bs
+The blocklist prevents the regeneration of failed edges. The infinite loop of creating an edge that fails only to be regenerated is prevented. The blocklist keeps a list of edge parameterization as well as the node identifier if failed on. Newly generated edges are checked against this blocklist, if they are on the blocklist, initialization of the edge is prevented. The possible parameterizations are filtered when two nodes are connected with an action edge. Thus, any parameterization on the blocklist for a specific node (to which the action edge would point to) cannot be created again for the lifetime of the \ac{hgraph}.\bs
 
 In the following example, \Cref{fig:failure_in_hgraph} faults are detected, these edges are added to the blocklist, the first hypothesis fails to complete, and the \ac{halgorithm} tries to generate a new hypothesis that also fails to complete.\bs
 
@@ -242,21 +193,17 @@ In the following example, \Cref{fig:failure_in_hgraph} faults are detected, thes
     \centering
     \begin{subfigure}{.3\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_1}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1.05\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_2}
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_2}
     \end{subfigure}
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_3}
     \end{subfigure}
-
     \begin{subfigure}{.3\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_4}
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_4}
     \end{subfigure}
+
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_5}
@@ -265,17 +212,57 @@ In the following example, \Cref{fig:failure_in_hgraph} faults are detected, thes
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_6}
     \end{subfigure}
-
     \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=1\textwidth]{figures/proposed_method/connecting_nodes/failure/fail_7}
     \end{subfigure}
     \hfill
-    \caption{Executing two hypotheses that both failed to complete because a fault was detected. Both edges are added to the blocklist, preventing the regeneration of edges with the same parameterization. The \ac{halgorithm} concludes the task to be unfeasible.}%
+    \caption{Multiple stages of the \ac{hgraph}. The two hypotheses both failed during execution because a fault was detected. The failed edges are added to the blocklist, preventing the regeneration of edges with the same parameterization. The \ac{halgorithm} concludes the task to be unfeasible.}%
     \label{fig:failure_in_hgraph}
 \end{figure}
 
 In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers and system models were available. Thus after two failed hypotheses, the \ac{halgorithm} concludes that the task is unfeasible. All functionality is now discussed and is neatly summarized in the following table. Then, pseudocode for the proposed \ac{halgorithm} is presented.\bs
+
+\paragraph{Encountering a Blocked Path}%
+Path planning occurs when propagating the action edge's status. If an object is blocking the path, planning will detect it, and the \ac{halgorithm} tries to free it. In the following example, the \ac{halgorithm} detects a blocking object and frees the path by pushing the blocking object to a new configuration, and can be visualized in \Cref{fig:blocking_obj_hgraph}.\bs
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_1}
+    \caption{}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_2}
+    \caption{}\label{subfig:blocking_obj_2}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_3}
+    \caption{}\label{subfig:blocking_obj_3}
+    \end{subfigure}
+
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=1.291\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_4}
+    \caption{}\label{subfig:blocking_obj_4}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_5}
+    \caption{}\label{subfig:blocking_obj_5}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_6}
+    \caption{}\label{subfig:blocking_obj_6}
+    \end{subfigure}
+    \caption{Multiple stages of the \ac{hgraph} for a driving task, where an blocked path is encountered.}%
+    \label{fig:blocking_obj_hgraph}
+\end{figure}
+
 
 \begin{table}[H]
 \centering
@@ -290,17 +277,16 @@ In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers
 
 \textit{HandleFault(\gls{edge})}: & Update edge \gls{edge} status to FAILED and remove edge from hypothesis \\
 \textit{SteerTowardTarget(\gls{observation})}: & Update controller with observation \gls{observation} and compute response that steers the system to target configuration\\
-\textit{ReadyForExecution(\gls{edge})}: & Check if edge \gls{edge} has the PATH PLANNED status and contains all components to control the system \\
-\textit{IncrementEdge}: & Mark current edge as completed, set next edge in \gls{hypothesis} as current edge \\
-\textit{MakeReady(\gls{edge})}: & Perform actions to make the edge \gls{edge} ready for execution \\
-\textit{goBackward(\gls{node})}: & Find the source node that point toward \gls{node} through a number of non-failed edges\\
+\textit{ReadyForExecution(\gls{edge})}: & Check if edge \gls{edge} has the PATH IS PLANNED status and contains all components to track the path\\
+\textit{IncrementEdge}: & Mark current edge as completed, set next edge in \gls{hypothesis} as current edge if ready for execution, otherwise, enter search loop \\
+\textit{MakeReady(\gls{edge})}: & Perform actions (see \Cref{table:make_action_edge_ready} for detailed information) to make the edge \gls{edge} ready for execution \\
+\textit{GoBackward(\gls{node})}: & Find the source node that point toward \gls{node} through a number of non-failed edges\\
 \textit{FindCorrespondingNode(\gls{node})}: & Find the node containing the same object as \gls{node} \\
 \textit{ConnectWithEdge($\gls{edge}_1, \gls{edge}_2$)}: & Randomly generate edge between nodes $\gls{node}_1$ and $\gls{node}_2$ or use \ac{kgraph} to suggest an edge\\
 \end{tabular}
 \caption{The functions employed by the \ac{halgorithm} in \Cref{pseudocode:halgorithm}.}
 \label{table:functions_for_halgorithm}
 \end{table}
-\todo{Currentedge is nto defined}
 
 \noindent
 \begin{algorithm}[H]
@@ -335,9 +321,9 @@ In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers
             \State \textit{MakeReady(\gls{hypothesis}.CurrentEdge)}
             \EndIf
             \Else
-            \State $\mathit{\gls{node}_{localtarget}} \leftarrow \gls{hgraph}.\mathit{goBackward(\gls{node}.target)}$
-            \State $\mathit{\gls{node}_{localstart}} \leftarrow \gls{hgraph}.\mathit{findCorrespondingNode(\gls{node}_{localtarget})}$
-            \State $\mathit{G.connectWithEdge}(\gls{node}_\mathit{localstart}, \gls{node}_\mathit{localtarget})$
+            \State $\mathit{\gls{node}_{localtarget}} \leftarrow \gls{hgraph}.\mathit{GoBackward(\gls{node}.target)}$
+            \State $\mathit{\gls{node}_{localstart}} \leftarrow \gls{hgraph}.\mathit{FindCorrespondingNode(\gls{node}_{localtarget})}$
+            \State $\mathit{G.ConnectWithEdge}(\gls{node}_\mathit{localstart}, \gls{node}_\mathit{localtarget})$
             \EndIf
             \EndWhile
         }}
@@ -389,43 +375,4 @@ Target Node Reached& Check if the target node is reached.\\
 \label{table:explainer_hgraph_figures_nodes}
 \end{table}
 
-\paragraph{Encountering a Blocked Path}%
-During propagation of an action edge's status, motion or manipulation planning occurs. If an object blocks the path, planning will detect it, and the \ac{halgorithm} tries to free it. In the following example, the \ac{halgorithm} detects a blocking object and frees the path by pushing the blocking object to a new configuration, and can be visualized in \Cref{fig:blocking_obj_hgraph}.\bs
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_1}
-    \caption{}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_2}
-    \caption{}\label{subfig:blocking_obj_2}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_3}
-    \caption{}\label{subfig:blocking_obj_3}
-    \end{subfigure}
-
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=1.291\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_4}
-    \caption{}\label{subfig:blocking_obj_4}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_5}
-    \caption{}\label{subfig:blocking_obj_5}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_6}
-    \caption{}\label{subfig:blocking_obj_6}
-    \end{subfigure}
-    \caption{\ac{hgraph} for driving to target configuration and encountering a blocked path}%
-    \label{fig:blocking_obj_hgraph}
-\end{figure}
-
+The \ac{halgorithm} is now discussed with a description, examples, pseudocode and a flowchart. In the next section, the executed edges will be reviewed and stored in a knowledge base named the \acf{kgraph}.\bs

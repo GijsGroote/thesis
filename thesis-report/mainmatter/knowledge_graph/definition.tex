@@ -2,12 +2,14 @@
 \label{subsec:kgraph_definition}
 Before defining the \ac{kgraph}, the definition of the success factor, edges, center- and side nodes are defined where the \ac{kgraph} depends upon.\bs
 
-Formally the \textbf{success factor} = \gls{successfactor}: 
-\[\gls{successfactor} = 
+Formally the \textbf{success factor} = \gls{successfactor}:
+\[\gls{successfactor} =
   \begin{cases} 0.1^{\epsilon_{\textrm {avg}}}& \textrm {if edge does not yet exist in \ac{kgraph}}\\[5px]
-    \gls{successfactor} + 0.1*(1-\gls{successfactor}) & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge was succesfully completed}}\\[5px]
+    \gls{successfactor} + 0.1*(1-\gls{successfactor}) & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge was successfully completed}}\\[5px]
   \gls{successfactor} - 0.1*\gls{successfactor} & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge failed}}
 \end{cases}\]
+
+\todo{unclear what this is? epsilon}
 
 \paragraph{Success Factor} The responsibility of the \ac{kgraph} is to store object class information and to collect edge feedback, to then suggest edge parameterization based on the collected feedback. Estimating which parameterization would be the best candidate is an entire field of research. In this thesis, a simple metric, the success factor, has been chosen based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with; feedback must be created with only information on prediction error, tracking error and whether a fault was detected. Then action suggestions must be made based on collected feedback and an object that should change the start configuration to a target configuration (connecting two nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.\bs
 
@@ -32,6 +34,6 @@ Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle i
 Formally, a \textbf{\acl{kgraph}}, $\gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $
 \\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{edgesK}^\mathit{center}_\mathit{ids}, j \in \gls{edgesK}^\mathit{side}_\mathit{ids} \}$.\bs
 
-Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs 
+Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs
 
 The \ac{kgraph} has three essential functions. The \textit{add\_object} function adds object information to the \ac{kgraph}, which is important for adding unmovable obstacles that the robot cannot manipulate. The \textit{add\_review} function is used when an edge is successfully or unsuccessfully completed, and the corresponding node in the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs
