@@ -34,6 +34,7 @@
 \definecolor{ukraine_yellow}{RGB}{254, 241, 0}
 \definecolor{ukraine_blue}{RGB}{1, 124, 194}
 
+\usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
@@ -49,10 +50,10 @@
 \usepackage{optidef}
 
 
-\usepackage{amsthm}
+% \usepackage{amsmath,scalerel}
 
-\theoremstyle{plain}
 \usepackage{amsthm}
+\theoremstyle{plain}
 
 \newtheoremstyle{dotless}{}{}{\itshape}{}{\bfseries}{}{ }{}
 
@@ -64,6 +65,7 @@
 
 %% to create notes to self
 \usepackage{todonotes}
+% \usepackage{todonotes}
 \let\todox\todo
 \setlength{\marginparwidth}{2cm} 
 \renewcommand\todo[1]{\todox[inline]{#1}}
