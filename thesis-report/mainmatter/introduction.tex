@@ -28,6 +28,7 @@ Three challenges are now listed, two related to planning in composite space and 
 
 Thus the dimension of the composite space grows linearly with the number of objects in the robot environment, and the composite configuration space itself grows exponentially, also known as the \textit{curse of dimensionality}.\bs
 
+\todo{It is pretty weird that you introduce constraints set to then alter, not check for contstraints in the path planning algorithm}
 The second challenge is due to constraint sets. In configuration space, a single constraint set applies that originates from constraints. For example, from a nonholonomic robot, the class of robots that can be described by a bicycle model~\cite{polack_kinematic_2017} are nonholonomic. These robots, such as the boxer robot in \Cref{subfig:example_boxer_robot}, cannot drive sideways. The nonholonomic constraints must be respected during planning for the path planner to yield feasible paths. Only a single constraint set exists in configuration space, also called \textit{mode of dynamics}~\cite{hauser_multimodal_2010}, because configuration space relates to a single action. Dedicated path planners such as \acs{PRM}~\cite{hsu_path_1997}, \acs{PRM*}, \acs{RRT} or \acs{RRT*}~\cite{karaman_samplingbased_2011} can find paths in configuration space whilst respecting the constraint set and guarantee asymptotic optimality~\cite{karaman_samplingbased_2011}. In composite space, multiple modes of dynamics exist; the composite configuration must respect the constraints set of the mode of dynamics it resides in. These different modes of dynamics make the composite configuration space \textit{piecewise-analytic}. Path planners have great difficulty crossing the boundary from one mode of dynamics to another mode of dynamics~\cite{vega-brown_asymptotically_2020}.\bs
 
 \Cref{chap:appendix} explains complexity classes which may be helpful in understanding this paragraph better. Finding an optimal action sequence to a \ac{NAMO} and nonprehensile pushing problem requires a search in composite space. Due to the challenges described above, such a problem falls in the category of \ac{NP-hard} problems, for which we now provide a reduction. If the search for an optimal solution in composite configuration space is simplified by completely removing relocating objects to new positions from the task, a purely \ac{NAMO} problem is what remains. Suppose the problem is simplified even further by assuming that every object is an unmovable obstacle. In that case, the problem falls in the category of \ac{NP-hard} problems because a reduction exists from the piano mover's problem, which is known to be \ac{NP-hard}~\cite{reif_motion_1985}. That a simplified version is \ac{NP-hard} indicates the difficulty of finding an optimal path in composite configuration space.\bs
@@ -110,13 +111,14 @@ The main research question is split into two smaller, more detailed subquestions
     \item\label{researchsubquestion:does_it_compare} How does the proposed framework compare against the state-of-the-art?
 \end{enumerate}
 
-\textbf{This thesis's main contribution is combining all three topics.} These topics are learning object dynamics, the \ac{NAMO} problem and nonprehensile push manipulation. The proposed framework combines these three topics with the \textit{\acl{halgorithm}}. The algorithm builds a graph-based structure with nodes and edges, named the \textit{\acl{hgraph}}. Planning directly in the composite configuration space is avoided due to the inherent complexity associated with planning in composite space. Instead, the \acl{halgorithm} plans only in a single mode of dynamics and searches for a global path with a technique known as a backward search~\cite{krontiris_dealing_2015}. Learned object dynamics are stored in a knowledge base called the \textit{\acl{kgraph}}. The \ac{halgorithm}, \ac{hgraph} and \ac{kgraph} are introduced in \Cref{chap:hgraph_and_kgraph}.\bs
+\textbf{This thesis's main contribution is combining all three topics.} These topics are learning object dynamics, the \ac{NAMO} problem and nonprehensile push manipulation. The proposed framework combines these three topics with the \textit{\acl{halgorithm}}. The algorithm builds a graph-based structure with nodes and edges, named the \textit{\acl{hgraph}}. Planning directly in the composite configuration space is avoided due to the inherent complexity associated with planning in composite space. Instead, the \acl{halgorithm} plans only in a single mode of dynamics and searches for a global path with a technique known as a backward search~\cite{krontiris_dealing_2015}. Learned object dynamics are stored in a knowledge base called the \textit{\acl{kgraph}}. The \acl{halgorithm}, \acl{hgraph} and \acl{kgraph} are introduced in \Cref{chap:hgraph_and_kgraph}.\bs
 
 \section{Problem Description}%
 \label{sec:problem_description}
 To help answer the research questions, tests are performed in a robot environment. A simple environment is desired because that simplifies testing, yet the robot environment should represent many real-world environments in which robots operate. Thus a 3-dimensional environment is selected. The environment consists of a flat ground plane since many mobile robots operate in a workspace with a flat floor, such as a supermarket, warehouse or distribution center. An environment with a flat floor and a flat robot can be treated as a 2-dimensional problem because the robot and objects can only change position over \gls{x} and \gls{y} axis ($xy$ plane parallel to the ground plane) and rotate around the $z$ axis (perpendicular to the ground plane). A flat robot is selected because it has a low center of gravity, which lowers the chance of tipping over.\bs
 
 Let us start with defining the environment. Let the tuple $\left\langle \gls{origin}, \gls{groundPlane}, \gls{Obj}, \gls{motionEquations} \right\rangle$ fully define a robot environment where:\bs
+\todo{Is is clear that the robot is an object?}
 
 \noindent
 \begin{table}[H]
@@ -205,6 +207,7 @@ To get a sense of what the robots and the objects look like, see the two robots 
     \caption{Two robots in the robot environment}%
     \label{fig:example_robots}
 \end{figure}
+\todo{Aks Corrado, does it make sense to include the boxer robot, path planning is completely holonomic, and boxer robot is not used}
 
 \begin{figure}[H]
     \centering
@@ -227,3 +230,4 @@ For complete environments with accompanying tasks, see~\Cref{chap:results}.\bs
 \section{Report Structure}%
 \label{sec:report_structure}
 The proposed framework heavily relies on a number of methods and functions. These methods and functions are conveniently grouped in \Cref{chap:required_background}. Then the proposed framework is presented and discussed in \Cref{chap:hgraph_and_kgraph}. Testing the proposed framework is presented in \Cref{chap:results}. The last chapter draws conclusions on tests and answering the research questions.\bs
+\todo{and future work? appendix?}

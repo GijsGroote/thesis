@@ -4,7 +4,7 @@
 \section*{System identification Module}
 The thesis provides an module that collects \ac{IO} data for a robot driving system, and for a system that describes the robot pushing an object. It has been fully integrated into the proposed robot framework, but has been replace by analytic models during testing. The appendix provides a categorization that categorized system models in three categories; data-driven model, hybrid models and analytic models. A valuable extension on is to add system identification methods, and to investigate task execute performance with data-driven- and hybrid system models.\bs
 
-\section*{Convergence of Manipulation Strategy}
+\section*{Convergence to a Manipulation Strategy}
 Whilst gaining more experience in an robot environment, the proposed framework converges toward a specific edge parameterization for each object. Such an edge parameterization or manipulation strategy exists of the controller and system model, for robot driving (\ac{MPC}, \textit{lti-drive-model}), for object pushing (\ac{MPPI}, \textit{nonlinear-push-model-1}). During testing every manipulated object converged toward the same edge parameterization. Three aspects could be improved; more variation if objects; more experimenting with success factors to generate edge feedback; a larger set of parameterization. All three influence the parameterization to which the \ac{halgorithm}converges. It is expected but not shown, that objects that are dissimilar in properties have different parameterization to which they converge. 
 
 \section*{Benchmark Tests}

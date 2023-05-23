@@ -20,15 +20,16 @@
 
 \definecolor{my_grey}{RGB}{238,238,228} % #eeeee4
 
-\definecolor{my_purple}{RGB}{160, 110, 224} % lavenderIndigo #9457eb
-\definecolor{my_dark_blue}{RGB}{22, 164, 216} % batteryChargedBlue #1dacd6
+\definecolor{my_purple}{RGB}{183, 141, 242}
+\definecolor{my_dark_blue}{RGB}{255, 128, 255}
 \definecolor{my_light_blue}{RGB}{96, 219, 232} % skyBlue ##87CEEB
 \definecolor{my_green}{RGB}{139, 211, 70} % kiwi #d3e7c1
 \definecolor{my_dark_green}{RGB}{38, 120, 19} % #267813
 
 \definecolor{my_yellow}{RGB}{239, 223, 72} % minionYellow #FFD55E 
 \definecolor{my_orange}{RGB}{249, 165, 44} % deepSaffron #FF9933
-\definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
+% \definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
+\definecolor{my_red}{RGB}{255, 90, 30}
 
 
 \definecolor{ukraine_yellow}{RGB}{254, 241, 0}
@@ -70,8 +71,6 @@
 \setlength{\marginparwidth}{2cm} 
 \renewcommand\todo[1]{\todox[inline]{#1}}
 
-%% for glossary
-\usepackage[printonlyused, withpage]{acronym}
 
 % create a capital tau, Tau
 \newcommand{\Tau}{\mathrm{T}}
@@ -309,5 +308,7 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 \usepackage{array}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
-\usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}
 
+%% for glossary
+\usepackage[printonlyused, withpage]{acronym}
+\usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}

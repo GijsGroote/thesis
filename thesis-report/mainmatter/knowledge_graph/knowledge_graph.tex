@@ -2,7 +2,7 @@
 \label{sec:kgraph}
 The \ac{hgraph}, discussed in the previous section, spans a lifetime over a single task. Learned system models created for future tasks are not stored for \ac{hgraph}. Storing learned environment knowledge is the \ac{kgraph}'s responsibility. Another responsibility of the \ac{kgraph} is to make an ordering in the stored environment knowledge. The ordering is made with a proposed success factor. This metric combines multiple metrics such as prediction error, tracking error and the success-fail ratio of an edge parameterization (controller and system model).\bs
 
-The name \quotes{\acl{kgraph}} originates from the environmental knowledge it contains and its graph structure. Both the \ac{hgraph} and \ac{kgraph} are newly proposed frameworks built from the ground up, with only inspiration from an already existing technique, a backward search. The \ac{kgraph} does not adhere to any standard that may apply to standardized knowledge bases.\bs
+The name \quotes{\acl{kgraph}} originates from the environmental knowledge it contains and its graph structure. Both the \ac{hgraph} and \ac{kgraph} are newly proposed frameworks built from the ground up, with only inspiration from an already existing technique, a backward search. The \ac{kgraph} is in an early stage of development and does therefore not (yet) adhere to any standard that apply to knowledge bases, such as first order-logic~\cite{barwise_introduction_1977,rensink_representing_2004}, relational databases~\cite{atzeni_relational_1993} or more practical, a language such as prologe~\cite{wielemaker_swiprolog_2012}.\bs
 
 \input{mainmatter/knowledge_graph/definition}
 \input{mainmatter/knowledge_graph/example}

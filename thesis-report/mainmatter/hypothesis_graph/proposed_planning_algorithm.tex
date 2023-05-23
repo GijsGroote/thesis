@@ -5,6 +5,7 @@
 Finding a path between the start- and target configuration whilst avoiding collisions was presented in previous chapter. Now that path planner is modified; the modification extends the planner to incorporate movable and unknown space. The modified algorithm has four tuning parameters that can be tweaked; The \textit{step size} and \textit{search size} were discussed in previous chapter. The third and fourth tuning parameters are the fixed costs for crossing through movable or unknown space. These cost are added to the \textit{TotalPathCost}, which is redefined as:\bs
 
 \[\mathit{TotalPathCost} = \mathit{MovableSpaceCost} + \mathit{UnknownSpaceCost}\sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1})\]
+\todo{In the pseudoce you talk about objectCost, here totalpathCost, unclear!}
 
 The \textit{MovableSpaceCost} and \textit{UnknownSpaceCost} correspond to a fixed addition cost for a configuration in the path that crosses through movable or unknown subspace, respectively. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in movable space, \textit{MovableSpaceCost} will be 0, equivalent to unknown space and \textit{UnknownSpaceCost}. Optimizing the path for the lowest cost incentives the path planning algorithm to find a path around unknown or movable objects.\bs
 
@@ -13,8 +14,10 @@ The added fixed cost for a path crossing through a movable or unknown object mot
 The proposed algorithm prevents planning a path through blocking objects except when no other option is available or a large detour can be prevented. No performance tests have been conducted on the modified path planner, apart from visual inspection. \Cref{fig:mp_push_or_drive} clearly shows the effect of varying \textit{UnknownSpaceCosts}.
 
 
+\todo{eleborate on the change compared to the previous existing algorithm}
+\todo{Dubble check if only the parts in red are changed.}
 \begin{algorithm}[H]
-  \caption{Pseudocode for modified \ac{RRT*} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are in red.}%
+  \caption{Pseudocode for modified \ac{RRTstar} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are indicated with the red colour.}%
   \label{pseudocode:modified_proposed_rrt_star}
   \begin{algorithmic}[1]
 
@@ -77,90 +80,14 @@ The proposed algorithm prevents planning a path through blocking objects except 
   \end{algorithmic}
 \end{algorithm}
 
-% PERFECTLY FINE STUFF, BUT ERRORS ARE ABSOLUTELY BEING GENERATED IN THE FOLLOLWING PSEUDOCODE
-% \begin{algorithm}[H]
-% \caption{Pseudocode for modified \ac{RRT*} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are indicated in red.}%
-% \label{pseudocode:modified_proposed_rrt_star}
-% \begin{algorithmic}[1]
-
-% \hspace{-0.9cm}\colorbox{my_grey}{\parbox{\linewidth}{%
-% \State $\gls{nodesMP} \leftarrow x_{init}$
-% \While{\textit{NotReachStop}}
-
-% \hspace{-0.1cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-%     \State $Cost_\mathit{min} \leftarrow +\infty$ \algorithmiccomment{Create, project and validate a new random sample}
-%     \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
-%     \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
-%     \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
-
-%     \If{$\mathit{CollisionCheck(\gls{nodeMP}_{temp})}$}
-%     \State $\gls{nodeMP}_\mathit{new} = \gls{nodeMP}_\mathit{temp}$
-%     \Else
-%         \State Continue
-%     \EndIf
-% }}
-
-% \hspace{-0.1cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
-%     \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$ \algorithmiccomment{Find and connect new node to parent node}
-%     \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
-
-%      \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit}(\gls{nodeMP}_\mathit{near}) + \mathit{Distance}(\gls{nodeMP}_\mathit{near}, \gls{nodeMP}_\mathit{new}) + \mathit{ObjectCost}(\gls{nodeMP}_\mathit{near}, \gls{nodeMP}_\mathit{new})$
-  
-%     \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
-%     \State $\mathit{Cost_{min}} \leftarrow \gls{nodeMP}_\mathit{temp}$
-%     \State $\gls{nodeMP}_\mathit{minCost} \leftarrow \gls{nodeMP}_\mathit{near}$
-%         \EndIf
-%     \EndFor
-%     \If{$\mathit{Cost_{min}} == \infty$}
-%         \State Continue
-%     \Else
-%     \State $\gls{nodesMP}.add(\gls{nodeMP}_\mathit{new})$
-%     \State $E.\mathit{add}(\gls{nodeMP}_\mathit{minCost}, \gls{nodeMP}_\mathit{new})$
-%     \EndIf
-% }}
-
-% \hspace{-0.1cm}\colorbox{my_green}{\parbox{\linewidth}{%
-%     \State $\mathit{Cost_{path}} \leftarrow +\infty$ \algorithmiccomment{\parbox[t]{.7\linewidth}{Check if the newly added node can lower cost for nearby nodes and if a both connectivity trees can be connected}}
-%     \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$}
-%     \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$}
-%     \algorithmiccomment{\parbox[t]{.7\linewidth}{Change!}}
-
-    
-%     \[\scaleto{
-%         \State
-%     \mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}}{14pt}\]
-
-%     \If{$\mathit{Cost_{temp} < CostFromInit(\gls{nodeMP}_{near})}$}
-%     \State $\mathit{E.rewire(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
-%         \EndIf
-%       \Else \algorithmiccomment{Add lowest cost path to the list of paths}
-
-% \[\scaleto{
-%       \State \mathit{Cost_{temp} \leftarrow CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}  \newline\hspace*{10em} + \mathit{CostFromInit(\gls{nodeMP}_{near}) + ObjectCost(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}
-%     }{14pt}\]
-
-%           \If{$\mathit{Cost_{temp}  < Cost_{path}}$}
-%           \State $\mathit{Cost_{pathMin} \leftarrow \gls{nodeMP}_{temp}}$
-%           \State $\mathit{\gls{nodeMP}_{pathMin} \leftarrow \gls{nodeMP}_{near}}$
-%           \EndIf
-%       \EndIf
-%       \If{$Cost_{pathMin} == \infty$}
-%           \State Continue
-%       \Else
-%       \State $\mathit{P.addPath(\gls{nodeMP}_{new}, \gls{nodeMP}_{pathMin}, Cost_{pathMin})}$
-%       \EndIf
-%     \EndFor
-% }}
-% \EndWhile
-% }}
-% \end{algorithmic}
-% \end{algorithm}
-
 \begin{figure}[H]
     \centering
     \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[width=0.8\textwidth]{figures/required_background/push_or_drive} \caption{Robot environment with the point robot, two yellow unmovable walls and an unknown brown box.\\The robot tasked to drive toward the opposite side of the brown box.}
+
+\todo{Could you at least place a ghost pose on in this figure?}
+
     \end{subfigure}
 
     \begin{subfigure}{1.11\textwidth}

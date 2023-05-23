@@ -226,6 +226,10 @@ In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers
 \paragraph{Encountering a Blocked Path}%
 Path planning occurs when propagating the action edge's status. If an object is blocking the path, planning will detect it, and the \ac{halgorithm} tries to free it. In the following example, the \ac{halgorithm} detects a blocking object and frees the path by pushing the blocking object to a new configuration, and can be visualized in \Cref{fig:blocking_obj_hgraph}.\bs
 
+\todo{Unclear how a blocked path is freed? Where is the blocked object pushed toward, how it the best push posed determined when that target pose of the blocked path is known? }
+
+\todo{Another thing, what is robot\_copy and why is it necessary?}
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}{.3\textwidth}
@@ -331,6 +335,10 @@ Path planning occurs when propagating the action edge's status. If an object is 
     }}
   \end{algorithmic}
 \end{algorithm}
+
+\todo{explain what h is again, what is s again? and S? }
+
+
 
 A flowchart of the \ac{halgorithm} is presented in \Cref{tikz:flowchart_halgorithm}. Compared to the pseudocode presented above, the flowchart provides more detail, especially in the elaborate description accompanying the flowchart in \Cref{table:explainer_hgraph_figures_nodes}. The flowchart includes a connection point to the \ac{kgraph} and robot environment. The blocks in the flowchart indicate the resources used and changes indicated in the legend. Compared to the flowchart, the pseudocode is an abstract version, leaving many details explicitly related to the robot used in this thesis. Pseudocode encompasses a broader field of robots. So can the pseudocode also be applied to a robot with manipulation abilities other than nonprehensile pushing.\bs
 

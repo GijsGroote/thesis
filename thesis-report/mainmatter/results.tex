@@ -106,6 +106,7 @@ x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \label{eq:nonlinear-push-model-2}
 \end{equation}
 
+\todo{If the reader actually wants to recreate this, he/she has shit to work with, maybe make a small model here that explain vp, st and H}
 Where \textit{st} indicates the distance from the contact point between the robot and pushed object, perpendicular to the line that coincides with the object and the robots center of mass. A positive \textit{st} indicates the object will rotate anticlockwise, a negative \textit{st} indicates a clockwise rotation. The width of an object is defined as \textit{H} and is set to 2 meter, \textit{vp} is the velocity of the robot perpendicular to the object defined as:\bs
 
 \[ \mathit{vp} = u_{\gls{x}} \sin(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\cos(\gls{theta}_{\mathit{obj}}(k)) \]
@@ -258,6 +259,7 @@ All parameters are set, results can be analyzed, the following two figures show 
     \caption{Search-, execution- and total time to complete a drive task \textbf{whilst} using \ac{kgraph} action suggestions. The horizontal axis indicates the number of task experience in a run. A run contains ten tasks, starting the run with an empty \ac{kgraph} that collects action feedback as the robot gains experience. The task contains three subtasks, in other words, the robot must drive to three target poses in order to complete a task. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs, where the sum of search- and execution time equals total time.}%
    \label{fig:random_drive_time_kgraph}
 \end{figure}
+\todo{these red, blue and yellow colors couls be more cute, and also have more consistentcy with the otehr figures.}
 
 The above figure displays results where the \ac{halgorithm} sends action feedback and received action suggestions from the \ac{kgraph}, the figure below displays the results for solving the same tasks in the same random environment without using \ac{kgraph} suggestions. Instead a random parameterization is selected for every action edge. Ensuring that the random environments are repeatable is accomplished by fixing the seed. The fixed seed ensures that the randomly generated environments can be created multiple times, once to solve with \ac{kgraph} suggestions and once to solve without help from the \ac{kgraph}.\bs
 
@@ -277,6 +279,7 @@ The results in both \Cref{fig:random_drive_time_kgraph,fig:random_drive_time_no_
     \caption{Comparing average total time to complete a task out of then runs for a driving task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions is leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicted by \quotes{no \ac{kgraph}}.}%
     \label{fig:random_drive_time_vs}
 \end{figure}
+\todo{Color consistentcy with the FSM of the progression of edge state}
 
 Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI} parameterization that both use lti-drive-model. The \ac{kgraph} prefers the \ac{MPC} parameterization over the \ac{MPPI} parameterization as can be seen in \Cref{table:rand_drive_mpc_vs_mppi}. In this table is can be seen that the \ac{kgraph} needs at most one task of experience to suggest the \ac{MPC} parameterization. An explanation why there was no trend to be found in \Cref{fig:random_drive_time_kgraph}, it was already converged at the first task.  
 
@@ -308,6 +311,8 @@ The \ac{halgorithm} successfully completes 300 subtasks (3 subtasks per task, 10
 \subsection{A Pushing Task}%
 \label{subsec:rand_pushing}
 The push task in the randomized environment consists of a single subtask. To complete this push task the robot must push the object toward its specified target pose. The tuning parameters that make up the random environment for the push task can be visualized in \Cref{table:configure_rand_push_env_values}.\bs
+\todo{This test of yours, 10 is the magic number does Winters support that claim?G}
+\todo{\cite{dewinter_using_} can this <- winter guy add something to my conclusions, especially because it does have outliers wich are far out. }
 
 \begin{table}[H]
 \centering
@@ -405,6 +410,7 @@ The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-mod
 \end{figure}
 
 The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
+\todo{Notable margin? can you quantify that a bit better, the entirety of your framework depends prettty much on that differnce in results, do not be vague about that result. }
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}
@@ -518,3 +524,6 @@ The proposed framework outperforms the contact-implicit motion planning framewor
 % \todo{additinoally execute this environment a twice in a row, show that the execution number of call to the planner drops, theand the execution time drops}
 
 
+
+
+\todo{Would it be possibel to create extra results that support your work?, or some benchmark tests?}

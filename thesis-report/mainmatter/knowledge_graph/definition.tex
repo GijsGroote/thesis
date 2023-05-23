@@ -25,6 +25,7 @@ Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_{id} =\left\lang
 
 Where \textit{id} an identifier for the center node, $\mathit{obj_{id}}$ an identifier linked to an object, \gls{objectClass} the classification of that object.\bs
 
+\todo{an example of side node and center node would be nice}
 \noindent A side node is a placeholder for the edge to point to.\bs
 
 Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle id \right\rangle $\bs
@@ -34,6 +35,7 @@ Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle i
 Formally, a \textbf{\acl{kgraph}}, $\gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $
 \\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{edgesK}^\mathit{center}_\mathit{ids}, j \in \gls{edgesK}^\mathit{side}_\mathit{ids} \}$.\bs
 
-Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs
+Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs \todo{this sentence is vague and throws the reader off, rewrite please}
 
+\todo{essential functions is not a thing,-> interface}
 The \ac{kgraph} has three essential functions. The \textit{add\_object} function adds object information to the \ac{kgraph}, which is important for adding unmovable obstacles that the robot cannot manipulate. The \textit{add\_review} function is used when an edge is successfully or unsuccessfully completed, and the corresponding node in the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs

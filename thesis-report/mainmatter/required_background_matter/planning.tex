@@ -2,6 +2,7 @@
 \label{sec:planning}
 This section explains \textit{path planning}, which consists of 2 steps. Firstly, path estimation, and secondly, motion or manipulation planning. The path estimator can detect non-existent paths and concludes such paths as unfeasible~\cite{zhang_simple_2008}. If a path exists, the double tree \ac{RRT*} planning algorithm is responsible for finding a path from starting point to a target point in configuration space whilst respecting applicable constraints~\cite{chen_fast_2018}.\bs
 
+\todo{So how are the nonholonomic constraints checked? Eleborate en become clear about that? f}
 To clarify terminology used in this thesis, the following \Cref{table:termology_planning} is presented.\bs
 \noindent
 \begin{table}[H]
@@ -194,7 +195,7 @@ Where \gls{c} is a point in configuration space, \textit{cost\_to\_source} the c
 
 % ALL
 \begin{algorithm}[H]
-\caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green coloured blocks.}%
+\caption{Pseudocode for double tree \ac{RRTstar} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green coloured blocks.}%
 \label{pseudocode:proposed_rrt_star_all}%
 \begin{algorithmic}[1]
 
@@ -368,6 +369,7 @@ When the start connectivity tree is close enough (inside the search size of a ne
 \end{figure}
 
 The existing path planner has now been discussed, the following table summarized the variables and functions. In the upcoming chapter, the path planner is extended to detect blocking paths.\bs
+\todo{TotalPathCost is not yet defined, but overwritten in next chapter? define it!}
 
 \noindent
 \begin{table}[H]
