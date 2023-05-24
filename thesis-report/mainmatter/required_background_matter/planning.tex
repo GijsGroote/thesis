@@ -195,7 +195,7 @@ Where \gls{c} is a point in configuration space, \textit{cost\_to\_source} the c
 
 % ALL
 \begin{algorithm}[H]
-\caption{Pseudocode for double tree \ac{RRTstar} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green coloured blocks.}%
+\caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green coloured blocks.}%
 \label{pseudocode:proposed_rrt_star_all}%
 \begin{algorithmic}[1]
 
@@ -238,13 +238,13 @@ The algorithm has two tuning parameters that can be tweaked; first, the \textit{
 \label{pseudocode:proposed_rrt_star_one}
 \begin{algorithmic}[1]
   \hspace{-0.9cm}\colorbox{my_light_blue}{\parbox{\linewidth}{%
-    \State $Cost_\mathit{min} \leftarrow +\infty$
     \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$
     \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
     \State $\gls{nodeMP}_\mathit{temp} \leftarrow \mathit{Project(\gls{nodeMP}_{rand}, \gls{nodeMP}_{nearest})}$
 
     \If{$\mathit{CollisionCheck(\gls{nodeMP}_{temp})}$}
     \State $\gls{nodeMP}_\mathit{new} = \gls{nodeMP}_\mathit{temp}$
+    \State $Cost_\mathit{toInitMin} \leftarrow +\infty$
     \Else
         \State Continue
     \EndIf
@@ -272,11 +272,11 @@ The $\mathit{Sample_{random}}$ function creates a random node in free- or unmova
     \label{fig:motion_planner_adding_one_node_one}
 \end{figure}
 
-The new node resides in free space and should now be added to either the start- or target connectivity graph. Adding the new node to either connectivity graph is an operation that creates a new edge between the new node and a to be determined parent node. The operation requires three functions, first a $\mathit{NearestSet}(x, V)$ function that returns set of nearest nodes from $x$ in $V$ that lie in the search space. The parent node is selected from the set of nearest nodes, from this set the node that results in the lowest \textit{TotalCost} is sought, defined as:\bs
+The new node resides in free space and should now be added to either the start- or target connectivity graph. Adding the new node to either connectivity graph is an operation that creates a new edge between the new node and a to be determined parent node. The operation requires three functions, first a $\mathit{NearestSet}(x, V)$ function that returns set of nearest nodes from $x$ in $V$ that lie in the search space. The parent node is selected from the set of nearest nodes, from this set the node that results in the lowest $\mathit{Cost_{toInit}}$ is sought, defined as:\bs
 
-\[\mathit{TotalCost} = \mathit{CostFromInit(\gls{nodeMP}_{near})} + \mathit{Distance}(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})\]
+\[\mathit{Cost_{toInit}} = \mathit{CostToInit(\gls{nodeMP}_{near})} + \mathit{Distance}(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})\]
 
-The second and third functions are the $\mathit{Distance}(x, x')$ function that returns the distance between node $x$ and $x'$, and a $\mathit{CostToInit}(x)$ function that finds the total cost from $x$ to the initial node.\bs
+The $\mathit{Cost_{toInit}}$ is proportional to the path length from a node toward the initial node in the connectivity graph. It can be seen as half of the $\mathit{Cost_{path}}$ that will be later defined as te cost for the entire path from starting- to target node. The second and third functions are the $\mathit{Distance}(x, x')$ function that returns the distance between node $x$ and $x'$, and a $\mathit{CostToInit}(x)$ function that finds the total cost from $x$ to the initial node.\bs
 
 % TWO
 \begin{algorithm}[H]
@@ -286,13 +286,13 @@ The second and third functions are the $\mathit{Distance}(x, x')$ function that 
 \hspace{-0.9cm}\colorbox{my_yellow}{\parbox{\linewidth}{%
     \State $X_\mathit{near} \leftarrow \mathit{NearestSet(\gls{nodeMP}_{new}, \gls{nodesMP})}$
     \For{$\gls{nodeMP}_\mathit{near} \in X_\mathit{near}$}
-    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
-    \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{min}}$}
-    \State $\mathit{Cost_{min}} \leftarrow \gls{nodeMP}_\mathit{temp}$
+    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostToInit(\gls{nodeMP}_{near}) + Distance(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
+    \If{$\mathit{Cost_{temp}}  < \mathit{Cost_{toInitMin}}$}
+    \State $\mathit{Cost_{toInitMin}} \leftarrow \mathit{Cost_{temp}}$
     \State $\gls{nodeMP}_\mathit{minCost} \leftarrow \gls{nodeMP}_\mathit{near}$
         \EndIf
     \EndFor
-    \If{$\mathit{Cost_{min}} == \infty$}
+    \If{$\mathit{Cost_{toInitMin}} == \infty$}
         \State Continue
     \Else
     \State $\gls{nodesMP}.add(\gls{nodeMP}_\mathit{new})$
@@ -305,11 +305,13 @@ The second and third functions are the $\mathit{Distance}(x, x')$ function that 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth, cfbox=my_yellow 5pt 0pt]{figures/required_background/mp/4mp_connect_to_tree.drawio.png}
-    \caption{Connect new node to parent node that results in the lower \textit{TotalCost}.}%
+    \caption{Connect new node to parent node that results in the lower $\mathit{Cost_{toInit}}$.}%
     \label{fig:motion_planner_adding_one_node_two}
 \end{figure}
 
-The new node is connected to a parent node as can be seen in \Cref{fig:motion_planner_adding_one_node_tree}. A final step remains to be done, connecting the two trees or rewiring. For this step the $\mathit{InSameTree}(x, x')$ indicates if both $x$ and $x'$ are or are not in the same tree. For every node in the set of nearest nodes that is in the same tree as the new node, it is validated if rewiring would result in a lower \textit{TotalCost} for that node. The rewire procedure changes the parent node by removing and adding an edge, rewiring can be visually seen in \Cref{subfig:mp_rewire}. The node in the set of nearest nodes that are in the other three are is connected to the new node. Thereby creating a path from start node to target node, the path is added to the set of paths with corresponding $\mathit{Cost}_\mathit{pathMin}$. Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time.\bs
+The new node is connected to a parent node as can be seen in \Cref{fig:motion_planner_adding_one_node_tree}. A final step remains to be done, connecting the two trees or rewiring. For this step the $\mathit{InSameTree}(x, x')$ indicates if both $x$ and $x'$ are or are not in the same tree. For every node in the set of nearest nodes that is in the same tree as the new node, it is validated if rewiring would result in a lower $\mathit{Cost_{toInit}}$ for that node. The rewire procedure changes the parent node by removing and adding an edge, rewiring can be visually seen in \Cref{subfig:mp_rewire}. The node in the set of nearest nodes that are in the other three that results in the lowerst $\mathit{Cost_{path}}$ is connected to the new node. Thereby creating a path from start node to target node, the path is added to the set of paths with corresponding $\mathit{Cost}_\mathit{path}$, defined as:\bs
+
+\[\mathit{Cost_{path}} = \mathit{CostToInit(\gls{nodeMP}_{new})} + \mathit{Distance}(\gls{nodeMP}_{new}, \gls{nodeMP}_{other\_tree}) +\mathit{CostToInit(\gls{nodeMP}_{other\_tree})} \]
 
 % THREE
 \begin{algorithm}[H]
@@ -317,21 +319,20 @@ The new node is connected to a parent node as can be seen in \Cref{fig:motion_pl
 \label{pseudocode:proposed_rrt_star_three}
 \begin{algorithmic}[1]
 \hspace{-0.9cm}\colorbox{my_green}{\parbox{\linewidth}{%
-    \State $\mathit{Cost_{path}} \leftarrow +\infty$
+    \State $\mathit{Cost_{pathMin}} \leftarrow +\infty$
     \For{$\gls{nodeMP}_\mathit{near} \in X_{near}$}
     \If{$\mathit{InSameTree(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$}
-    \State $\mathit{Cost_{temp}} \leftarrow \mathit{CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})}$
-    \If{$\mathit{Cost_{temp} < CostFromInit(\gls{nodeMP}_{near})}$}
+    \If{$\mathit{CostToInit(\gls{nodeMP}_{new}) + Distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} < \mathit{CostToInit(\gls{nodeMP}_{near}})$}
     \State $\mathit{E.rewire(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})}$
         \EndIf
       \Else \algorithmiccomment{Add lowest cost path to the list of paths}
-      \State $\mathit{Cost_{temp} \leftarrow CostFromInit(\gls{nodeMP}_{new}) + distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} $ \newline\hspace*{10em} $+ \mathit{CostFromInit(\gls{nodeMP}_{near})}$
-          \If{$\mathit{Cost_{temp}  < Cost_{path}}$}
-          \State $\mathit{Cost_{pathMin} \leftarrow \gls{nodeMP}_{temp}}$
+      \State $\mathit{Cost_{temp} \leftarrow CostToInit(\gls{nodeMP}_{new}) + Distance(\gls{nodeMP}_{new}, \gls{nodeMP}_{near})} + \mathit{CostToInit(\gls{nodeMP}_{near})}$
+          \If{$\mathit{Cost_{temp}  < Cost_{pathMin}}$}
+          \State $\mathit{Cost_{pathMin} \leftarrow \mathit{Cost}_{temp}}$
           \State $\mathit{\gls{nodeMP}_{pathMin} \leftarrow \gls{nodeMP}_{near}}$
           \EndIf
       \EndIf
-      \If{$Cost_{pathMin} == \infty$}
+      \If{$\mathit{Cost_{pathMin}} == \infty$}
           \State Continue
       \Else
       \State $\mathit{P.addPath(\gls{nodeMP}_{new}, \gls{nodeMP}_{pathMin}, Cost_{pathMin})}$
@@ -341,7 +342,9 @@ The new node is connected to a parent node as can be seen in \Cref{fig:motion_pl
 \end{algorithmic}
 \end{algorithm}
 
-When the start connectivity tree is close enough (inside the search size of a newly added node) to the target connectivity tree, a path from start to target is found.
+When the start connectivity tree is close enough (inside the search size of a newly added node) to the target connectivity tree, a path from start to target is found. The  
+Increasing the search size improves the choice of the parent node and improves cost due to rewiring, but it also exponentially increases computation time.
+
 
 \begin{figure}[H]
     \centering
@@ -362,7 +365,6 @@ When the start connectivity tree is close enough (inside the search size of a ne
 
 \begin{figure}[H]
     \centering
-
     \includegraphics[width=0.5\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/7mp_path_found.drawio.png}
     \caption{Path planner that found a path from start= to target node marked in red.}
     \label{fig:motion_planner_adding_one_node_final}
