@@ -11,6 +11,7 @@ The proposed frameworks task performance is measured in metrics named the method
 
 \noindent
 \begin{table}[H]
+\caption{Method metrics employed to measure task performance by the proposed robot framework in the left column. Motivation on relevance of the metric is provided in the corresponding right column.}\label{table:proposed_method_metrics}
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -24,7 +25,6 @@ search time [sec]& The time the proposed framework spends searching for hypothes
 execution time [sec] & The time the proposed framework spends executing hypotheses. Just as the search time, conclusions can be drawn when comparing the execution time between similar tasks.\\ 
 task time & search time + execution time. \\
 \end{tabular}
-\caption{Method metrics employed to measure task performance by the proposed robot framework in the left column. Motivation on relevance of the metric is provided in the corresponding right column.}\label{table:proposed_method_metrics}
 \end{table}
 
 The simulation environment provides many different robots, of which one robot is selected to perform tests, the point robot, which is are displayed in \Cref{fig:example_robots}. The point robot takes an velocity input along the \gls{x}- and in \gls{y}-axis.\bs
@@ -37,6 +37,7 @@ During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} drive 
 
 
 \begin{table}[H]
+\caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column. With a short description in the corresponding right column.}\label{table:available_system_models}
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -45,7 +46,6 @@ During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} drive 
 \textit{nonlinear-push-model-1} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y} direction and the next robot configuration in \gls{x} and \gls{y} direction. The next object and robot configuration are based on the current configurations and robot system input in \gls{x} and \gls{y} direction.\\
 \textit{nonlinear-push-model-2} & A nonlinear model describing the next object configuration in \gls{x}, \gls{y} direction and the orientation \gls{theta}, and the robot configuration in \gls{x} and \gls{y} direction based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
 \end{tabular}
-\caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column. With a short description in the corresponding right column.}\label{table:available_system_models}
 \end{table}
 
 State space representation of the \textit{lti-drive-model}:\bs
@@ -184,6 +184,8 @@ In the randomized environment the task and the environment are initialized by ra
 
 \noindent
 \begin{table}[H]
+\caption{The tuning parameters to initialize a random environment}%
+\label{table:configure_rand_env}
 \centering
 \begin{tabular}%
 {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -195,8 +197,6 @@ The \textit{number of unmovable objects} & Specify the amount of unmovable objec
 The \textit{number of movable objects} & Specify the amount of movable objects.\\
 The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.
 \end{tabular}
-\caption{The tuning parameters to initialize a random environment}%
-\label{table:configure_rand_env}
 \end{table}
 
 The ratio between the number of cylinders and boxes is determined by randomization. For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder. The environment can be \textit{reshuffled}, which can be visualized in \Cref{fig:random_environment_reshuffle}. Reshuffling the environment changes 3 aspects of the environment, first, the robots position is reset to the origin \gls{origin}. Second, every object is set to a new initial position whilst their properties remain unchanged. Thirdly, objects in the task receive new target poses.  The reshuffle functionality can be visualized in \Cref{fig:random_environment_reshuffle}. By solving a similar task in an reshuffled random environment multiple times, the robot gains experience and task execution can be investigated. With the investigation trends in task execution is monitored, to see improvement whilst gaining experience.\bs
@@ -206,21 +206,25 @@ The ratio between the number of cylinders and boxes is determined by randomizati
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/results/random1}
+    \caption{Environment after initialization.}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/results/random2}
+    \caption{Environment after first reshuffle.}
     \end{subfigure}
 
     \vspace{0.2cm}
     \begin{subfigure}{.49\textwidth}
     \includegraphics[width=\textwidth]{figures/results/random3}
+    \caption{Environment after second reshuffle.}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/results/random4}
+    \caption{Environment after thirth reshuffle.}
     \end{subfigure}
     \caption{A random environment initialized by tuning parameters presented in \Cref{table:configure_rand_drive_env_values}.\\After initialization the environment is reshuffled three times.}%
     \label{fig:random_environment_reshuffle}
@@ -231,6 +235,8 @@ The ratio between the number of cylinders and boxes is determined by randomizati
 For the driving task the random environment is created with the following tuning parameters.\bs
 
 \begin{table}[H]
+\caption{The selected tuning parameters for the randomized drive environment.}%
+\label{table:configure_rand_drive_env_values}
 \centering
 \begin{tabular}%
 {>{\raggedright\arraybackslash}p{0.30\textwidth}%
@@ -243,8 +249,6 @@ For the driving task the random environment is created with the following tuning
 \text{number of tasks in a run}  &$\mathit{num\_tasks}=10$\\
 \text{number of subtasks in a task}  &$\mathit{num\_subtasks}=3$
 \end{tabular}
-\caption{The selected tuning parameters for the randomized drive environment.}%
-\label{table:configure_rand_drive_env_values}
 \end{table}
 
 These parameters have been specifically selected, starting with the size of the ground floor. The ground floor should be large enough such that objects can be pushed around, note that, for a driving task, pushing is involved when a path must be freed. An enormous (100 by 100 meter) ground floor would result in a longer computational time for path planning, which is undesired. A 12 by 12 meter ground floor is selected because the floor is large enough for objects to be pushed around. The range that determines the size of objects is set such that objects can be as large as the robot itself, and be around 10 times as large as the robot. With these sizes the robot is unable to grasp objects, a gripper would be too small to grasp objects. The comparatively large size fits the objective of nonprehensile pushing, there simply is no other method to manipulate such large objects other than pushing. A real-life example are can be found in harbours where tug boats push giant cargo ships around that are many times over the size of the tug boat. The ratio of solid obstacles vs.~movable objects determines if a task is more navigation (only solid obstacles) or more \ac{NAMO} (only movable objects). A task that tends toward \ac{NAMO} is favoured because that is the target environment in this thesis. There should be some unmovable obstacles that reward the robot learning such objects are unmovable (to then not interact with them). Thus there are more movable objects than solid obstacles chosen, whilst still having 2 solid obstacles around. Ten runs are taken, each run consisting of 10 tasks, the results are averaged to reach statistic relevance in a randomized environments. The number of subtasks is set to 3, a low number of drive subtasks that can be completed in under 2 minutes.\bs
@@ -276,14 +280,15 @@ The results in both \Cref{fig:random_drive_time_kgraph,fig:random_drive_time_no_
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_vs}
-    \caption{Comparing average total time to complete a task out of then runs for a driving task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions is leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicted by \quotes{no \ac{kgraph}}.}%
-    \label{fig:random_drive_time_vs}
+    \caption{Comparing average total time to complete a task out of then runs for a driving task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}\label{fig:random_drive_time_vs}
 \end{figure}
 \todo{Color consistentcy with the FSM of the progression of edge state}
 
 Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI} parameterization that both use lti-drive-model. The \ac{kgraph} prefers the \ac{MPC} parameterization over the \ac{MPPI} parameterization as can be seen in \Cref{table:rand_drive_mpc_vs_mppi}. In this table is can be seen that the \ac{kgraph} needs at most one task of experience to suggest the \ac{MPC} parameterization. An explanation why there was no trend to be found in \Cref{fig:random_drive_time_kgraph}, it was already converged at the first task.  
 
 \begin{table}[H]
+    \caption{The selection of the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model}) parameterization for drive actions during the randomized driving tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}%
+    \label{table:rand_drive_mpc_vs_mppi}
     \centering
     \begin{tabular}%
       {%
@@ -302,8 +307,6 @@ Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI}
       & \ac{MPC} selected from total drive actions [\%] &42&42&36&36&50&48&49&58&48&33\\
       & \ac{MPPI} selected from total drive actions [\%]&58&58&64&64&50&52&51&42&52&67\\
     \end{tabular}
-    \caption{The selection of the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model}) parameterization for drive actions during the randomized driving tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}%
-    \label{table:rand_drive_mpc_vs_mppi}
 \end{table}
 
 The \ac{halgorithm} successfully completes 300 subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed) twice. Once while storing edge feedback in the \ac{kgraph} that suggest edge parameterization, and once without \ac{kgraph}. In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more than 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. A fault has been detected that terminates the execution of an edge, to complete the task, a new edge is created, resulting in more than 30 \ac{MPC} and \ac{MPPI} edge parameterizations. When comparing both a positive effect is measured of the use of the \ac{kgraph} on the total task required to complete a task compared to random selection of edge parameterization. Now a task is taken that compares the use of the \ac{halgorithm} with and without \ac{kgraph} for a pushing task.\bs
@@ -315,6 +318,8 @@ The push task in the randomized environment consists of a single subtask. To com
 \todo{\cite{dewinter_using_} can this <- winter guy add something to my conclusions, especially because it does have outliers wich are far out. }
 
 \begin{table}[H]
+\caption{The selected tuning parameters for the randomized push environment.}%
+\label{table:configure_rand_push_env_values}
 \centering
 \begin{tabular}%
 {>{\raggedright\arraybackslash}p{0.30\textwidth}%
@@ -327,8 +332,6 @@ The push task in the randomized environment consists of a single subtask. To com
 \text{number of tasks in a run}  &$\mathit{num\_tasks}=6$\\
 \text{number of subtasks in a task}  &$\mathit{num\_subtasks}=1$
 \end{tabular}
-\caption{The selected tuning parameters for the randomized push environment.}%
-\label{table:configure_rand_push_env_values}
 \end{table}
 
 
@@ -339,12 +342,14 @@ The push task in the randomized environment consists of a single subtask. To com
     \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/results/random_1}
+    \caption{}
     \end{subfigure}
 
     \vspace{0.2cm}
     \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/results/random_2}
+    \caption{}
     \end{subfigure}
     \caption{Two random environments where the pushing task contains a single subtask displayed by a target ghost pose.}%
     \label{fig:random_environnment}
@@ -371,12 +376,13 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_push_time_vs}
-    \caption{Comparing average total time to complete a task out of then runs for a pushing task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions is leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicted by \quotes{no \ac{kgraph}}.}%
-    \label{fig:random_push_time_vs}
+    \caption{Comparing average total time to complete a task out of then runs for a pushing task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}\label{fig:random_push_time_vs}
 \end{figure}
 
 
 \begin{table}[H]
+    \caption{The selection of the (\ac{MPPI}, \textit{nonlinear-push-model-1}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model-2}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}
+    \label{table:rand_push_model1_vs_model2}
     \centering
     \begin{tabular}%
       {
@@ -395,8 +401,6 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
       & \textit{nonlinear-push-model-1} selected in total push actions [\%]&44&38&70&50&40&56\\
       & \textit{nonlinear-push-model-2} selected in total push actions [\%]&56&62&30&50&60&44\\
     \end{tabular}
-    \caption{The selection of the (\ac{MPPI}, \textit{nonlinear-push-model-1}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model-2}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}
-    \label{table:rand_push_model1_vs_model2}
 \end{table}
 
 
@@ -405,9 +409,10 @@ The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-mod
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_push_pe_vs}
-    \caption{Box plot of the \acl{PE}, a comparison between \ac{kgraph} action suggestions and randomly selection.}%
+    \caption{Box plot of the \acl{PE} for solving reshuffled tasks. The horizontal axis indicates the number of task experience in a run. A run contains six tasks, starting the run with an empty \ac{kgraph} that collects action feedback as the robot gains experience. The vertical axis displays a boxplot of \acl{PE} over six runs. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}%
     \label{fig:random_push_pe_vs}
 \end{figure}
+\todo{wat op x an exy}
 
 The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
 \todo{Notable margin? can you quantify that a bit better, the entirety of your framework depends prettty much on that differnce in results, do not be vague about that result. }
@@ -418,6 +423,8 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
 
 \noindent
 \begin{table}[H]
+\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The method metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
+\label{table:sota_vs_results_proposed}
   \centering
   \rowcolors{2}{white}{myEvenLighterColor}
   \begin{tabular}
@@ -446,8 +453,6 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
   \citeauthor{wang_affordancebased_2020} &      \cite{wang_affordancebased_2020} & \cmark& \xmark& \cmark& \xmark& \xmark& \underline{computation and} \underline{execution time}\\
   Groote & Proposed Framework & \xmark/\cmark& \xmark& \cmark& \xmark& \cmark&
 \end{tabular}
-\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The method metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
-\label{table:sota_vs_results_proposed}
 \end{table}
 
 A comparison with one state-of-the-art paper is made, that is accomplished by recreating the environment that the state-of-the-art has used during testing. With \citeauthor{wang_affordancebased_2020} the computation- (or search) and execution time is compared.\bs
@@ -498,6 +503,8 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
 \citeauthor{wang_affordancebased_2020} solves the task three times, the average search-, execute- and total time over these three executions is displayed in \Cref{table:wang_vs_mimick}. Note that, during testing \citeauthor{wang_affordancebased_2020} splits the search time in two categories; time to estimate accordance of an object and time to optimize the trajectory. The recreated or mimicked environment is displayed in \Cref{subfig:wang_mimick} and is solved ten times, every time starting without environmental knowledge and thus an empty \ac{kgraph}. The average search, execute- and total time over these then executions is also displayed in \Cref{table:wang_vs_mimick}.\bs
 
 \begin{table}[H]
+    \caption{Average execute-, search and total times for a task that involves learning object dynamics and the \ac{NAMO} problem. The results are average over three solved tasks for \citeauthor{wang_affordancebased_2020}, and ten solved tasks for the proposed framework. A visualization of the task if presented in \Cref{fig:wang}.}%
+    \label{table:wang_vs_mimick}
     \centering
     \begin{tabular}%
     {>{\raggedright\arraybackslash}p{0.2\textwidth}|%
@@ -508,8 +515,6 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
     execution time [sec]  & 67 & 4 \\
     total time [sec] & 176 & 30
     \end{tabular}
-    \caption{Average execute-, search and total times for a task that involves learning object dynamics and the \ac{NAMO} problem. The results are average over three solved tasks for \citeauthor{wang_affordancebased_2020}, and ten solved tasks for the proposed framework. A visualization of the task if presented in \Cref{fig:wang}.}%
-    \label{table:wang_vs_mimick}
 \end{table}
 
 The proposed framework outperforms the contact-implicit motion planning framework proposed by \citeauthor{wang_affordancebased_2020}. Mainly the search time improves by a margin. The execution time improves, but because \citeauthor{wang_affordancebased_2020} tests in an real-world environment where motion equations are more complex compared to the simulated environment, an improvement in the execution time is expected.\bs

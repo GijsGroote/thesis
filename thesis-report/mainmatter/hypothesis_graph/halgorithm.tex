@@ -57,7 +57,7 @@ the proposed algorithm comprises two main parts, a search loop and an execution 
 \begin{figure}[h]
     \centering
     \includegraphics[width=7cm]{figures/proposed_method/two_loops_identified}
-    \caption{The search (above) and execution (below) loop, that make up the main part of the proposed \ac{halgorithm}.}%
+  \caption{The search (upper) and execution (lower) loop, that make up the main part of the proposed \ac{halgorithm}. The figure's goal is to present the two loops, the flowchart in the background is presented in \Cref{tikz:flowchart_halgorithm} and is easier to read.}%
     \label{fig:two_loops_identified}
 \end{figure}
 
@@ -129,6 +129,8 @@ Before a hypothesis can be executed, the hypothesis must be valid. A hypothesis 
 In contrast to identification edges, action edges must first take several actions in preparation before they are ready to send input toward the robot. The status of an edge indicates at which step of preparing the action edge is and can be visualized in \Cref{tikz:status_action_edge}. After initialization, the action edge performs path estimation, loads in a system model, performs path planning and then, it is ready for execution. Two functions are created to make edges ready for execution. The \textit{ReadyForExecution(\gls{edge})} validates if an edge is ready for execution. Identification edges are ready for execution when they bear a non-failed status, action edges are ready for execution when they bear the PATH PLANNED or EXECUTING status. The \textit{MakeReady(\gls{edge})} function takes an edge and takes action depending on its status presented in the following table.\bs
 
 \begin{table}[H]
+    \caption{The action edge status is presented in the left column, the corresponding action taken by the \textit{MakeReady} function to prepare an action edge for execution in the right column. An action edge increments its status as indicated in \Cref{tikz:status_action_edge}.}%
+    \label{table:make_action_edge_ready}
     \centering
     \begin{tabular}%
     {>{\raggedright\arraybackslash}p{0.25\textwidth}|%
@@ -138,8 +140,6 @@ In contrast to identification edges, action edges must first take several action
       PATH EXISTS& Load in a system model.\\
       SYSTEM MODEL& Create path planner and plan path. The edge status is updated to FAILED if no path can be found. If a path is found, it acts as a reference signal for the controller. In the case of an push action edge, a $\gls{node}_\mathit{best\_push\_position}$ is created. Additionally, the path the planner finds can indicate that an object is blocking. In such cases, the \ac{halgorithm} must first push that object to free the path. An example of such a case is provided in \Cref{fig:blocking_obj_hgraph}.
     \end{tabular}
-    \caption{The action edge status is presented in the left column, the corresponding action taken by the \textit{MakeReady} function to prepare an action edge for execution in the right column. An action edge increments its status as indicated in \Cref{tikz:status_action_edge}.}%
-    \label{table:make_action_edge_ready}
 \end{table}
 
 \paragraph{Hypothesis Execution}
@@ -269,6 +269,8 @@ Path planning occurs when propagating the action edge's status. If an object is 
 
 
 \begin{table}[H]
+\caption{The functions employed by the \ac{halgorithm} in \Cref{pseudocode:halgorithm}.}
+\label{table:functions_for_halgorithm}
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -288,8 +290,6 @@ Path planning occurs when propagating the action edge's status. If an object is 
 \textit{FindCorrespondingNode(\gls{node})}: & Find the node containing the same object as \gls{node} \\
 \textit{ConnectWithEdge($\gls{edge}_1, \gls{edge}_2$)}: & Randomly generate edge between nodes $\gls{node}_1$ and $\gls{node}_2$ or use \ac{kgraph} to suggest an edge\\
 \end{tabular}
-\caption{The functions employed by the \ac{halgorithm} in \Cref{pseudocode:halgorithm}.}
-\label{table:functions_for_halgorithm}
 \end{table}
 
 \noindent
@@ -345,6 +345,8 @@ A flowchart of the \ac{halgorithm} is presented in \Cref{tikz:flowchart_halgorit
 \input{mainmatter/hypothesis_graph/halgorithm_tikz_figure}
 
 \begin{table}[H]
+\caption{Comprehensive description regarding the actions executed by the blocks in \Cref{tikz:flowchart_halgorithm}.}%
+\label{table:explainer_hgraph_figures_nodes}
 \centering
 \rowcolors{2}{white}{myLightColor}
 \begin{tabular}%
@@ -379,8 +381,6 @@ Execute& Execute the \textit{current\_edge}, update \ac{hgraph} after completion
 Subtask Successfully\newline Completed& Log hypothesis metrics. \\
 Target Node Reached& Check if the target node is reached.\\
 \end{tabular}
-\caption{Comprehensive description regarding the actions executed by the blocks in \Cref{tikz:flowchart_halgorithm}.}%
-\label{table:explainer_hgraph_figures_nodes}
 \end{table}
 
 The \ac{halgorithm} is now discussed with a description, examples, pseudocode and a flowchart. In the next section, the executed edges will be reviewed and stored in a knowledge base named the \acf{kgraph}.\bs

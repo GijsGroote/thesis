@@ -308,7 +308,6 @@ text width=5em, text centered, rounded corners, minimum height=4em]
 \usepackage{array}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
-
 %% for glossary
 \usepackage[printonlyused, withpage]{acronym}
 \usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}

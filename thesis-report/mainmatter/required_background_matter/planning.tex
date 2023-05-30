@@ -2,10 +2,12 @@
 \label{sec:planning}
 This section explains \textit{path planning}, which consists of 2 steps. Firstly, path estimation, and secondly, motion or manipulation planning. The path estimator can detect non-existent paths and concludes such paths as unfeasible~\cite{zhang_simple_2008}. If a path exists, the double tree \ac{RRT*} planning algorithm is responsible for finding a path from starting point to a target point in configuration space whilst respecting applicable constraints~\cite{chen_fast_2018}.\bs
 
-\todo{So how are the nonholonomic constraints checked? Eleborate en become clear about that? f}
+\todo{So how are the non-holonomic constraints checked? Eleborate en become clear about that? f}
 To clarify terminology used in this thesis, the following \Cref{table:termology_planning} is presented.\bs
 \noindent
 \begin{table}[H]
+\caption{The planning-related terminology is juxtaposed in the left column\\alongside its corresponding description in the right column.}%
+\label{table:termology_planning}
   \centering
   \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -18,15 +20,13 @@ To clarify terminology used in this thesis, the following \Cref{table:termology_
   Action Planning:& Planning for an drive or push action.\\
   Path Planning:& Path estimation and action planning for an drive or push action.\\
   \end{tabular}
-\caption{The planning-related terminology is juxtaposed in the left column\\alongside its corresponding description in the right column.}%
-\label{table:termology_planning}
 \end{table}
 
 \subsection{Estimating Path Existence}%
 \label{subsec:path_estimation}
 In this subsection, motivation and explanation for estimating path existence are presented. We can describe the path estimation algorithm as \textit{The idea is to discretize the configuration space. The emerging cells act as nodes in the graph, cells connect through edges to nearby cells. Graph-based planners start from the cell containing the starting configuration and search for the cell containing the target configuration while avoiding cells in obstacle space.\bs}
 
-If the path estimator concludes the existence of a path planning problem, then it is validated that it is geometrically possible for an object to go from start to target configuration in small successive steps without colliding with an unmovable obstacle. The check prevents the planner from attempting a search for a start and target configuration for a problem that is unfeasible due to not being detected by the path estimator because it does not check for nonholonomic constraints. By neglecting nonholonomic constraints, the path estimator is magnitudes faster than the planner; the planner is responsible for checking the nonholonomic constraints.
+If the path estimator concludes the existence of a path planning problem, then it is validated that it is geometrically possible for an object to go from start to target configuration in small successive steps without colliding with an unmovable obstacle. The check prevents the planner from attempting a search for a start and target configuration for a problem that is unfeasible due to not being detected by the path estimator because it does not check for non-holonomic constraints. By neglecting non-holonomic constraints, the path estimator is magnitudes faster than the planner; the planner is responsible for checking the non-holonomic constraints.
 
 \paragraph{Discritizing the Configuration Space}
 For general geometric shapes, a configuration space can be constructed and discretized. During this thesis, configuration space was implemented for cylinders and rectangular prisms. First, the configuration space for a cylindrical-shaped object in a 3-dimensional environment is presented. That configuration space for cylindrical objects is defined as a $(x, y)$-plane, and the $z$-axis is omitted. During the projection from a 3-dimensional environment to a 2-dimensional plane, cylinders (flat side facing down) become circles, and rectangular prisms become rectangles. The definition of configuration space is presented below for a circular object, such as the point robot, without loss of generality. In this thesis, three dimensional objects can be projected to the xy-plane. As a result a three dimensional spherical robot or object can has a configuration space that is two dimensional (\gls{x} and \gls{y} dimension). Objects in the shape of rectangular prisms that are projected onto the xy-plane become rectangles, and have a three dimensional configuration space (\gls{x}, \gls{y} and \gls{theta} dimension).\bs
@@ -34,8 +34,8 @@ For general geometric shapes, a configuration space can be constructed and discr
 
 A grid of cells represents configuration space. Let \gls{cellSize} be the width and height of a square cell. Let \gls{xGridLength} be the vertical (north to south) length and let \gls{yGridLength} be the horizontal length (west to east) of the configuration space, point $(0, 0)$ is at the center of the grid.\bs
 
-The configuration space for a circular object is defined as:\bs
-\[ \gls{cspace}^{\textrm{circle}} =
+The two dimensional configuration space is defined as:\bs
+\[ \gls{cspace}^{\textrm{2D}} =
 \begin{bmatrix}
   c_{(0,0)} & c_{(0,1)} & \hdots & c_{(0,j_{\textrm{max}})}\\
   c_{(1,0)} & c_{(1,1)} & \hdots & c_{(1,j_{\textrm{max}})}\\
@@ -64,7 +64,7 @@ Defined for:
 \[i = \{\frac{\gls{xGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq i \leq \frac{\gls{xGridLength}}{\gls{cellSize}},\quad j = \{\frac{\gls{yGridLength}}{\gls{cellSize}} \in \gls{Rnonnegative}: 0 \leq j \leq \frac{\gls{yGridLength}}{\gls{cellSize}}\}\]
 
 
-The configuration space for a rectangular object is defined as:\bs
+The three dimensional configuration space for object is defined as:\bs
 
 \begin{center}
   \begin{tikzpicture}[every node/.style={anchor=north east,fill=white,minimum width=1.4cm,minimum height=7mm}]
@@ -93,7 +93,7 @@ The configuration space for a rectangular object is defined as:\bs
       \end{bmatrix}$};
 
     \node (Cspace) at ($(mC.south west)+(3,5.7)$)
-      {$\gls{cspace}^{\mathit{rectangle}} =$};
+      {$\gls{cspace}^{\mathit{3D}} =$};
 
     \draw[dashed]([xshift=-0.2cm, yshift=-0.135cm] mA.north east)--([xshift=-0.2cm, yshift=-0.135cm]mC.north east);
     \draw[dashed]([xshift=0.19cm, yshift=-0.135cm] mA.north west)--([xshift=0.19cm, yshift=-0.135cm]mC.north west);
@@ -113,7 +113,7 @@ An example configuration space for the point robot is presented below.
     \label{fig:two_pushes_to_freedom_env}
 \end{figure}
 
-The point robot has a cylindrical shape; thus, a 2-dimensional configuration space is created and can be seen in \Cref{fig:two_pushes_to_freedom_conf_space}.
+The point robot has a cylindrical shape; thus, a two dimensional configuration space can represent the free and obstacle space which can be seen in \Cref{fig:two_pushes_to_freedom_conf_space}.
 
 \begin{figure}[H]
   \centering
@@ -129,18 +129,18 @@ The point robot has a cylindrical shape; thus, a 2-dimensional configuration spa
     \caption{$\gls{cspace}^{circle}$ with $\gls{cellSize} = 0.05$}%
     \label{fig:c_space_two_pushes_smaller}
   \end{subfigure}
-  \caption{The configuration space for the point robot with different cell sizes. The robot\\environment corresponds to the environment presented in \Cref{fig:two_pushes_to_freedom_env}. The robot classifies\\all objects as unknown since it is unaware of the objects' classes.}
+  \caption{The configuration space for the point robot with different cell sizes. The robot\\environment corresponds to the environment presented in \Cref{fig:two_pushes_to_freedom_env}.}%
   \label{fig:two_pushes_to_freedom_conf_space}
 \end{figure}
 
-The resolution of the configuration space at \Cref{fig:c_space_two_pushes_smaller} is higher compared to \Cref{fig:c_space_two_pushes_small} because of a smaller grid size. A high resolution is better at detecting paths through small corridors and tight corners, but it comes at the cost of a more extended creation and search time.
+The resolution of the configuration space at \Cref{fig:c_space_two_pushes_smaller} is higher compared to \Cref{fig:c_space_two_pushes_small} because of a smaller grid size. A high resolution is better at detecting paths through small corridors and tight corners, but it comes at the cost of a more extended creation and search time. The robot classifies all objects as unknown since it is unaware of the objects' classes.\bs
 
 \paragraph{Path Existence Algorithm} In the context of this thesis, we can describe path existence as: \textit{For an object's discretized configuration space, there exists a list of neighbouring cells from starting to target configuration that does not lie in unmovable space.\bs}
 
 A path in configuration space is detected using the implemented\\$f_\mathit{shortest\_path}(\gls{c}_\mathit{start}, \gls{c}_\mathit{target}, )$ function. This function takes a start- and target configuration, $\gls{c}_\mathit{start}$ and $\gls{c}_\mathit{target}$ and returns the shortest path between them that lies in free space. The \textit{shortest\_path} function searches for the shortest path using the Dijkstra algorithm~\cite{dijkstra_note_1959} on the discreted configuration space. The shortest path validates the existence of a path (note that only geometric constraints are respected), and can help path planning discussed in \Cref{sec:planning}. The shortest path helps path planning by providing an initial number of path planner nodes before the path planner creates nodes by random sampling. Such a conversion is also referred to as a \quotes{warm start}. If no path can be found, the $f_\textit{shortest\_path}$ function raises an error that will prevent path planning from occurring.\bs
 
 \paragraph{Unfeasible solutions and an undecidable problem}
-The path estimator does not take system constraints into account. Thus, the path estimator can find a list of neighbouring cells from the start to the target configuration and conclude that a path exists. In reality, this path is unfeasible. An example is driving the boxer robot displayed in \Cref{subfig:example_boxer_robot} through a narrow, sharp corner. Whilst geometrically, the robot would fit through the corner, the nonholonomic constraints of the robot prevent it from steering through such a tight corner. It is for the action planner to detect that the path is unfeasible.\\
+The path estimator does not take system constraints into account. Thus, the path estimator can find a list of neighbouring cells from the start to the target configuration and conclude that a path exists. In reality, this path is unfeasible. An example is driving the boxer robot displayed in \Cref{subfig:example_boxer_robot} through a narrow, sharp corner. Whilst geometrically, the robot would fit through the corner, the non-holonomic constraints of the robot prevent it from steering through such a tight corner. It is for the action planner to detect that the path is unfeasible.\\
 
 The path estimator suffers from another drawback, finding proof that there exists a path that is undecidable~\cite{zhang_simple_2008}. This is due to the chosen cell size during discretizing the configuration space. An example is a corridor having the same width as the robot. The robot fits exactly through this corridor. Detecting such a path requires many neighbouring cells that lie exactly in the center line of the corridor. Only with a cell size going to zero and the number of cells going to infinity such a path is guaranteed to be detected. Path non-existence, on the other hand, is easier to prove because the path estimator provides an upper bound on existing paths and a lower bound on non-existing paths~\cite{zhang_simple_2008}. The following flowchart neatly presents why the existence of paths is an \textit{estimation} rather than an guarantee.\bs
 
@@ -159,7 +159,7 @@ The path estimator suffers from another drawback, finding proof that there exist
 
 \end{tikzpicture}
 % \vspace{-5cm}
-\caption{Flowchart displaying both drawbacks when checking path existence. These drawbacks\\motivate why the existence of a path can only be \textit{estimated} rather than guaranteed.}%
+\caption{Flowchart displaying both drawbacks when checking path existence.}%
 \label{tikz:flowchart_path_estimator}%
 \end{figure}
 
@@ -226,7 +226,7 @@ The start connectivity tree consists of the nodes connected by edges containing 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/1mp_init.drawio.png}
-    \caption{Snapshot of a two dimensional configuration with free- and unmovable space. Where unmovable space is indicated by the unmovable object and the rest of the configuration space, including the movable object, is free space. The start- and target nodes, denoted as \quotes{Start} and \quotes{Target} respectively, serve as the source nodes for the start- and target connectivity tree.}
+    \caption{Snapshot of a two dimensional configuration with free- and unmovable spaces. Where unmovable space is indicated by the unmovable object, the rest of configuration space (including the movable object) is free space. The start- and target nodes, denoted as \quotes{Start} and \quotes{Target} respectively, serve as the source nodes for the start- and target connectivity tree.}
     \label{fig:motion_planner_adding_one_node_all}
 \end{figure}
 
@@ -366,7 +366,7 @@ Increasing the search size improves the choice of the parent node and improves c
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth, cfbox=my_grey 5pt 0pt]{figures/required_background/mp/7mp_path_found.drawio.png}
-    \caption{Path planner that found a path from start= to target node marked in red.}
+    \caption{Path planner that found a path from start- to target node marked in red.}
     \label{fig:motion_planner_adding_one_node_final}
 \end{figure}
 
@@ -375,6 +375,8 @@ The existing path planner has now been discussed, the following table summarized
 
 \noindent
 \begin{table}[H]
+\caption{The variables and functions employed in the \Cref{pseudocode:proposed_rrt_star_all,pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three}.}
+\label{table:functions_for_proposed_rrt_star}
 \centering
   \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.22\textwidth}%
@@ -391,6 +393,4 @@ The existing path planner has now been discussed, the following table summarized
   $\mathit{CostToInit}(x)$:& Find the total cost from $x$ to the initial node\\
     $\mathit{InSameTree}(x, x')$:& Returns true if both $x$ and $x'$ are in the same tree, otherwise return false\\
   \end{tabular}
-\caption{The variables and functions employed in the \Cref{pseudocode:proposed_rrt_star_all,pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three}.}
-\label{table:functions_for_proposed_rrt_star}
 \end{table}
