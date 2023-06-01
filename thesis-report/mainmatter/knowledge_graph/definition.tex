@@ -1,36 +1,36 @@
 \subsection{Definition}%
 \label{subsec:kgraph_definition}
-Before defining the \ac{kgraph}, the definition of the success factor, edges, center- and side nodes are defined where the \ac{kgraph} depends upon.\bs
+The responsibility of the \ac{kgraph} is to store object class information and to collect edge feedback, to then suggest edge parameterization based on the collected feedback. Estimating which parameterization would be the best candidate is an entire field of research. In this thesis, a simple metric, the success factor, has been chosen based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with; feedback must be created with only information on prediction error, tracking error and whether a fault was detected. Then action suggestions must be made based on collected feedback and an object that should change the start configuration to a target configuration (connecting two nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics. First, the definition of the edges, center-, side nodes and success factor are given. Then the \ac{kgraph} is defined.\bs
 
-Formally the \textbf{success factor} = \gls{successfactor}:
-\[\gls{successfactor} =
-  \begin{cases} 0.1^{\epsilon_{\textrm {avg}}}& \textrm {if edge does not yet exist in \ac{kgraph}}\\[5px]
-    \gls{successfactor} + 0.1*(1-\gls{successfactor}) & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge was successfully completed}}\\[5px]
-  \gls{successfactor} - 0.1*\gls{successfactor} & \textrm{\shortstack{if success\_factor already exist in \ac{kgraph}\\ and edge failed}}
-\end{cases}\]
+The \ac{kgraph} consists of center nodes, side nodes and edges. A center node's responsibility is to store an object that corresponds to an object in the robot environment and its classification.\bs
 
-\todo{unclear what this is? epsilon}
+Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_{id} =\left\langle \mathit{id}, \mathit{id_{obj}}, \gls{objectClass} \right\rangle $\bs
 
-\paragraph{Success Factor} The responsibility of the \ac{kgraph} is to store object class information and to collect edge feedback, to then suggest edge parameterization based on the collected feedback. Estimating which parameterization would be the best candidate is an entire field of research. In this thesis, a simple metric, the success factor, has been chosen based on the average prediction error and the number of times an edge succeeded or failed. From the point of the \ac{kgraph} there is little information to work with; feedback must be created with only information on prediction error, tracking error and whether a fault was detected. Then action suggestions must be made based on collected feedback and an object that should change the start configuration to a target configuration (connecting two nodes in the \ac{hgraph}). A simple success factor thus already incorporates most of the available metrics.\bs
+Where \textit{id} an identifier for the center node, $\mathit{id_{obj}}$ an identifier for the object, \gls{objectClass} the classification of that object than can be either MOVABLE or UNMOVABLE.\bs
 
-\noindent An edge describes its parameterization and how that parameterization compares to other edges in the \ac{kgraph}.\bs
-
-Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id_{to}, \gls{successfactor}, \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
-
-\noindent Where (System Model, Controller) together is referred to as edge parameterization.\bs
-
-\noindent An center node's task is to represent an object and store its class which can be Movable or Unmovable.\bs
-
-Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_{id} =\left\langle \mathit{id}, \mathit{obj_{id}}, \gls{objectClass} \right\rangle $\bs
-
-Where \textit{id} an identifier for the center node, $\mathit{obj_{id}}$ an identifier linked to an object, \gls{objectClass} the classification of that object.\bs
-
-\todo{an example of side node and center node would be nice}
 \noindent A side node is a placeholder for the edge to point to.\bs
 
 Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle id \right\rangle $\bs
 
+\noindent An edge describes its parameterization and how that parameterization compares to other edges in the \ac{kgraph}.\bs
+
+Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id_{to}, \gls{successfactor}, \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
+\noindent Where (System Model, Controller) together is referred to as edge parameterization.\bs
+\noindent An center node's task is to represent an object and store its class which can be Movable or Unmovable.\bs
+
+bla bla success
+Formally the \textbf{success factor} = \gls{successfactor}:
+\[\gls{successfactor} =
+  \begin{cases} 0.1^{\gls{pe}_\textrm{avg}}& \textrm{if edge does not yet exist in \ac{kgraph}}\\[5px]
+    0.1 + 0.9\gls{successfactor} & \textrm{if \gls{successfactor} already exist in \ac{kgraph} and edge was successfully completed}\\[5px]
+  0.9\gls{successfactor} & \textrm{if \gls{successfactor} already exist in \ac{kgraph} and edge failed}
+\end{cases}\]
+
+Where $\gls{pe}_\textrm{avg}$ is the average \ac{PE} of the action edge that is reviewed.
+
 \noindent Now that the nodes and edges have been defined, the \ac{kgraph} can be defined.\bs
+
+
 
 Formally, a \textbf{\acl{kgraph}}, $\gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $
 \\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{edgesK}^\mathit{center}_\mathit{ids}, j \in \gls{edgesK}^\mathit{side}_\mathit{ids} \}$.\bs

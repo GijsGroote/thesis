@@ -22,7 +22,7 @@ Now a relatively simple example is presented to indicate how the \ac{halgorithm}
     \centering
     \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/robot_to_target/robot_iden_drive_target}
     \end{subfigure}
-    \caption{Multiple stages of the \ac{hgraph} when the \ac{halgorithm} searches for an hypothesis to a driving task.}%
+    \caption{First stages of the \ac{hgraph} when the \ac{halgorithm} searches for an hypothesis to a driving task.}%
     \label{fig:robot_drive_hgraph}
 \end{figure}
 
@@ -57,7 +57,7 @@ the proposed algorithm comprises two main parts, a search loop and an execution 
 \begin{figure}[h]
     \centering
     \includegraphics[width=7cm]{figures/proposed_method/two_loops_identified}
-  \caption{The search (upper) and execution (lower) loop, that make up the main part of the proposed \ac{halgorithm}. The figure's goal is to present the two loops, the flowchart in the background is presented in \Cref{tikz:flowchart_halgorithm} and is easier to read.}%
+  \caption{The search (upper) and execution (lower) loop, that make up the main part of the proposed \ac{halgorithm}. The figure's goal is to present the two loops, the flowchart in the background is presented full page in \Cref{tikz:flowchart_halgorithm}.}%
     \label{fig:two_loops_identified}
 \end{figure}
 
@@ -77,7 +77,7 @@ suppose the \textit{SubtaskNotFinished} returns a target node corresponding to a
 
 The \textit{GoBackward($\gls{node}_\mathit{target}$)} function takes a target node $\gls{node}_\mathit{target}$ that corresponds to a unfinished subtask. It then traverses backwards via non-failed edges to find the node that points toward the target node. The function stops traversing back when it encounters a node with a FAILED status or when no edge exists to traverse backwards over. It returns the last node, that node points toward the target node over a sequence of edges with a status other than failed, and all these edges point toward nodes with a status other than failed. In \cref{subfig:robot_push_1} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} function returns the $\gls{node}_\mathit{box\_target}$ node, in \cref{subfig:robot_push_2} the \textit{GoBackward($\gls{node}_\mathit{box\_target})$} returns the $\gls{node}_\mathit{box}$ node.\bs
 
-The \textit{GoBackward($\gls{node}_\mathit{target}$)} finds a node to connect to, a corresponding node is sought to connect from, which the \textit{FindCorrespondingNode(\gls{node})} does. \textit{FindCorrespondingNode(GoBackward(\gls{node}))} takes a node as parameter and returns an existing node that contains the same object as its arguments node; if such a node does not exist, a new node is created. In both \cref{subfig:robot_push_2,subfig:robot_push_3}, \textit{FindCorrespondingNode(GoBackward($\gls{node}_\mathit{target}$))} returns node $\gls{node}_\mathit{box}$. The nodes that the \ac{halgorithm} desires to connect are renamed to prevent long function names: 
+The \textit{GoBackward($\gls{node}_\mathit{target}$)} finds a node to connect to, a corresponding node is sought to connect from, which the \textit{FindCorrespondingNode(\gls{node})} does. \textit{FindCorrespondingNode(GoBackward(\gls{node}))} takes a node as parameter and returns an existing node that contains the same object as its arguments node; if such a node does not exist, a new node is created. In both \cref{subfig:robot_push_2,subfig:robot_push_3}, \textit{FindCorrespondingNode(GoBackward($\gls{node}_\mathit{target}$))} returns node $\gls{node}_\mathit{box}$. The nodes that the \ac{halgorithm} desires to connect are renamed to prevent long function names:
 \[\gls{node}_\mathit{to} =  \mathit{GoBackward(\gls{node}_\mathit{target})}\]
 \[\gls{node}_\mathit{from} = \mathit{FindCorrespondingNode(GoBackward(\gls{node}_\mathit{target}))}\]
 
@@ -224,49 +224,62 @@ In the following example, \Cref{fig:failure_in_hgraph} faults are detected, thes
 In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers and system models were available. Thus after two failed hypotheses, the \ac{halgorithm} concludes that the task is unfeasible. All functionality is now discussed and is neatly summarized in the following table. Then, pseudocode for the proposed \ac{halgorithm} is presented.\bs
 
 \paragraph{Encountering a Blocked Path}%
-Path planning occurs when propagating the action edge's status. If an object is blocking the path, planning will detect it, and the \ac{halgorithm} tries to free it. In the following example, the \ac{halgorithm} detects a blocking object and frees the path by pushing the blocking object to a new configuration, and can be visualized in \Cref{fig:blocking_obj_hgraph}.\bs
+During the propagation of an action edge's status, path planning occurs discussed in \Cref{subsec:motion_planning,chap:proposed_planning}. A blocking object is detected when the path found crosses through unknown of movable space. An example is now discussed that elaborates upon the \ac{halgorithm} response when encountering a blocked path. An example of such an environment can be visualized in \Cref{subfig:push_or_drive_env} where the \textit{UnknownSpaceCost} is set to 0.5 meter. The example \ac{hgraph} that will now be discussed generalizes over drive tasks that can be completed if an blocking object is pushed to free the path.\bs
 
-\todo{Unclear how a blocked path is freed? Where is the blocked object pushed toward, how it the best push posed determined when that target pose of the blocked path is known? }
-
-\todo{Another thing, what is robot\_copy and why is it necessary?}
+The \ac{halgorithm} creates the start- and target node for the robot in \Cref{subfig:blocking_obj_1}, and creates a first hypothesis which can be visualized in \Cref{subfig:blocking_obj_2}. When propagating the drive action edge status, path planning occurs, during which a blocking object is detected that blocks a direct path. To free that path two nodes are generated, first, a target node for the blocking object \textit{blocking\_object\_target} that target node indicates the blocking object at a pose that is no longer blocking the path. The second node represents the blocking object at its current pose, because there does not yet exist a node for the blocking object at its current pose, the \ac{halgorithm} generates a new node for the blocking object at it's current pose named \textit{blocking\_object} that can be seen in \Cref{subfig:blocking_obj_3}.\bs
 
 \begin{figure}[H]
-    \centering
-    \begin{subfigure}{.3\textwidth}
+  \centering
+  \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=0.6\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_1}
-    \caption{}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \caption{}\label{subfig:blocking_obj_1}
+  \end{subfigure}
+  \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_2}
     \caption{}\label{subfig:blocking_obj_2}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+  \end{subfigure}
+  \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_3}
     \caption{}\label{subfig:blocking_obj_3}
-    \end{subfigure}
+  \end{subfigure}
 
-    \begin{subfigure}{.3\textwidth}
+  \caption{Multiple stages of the \ac{hgraph} for a driving task, where an blocked path is encountered.}%
+  \label{fig:blocking_obj_hgraph_one}
+
+\end{figure}
+
+The newly generated pushing edge between node \textit{blocking\_object\_model} and \textit{blocking\_object\_target} is initialized with a randomly selected controller. To fully parameterize the pushing edge a controller with a compatible system model is required. To generate a system model, the \ac{halgorithm} generates a pushing identification edge and node \textit{blocking\_object\_model}.\bs
+
+After identifying a system model that describes pushing against the blocking object, path planning for the blocked object from its current pose toward it's target pose occurs. The initial pose for the robot against the blocked object can then be determined because that initial pose is dependent on the planned path. \Cref{subfig:blocking_obj_4} displays the drive edge toward the best initial push pose indicated by the \textit{best\_push\_pose\_against\_blocking\_object} node. Equivalent to the generation of a blocking object node at its current pose in \Cref{subfig:robot_push_3}, a robot node is generated at the current robot's pose, named \textit{robot\_copy} in \Cref{subfig:blocking_obj_4}, because a node at the current robot pose did not yet exist. A drive edge is generated between the \textit{robot\_copy} and \textit{best\_push\_pose\_against\_blocking\_object} nodes. The identification edge is later generated as can be seen in \Cref{subfig:blocking_obj_5}.\bs
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=1.291\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_4}
-    \caption{}\label{subfig:blocking_obj_4}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \includegraphics[width=0.5\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_4}
+    \caption{Snapshot of the \ac{hgraph} during drive task, where a blocked path is encountered. The (red) current node indicates that next action is to drive toward the best push position against the blocking object.}\label{subfig:blocking_obj_4}
+\end{figure}
+
+\Cref{subfig:blocking_obj_5,subfig:blocking_obj_6} visualize driving toward the best push pose against the blocking object, pushing the blocked object to its target pose, and finally driving toward the robots target pose.\bs
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{.3\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_5}
+  \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_5}
     \caption{}\label{subfig:blocking_obj_5}
-    \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+  \end{subfigure}
+  \begin{subfigure}{.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/proposed_method/connecting_nodes/blocking_obj/blocking_obj_6}
     \caption{}\label{subfig:blocking_obj_6}
-    \end{subfigure}
-    \caption{Multiple stages of the \ac{hgraph} for a driving task, where an blocked path is encountered.}%
-    \label{fig:blocking_obj_hgraph}
+  \end{subfigure}
+  \caption{\ac{hgraph} final stages before successfully completing a driving task, during which a blocked path is encountered.}%
+  \label{fig:blocking_obj_hgraph_two}
 \end{figure}
 
+Now that the \ac{halgorithm} is defined and discussed, pseudocode is presented. The following table summarizes the functions that will be used by the pseudocode in \Cref{pseudocode:halgorithm}.\bs
 
 \begin{table}[H]
 \caption{The functions employed by the \ac{halgorithm} in \Cref{pseudocode:halgorithm}.}
@@ -291,6 +304,8 @@ Path planning occurs when propagating the action edge's status. If an object is 
 \textit{ConnectWithEdge($\gls{edge}_1, \gls{edge}_2$)}: & Randomly generate edge between nodes $\gls{node}_1$ and $\gls{node}_2$ or use \ac{kgraph} to suggest an edge\\
 \end{tabular}
 \end{table}
+
+The pseudocode uses variables defined in \Cref{table:proposed_method_terminology}, such as a subtask: \gls{subtask}, task: \gls{task}, \ac{hgraph}: \gls{hgraph}, hypothesis: \gls{hypothesis}, observation: \gls{observation} and node: \gls{node}.\bs
 
 \noindent
 \begin{algorithm}[H]
@@ -335,10 +350,6 @@ Path planning occurs when propagating the action edge's status. If an object is 
     }}
   \end{algorithmic}
 \end{algorithm}
-
-\todo{explain what h is again, what is s again? and S? }
-
-
 
 A flowchart of the \ac{halgorithm} is presented in \Cref{tikz:flowchart_halgorithm}. Compared to the pseudocode presented above, the flowchart provides more detail, especially in the elaborate description accompanying the flowchart in \Cref{table:explainer_hgraph_figures_nodes}. The flowchart includes a connection point to the \ac{kgraph} and robot environment. The blocks in the flowchart indicate the resources used and changes indicated in the legend. Compared to the flowchart, the pseudocode is an abstract version, leaving many details explicitly related to the robot used in this thesis. Pseudocode encompasses a broader field of robots. So can the pseudocode also be applied to a robot with manipulation abilities other than nonprehensile pushing.\bs
 
