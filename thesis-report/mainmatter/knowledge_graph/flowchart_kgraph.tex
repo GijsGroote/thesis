@@ -1,0 +1,45 @@
+\newpage
+\begin{figure}[H] \centering
+\begin{tikzpicture}[node distance = 4.5cm]
+    % Nodes
+    \node [block, fill=green!50] (first) {Update existing transition with feedback};
+    
+    % legend 
+    \node[text width=2.8cm, yshift=1cm, right of=first, text centered, rounded corners, minimum height=1em, label={[name=lab, yshift=0.4cm, left]\textbf{Legend}}, node distance=7cm] (legend1) {\small Update KGraph};
+    \node[rectangle, draw, left of=legend1, fill=green!50, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend1color) {};
+    \node[text width=2.8cm, below of=legend1, text centered, minimum height=1em, node distance=0.7cm] (legend2) {\small Query KGraph};
+    \node[rectangle, draw, left of=legend2, fill=red!40, rounded corners, minimum height=1em, minimum width=1cm, node distance=2cm] (legend2color) {};
+   
+    
+    % nodes, first row 
+    
+    \node [decision, below of=first, node distance=4.5cm, fill=red!40] (has_controller) {The ObjectSet- Node already contains outgoing transition with equal parameterisation};
+    \node [block, left of=has_controller, fill=green!50] (new_transition) {Generate new transition on existing node};
+    \node [block, right of=has_controller, node distance=3.8cm] (send_feedback) {Send ordered list with controllers and models};
+    
+    % nodes, second row 
+    \node [decision, fill=red!40, below of=has_controller, node distance=4.5cm] (obj_exist) {Object already in HGraph};
+    \node [decision, fill=red!40, right of=obj_exist, node distance=3.8cm] (obj_exist2) {Object in HGraph};
+    \node [block, fill=green!50, left of=obj_exist] (new_object) {Generate new object + new transition with feedback};
+    \node [block, right of=obj_exist2, node distance=3.5cm] (no_obj) {send empty list};
+   
+    % Edges
+    \draw[stealth-] (obj_exist) -- node[left]{action feedback} +(0,-2.5cm);
+    \draw[-stealth] (obj_exist.west) -- node[above]{no} (new_object.east);
+    \draw[-stealth] (obj_exist.north) -- node[left]{yes} (has_controller.south);
+    \draw[-stealth] (has_controller.north) -- node[left]{yes} (first.south);
+    \draw[-stealth] (has_controller.west) -- node[above]{no} (new_transition.east);
+    
+    \draw[-stealth] (obj_exist2.east) -- node[above]{no} (no_obj.west);
+    \draw[-] (no_obj.east) -- +(1cm, 0);
+    \draw[stealth-] (obj_exist2) -- node[left]{action suggestion?} +(0,-2.5cm);
+    \draw[-stealth] (obj_exist2.north) -- node[left]{yes} (send_feedback.south);
+    \draw[-stealth] (send_feedback.east) -| node[at end, left]{action suggestion} +(4.5cm, -6.5cm);
+\end{tikzpicture}
+
+\caption{Flowchart displaying the knowledge graph's workflow.}
+\label{figure: flowchart_kgraph} 
+\end{figure}
+
+\subsection{Example KGraph}
+
