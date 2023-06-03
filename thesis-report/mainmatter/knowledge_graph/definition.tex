@@ -14,28 +14,29 @@ Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_{id} =\left\langle i
 
 \noindent An edge describes its parameterization and how that parameterization compares to other edges in the \ac{kgraph}.\bs
 
-Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id_{to}, \gls{successfactor}, \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
-\noindent Where (System Model, Controller) together is referred to as edge parameterization.\bs
-\noindent An center node's task is to represent an object and store its class which can be Movable or Unmovable.\bs
+Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle id_{from}, id_{to}, \gls{successfactor}(a), \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
 
-bla bla success
+Where (System Model, Controller) together is referred to as edge parameterization. An center node's task is to represent an object and store its class which can be Movable or Unmovable.\bs
+
+The successfactor rates an edge parameterization based on experience in the robot environment. The successfactor is created or updated when an action edge with that parameterization failed during execution time or successfully completed.\bs
+
 Formally the \textbf{success factor} = \gls{successfactor}:
-\[\gls{successfactor} =
-  \begin{cases} 0.1^{\gls{pe}_\textrm{avg}}& \textrm{if edge does not yet exist in \ac{kgraph}}\\[5px]
-    0.1 + 0.9\gls{successfactor} & \textrm{if \gls{successfactor} already exist in \ac{kgraph} and edge was successfully completed}\\[5px]
-  0.9\gls{successfactor} & \textrm{if \gls{successfactor} already exist in \ac{kgraph} and edge failed}
+\[\gls{successfactor}(a+1) =
+  \begin{cases} 0.1^{\gls{pe}_\textrm{avg}}& \textrm{if $a$ = 0}\\[5px]
+    0.1 + 0.9\gls{successfactor}(a) & \textrm{if $a > 0$ and the reviewed edge was successfully completed}\\[5px]
+  0.9\gls{successfactor}(a) & \textrm{if $a > 0$ and the reviewed edge failed during execution time}
 \end{cases}\]
 
-Where $\gls{pe}_\textrm{avg}$ is the average \ac{PE} of the action edge that is reviewed.
+Where $\gls{pe}_\textrm{avg}$ is the average \ac{PE} of the action edge that is reviewed. $a$ is the number of times an action edge with such a edge parameterization reached the EXECUTING status.\bs
 
 \noindent Now that the nodes and edges have been defined, the \ac{kgraph} can be defined.\bs
 
-
-
 Formally, a \textbf{\acl{kgraph}}, $\gls{kgraph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle $
-\\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{edgesK}^\mathit{center}_\mathit{ids}, j \in \gls{edgesK}^\mathit{side}_\mathit{ids} \}$.\bs
+\\comprising $\gls{nodesK} = \{\gls{node}^{\mathit{center}}, \gls{node}^{\mathit{side}}\}$, \quad $\gls{edgesK} \in \{\gls{edge}_{(i,j)}| i \in \gls{nodesK}^\mathit{center}_\mathit{ids}, j \in \gls{nodesK}^\mathit{side}_\mathit{ids} \}$.\bs
 
-Where $\gls{edgesK}^\mathit{center}_\mathit{ids}$ and $\gls{edgesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of center edges and side edges respectively.\bs \todo{this sentence is vague and throws the reader off, rewrite please}
+Where $\gls{nodesK}^\mathit{center}_\mathit{ids}$ are the identifiers of the set of center nodes, and $\gls{nodesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of side edges.\bs
 
-\todo{essential functions is not a thing,-> interface}
-The \ac{kgraph} has three essential functions. The \textit{add\_object} function adds object information to the \ac{kgraph}, which is important for adding unmovable obstacles that the robot cannot manipulate. The \textit{add\_review} function is used when an edge is successfully or unsuccessfully completed, and the corresponding node in the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs
+When the \ac{halgorithm} determined is must manipulate an object to fullfill the given task, it initally creates a random edge parameterization. That parameterization is used to manipulate the object and stored in the \ac{kgraph}. When encountering the need to manipulate the object again a different random parameterization is selected. First, all possible edge parameterizations are tested on a specific object, this can be seen as the testing phase of an object. Then second, when all possible parameterizations are tested, the \ac{kgraph} suggests the edge parameterization with the highest success factor, this phase can be seen as the converging phase. Where either, the edge parameterization with the highest success factor receives an even higher success factor, or the success factor is lowered, and the second best edge parameterization becomes the highest ranking edge parameterization in terms of success factor.\bs
+
+
+The \ac{kgraph} has three interface functions. The \textit{add\_object} function adds object information to the \ac{kgraph}, which is important for adding unmovable obstacles that the robot cannot manipulate. The \textit{add\_review} function is used when an edge is successfully or unsuccessfully completed, and the corresponding node in the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs
