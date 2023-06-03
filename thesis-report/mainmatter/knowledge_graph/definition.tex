@@ -53,8 +53,17 @@ A legend for the \ac{kgraph} is now presented.\bs
     \includegraphics[width=\textwidth]{figures/proposed_method/kgraph_edge}
     \caption{}
     \end{subfigure}
-    \caption{Legend for the \ac{kgraph}}%
+    \caption{Legend for the \acl{kgraph}.}%
     \label{fig:kgraph_legend}
+\end{figure}
+
+An example \ac{kgraph} can be visualized in \Cref{fig:kgraph_example}, where edge parameterizations are displayed over the edges.\bs
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{figures/proposed_method/kgraph_example}
+    \caption{The \ac{kgraph} that has collected action feedback on two objects. Two edge parameterizations\\for driving the robot and one edge parameterization to push the box.}%
+    \label{fig:kgraph_example}
 \end{figure}
 
 \paragraph{The Testing and Converging Phases}
@@ -65,4 +74,3 @@ The \ac{kgraph} has three interface functions. The \textit{add\_object(\gls{obj}
 
 or update the the edge that containts the edge parameterization. If the edge parameterization exist in one of the outgoing edges from the center node, existthe of the corersponding object if it does not exist. 
 creates or updates the corresponding edge  the \ac{kgraph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs
-
