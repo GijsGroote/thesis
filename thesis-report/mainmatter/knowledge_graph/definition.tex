@@ -1,6 +1,6 @@
 \subsection{Definition}%
 \label{subsec:kgraph_definition}
-The \ac{kgraph} consists of center nodes, side nodes and edges. A center node's responsibility is to store an object that corresponds to an object in the robot environment and its classification.\bs
+The \ac{kgraph} consists of center nodes, side nodes and edges. A center node's responsibility is to represent an object and its classification.\bs
 
 Formally, a \textbf{center node}, $\gls{node}^{\mathit{center}}_\mathit{id} =\left\langle \mathit{id}, \mathit{id_{obj}}, \gls{objectClass} \right\rangle $\bs
 
@@ -14,7 +14,7 @@ Formally, a \textbf{side node}, $\gls{node}^{\mathit{side}}_\mathit{id} =\left\l
 
 Formally an \textbf{edge}, $\gls{edge}_{(from, to)} = \left\langle \mathit{id}_{from}, \mathit{id}_{to}, \gls{successfactor}(a), \textrm{System Model}, \textrm{Controller}\right\rangle$\bs
 
-Where $\mathit{id}_\mathit{from}$ and $\mathit{id}_\mathit{to}$ corresond the the identifiers of the center- and side node respectively, $\gls{successfactor}(a)$ is the success factor that summarized the feedback of $a>0$ reviewed action edges and (System Model, Controller) together is referred to as edge parameterization. \bs
+Where $\mathit{id}_\mathit{from}$ and $\mathit{id}_\mathit{to}$ corresond the the identifiers of the center- and side node respectively, $\gls{successfactor}(a)$ is the success factor that summarized the feedback of $a\geq0$ reviewed action edges and (System Model, Controller) together is referred to as edge parameterization. \bs
 
 The successfactor rates an edge parameterization based on experience in the robot environment. The successfactor is created or updated when an action edge with that parameterization failed during execution time or successfully completed.\bs
 
@@ -69,7 +69,7 @@ An example \ac{kgraph} can be visualized in \Cref{fig:kgraph_example}, where edg
 \paragraph{The Testing and Converging Phases}
 When the \ac{halgorithm} determines is must manipulate an object to fullfill the given task, it creates a action edge with a random edge parameterization. After executing that action edge that parameterization is stored in the \ac{kgraph}. When encountering the need to manipulate the object again a different random parameterization is selected. First, all possible edge parameterizations are tested and stored on a specific object, this can be seen as the testing phase on how to manipulate an object. Then second, when all possible parameterizations are tested, the \ac{kgraph} suggests the edge parameterization with the highest success factor, this phase can be seen as the converging phase. Where either, the edge parameterization with the highest success factor receives an even higher success factor, or the success factor is lowered, and the second best edge parameterization becomes the highest ranking edge parameterization in terms of success factor.\bs
 
-The \ac{kgraph} has three interface functions. The \textit{add\_object(\gls{obj}, \gls{objectClass})} function adds an object and its class to the \ac{kgraph}. Espacially usefull for store which objects are unmovable. The \textit{add\_review(\gls{edge})} function takes an action edge from the \ac{hgraph} and depending on the \ac{kgraph} does the following. If a corresponding center node (containing the object the edge manipulated) does not yet exist, create a new center node. Then calculate the success factor and add a new edge or update the success factor of the existing edge with equal edge parameterization in the \ac{kgraph}.  
+The \ac{kgraph} has three interface functions. The \textit{add\_object(\gls{obj}, \gls{objectClass})} function adds an object and its class to the \ac{kgraph}. Espacially usefull to indicate which objects are unmovable. The \textit{add\_review(\gls{edge})} function takes an action edge from the \ac{hgraph} and depending on the \ac{kgraph} does the following. If a corresponding center node (containing the object the edge manipulated) does not yet exist, create a new center node. Then calculate the success factor and add a new edge or update the success factor of the existing edge with equal edge parameterization in the \ac{kgraph}.  
 
 
 or update the the edge that containts the edge parameterization. If the edge parameterization exist in one of the outgoing edges from the center node, existthe of the corersponding object if it does not exist. 

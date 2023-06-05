@@ -1,9 +1,9 @@
 \newpage
 
 \begin{figure}[H] \centering
-\begin{tikzpicture}[node distance = 4.5cm]
+  \begin{tikzpicture}[node distance = 4.5cm, line width=1pt]
     % Nodes
-    \node [block, fill=green!50] (first) {Update existing transition with feedback};
+    \node [block, fill=green!50] (first) {Update existing edge with new feedback};
     
     % legend 
     \node[text width=2.8cm, yshift=1cm, right of=first, text centered, rounded corners, minimum height=1em, label={[name=lab, yshift=0.4cm, left]\textbf{Legend}}, node distance=7cm] (legend1) {\small Update KGraph};
@@ -13,31 +13,30 @@
    
     
     % nodes, first row 
-    
-    \node [decision, below of=first, node distance=4.5cm, fill=red!40, text width=9.5em] (has_controller) {Does there already exist an outgoing edge with this edge parameterization for the center node?};
-    \node [block, left of=has_controller, fill=green!50] (new_transition) {Generate new transition on existing node};
+    \node [decision, below of=first, node distance=4.5cm, fill=red!40, text width=7.0em] (has_controller) {Does this parameterization exist in one of the center node's outgiong edges?};
+    \node [block, left of=has_controller, fill=green!50] (new_transition) {Generate new edge with feedback edge with feedback existing node};
     
     % nodes, second row 
-    \node [decision, fill=red!40, below of=has_controller, node distance=6cm, text width=9.5em] (obj_exist) {Does the \ac{kgraph} already have a center node with containing this object?};
+    \node [decision, fill=red!40, below of=has_controller, node distance=6cm, text width=6.0em] (obj_exist) {Does this object exist in a center node in the \ac{kgraph}?};
 
-    \node [decision, fill=red!40, right of=obj_exist, node distance=4.5cm] (obj_exist2) {Object in HGraph};
+  \node [decision, fill=red!40, right of=obj_exist, node distance=4.5cm, text width=6.0em] (obj_exist2) {Does this object exist in a center node in the \ac{kgraph}?};
     \node [block, yshift=-3cm, above= of obj_exist2, node distance=-1.8cm] (send_feedback) {Send ordered list with controllers and models};
     
-    \node [block, fill=green!50, left of=obj_exist] (new_object) {Generate new center-, side node and a new edge};
+    \node [block, fill=green!50, left of=obj_exist] (new_object) {Generate new center node, side node and an edge with feedback};
     \node [block, right of=obj_exist2, node distance=3.8cm] (no_obj) {send empty list};
    
     % Edges
-    \draw[stealth-] (obj_exist) -- node[left]{action feedback} +(0,-3.5cm);
+    \draw[stealth-] (obj_exist) -- node[left, at end]{action feedback} +(0,-3.5cm);
     \draw[-stealth] (obj_exist.west) -- node[above]{no} (new_object.east);
     \draw[-stealth] (obj_exist.north) -- node[left]{yes} (has_controller.south);
     \draw[-stealth] (has_controller.north) -- node[left]{yes} (first.south);
     \draw[-stealth] (has_controller.west) -- node[above]{no} (new_transition.east);
     
     \draw[-stealth] (obj_exist2.east) -- node[above]{no} (no_obj.west);
-    \draw[-] (no_obj.east) -- +(0.8cm, 0);
-    \draw[stealth-] (obj_exist2) -- node[left]{action suggestion?} +(0,-3.5cm);
+    \draw[-] (no_obj.east) -- +(0.7cm, 0);
+    \draw[stealth-] (obj_exist2) -- node[left, at end]{action suggestion?} +(0,-3.5cm);
     \draw[-stealth] (obj_exist2.north) -- node[left]{yes} (send_feedback.south);
-    \draw[-stealth] (send_feedback.east) -| node[at end, left]{action suggestion} +(4.5cm, -6.5cm);
+    \draw[-stealth] (send_feedback.east) -| node[at end, left]{action suggestion} +(4.5cm, -8.4cm);
 \end{tikzpicture}
 \caption{Flowchart displaying the knowledge graph's workflow.}%
 \label{figure: flowchart_kgraph} 
