@@ -106,7 +106,7 @@ x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \label{eq:nonlinear-push-model-2}
 \end{equation}
 
-\todo{If the reader actually wants to recreate this, he/she has shit to work with, maybe make a small model here that explain vp, st and H}
+% \todo{If the reader actually wants to recreate this, he/she has shit to work with, maybe make a small model here that explain vp, st and H}
 Where \textit{st} indicates the distance from the contact point between the robot and pushed object, perpendicular to the line that coincides with the object and the robots center of mass. A positive \textit{st} indicates the object will rotate anticlockwise, a negative \textit{st} indicates a clockwise rotation. The width of an object is defined as \textit{H} and is set to 2 meter, \textit{vp} is the velocity of the robot perpendicular to the object defined as:\bs
 
 \[ \mathit{vp} = u_{\gls{x}} \sin(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\cos(\gls{theta}_{\mathit{obj}}(k)) \]
@@ -282,7 +282,6 @@ The results in both \Cref{fig:random_drive_time_kgraph,fig:random_drive_time_no_
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_vs}
     \caption{Comparing average total time to complete a task out of then runs for a driving task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}\label{fig:random_drive_time_vs}
 \end{figure}
-\todo{Color consistentcy with the FSM of the progression of edge state}
 
 Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI} parameterization that both use lti-drive-model. The \ac{kgraph} prefers the \ac{MPC} parameterization over the \ac{MPPI} parameterization as can be seen in \Cref{table:rand_drive_mpc_vs_mppi}. In this table is can be seen that the \ac{kgraph} needs at most one task of experience to suggest the \ac{MPC} parameterization. An explanation why there was no trend to be found in \Cref{fig:random_drive_time_kgraph}, it was already converged at the first task.  
 
@@ -412,10 +411,8 @@ The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-mod
     \caption{Box plot of the \acl{PE} for solving reshuffled tasks. The horizontal axis indicates the number of task experience in a run. A run contains six tasks, starting the run with an empty \ac{kgraph} that collects action feedback as the robot gains experience. The vertical axis displays a boxplot of \acl{PE} over six runs. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}%
     \label{fig:random_push_pe_vs}
 \end{figure}
-\todo{wat op x an exy}
 
-The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
-\todo{Notable margin? can you quantify that a bit better, the entirety of your framework depends prettty much on that differnce in results, do not be vague about that result. }
+The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin as can be seen in \Cref{fig:random_push_pe_vs}. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}

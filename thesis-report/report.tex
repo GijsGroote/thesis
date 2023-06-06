@@ -37,11 +37,18 @@ page intentionally left blank.
 
 
 \tableofcontents
-\listoffigures
-\listoftables
 
-%% list of symbols
-\printunsrtglossary[type=symbols,style=long]
+% list of figures, tables, symbols and acronyms
+\phantomsection
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename}
+
+\phantomsection
+\listoftables
+\addcontentsline{toc}{chapter}{\listtablename}
+
+\printunsrtglossary[type=symbols,style=long, title={List of Symbols}]
+\input{frontmatter/acronyms}
 
 %% Arabic page numbering
 \mainmatter
@@ -52,7 +59,6 @@ page intentionally left blank.
 \input{mainmatter/results}
 \input{mainmatter/conclusions}
 \input{mainmatter/future_work}
-\input{frontmatter/acronyms}
 
 %% Prevent urls running into margins in bibliography
 \setcounter{biburlnumpenalty}{7000}
