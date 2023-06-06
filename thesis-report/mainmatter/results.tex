@@ -18,7 +18,7 @@ The proposed frameworks task performance is measured in metrics named the method
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
 \acl{PE} [meter[ & The \ac{PE} is calculated every time step, then the \ac{PE} is augmented into a single list. That list is then later analyzed by calculating for example the mean and standard deviation. The \ac{PE} is high when unexpected behaviour occurs, unexpected behaviour can be expected when entering a new environment. When the \ac{PE} lowers that would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
 % Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
-% Final positions and\newline displacement errors & The final position and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final position and displacement error could be the cause.\\
+% Final poses and\newline displacement errors & The final pose and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final pose and displacement error could be the cause.\\
 % The ratio between the number of hypotheses and the number of tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between the total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
 % The ratio between the number of successful and the number of total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because, with better recommendations, more edges will be completed.\\
 search time [sec]& The time the proposed framework spends searching for hypotheses. The search time is very dependent on the environment and the number of subtask in the task. The search time can be used for comparison if both tasks are equal.\\ 
@@ -118,15 +118,15 @@ The goal of this thesis is not to find optimal control, or to model the environm
 % Three benchmark test are presented, starting with the blockade task. A large part of the proposed framework is system identification, for testing however no system identification is performed. Instead, several analytic system models are used, and the \ac{kgraph} finds which system model is the best choice for an object over time. Where the best choice is defined using the edge metrics discussed in \Cref{subsec:edge_metrics}. The analytic system models are not opting for modelling the drive or push model as accurately as they possibly can, thus severe model mismatch should be expected. Such model mismatch is no issue, to complete a subtask stable closed-loop control is required, when an edge parameterization is unable to provide closed-loop stable control, the edge will fail because a fault will be detected. To answer the research question, improvement over time should be made. Gaining such improvement does not require accurate system models, time spend improving the hand-coded system models does thus not change the result.\bs
 %
 %
-% \paragraph{Blockade} In the blockade environment the robot is tasked with placing a box in a target position that is blocked by a cylinder object.\bs
+% \paragraph{Blockade} In the blockade environment the robot is tasked with placing a box in a target pose that is blocked by a cylinder object.\bs
 % \begin{figure}[H]
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{figures/results/blockade}
-%     \caption{The blockade environment with the target ghost position for the blue box. The green walls are unmovable whilst both the blue box and cylinder are movable.}%
+%     \caption{The blockade environment with the target ghost pose for the blue box. The green walls are unmovable whilst both the blue box and cylinder are movable.}%
 %     \label{fig:benchmark_blockade}
 % \end{figure}
 %
-% The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First, the \ac{halgorithm} plans to push the box directly to the target position, then it realizes a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushing the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remembered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model-2 to push both the box and the cylinder object. Converging to this conclusion improves the method metrics for the task as can be seen in \Cref{fig:results_blockade}\bs
+% The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First, the \ac{halgorithm} plans to push the box directly to the target pose, then it realizes a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushing the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remembered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model-2 to push both the box and the cylinder object. Converging to this conclusion improves the method metrics for the task as can be seen in \Cref{fig:results_blockade}\bs
 %
 % \todo[inline]{is nonlinear-push-model-2 still the preferred model after testing??}
 %
@@ -145,10 +145,10 @@ The goal of this thesis is not to find optimal control, or to model the environm
 % \begin{figure}[H]
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{figures/results/swap}
-%     \caption{The swap environment, the robot is tasked with swapping the positions of the cylinder and the box.}%
+%     \caption{The swap environment, the robot is tasked with swapping the poses of the cylinder and the box.}%
 %     \label{fig:benchmark_swap}
 % \end{figure}
-% The swap task shows that the \ac{halgorithm} can handle overlapping subtasks. The \ac{halgorithm} handles a single subtask at a time and randomly selects which subtask to handle next. The result for the swap task is that first, the robot will place the box on the location of the cylinder. The cylinder is blocking the path and is thus pushed to free the path, then the robot drives back to the box to push the box to its target position. The cylinder can directly be pushed toward its target position, because there is a free path, and the task is successfully completed. By manual inspection, this is the most efficient action sequence to complete the swap task. But there is an assumption because the initial environment has a distance between the robot and box (robot-box distance), and robot and cylinder (robot-cylinder distance) that is equal. If the initial robot-box distance is greater than the initial robot-cylinder distance, it would be more efficient to first drive toward the cylinder because that distance is smaller. The selection of subtask is random, thus there is a 50\% chance that the robot selects a subtask resulting in driving more than is necessary to complete the swap subtask.\bs
+% The swap task shows that the \ac{halgorithm} can handle overlapping subtasks. The \ac{halgorithm} handles a single subtask at a time and randomly selects which subtask to handle next. The result for the swap task is that first, the robot will place the box on the location of the cylinder. The cylinder is blocking the path and is thus pushed to free the path, then the robot drives back to the box to push the box to its target pose. The cylinder can directly be pushed toward its target pose, because there is a free path, and the task is successfully completed. By manual inspection, this is the most efficient action sequence to complete the swap task. But there is an assumption because the initial environment has a distance between the robot and box (robot-box distance), and robot and cylinder (robot-cylinder distance) that is equal. If the initial robot-box distance is greater than the initial robot-cylinder distance, it would be more efficient to first drive toward the cylinder because that distance is smaller. The selection of subtask is random, thus there is a 50\% chance that the robot selects a subtask resulting in driving more than is necessary to complete the swap subtask.\bs
 %
 % \begin{figure}[H]
 %     \centering
@@ -163,7 +163,7 @@ The goal of this thesis is not to find optimal control, or to model the environm
 % \begin{figure}[H]
 %     \centering
 %     \includegraphics[width=0.9\textwidth]{figures/results/surrounded}
-%     \caption{The surround environment, the robot is tasked with escaping the surrounding enclosure by driving to the target ghost position displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
+%     \caption{The surround environment, the robot is tasked with escaping the surrounding enclosure by driving to the target ghost pose displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
 %     \label{fig:benchmark_surround}
 % \end{figure}
 % The surround task show that having and gaining environment knowledge can greatly improve task execution. Simply knowing if an object can be interacted with may lower task execution time drastically as can be seen in \Cref{fig:results_surround}.\bs
@@ -179,7 +179,7 @@ The goal of this thesis is not to find optimal control, or to model the environm
 
 \section{Randomization}%
 \label{sec:randomization}
-In the randomized environment the task and the environment are initialized by randomization, after tasks completion, the environment is reshuffled. A reshuffled gives the objects in environment and task a new initial pose and resets the robot position. By solving a task, reshuffling the environment and solving another reshuffled task, the robot gains experience that is stored in the \ac{kgraph}. A set of multiple tasks where initially the \ac{kgraph} is empty, is named a \textit{run}, and at the end of a run the \ac{kgraph} is filled with the gained experience. \Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, an driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push an movable object toward a random target pose. First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting an available edge parameterization.\bs
+In the randomized environment the task and the environment are initialized by randomization, after tasks completion, the environment is reshuffled. A reshuffled gives the objects in environment and task a new initial pose and resets the robot pose. By solving a task, reshuffling the environment and solving another reshuffled task, the robot gains experience that is stored in the \ac{kgraph}. A set of multiple tasks where initially the \ac{kgraph} is empty, is named a \textit{run}, and at the end of a run the \ac{kgraph} is filled with the gained experience. \Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, an driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push an movable object toward a random target pose. First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting an available edge parameterization.\bs
 
 
 \noindent
@@ -447,7 +447,7 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
   \vspace{-0.4cm}\rotatebox{50}{nonprehesile}&
   method metric\\\toprule
   \citeauthor{ellis_navigation_2022} &          \cite{ellis_navigation_2022} &          \cmark& \xmark& \cmark& \xmark& \xmark& success rate\\
-  \citeauthor{sabbaghnovin_model_2021} &        \cite{sabbaghnovin_model_2021} &        \cmark& \cmark& \xmark& \cmark& \xmark& success rate, execution time prediction error, final position error\\
+  \citeauthor{sabbaghnovin_model_2021} &        \cite{sabbaghnovin_model_2021} &        \cmark& \cmark& \xmark& \cmark& \xmark& success rate, execution time prediction error, final pose error\\
   \citeauthor{scholz_navigation_2016} &         \cite{scholz_navigation_2016} &         \cmark& \cmark& \xmark& \xmark& \xmark& runtime, planning time, number of replanning number of calls to update model\\
   \citeauthor{vega-brown_asymptotically_2020} & \cite{vega-brown_asymptotically_2020} & \xmark& \cmark& \xmark& \cmark& \xmark& computation time\\
   \citeauthor{wang_affordancebased_2020} &      \cite{wang_affordancebased_2020} & \cmark& \xmark& \cmark& \xmark& \xmark& \underline{computation and} \underline{execution time}\\
@@ -496,7 +496,7 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
     \caption{Recreated robot environment.}%
     \label{subfig:wang_mimick}
     \end{subfigure}
-    \caption{Two similar environments and tasks, the robots are tasked to drive toward a target position indicated with the green ghost poses. In both environment a direct path is blocked by the red box.}%
+    \caption{Two similar environments and tasks, the robots are tasked to drive toward a target pose indicated with the green ghost poses. In both environment a direct path is blocked by the red box.}%
     \label{fig:wang}
 \end{figure}
 

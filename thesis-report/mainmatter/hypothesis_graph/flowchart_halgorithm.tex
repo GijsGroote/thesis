@@ -55,8 +55,8 @@
     \node [block, line width=2pt, left of=move_object, node distance=3.7cm] (motion_planning) {Motion Planning};
     \node [block, line width=2pt, right of=move_object, node distance=3.7cm, text width=2.1cm] (manipulation_planning) {Manipulation Planning};
 
-    \node [decision, line width=2pt, dashed, minimum width=2.3cm, below of=move_object, node distance=2.3cm, xshift=1.75cm] (drive_to_push_position) {Robot Close to Push Pose};
-    \node [block, line width=2pt, dashed, minimum width=2.3cm, below of=move_object, node distance=2.3cm, xshift=-1.75cm] (goto_push_position) {Add Node to Drive to Push Pose};
+    \node [decision, line width=2pt, dashed, minimum width=2.3cm, below of=move_object, node distance=2.3cm, xshift=1.75cm] (drive_to_push_pose) {Robot Close to Push Pose};
+    \node [block, line width=2pt, dashed, minimum width=2.3cm, below of=move_object, node distance=2.3cm, xshift=-1.75cm] (goto_push_pose) {Add Node to Drive to Push Pose};
   
     \node [decision, line width=2pt, above of=sys_iden_single, node distance=3.5cm] (add_drive_node) {Robot Close to Object};
 
@@ -101,10 +101,10 @@
     \draw[-] (move_object.south) |- +(-7.70,-0.3);
     \draw [draw=white,double=black,double distance=\pgflinewidth,ultra thick] (motion_planning.south) -- +(0,-1cm);
     \draw[-stealth] (motion_planning.south)  -- ([yshift=-1cm]motion_planning.south) -| node[near start, left] {success} (global_path.north);
-    \draw[-stealth] (manipulation_planning.south) |- node[near start, right] {success} (drive_to_push_position.east);
-    \draw[-] ([xshift=0.3cm,yshift=0.3cm] drive_to_push_position.north west) -- node[at start, xshift=-0.5cm, above] {yes} ++(-5.05cm,0);
-    \draw[-stealth] (drive_to_push_position.west) |- node[xshift=-0.3cm, above] {no} (goto_push_position.east);
-    \draw[-] (goto_push_position.west) -- ++(-0.77cm, 0); 
+    \draw[-stealth] (manipulation_planning.south) |- node[near start, right] {success} (drive_to_push_pose.east);
+    \draw[-] ([xshift=0.3cm,yshift=0.3cm] drive_to_push_pose.north west) -- node[at start, xshift=-0.5cm, above] {yes} ++(-5.05cm,0);
+    \draw[-stealth] (drive_to_push_pose.west) |- node[xshift=-0.3cm, above] {no} (goto_push_pose.east);
+    \draw[-] (goto_push_pose.west) -- ++(-0.77cm, 0); 
 
     \draw[-] (motion_planning.west) -- node[above] {failure} +(-2.98,0);
     \draw[-] (manipulation_planning.east) -| node[near start, above] {failure} ([xshift=4.7cm,yshift=-0.6cm]no_trans_found.south) -- ([yshift=-0.6cm]no_trans_found.south);

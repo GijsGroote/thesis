@@ -6,53 +6,50 @@
 \textit{The appendix contains additional information that may help better understand the thesis.\bs}
 
 \chapter*{Complexity Classes}%
-Problems in class P have a solution which can be found in polynomial time, problems in \ac{NP} are problems for which no polynomial algorithms have been found yet, and of which it is believed that no polynomial time solution exist. For problems in \ac{NP}, when provided with a solution, verifying that the solution is indeed a valid solution can be done in polynomial time. \ac{NP-hard} problems are a class of problems which are at least as hard as the hardest problems in \ac{NP}. Problems that are \ac{NP-hard} do not have to be elements of NP. They may not even be decidable~\cite{pokharel_computational_2020}. This thesis or other recent studies in the references do not attempt to find an optimal solution. Instead, they provide a solution whilst guaranteeing properties such as near-optimality or probabilistic completeness. As the piano's mover problem can be reduced to the \ac{NAMO} problem combined with relocating objects to target positions, the conclusion can be drawn that this \ac{NAMO} problem is \ac{NP-hard}.\bs
+Problems in class P have a solution which can be found in polynomial time, problems in \ac{NP} are problems for which no polynomial algorithms have been found yet, and of which it is believed that no polynomial time solution exist. For problems in \ac{NP}, when provided with a solution, verifying that the solution is indeed a valid solution can be done in polynomial time. \ac{NP-hard} problems are a class of problems which are at least as hard as the hardest problems in \ac{NP}. Problems that are \ac{NP-hard} do not have to be elements of NP. They may not even be decidable~\cite{pokharel_computational_2020}. This thesis or other recent studies in the references do not attempt to find an optimal solution. Instead, they provide a solution whilst guaranteeing properties such as near-optimality or probabilistic completeness. As the piano's mover problem can be reduced to the \ac{NAMO} problem combined with relocating objects to target poses, the conclusion can be drawn that this \ac{NAMO} problem is \ac{NP-hard}.\bs
 
 \chapter*{Benchmark Tests}%
- Three benchmark test are presented, the blockade, swap and surround environment, starting with the blockade environment.\bs
- \todo{you could do a little more than just throwing these in here, even if it is the appendix}
+Three benchmark test are presented, the blockade, swap and surround environment. The environments are created but have not been used for testing the proposed \ac{halgorithm}. The three environments are presented and a short description is provided that elaborates which parts of the proposed method are tested. Now the blockade environment is presented.\bs
 
-In the blockade environment the robot is tasked with placing a box in a target position that is blocked by a cylinder object.\bs
- \begin{figure}[H]
-     \centering
-     \includegraphics[width=0.9\textwidth]{figures/results/blockade}
-     \caption{The blockade environment with the target ghost position for the blue box. The green walls are unmovable whilst both the blue box and cylinder are movable.}%
-     \label{fig:benchmark_blockade}
- \end{figure}
+In the blockade environment the robot is tasked with placing a box in a target pose that is blocked by a cylinder object.\bs
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/results/blockade}
+  \caption{The blockade environment where the robot is tasked to push the blue box toward the target pose indicated with the target ghost pose. A direct path is blocked by the movable light blue cylinder object and the unmovable yellow walls.}%
+  \label{fig:benchmark_blockade}
+\end{figure}
 
-In the swap environment the robot should swap the locations of the two objects in the environment.\bs
+The blockade environment presented in the figure above would show the backward search technique in action. The backward search technique first plans for the blue box toward the target ghost pose, then an blocking object is detected. That blocking object can be either one of the walls or the cylinder object. The blocking object is pushed to free the path, in the case of the unmovable walls the \ac{kgraph} is updated indicating that the walls are inmovable, in the case of the cylinder object, it is moved out of the way and the path is freed.\bs
 
- \begin{figure}[H]
-     \centering
-     \includegraphics[width=0.9\textwidth]{figures/results/swap}
-     \caption{The swap environment, the robot is tasked with swapping the positions of the cylinder and the box.}%
-     \label{fig:benchmark_swap}
- \end{figure}
+In the swap environment the robot is tasked to swap the poses of the two objects in the environment.\bs
 
-In the surround environment the robot has to learn which box is movable to escape the enclosure of boxes.\bs
- \begin{figure}[H]
-     \centering
-     \includegraphics[width=0.9\textwidth]{figures/results/surrounded}
-     \caption{The surround environment, the robot is tasked with escaping the surrounding enclosure by driving to the target ghost position displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
-     \label{fig:benchmark_surround}
- \end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/results/swap}
+  \caption{The swap environment where the robot is tasked with swapping the poses of the cylinder and the box object.}%
+  \label{fig:benchmark_swap}
+\end{figure}
+Just as the previously presented blockade environment, the swap environment's purpose is to show the backward search technique that results in a generated action sequence. In that action sequence the cylinder or box can be eitehr $\mathit{obj_A}$ and the other object is $\mathit{obj_B}$. The action sequence moves $\mathit{obj_A}$ to free the path for $\mathit{obj_B}$ that is then pushed to it's target pose, the task is completed by pushing $\mathit{obj_A}$ toward it's target pose. The proposed \ac{halgorithm} does not perform global path optimization, and it can be shows using the swap environment. In the current figure above the initial robot-box, and robot-cylinder distances are equal. If these were unequal, for example, place the robot initial pose next to the box object and far from the cylinder object, there would be best object to manipulate first (the closer object). Since there is no global path optimized the robot selects to first manipulate the box or the cylinder randomly, resulting in half of the times driving further compared to a globally optimized path.\bs
 
-
+In the surrounded environment the robot has to learn which box is movable to escape the enclosure of boxes.\bs
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/results/surrounded}
+  \caption{The surrounded environment where the robot is tasked with escaping the surrounding enclosure by driving to the target ghost pose displayed on the right side in the figure. Every box objects is unmovable except the red box which is movable.}%
+  \label{fig:benchmark_surrounded}
+\end{figure}
+The surrounded environment's purpose is to present the effect of storing object classes. Initially the robot needs to find which object is movable and which are unmovable. By storing which object class information a generated action sequence immediately decides to push the movable red box.\bs
 
 \chapter*{System Models}%
-An overview is presented that classifies system models in three categories, analytical-, hybrid- and data-driven models.\bs
-
-\todo{re-read, re-write, re-structure what is below, but only if Corrado thinks it adds at least some value to the thesis}
+Robot pushing is modeled using system models, here an overview is presented that classifies pushing system models in three categories, analytical-, hybrid- and data-driven models.\bs
 
 \section*{Analytical models}
 Historically, analytical models are the first models to emerge, most prominently used are \textit{state-space} representations, \textit{transfer functions} and \textit{differential equations}. Building an analytical model requires thorough knowledge of the system it models, because every system parameter, such as mass, damping coefficient, the center of gravity, geometry, friction coefficient or inertia. Analytical approaches rely on accurate identification of physical parameters which makes analytical models unfit for manipulation while learning system models~\cite{arruda_uncertainty_2017},~\cite{stuber_featurebased_2018}.\\
 
-Nevertheless, the work in~\cite{bauza_dataefficient_2018} manages to create a stable controller for push manipulation using an analytical model. Because thorough model identification of the pushable object was performed, the trajectory error stayed within reasonable boundaries.
+Nevertheless, the work in~\cite{bauza_dataefficient_2018} manages to create a stable controller for push manipulation using an analytical model. Because thorough model identification of the pushable object was performed, the trajectory error stayed within reasonable boundaries.\bs
 
 \section*{Data-driven models}
-Among recent studies, data-driven models shown an uptrend in popularity~\cite{mericli_pushmanipulation_2015,bauza_dataefficient_2018,stuber_featurebased_2018,stuber_let_2020}. Fully data-driven methods don't model any structure of the system it describes, or use a generalised model which applies to all. A system is viewed as a black box, which is fed input and gives back output. This reduces the need for prior information about the system significantly. \ac{IO} data is analysed to estimate the structure of the black box. The \ac{IO} data analysed which solemnly serves the creation of a model is called the \textit{model train set}. The advantage of requiring a minimum of prior information comes at the cost of the amount of \ac{IO} data required. If there is not sufficiently much data, or the data is not rich enough then the model will not be accurate. For example,~\cite{bauza_dataefficient_2018} compared a purely analytical approach with a data-driven approach in push manipulation. The data-driven approach can take up to 200 samples of \ac{IO} data to sufficiently match the performance of an analytical controller. With more \ac{IO} data, data-driven approaches lower output errors and increase performance, outperforming analytical approaches but also outperforming hybrid approaches, which are discussed in the next subsection. Data-driven approaches outperform because data-driven approaches capture even tiny dynamical details of the true dynamics. That is, assuming that the dynamical details reside in the \ac{IO} data. \\
-
-Contact models used for push manipulation make use of robot-object contact or additionally use object-environment contact. With enough rich data contact models outperform analytical and hybrid approaches. To tackle the amount of data required a more hybrid approach is developed. Which separates agent-object contact from object-environment contact. To generate a new model, two things are required, first an object-environment contact model of the object to model, and second, a sufficiently learned agent-object contact model. The latter does not necessarily have to be created from the object to model, existing agent-object contact models, combined with transfer learning can be sufficient~\cite{kopicki_learning_2017}. \\
+Among recent studies, data-driven models shown an uptrend in popularity~\cite{mericli_pushmanipulation_2015,bauza_dataefficient_2018,stuber_featurebased_2018,stuber_let_2020}. Fully data-driven methods don't model any structure or use a generalised model of the system it describes. A system is viewed as a black box, which is fed input and gives back output. This reduces the need for prior information about the system significantly. \ac{IO} data is analysed to estimate the structure of the black box. The \ac{IO} data analysed which solemnly serves the creation of a model is called the \textit{model train set}. The advantage of requiring a minimum of prior information comes at the cost of the amount of \ac{IO} data required. If there is not sufficiently much data an identified model will not be accurate. If there is enough data, but the data does not encapsulate the systems behaviour enough, then a identified model will also not be accurate. The encapsulating system behavior should reside in the \ac{IO} data collected. During data collection the system should be persistently excited which depends upon the input sequence. The \textit{persistent excitation order of input signal} determines the amount of system behaviour ends up in the collected \ac{IO} data. Persistent excitation order of input signal is the degree to which an input contains enough information for exciting a system for system identification purpose~\cite{songsirijitkomut_input_2022}. The need for so much, rich \ac{IO} data can be showed with an example.~\cite{bauza_dataefficient_2018} compared a purely analytical approach with a data-driven approach in push manipulation. The data-driven approach can take up to 200 samples of \ac{IO} data to sufficiently match the performance of an analytical controller. With more \ac{IO} data, data-driven approaches lower output errors and increase performance, outperforming analytical approaches but also outperforming hybrid approaches, which are discussed in the next subsection. Data-driven approaches outperform because data-driven approaches capture even tiny dynamical details of the true dynamics. That is, assuming that the dynamical details reside in the \ac{IO} data.\\
 
 The nonlinear effects which dominate systems that describe object manipulation reside in \ac{IO} data, because data-driven approaches models are not assuming any structure which could limits capturing nonlinear effects, the data-driven approaches are a worthy method for estimating true dynamics. It must be mentioned that data-driven methods outperform other model classes with enough data, for which the training time is in robotics not always available. If other modelling approaches are available which estimating true dynamics accurate enough, the data-driven approach should be avoided because of the long lasting training time.
 
@@ -65,16 +62,10 @@ Hybrid models are an extension of analytical approaches with data-driven methods
 
 where $x$ is the state vector, $u$ is the input vector and $p$ is the parameterisation which needs to be found such that $f(x,u,p)$ accurately estimates the true dynamics. With a random or educated initial guess of the parameterisation $p$, a system model is provided without full knowledge of all system parameters. An initial guess as parameterisation may not be a very accurate model, but it does allow to skip a tedious system identification period. Online adaptation allows to converge to a local minimum during execution. Whether this local minimum also coincides with the global minimum is dependent on the optimisation technique and the initial guess. Parameterisable differential models are very powerful in situations where the general structure of dynamics is known, but certain parameters e.g. weight, the friction coefficient is unknown or change over time~\cite{seegmiller_vehicle_2013}.\\
 
-Single-bodies can and should be modelled as hybrid models, hybrid models allow a workable model which can be created from only the prior structural knowledge of the system. After some off or online system identification detailed parameters can be found, as effect the model will converge toward the true dynamics. While data-driven methods outperforms hybrid methods such methods take long to properly train. Object manipulation models are dominated by nonlinear dynamics, to fully capture such nonlinear dynamics, data-driven methods can and should model manipulation model, even if this means collecting a large train set.
-
 In a environment with unknown objects, the ability to rapidly interact with objects is provided by hybrid models. During interaction hybrid approaches can improve their model accuracy whilst also adapting to changing systems. To fully capture the push mechanics, data-driven methods should be used, because only data-driven methods are able to capture a large portion of the nonlinear dynamics.
 
 \chapter*{Control Methods}%
 
-
-\todo{
-todore-read, re-write, re-structure what is below, but only if Corrado thinks it adds at least some value to the thesis
-}
 \section*{\ac{MPC} Control}
 In recent literature involving predictive methods \acf{MPC} methods are dominating, before moving on to \ac{MPC} and variations of \ac{MPC}, \ac{MPC} will briefly be explained.  The basic concept of \ac{MPC} is to use a dynamic model to forecast system behaviour and optimise the forecast to produce the best decision for the control move at the current time. Models are therefore central to every form of \ac{MPC}. Because the optimal control move depends on the initial state of the dynamic system~\cite{rawlings_model_2020}. A dynamical model can be presented in various forms, let's consider a familiar differential equation.
 $$ \frac{dx}{dt} = f(x(t), u(t)) $$
@@ -114,7 +105,7 @@ node[near end, above]{$u(t)$};
     node[midway](output){}node[midway,above]{$y(t)$};
     \draw [-stealth] (output.center) |- ([yshift=0.5cm]controller.east);
 \end{tikzpicture}
-\caption{System $G(t)$ with input ${u}(t)$, output $y(t)$ and \acs{MPC} controller with input $y(t)$, reference signal $y_{ref}(t)$, parameterisation $p$ and constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$} \label{figure: mpc_block_diagam} \end{figure}
+\caption{System $G(t)$ with input ${u}(t)$, output $y(t)$ and \acs{MPC} controller with input $y(t)$\\reference signal $y_{ref}(t)$, parameterisation $p$ and constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$} \label{figure: mpc_block_diagam} \end{figure}
 
 Some states of the system might be inside an obstacle region, such a region is undesirable for the robot to be in or go toward. The robot states are allowed in free space, which is all space minus the obstacle region. The free space is specified as a state constrained set $\mathbb{X}$. Allowable input can be restricted by the input constraint set $\mathbb{U}$, a scenario in which input constraints are required is for example the maximum torque an engine produces at full throttle. Lastly, the set of allowed outputs is specified in the output constraint set $\mathbb{Y}$. State, input and output constraints must be respected during optimisation, the optimiser takes the state-, input- and output constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$ and if feasible, finds an action sequence driving the system toward the reference signal while constraints are respected. The \ac{MPC} system model predicts future states where the system is steered toward as a result of input actions.\\
 
@@ -137,7 +128,7 @@ After solving the minimisation problem, \cref{equation: mpc_problem}, the optima
 
 \section*{\ac{MPPI} Control}
 \label{sec:appendix_mppi}
-Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose. Which was followed by \ac{MPPI} control combined with various system models, identification methods~\cite{abraham_modelbased_2020,cong_selfadapting_2020,arruda_uncertainty_2017}. The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future a number of "rollouts" for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalised undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. If a goal state is not reached, the control loop starts with the next iteration. An example is provided, see  \cref{figure: mppi_car_with_rollouts}.
+Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose, which was followed by \ac{MPPI} control combined with various system identification methods and system models~\cite{abraham_modelbased_2020,cong_selfadapting_2020,arruda_uncertainty_2017}. The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future a number of "rollouts" for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalised undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. If a goal state is not reached, the control loop starts with the next iteration. An example is provided, see  \cref{figure: mppi_car_with_rollouts}.
 
 \begin{figure}[H]
     \centering
