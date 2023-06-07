@@ -1,22 +1,18 @@
 \chapter{Planning in Four Subspaces}%
 \label{chap:proposed_planning}
-\textit{This chapter presents an existing motion planner~\cite{chen_fast_2018} that is extended to incorporate movable and unknown spaces next to the conventional free and obstacle spaces. The modification incentivizes the planner to find a path in free space but can pass through unknown or movable space as a last resort. The robot should first remove the blocking objects if a planned path crosses an unknown or movable subspace.\bs}
+\textit{Finding a path between the start- and target configuration whilst avoiding collisions with an existing \ac{RRT*} path planner~\cite{chen_fast_2018} was presented at the end of the previous chapter. This chapter extends that existing path planner's configuration space from free- and obstacle space to also incorperate movable- and unknown space. Movable space originates from objects in the environment that are known to be movable, unknown space originates from objects for which it is unknown weither they are movable or unmovable. The planner avoids obstacle space, is incentivezed to plan only in free space but can pass through unknown or movable space. A direct path lies in free space only, a blocked path passes through unknown- or movable space. To free a blocked path and make it a direct path, the object that causes the unknown- or movable space should be moved out of the way.\bs}
 
-Finding a path between the start- and target configuration whilst avoiding collisions was presented in previous chapter. Now that path planner is modified; the modification extends the planner to incorporate movable and unknown space. The modified algorithm has four tuning parameters that can be tweaked; The \textit{step size} and \textit{search size} were discussed in previous chapter. The third and fourth tuning parameters are the fixed costs for crossing through movable or unknown space. These cost are added to the \textit{TotalPathCost}, which is redefined as:\bs
+The modified algorithm has four tuning parameters that can be tweaked; The \textit{step size} and \textit{search size} were discussed in \Cref{subsec:motion_planning}. The third and fourth tuning parameters are the \textit{UnknownSpaceCost} and \textit{MovableSpaceCost}, which are fixed costs for crossing through unknown or movable space. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in unknown space, \textit{UnknownSpaceCost} will be 0, equivalent to movable space and \textit{MovableSpaceCost}. These cost are added to the $\mathit{Cost_{path}}$, which is redefined as:\bs
 
 \[\mathit{Cost_{path}} = \mathit{MovableSpaceCost} + \mathit{UnknownSpaceCost} + \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1})\]
+
 Where $\mathit{n} \geq 2$ configuration points make up the path starting at $\gls{c}_\mathit{start}$ and ending at $\gls{c}_\mathit{target}$.\bs
 
-
-The \textit{MovableSpaceCost} and \textit{UnknownSpaceCost} correspond to a fixed addition cost for a configuration in the path that crosses through movable or unknown subspace, respectively. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in movable space, \textit{MovableSpaceCost} will be 0, equivalent to unknown space and \textit{UnknownSpaceCost}. Optimizing the path for the lowest cost incentives the path planning algorithm to find a path around unknown or movable objects.\bs
-
-The added fixed cost for a path crossing through a movable or unknown object motivates the path planner to find the shortest path around objects but prefers moving an object over making a large detour. Tuning the additional fixed cost for a path crossing through movable or unknown space balances the robot's decision between the length of a detour the robot is willing to drive, compared to pushing an object to free the path. Removing an unknown object bears more uncertainty than a movable object, motivating a higher cost to remove an unknown object compared to an known object. In the following pseudocode for the modified path planner is presented, changes compared to previously shown pseudocode are indicated in red.\bs
-
-The proposed algorithm prevents planning a path through blocking objects except when no other option is available or a large detour can be prevented. No performance tests have been conducted on the modified path planner, apart from visual inspection. \Cref{fig:mp_push_or_drive} clearly shows the effect of varying \textit{UnknownSpaceCosts}.
+The \ac{RRT*} algorithm searches for a path with the lowest cost, by adding a penalty for crossing through unknown or movable space the path planner is incentivised to find the shortest path around objects but prefers moving an object over making a large detour. Tuning the additional fixed cost for a path crossing through movable or unknown space balances the robot's decision between the length of a detour the robot is willing to drive, compared to pushing an object to free the path. Removing an unknown object bears more uncertainty than a movable object, motivating a higher cost to remove an unknown object compared to an known object. The pseudocode from \Cref{pseudocode:proposed_rrt_star_all} is presented again, with changes due to the extension indicated with a red colour.\bs
 
 \newpage
 \begin{algorithm}[H]
-  \caption{Pseudocode for modified \ac{RRT*} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are indicated with the red colour.}%
+  \caption{Pseudocode for extended \ac{RRT*} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are indicated with the red colour.}%
   \label{pseudocode:modified_proposed_rrt_star}
   \begin{algorithmic}[1]
     \State $\gls{nodesMP} \leftarrow x_{init}$
@@ -69,6 +65,8 @@ The proposed algorithm prevents planning a path through blocking objects except 
   \end{algorithmic}
 \end{algorithm}
 
+The proposed algorithm prevents planning a path through blocking objects except when no other option is available or a large detour can be prevented. No performance tests have been conducted on the modified path planner, apart from visual inspection. \Cref{fig:mp_push_or_drive} clearly shows the effect of varying \textit{UnknownSpaceCosts}.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}{\textwidth}
@@ -88,14 +86,30 @@ The proposed algorithm prevents planning a path through blocking objects except 
     \includegraphics[width=\textwidth]{figures/required_background/mp/mp_low_fixed_cost}
     \caption{Visualization of the planned path going through the brown box, $\mathit{UnknownSpaceCost} = 0.5$.}
     \end{subfigure}
-    \caption{Driving task and two path planned by the modified planning algorithm.}%
+    \caption{Driving task and two planned paths.}%
     \label{fig:mp_push_or_drive}
 \end{figure}
+
+
+\section{Kinodynamic Planning}
+A generated path for a non-holonomic robot, such as the boxer robot in \Cref{subfig:example_boxer_robot} should respect the non-holonomic constraints. To take dynamic constraints (e.g. non-holonomic constraints or constrains on the derivatives of the planned path) into account, a dynamic model should be incorperated. Respecting dynamic constraints during path planning is named \textit{kinodynamic planning} 
+
+\todo{cite some kinodynamic sources}
+\todo{eleboarte on kinodyn and the sample based}
+\todo{eleborate on how to incoreperate a dynamic model (and that sampling is then a bit different)}
+
+
+
+
+
+
+
+
+
 
 Now that the modified path planner is discussed, the proposed robotic framework is discussed. The proposed framework relies on the required background from previous chapter, and relies on the modified path planner from this chapter.\bs
 
 
-\todo{create a test that does things for the boxer robot, and it must have non-holonomic checker residing in the path}
 
 % old manipulation section shit
 
