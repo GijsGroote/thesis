@@ -19,7 +19,7 @@
 \frontmatter
 
 %% Defining the main parameters
-\title{A graph-based search\newline approach for planning and learning}
+\title{A graph-based search approach for planning and learning}
 
 \subtitle{An application to planar pushing and navigation tasks} 
 
@@ -40,15 +40,18 @@ page intentionally left blank.
 
 % list of figures, tables, symbols and acronyms
 \phantomsection
-\listoffigures
-\addcontentsline{toc}{chapter}{\listfigurename}
-
-\phantomsection
 \listoftables
 \addcontentsline{toc}{chapter}{\listtablename}
 
-\printunsrtglossary[type=symbols,style=long, title={List of Symbols}]
+\phantomsection
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename}
+
+{ \let\clearpage\relax\vspace{2cm}
 \input{frontmatter/acronyms}
+\vspace{2cm}}
+
+\printunsrtglossary[type=symbols, style=long, title={List of Symbols}] 
 
 %% Arabic page numbering
 \mainmatter

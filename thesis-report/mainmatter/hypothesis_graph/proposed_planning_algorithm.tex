@@ -1,7 +1,8 @@
-\chapter{Planning in Four Subspaces}%
+\chapter{Proposed Path Planner}%
 \label{chap:proposed_planning}
-\textit{Finding a path between the start- and target configuration whilst avoiding collisions with an existing \ac{RRT*} path planner~\cite{chen_fast_2018} was presented at the end of the previous chapter. This chapter extends that existing path planner's configuration space from free- and obstacle space to also incorperate movable- and unknown space. Movable space originates from objects in the environment that are known to be movable, unknown space originates from objects for which it is unknown weither they are movable or unmovable. The planner avoids obstacle space, is incentivezed to plan only in free space but can pass through unknown or movable space. A direct path lies in free space only, a blocked path passes through unknown- or movable space. To free a blocked path and make it a direct path, the object that causes the unknown- or movable space should be moved out of the way.\bs}
+\textit{Finding a path between the start- and target configuration whilst avoiding collisions with an existing \ac{RRT*} path planner~\cite{chen_fast_2018} was presented at the end of the previous chapter. This chapter extends that existing path planner's configuration space from free- and obstacle space to also incorperate movable- and unknown space. Movable space originates from objects in the environment that are known to be movable, unknown space originates from objects for which it is unknown weither they are movable or unmovable. The planner avoids obstacle space, is incentivezed to plan only in free space but can pass through unknown or movable space. A direct path lies in free space only, a blocked path passes through unknown- or movable space. To free a blocked path and make it a direct path, the object that causes the unknown- or movable space should be moved out of the way. Then a theoretic extension is mentioned to generate paths which respect dynamic constraints.\bs}
 
+\section{Planning in Four Subspaces}\label{sec:planning_in_four_subspaces}
 The modified algorithm has four tuning parameters that can be tweaked; The \textit{step size} and \textit{search size} were discussed in \Cref{subsec:motion_planning}. The third and fourth tuning parameters are the \textit{UnknownSpaceCost} and \textit{MovableSpaceCost}, which are fixed costs for crossing through unknown or movable space. Crossing through is defined as one or more nodes in the path lying in that subspace. If a path does not contain a node in unknown space, \textit{UnknownSpaceCost} will be 0, equivalent to movable space and \textit{MovableSpaceCost}. These cost are added to the $\mathit{Cost_{path}}$, which is redefined as:\bs
 
 \[\mathit{Cost_{path}} = \mathit{MovableSpaceCost} + \mathit{UnknownSpaceCost} + \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1})\]
@@ -90,26 +91,14 @@ The proposed algorithm prevents planning a path through blocking objects except 
     \label{fig:mp_push_or_drive}
 \end{figure}
 
+\section{Kinodynamic Planning}\label{sec:kinodynamic_planning}
+Path planning whilst respecting dynamic constraints (e.g. non-holonomic constraints or constrains on the derivatives of the planned path) is known as kinodynamic planning~\cite{donald_kinodynamic_1993}. A non-holonomic robot, such as the boxer robot in \Cref{subfig:example_boxer_robot} should respect the dynamic constraints, thus a path to track for the robot should be provided by a kinodynamic planner. To take dynamic constraints into account, a dynamic model should be incorporated. The popular method is to use motion primitives~\cite{sakcak_samplingbased_2019,karaman_samplingbased_2011}. Whilst other methods to respect dynamical constraints during path planning do exist (solving a two-point-boundary problem~\cite{li_asymptotically_2016}, setting curvature constraints with a steering function such as Dubins path or Reeds-Shepp curves~\cite{lavalle_planning_2006}) a description is provided to incorporate a dynamic model using motion primitives in the upcoming paragraph.\bs
 
-\section{Kinodynamic Planning}
-A generated path for a non-holonomic robot, such as the boxer robot in \Cref{subfig:example_boxer_robot} should respect the non-holonomic constraints. To take dynamic constraints (e.g. non-holonomic constraints or constrains on the derivatives of the planned path) into account, a dynamic model should be incorperated. Respecting dynamic constraints during path planning is named \textit{kinodynamic planning} 
+When sampling a new node in the path planner a dynamic model can be incorporated. Currently a new node is created by generating random number within the boundaries of every dimension of the configuration space. Then to project that configuration point to the closes node, followed by a check if the newly sampled configuration does not lie in unmovable space, see lines 3-11 in \Cref{pseudocode:modified_proposed_rrt_star}. To involve a dynamic model newly samples nodes are created by selecting a existing node, propagate a dynamic system model for a predefined number of time steps using randomly sampled input and the existing node as initial state. If the simulated future state does not lie in unmovable space, it is converted to a newly sampled node for the path planner. That new node, will respect the dynamic constraints since it is is created as a future simulation using a system model that respects the dynamic constraints.\bs
 
-\todo{cite some kinodynamic sources}
-\todo{eleboarte on kinodyn and the sample based}
-\todo{eleborate on how to incoreperate a dynamic model (and that sampling is then a bit different)}
-
-
-
-
-
-
-
-
-
+This thesis focuses on the improvement of task execution as a result of learning dynamical models on how to manipulate objects in the robot environment. The proposed path planning algorithm can be extended into a kinodynamic planning algorithm to generate paths that respect non-holonomic and dynamic constraints. As will become clear later in this thesis, the selection of a dynamic model for a certain manipulation action will improve over time when the robot becomes more experienced in the robot environment. To incorporate a system model into path planning leads to the conclusion that: \textit{When using dynamic models that improve modeling the system in term of capturing dynamics and lowering model mismatch, the path planner that incorporates a dynamic model to generate new nodes will improve the paths generated. Where path improvement implies firstly, that the system can be controlled to track a path found, secondly paths that do not respect the dynamic constraints are not generated.} Later in this thesis, during testing, the holonomic point robot is used. Since the point robot has no dynamic or non-holonomic constraints that must be respected, no extension of the proposed planning algorithm is made that makes the path planner a kinodynamic path planner.\bs
 
 Now that the modified path planner is discussed, the proposed robotic framework is discussed. The proposed framework relies on the required background from previous chapter, and relies on the modified path planner from this chapter.\bs
-
-
 
 % old manipulation section shit
 

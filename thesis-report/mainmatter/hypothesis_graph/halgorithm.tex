@@ -138,7 +138,7 @@ In contrast to identification edges, action edges must first take several action
       Action edge status& action taken by \textit{MakeReady} function\\\toprule
       INITIALIZED& Create a path estimator and estimate path existence. If no path can be estimated, the status is updated to FAILED. If a path can be estimated, a shortest path is found that acts as a \quotes{warm start} for the path planner.\\
       PATH EXISTS& Load in a system model.\\
-      SYSTEM MODEL& Create path planner and plan path. The edge status is updated to FAILED if no path can be found. If a path is found, it acts as a reference signal for the controller. In the case of an push action edge, a $\gls{node}_\mathit{best\_push\_position}$ is created. Additionally, the path the planner finds can indicate that an object is blocking. In such cases, the \ac{halgorithm} must first push that object to free the path. An example of such a case is provided in \Cref{fig:blocking_obj_hgraph}.
+      SYSTEM MODEL& Create path planner and plan path. The edge status is updated to FAILED if no path can be found. If a path is found, it acts as a reference signal for the controller. In the case of an push action edge, a $\gls{node}_\mathit{best\_push\_position}$ is created. Additionally, the path the planner finds can indicate that an object is blocking. In such cases, the \ac{halgorithm} must first push that object to free the path. An example of such a case is provided in \Cref{fig:blocking_obj_hgraph_one}.
     \end{tabular}
 \end{table}
 

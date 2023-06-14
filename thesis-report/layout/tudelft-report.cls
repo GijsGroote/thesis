@@ -248,10 +248,10 @@
 
     \node[below=1cm,fill=black!85,minimum width={\paperwidth},inner ysep=25pt,opacity=0.6,text opacity=1] at (current page.north) {%
         \begin{minipage}{0.9\paperwidth}
-            \largetitlestyle\fontsize{43}{43}\selectfont\color{title}\@title \\[0.5ex]
+            \largetitlestyle\fontsize{39}{39}\selectfont\color{title}\@title \\[1.5ex]
             \color{white}\normalfont\fontsize{22}{22}\selectfont%
             \ifdefvoid{\@subtitle}{}{\@subtitle \\[2.5ex]}%
-            \ifdefvoid{\@subject}{}{\@subject \\[0.5ex]}
+            \ifdefvoid{\@subject}{}{\@subject \\[2.5ex]}
             \largetitlestyle\fontsize{24}{24}\selectfont\ifdefvoid{\@covertable}{\@author}{\@covertable}
         \end{minipage}};
 

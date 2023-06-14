@@ -1,6 +1,8 @@
 \chapter{Future work}%
 \label{chap:future_work}
 
+\todo{extend the planner to a kinodynamic planner?}
+
 \section*{System identification Module}
 The thesis provides an module that collects \ac{IO} data for a robot driving system, and for a system that describes the robot pushing an object. It has been fully integrated into the proposed robot framework, but has been replace by analytic models during testing. The appendix provides a categorization that categorized system models in three categories; data-driven model, hybrid models and analytic models. A valuable extension on is to add system identification methods, and to investigate task execute performance with data-driven- and hybrid system models.\bs
 
@@ -8,7 +10,7 @@ The thesis provides an module that collects \ac{IO} data for a robot driving sys
 Whilst gaining more experience in an robot environment, the proposed framework converges toward a specific edge parameterization for each object. Such an edge parameterization or manipulation strategy exists of the controller and system model, for robot driving (\ac{MPC}, \textit{lti-drive-model}), for object pushing (\ac{MPPI}, \textit{nonlinear-push-model-1}). During testing every manipulated object converged toward the same edge parameterization. Three aspects could be improved; more variation if objects; more experimenting with success factors to generate edge feedback; a larger set of parameterization. All three influence the parameterization to which the \ac{halgorithm}converges. It is expected but not shown, that objects that are dissimilar in properties have different parameterization to which they converge. 
 
 \section*{Benchmark Tests}
-Three benchmark test have been created to test the proposed robot framework. As a result of poor planning and unforeseen implementation failures, the aforementioned environments have failed to yield any results. The environments that accompany these benchmark test have been moved toward the appendix, \Cref{chap:appendix}.\bs
+Three benchmark test have been created to test the proposed robot framework. As a result of poor planning and unforeseen implementation failures, the aforementioned environments have failed to yield any results. The environments that accompany these benchmark test have been moved toward the appendix.\bs
 
 \section*{Removing Assumptions}
 Every assumption taken in \Cref{chap:introduction} serves to simplify the problem and to narrow the scope of this thesis. They can however all be removed. Starting with assumption \hyperref[assumption:closed_world]{\textbf{closed-world assumption}}, without this assumption the proposed framework must be much more robust. The proposed framework can with the help of this assumption conclude many conclusions deterministically. Examples are the feedback on edges and the classification of an object as unmovable or movable. In real-world applications unmovable objects can become movable, to make the transition toward removing the closed-world assumption the proposed framework must be converted to a probabilistic variant.\bs
