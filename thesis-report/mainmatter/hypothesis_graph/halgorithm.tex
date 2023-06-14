@@ -51,7 +51,7 @@ The generated and executed example for a driving task just discussed is provided
 \paragraph{Initialization of the \ac{halgorithm}}
 the \ac{halgorithm} is initialized with a task that consists of one or more subtasks. Start- and target nodes are created for every subtask, and their status is set to INITIALIZED. Then the goal of the \ac{halgorithm} is to connect every starting node to its corresponding target node with a hypothesis. The target node's status is set to COMPLETED when a hypothesis is completed successfully. If the \ac{halgorithm} could not find a hypothesis that completes a subtask, the \ac{halgorithm} concludes it cannot complete that subtask, and the target node's status is set to FAILED.\bs
 
-\paragraph{The Search and the Execution Loop}
+\subsection{The Search and the Execution Loop}
 the proposed algorithm comprises two main parts, a search loop and an execution loop. The \ac{halgorithm} searches for a hypothesis in the search loop. In the executions loop, the \ac{halgorithm} tests hypotheses by executing the edges which form the hypothesis. This chapter finalized with a flowchart in \cref{tikz:flowchart_halgorithm} that will be familiar to the following figure where the two main loops can be identified.\bs
 
 \begin{figure}[h]
@@ -157,7 +157,7 @@ For push action, that margin is set to 2 meters, measured in Euclidean distance 
 \paragraph{Completing Hypotheses and Edges}
 When the last edge in an hypothesis is completed, that subtask is completed. The \ac{hgraph} randomly selects a next subtask to complete until there are no unfinished subtasks left, the \ac{halgorithm} then concludes that the task is completed. Opposed to successful completion, subtasks can unsuccessfully complete, which is discussed in the upcoming paragraph.\bs
 
-\paragraph{Fault Detection}%
+\subsection{Fault Detection}%
 \label{sec:monitoring_metrics}
 The proposed framework implements a fault metric named the \textit{monitored metrics} which are presented shortly, first motivation for the monitoring metrics is given. When the \ac{halgorithm} resides in the execution loop, it cannot search for action sequences, which is performed in the search loop. During the execution of an action, the \acl{halgorithm} is unable to perform any other action. This blocking behavior has some implications, mainly that the controller can steer the system to a configuration from which it cannot independently reach the target configuration, as a result, it will never halt. For example, a controller tries to drive the robot toward a target configuration but there is an unmovable obstacle in the way. Another example is the controller is closed-loop unstable and never reaches its target configuration. Both examples do not occur is well defined simulation environments, because of the \textit{closed-world assumption}. In the real world, an unexpected blocking obstacle or unstable controllers are more likely to occur.\bs
 
@@ -184,7 +184,7 @@ The system should not diverge too far from to path it is supposed to track, if t
 
 The predefined thresholds are split for drive and push actions because driving actions have much lower average \ac{PE} and \ac{TE} compared to push actions. For drive action edges, when the average of the last 25 recorded \ac{PE}'s is higher than 0.05 meter, or the \ac{TE} is higher than 2 meters, a fault is concluded. For push actions only a \ac{TE} is used, which is split into two parts. One ensures the object follows the path, and another ensures that the robot does not deviate too far from the object. If, for a pushing edge, the object deviates more than 2 meters from the path or the robot deviates more than 2 meters from its push position determined by the object pose, a fault is concluded.\bs
 
-\paragraph{The Blocklist}%
+\subsection{The Blocklist}%
 The blocklist prevents the regeneration of failed edges. The infinite loop of creating an edge that fails only to be regenerated is prevented. The blocklist keeps a list of edge parameterization as well as the node identifier if failed on. Newly generated edges are checked against this blocklist, if they are on the blocklist, initialization of the edge is prevented. The possible parameterizations are filtered when two nodes are connected with an action edge. Thus, any parameterization on the blocklist for a specific node (to which the action edge would point to) cannot be created again for the lifetime of the \ac{hgraph}.\bs
 
 In the following example, \Cref{fig:failure_in_hgraph} faults are detected, these edges are added to the blocklist, the first hypothesis fails to complete, and the \ac{halgorithm} tries to generate a new hypothesis that also fails to complete.\bs
@@ -223,8 +223,8 @@ In the following example, \Cref{fig:failure_in_hgraph} faults are detected, thes
 
 In \Cref{fig:failure_in_hgraph}, only two parameterizations of drive controllers and system models were available. Thus after two failed hypotheses, the \ac{halgorithm} concludes that the task is unfeasible. All functionality is now discussed and is neatly summarized in the following table. Then, pseudocode for the proposed \ac{halgorithm} is presented.\bs
 
-\paragraph{Encountering a Blocked Path}%
-During the propagation of an action edge's status, path planning occurs discussed in \Cref{subsec:motion_planning,chap:proposed_planning}. A blocking object is detected when the path found crosses through unknown of movable space. An example is now discussed that elaborates upon the \ac{halgorithm} response when encountering a blocked path. An example of such an environment can be visualized in \Cref{subfig:push_or_drive_env} where the \textit{UnknownSpaceCost} is set to 0.5 meter. The example \ac{hgraph} that will now be discussed generalizes over drive tasks that can be completed if an blocking object is pushed to free the path.\bs
+\subsection{Encountering a Blocked Path}%
+During the propagation of an action edge's status, path planning occurs discussed in \Cref{subsec:path_planning,chap:proposed_planning}. A blocking object is detected when the path found crosses through unknown of movable space. An example is now discussed that elaborates upon the \ac{halgorithm} response when encountering a blocked path. An example of such an environment can be visualized in \Cref{subfig:push_or_drive_env} where the \textit{UnknownSpaceCost} is set to 0.5 meter. The example \ac{hgraph} that will now be discussed generalizes over drive tasks that can be completed if an blocking object is pushed to free the path.\bs
 
 The \ac{halgorithm} creates the start- and target node for the robot in \Cref{subfig:blocking_obj_1}, and creates a first hypothesis which can be visualized in \Cref{subfig:blocking_obj_2}. When propagating the drive action edge status, path planning occurs, during which a blocking object is detected that blocks a direct path. To free that path two nodes are generated, first, a target node for the blocking object \textit{blocking\_object\_target} that target node indicates the blocking object at a pose that is no longer blocking the path. The second node represents the blocking object at its current pose, because there does not yet exist a node for the blocking object at its current pose, the \ac{halgorithm} generates a new node for the blocking object at it's current pose named \textit{blocking\_object} that can be seen in \Cref{subfig:blocking_obj_3}.\bs
 

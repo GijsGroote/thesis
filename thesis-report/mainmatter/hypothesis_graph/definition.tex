@@ -1,4 +1,4 @@
-\subsection{Definition of the Hypothesis Graph}%
+\subsection{Definition}%
 \label{subsec:hgraph_definition}%
 Before defining the \ac{hgraph}, some definitions are provided on which the \ac{hgraph} depends. First, recall the \textbf{configuration} definition.\bs
 
@@ -33,7 +33,7 @@ Formally, a \textbf{hypothesis graph}, $\gls{hgraph} = \left\langle \gls{nodesH}
 
 Most \ac{hgraph} components have been defined. The status of an identification or action edge remains undefined and requires further explanation.\bs
 
-\paragraph{Status, Types and Lifetime of edges}
+\subsection{Edge statusus}
 The edges are split into two categories, identification edges and action edges. An identification edge sends an input sequence and records the system output. That \ac{IO} sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \Cref{sec:sys_iden}. The goal is to create a dynamic model augmented with a corresponding controller that forms closed-loop stable control. The status of an identification edge can be visualized in the following \ac{FSM}.\bs
 
 \begin{figure}[H]
@@ -120,6 +120,10 @@ COMPLETED (CO): & The edge has driven the system toward its target configuration
 FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
+
+
+\subsection{Legend}
+\todo{hmmm, you want this?}
 
 \Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed.
 Before executing edges, edges must be initialized, which is where the next section is dedicated to.\bs

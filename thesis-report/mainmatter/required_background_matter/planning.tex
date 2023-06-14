@@ -166,8 +166,8 @@ The path estimator suffers from another drawback, finding proof that there exist
 The path existence algorithm can detect non-existence paths. Thus checking path existence before motion or manipulation planning filters out several non-existent paths saving time and resources. Even if, in exceptional cases, the path estimator can yield unfeasible paths and fails to detect existing paths. Checking path existence before path planning filters some non-exist paths and is additionally motivated by two reasons. First, path estimation is orders of magnitude faster compared to path planning. Secondly, the path estimation algorithm can provide a number of initial nodes to the path planner that can act as a \quotes{warm start}.
 
 
-\subsection{Motion Planning}%
-\label{subsec:motion_planning}
+\subsection{Path Planning}%
+\label{subsec:path_planning}
 Controllers discussed in \Cref{sec:control_methods} can track a path from start to target, given that all necessary ingredients are provided. One essential ingredient is a path to follow, and providing a path is the planners' responsibility; planners seek inside the configuration space for a path from the start to the target configuration. A practical example of such a path is a list of successive points in configurations space. How far the successive points can lie apart is a tuning parameter of the planner. Seeking a path in configuration space whilst avoiding unmovable objects is referred to as \textit{path planning} and can be described as:\bs
 
 \textit{\quotes{The main idea is to avoid the explicit construction of the object space and instead conduct a search that probes the configuration space with a sampling scheme. This probing is enabled by a collision detection module, which the path planning algorithm considers a “black box.”~\cite{lavalle_planning_2006}}}\bs
