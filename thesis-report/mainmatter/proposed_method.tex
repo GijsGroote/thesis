@@ -1,11 +1,11 @@
 \input{mainmatter/hypothesis_graph/proposed_planning_algorithm}
  
 \chapter{Proposed Robot Framework}%
-\label{chap:hgraph_and_kgraph}
-\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{halgorithm}, the \acl{hgraph} and the \acl{kgraph}. The \textbf{\acf{halgorithm}} acts on the \textbf{\acf{hgraph}} and is responsible for searching and executing action sequences to complete a specified task. \Cref{sec:hgraph} is dedicated to introducing and defining the \ac{hgraph}. Then the \ac{halgorithm} is discussed and defined in \Cref{sec:halgorithm}. The chapter finalizes with the \ac{kgraph} in \Cref{sec:kgraph}.\bs}
+\label{chap:h-graph_and_k-graph}
+\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{h-algorithm}, the \acl{h-graph} and the \acl{k-graph}. The \textbf{\acf{h-algorithm}} acts on the \textbf{\acf{h-graph}} and is responsible for searching and executing action sequences to complete a specified task. \Cref{sec:h-graph} is dedicated to introducing and defining the \ac{h-graph}. Then the \ac{h-algorithm} is discussed and defined in \Cref{sec:h-algorithm}. The chapter finalizes with the \ac{k-graph} in \Cref{sec:k-graph}.\bs}
 
 \section{Overview of the Proposed Framework}
-\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the \ac{kgraph}, \ac{halgorithm} and the robot environment.\bs
+\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the \ac{k-graph}, \ac{h-algorithm} and the robot environment.\bs
 
 \vspace{-0.2cm}
 \begin{figure}[H] \centering
@@ -31,18 +31,18 @@
     minimum height=2cm,
     minimum width=5cm,
     node distance=4.1cm,
-    outer sep=0cm] (hgraph) {Hypothesis Algorithm};
+    outer sep=0cm] (h-graph) {Hypothesis Algorithm};
 
     \node [block,
-    above of=hgraph,
+    above of=h-graph,
     node distance=3.3cm,
     minimum width=5cm,
-    minimum height=2.0cm] (kgraph) {Knowledge Graph};
+    minimum height=2.0cm] (k-graph) {Knowledge Graph};
 
     \node [rectangle, draw,
     fill=myEvenLighterColor,
     text width=5em, text centered, rounded corners,
-    right of=kgraph,
+    right of=k-graph,
     minimum width=4cm,
     minimum height=2cm,
     node distance=7.2cm] (ontology) {Ontology};
@@ -50,18 +50,18 @@
     \node [rectangle, draw,
     fill=myEvenLighterColor,
     text width=5em, text centered, rounded corners,
-    right of=hgraph,
+    right of=h-graph,
     minimum width=4cm,
     minimum height=2cm,
     node distance=7.2cm] (planner) {High-level planner};
 
     % Draw edges
-    \draw[-stealth] ([yshift=0.155cm, xshift=0.4 cm]environment.north) -- node [xshift=-.05cm, right] {\shortstack[]{sensor\\measurements}}([xshift=0.4 cm]hgraph.south) ;
-    \draw[-stealth] ([xshift=-0.4 cm]hgraph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.4 cm]environment.north) ;
-    \draw[-stealth] (planner.west) -- node [pos=0.37, above] {task}(hgraph.east);
-    \draw[-stealth] ([xshift=-0.4cm]kgraph.south) -- node [left] {\shortstack[]{action\\suggestions}}([xshift= -0.4cm]hgraph.north) ;
-    \draw[stealth-] ([xshift=0.4cm]kgraph.south) -- node [right] {\shortstack[]{action\\feedback}}([xshift= 0.4cm]hgraph.north) ;
-    \draw[-stealth] (kgraph.east) -- node [xshift=-0.1cm, above, pos=0.63] {\shortstack[]{environment\\knowledge}}(ontology.west);
+    \draw[-stealth] ([yshift=0.155cm, xshift=0.4 cm]environment.north) -- node [xshift=-.05cm, right] {\shortstack[]{sensor\\measurements}}([xshift=0.4 cm]h-graph.south) ;
+    \draw[-stealth] ([xshift=-0.4 cm]h-graph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.4 cm]environment.north) ;
+    \draw[-stealth] (planner.west) -- node [pos=0.37, above] {task}(h-graph.east);
+    \draw[-stealth] ([xshift=-0.4cm]k-graph.south) -- node [left] {\shortstack[]{action\\suggestions}}([xshift= -0.4cm]h-graph.north) ;
+    \draw[stealth-] ([xshift=0.4cm]k-graph.south) -- node [right] {\shortstack[]{action\\feedback}}([xshift= 0.4cm]h-graph.north) ;
+    \draw[-stealth] (k-graph.east) -- node [xshift=-0.1cm, above, pos=0.63] {\shortstack[]{environment\\knowledge}}(ontology.west);
     \draw[stealth-] ([xshift=0.4cm]ontology.south) -- node [right] {\shortstack[]{query}}([xshift=0.4cm]planner.north);
     \draw[-stealth] ([xshift=-0.4cm]ontology.south) -- node [left] {\shortstack[]{output}}([xshift=-0.4cm]planner.north);
     \draw[stealth-] (planner.south) |- ++ (2,-1) node[near end, above] {\shortstack[]{High-level\\task}};
@@ -73,12 +73,12 @@
 The above figure shows that the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs
 
 \input{mainmatter/hypothesis_graph/hypothesis_graph}
-\input{mainmatter/hypothesis_graph/halgorithm}
+\input{mainmatter/hypothesis_graph/h-algorithm}
 \input{mainmatter/knowledge_graph/knowledge_graph}
 
-What by now hopefully became clear to the reader is that the \ac{halgorithm} autonomously searches for hypotheses in the \ac{hgraph} to solve a task, one subtask at a time. The \ac{halgorithm} switches between the search and execution loop. Switching from the search loop toward the execution loop when a hypothesis is found and switching back when a hypothesis is completed, or a fault is detected.\bs
+What by now hopefully became clear to the reader is that the \ac{h-algorithm} autonomously searches for hypotheses in the \ac{h-graph} to solve a task, one subtask at a time. The \ac{h-algorithm} switches between the search and execution loop. Switching from the search loop toward the execution loop when a hypothesis is found and switching back when a hypothesis is completed, or a fault is detected.\bs
 
 The limited number of possible edge parameterization (every combination of a system identification method with a compatible control method) guarantees that the robot tries to complete a subtask. However, it concludes that it cannot complete a subtask if all possible edges have failed.\bs
 
-This thesis proposes to combine the three topics (one, learning object dynamics, two, the \ac{NAMO} problem, and three, nonprehensile push manipulation to target pose). The \ac{halgorithm} can solve \ac{NAMO} problems because the robot can drive toward target poses even if reaching such a pose requires objects to be moved first. The proposed algorithm learns to classify objects by updating the object's class from unknown to movable or unmovable. The \ac{halgorithm} can push objects to target poses by identifying a system model and then pushing the object toward its target pose. However, the system model that system identification yields is of short use because it is only given to the corresponding action edge.\bs
+This thesis proposes to combine the three topics (one, learning object dynamics, two, the \ac{NAMO} problem, and three, nonprehensile push manipulation to target pose). The \ac{h-algorithm} can solve \ac{NAMO} problems because the robot can drive toward target poses even if reaching such a pose requires objects to be moved first. The proposed algorithm learns to classify objects by updating the object's class from unknown to movable or unmovable. The \ac{h-algorithm} can push objects to target poses by identifying a system model and then pushing the object toward its target pose. However, the system model that system identification yields is of short use because it is only given to the corresponding action edge.\bs
 
