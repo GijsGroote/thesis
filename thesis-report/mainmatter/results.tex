@@ -1,13 +1,9 @@
 \chapter{Results}%
 \label{chap:results}
-\textit{This chapter presents various robot environments and tasks that challenge the proposed framework. The test results provide evidence that supports the claims in the conclusion \Cref{chap:conclusion}. This chapter starts by introducing \textbf{method metrics} in \Cref{sec:proposed_method_metrics} that measure task performance. Then the proposed framework solves driving and pushing tasks in randomized environments in \Cref{sec:randomization}. The chapter finishes with a comparison with the state-of-the-art in \Cref{sec:compare_with_related_papers}.\bs}
+\textit{This chapter presents various robot environments and tasks that challenge the proposed framework. The test results provide evidence that supports the answers to the research questions. The chapter starts by presenting metrics that measure task performance, the simulation environment is introduced, then a number of system models is presented and tuning variables are specified. With the system models defined and tuning parameters set test are presented, a randomized environment that is split in task that mainly involve driving and tasks that mainly involve pushing. The chapter finishes with a comparison with the state-of-the-art in \Cref{sec:compare_with_related_papers}.\bs}
 
-\paragraph{The Simulation Environment}
-Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments are taken on laptop with specifications. Laptop: HP ZBook Studio x360 G5, OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile.\bs
-
-\section{Method Metrics}%
-\label{sec:proposed_method_metrics}
-The proposed frameworks task performance is measured in metrics named the method metrics, these include the \ac{PE}, search-, execute- and total time to complete a task. Note that two other metrics have been defined and should not be confused; the monitoring metrics and the edge metrics. The results are interesting, but most interesting is the progression of the method metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to state-of-the-art. Now, the method metrics are presented in~\Cref{table:proposed_method_metrics} with corresponding argumentation on the relevance of the metric.\bs
+\paragraph{Metrics to Measure Task Performance}
+The proposed frameworks task performance is measured in metrics, these include the \ac{PE}, search-, execute- and total time to complete a task. We can draw conclusions from the evolution of the metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to state-of-the-art. Now, the method metrics are presented in~\Cref{table:proposed_method_metrics}.\bs
 
 \noindent
 \begin{table}[H]
@@ -16,39 +12,39 @@ The proposed frameworks task performance is measured in metrics named the method
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
-\acl{PE} [meter[ & The \ac{PE} is calculated every time step, then the \ac{PE} is augmented into a single list. That list is then later analyzed by calculating for example the mean and standard deviation. The \ac{PE} is high when unexpected behaviour occurs, unexpected behaviour can be expected when entering a new environment. When the \ac{PE} lowers that would indicate the robot encounters less unexpected behaviour, indicating the robot is learning.\\
+\acl{PE} [meter] &  The \ac{PE} is high in two scenario's, first when unexpected behaviour occurs, second when the system model used to calculate the \ac{PE} describes the system poorly. When the \ac{PE} is low, that would indicate the robot encounters expected behaviour and that the model describes the system accurate. If the \ac{PE} is lowering during task execution over time, that would indicating the robot is learning to select models that are more accurate and less unexpected behavior occurs.\\
 % Total Average\newline \acl{TE}& The total average \ac{TE} is created by averaging over every hypothesis' average \ac{TE} in a \ac{hgraph}. Seeing the total average \ac{TE} lower over time would indicate the robot is selecting better suitable controllers and system models, indicating the robot is learning.\\
 % Final poses and\newline displacement errors & The final pose and displacement error is a metric which how a controller performs. This thesis does not create or investigate controllers, but it is interesting to see why different controllers are preferred for different objects. The final pose and displacement error could be the cause.\\
 % The ratio between the number of hypotheses and the number of tasks & Expected is that whilst learning system models, the hypothesis created will be more effective. Thus the ratio between the total number of hypotheses and the total number of tasks is expected to lower with new knowledge.\\
 % The ratio between the number of successful and the number of total edges in \ac{kgraph} & When the \ac{kgraph} improves recommending a controller and system model, the ratio between successful edges and total edges is expected to increase because, with better recommendations, more edges will be completed.\\
-search time [sec]& The time the proposed framework spends searching for hypotheses. The search time is very dependent on the environment and the number of subtask in the task. The search time can be used for comparison if both tasks are equal.\\ 
-execution time [sec] & The time the proposed framework spends executing hypotheses. Just as the search time, conclusions can be drawn when comparing the execution time between similar tasks.\\ 
-task time & search time + execution time. \\
+search time [sec]& The time the proposed framework spends searching for hypotheses. The search time is dominated by path planning because compared to path estimation, updating the \ac{hgraph} it is time consuming. The number of subtasks in a task, the environment and the number of unknown and classified objects influence the number of paths to be planned and the duration of planning, and thus the search time.\\ 
+execution time [sec] & The time the proposed framework spends executing hypotheses. The execution time is dominated by path length, driving or pushing toward a target pose on the other side of the workspace takes more time compare to a target pose closeby the initial pose.\\ 
+total time [sec] & search time + execution time.\\
 \end{tabular}
 \end{table}
 
-The simulation environment provides many different robots, of which one robot is selected to perform tests, the point robot, which is are displayed in \Cref{fig:example_robots}. The point robot takes an velocity input along the \gls{x}- and in \gls{y}-axis.\bs
-robot input is defined as:\bs
+\paragraph{The Simulation Environment}
+Testing in a simulation environment has been done using the URDF Gym Environment~\cite{spahn_urdfenvironment_2022}, a 100\% python environment build upon the PyBullet library~\cite{coumans_pybullet_2016}. The code created during the thesis can be found on \href{https://gitlab.tudelft.nl/airlab-delft/msc_projects/msc_gijs_groote}{GitLab} and \href{https://github.com/GijsGroote/semantic-thinking-robot}{GitHub}. Experiments are taken on laptop with specifications: Laptop: HP ZBook Studio x360 G5, OS:~Ubuntu 22.04.1 LTS x86\_64, CPU: Intel i7-8750H (12) @ 4.100GHz, GPU: NVIDIA Quadro P1000 Mobile. The simulation environment provides many different robots, of which one robot is selected to perform tests, the point robot, which is are displayed in \Cref{fig:example_robots}. The point robot takes an velocity input along the \gls{x}- and in \gls{y}-axis.\bs
 
+Robot input is defined as:\\
 \[ u(k) = {[ u_{\gls{x}}(k), u_{\gls{y}}(k) ]}^\top \]
 
-
-During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} drive controller, and a \ac{MPPI} push controller that were introduced in \Cref{sec:control_methods}. Three system models are used, a \ac{LTI} model describing robot driving, and two nonlinear model describing the robot pushing an object. First a short textual description of the available system models is provided below. Second, the state space model is provided for the three implemented models.\bs
-
+During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} controller for driving the robot, and a \ac{MPPI} controller for robot pushing. The \ac{MPC} and \ac{MPPI} control methods were introduced in \Cref{sec:control_methods}. Three system models are implemented, a \ac{LTI} model describing robot driving, and two nonlinear model describing the robot pushing an object. First a short textual description of the available system models is provided below. Second, the state-space model is provided for the three implemented models.\bs
 
 \begin{table}[H]
-\caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column. With a short description in the corresponding right column.}\label{table:available_system_models}
+\caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column.}\label{table:available_system_models}
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
-\textit{lti-drive-model} & A second order \ac{LTI} model that can be used by both the \ac{MPC} and the \ac{MPPI} drive controller. The next robot configuration is based on the current configuration and robot system input in \gls{x} and \gls{y} direction. \\
-\textit{nonlinear-push-model-1} & A nonlinear model describing the next object configuration in \gls{x} and \gls{y} direction and the next robot configuration in \gls{x} and \gls{y} direction. The next object and robot configuration are based on the current configurations and robot system input in \gls{x} and \gls{y} direction.\\
-\textit{nonlinear-push-model-2} & A nonlinear model describing the next object configuration in \gls{x}, \gls{y} direction and the orientation \gls{theta}, and the robot configuration in \gls{x} and \gls{y} direction based on the current configurations of the robot, the object and on the robot inputs in \gls{x} and \gls{y} direction.\\
+\textit{lti-drive-model} & A second order \ac{LTI} model that is compatible with both the \ac{MPC} and the \ac{MPPI} drive controller. The state variables are the robot's \gls{x} and \gls{y} position. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT} and robot system input $u(k)$.\\
+\textit{nonlinear-push-model-1} & A nonlinear model that is compatible with only the \ac{MPPI} push controller. The state variables are the robot's and the pushed object's \gls{x} and \gls{y} position. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT} and robot system input $u(k)$.\\
+\textit{nonlinear-push-model-2} & 
+A nonlinear model that is compatible with only the \ac{MPPI} push controller. The state variables are the robot's and the pushed object's \gls{x} and \gls{y} position and the objects orientation $\gls{theta}_\mathit{obj}$. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT}, robot system input $u(k)$ and geometrical variables $v_p$ and $s_t$.\\
 \end{tabular}
 \end{table}
 
-State space representation of the \textit{lti-drive-model}:\bs
+State-space representation of the \textit{lti-drive-model}:\bs
 
 \begin{equation}
 \label{eq:lti-drive-model}
@@ -64,7 +60,7 @@ x_{\mathit{lti-drive-model}}(k+1)=
 \end{bmatrix}
 \end{equation}
 
-State space representation of the \textit{nonlinear-push-model-1}:\bs
+State-space representation of the \textit{nonlinear-push-model-1}:\bs
 
 \begin{equation}
 x_{\mathit{nonlinear-push-model-1}}(k+1)=
@@ -85,7 +81,7 @@ x_{\mathit{nonlinear-push-model-1}}(k+1)=
 \end{equation}
 
 
-State space representation of the \textit{nonlinear-push-model-2}:\bs
+State-space representation of the \textit{nonlinear-push-model-2}:\bs
 \begin{equation}
 x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \begin{bmatrix}
@@ -99,19 +95,29 @@ x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \begin{bmatrix}
 \gls{x}_{\mathit{robot}}(k) + \gls{DT} u_{\gls{x}}(k)\\
 \gls{y}_{\mathit{robot}}(k) + \gls{DT} u_{\gls{y}}(k)\\
-\gls{x}_{\mathit{obj}}(k) + \gls{DT}\sin(\gls{theta}_{\mathit{obj}}(k)) (1-|\frac{2\mathit{st}}{H}|)\mathit{vp}\\
-\gls{y}_{\mathit{obj}}(k) + \gls{DT}\cos(\gls{theta}_{\mathit{obj}}(k)) (1-|\frac{2\mathit{st}}{H}|)\mathit{vp}\\
-\gls{theta}_{\mathit{obj}}(k) + \frac{2*\gls{DT}*\mathit{vp}*\mathit{st}}{H}
+\gls{x}_{\mathit{obj}}(k) + \gls{DT}\cos(\gls{theta}_{\mathit{obj}}(k)) (1-|\frac{2\mathit{s_t}}{H}|)\mathit{v_p}\\
+\gls{y}_{\mathit{obj}}(k) + \gls{DT}\sin(\gls{theta}_{\mathit{obj}}(k)) (1-|\frac{2\mathit{s_t}}{H}|)\mathit{v_p}\\
+\gls{theta}_{\mathit{obj}}(k) + \frac{2*\gls{DT}*\mathit{v_p}*\mathit{s_t}}{H}
 \end{bmatrix}
 \label{eq:nonlinear-push-model-2}
 \end{equation}
 
-% \todo{If the reader actually wants to recreate this, he/she has shit to work with, maybe make a small model here that explain vp, st and H}
-Where \textit{st} indicates the distance from the contact point between the robot and pushed object, perpendicular to the line that coincides with the object and the robots center of mass. A positive \textit{st} indicates the object will rotate anticlockwise, a negative \textit{st} indicates a clockwise rotation. The width of an object is defined as \textit{H} and is set to 2 meter, \textit{vp} is the velocity of the robot perpendicular to the object defined as:\bs
 
-\[ \mathit{vp} = u_{\gls{x}} \sin(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\cos(\gls{theta}_{\mathit{obj}}(k)) \]
+Where distance $s_t$ and velocity $v_p$ can be visually seen in \Cref{fig:robot_and_square_object}. A positive $s_t$ indicates the object will rotate anticlockwise, a negative $s_t$ indicates a clockwise rotation. The width of an object is defined as \textit{H} and is set to 2 meters.\bs
 
-The goal of this thesis is not to find optimal control, or to model the environment with great accuracy. The goal is to select the best combination of controller and system model in the available set of controllers and system models.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{figures/results/robot_and_square_object.drawio}
+    \caption{Schematic overview of point robot pushing a box object.}%
+    \label{fig:robot_and_square_object}
+\end{figure}
+
+Where $v_p$ is the velocity of the robot perpendicular to the object defined as:\bs
+\[ \mathit{v_p} = u_{\gls{x}} \cos(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\sin(\gls{theta}_{\mathit{obj}}(k)) \]
+
+Two drive action edge parameterizations are available: (\ac{MPC}, \textit{lti-drive-model}) and (\ac{MPPI}, \textit{lti-drive-model}), and two push action edge parameterizations are available: (\ac{MPPI}, \textit{nonlinear-push-model-1}) and (\ac{MPPI}, \textit{nonlinear-push-model-2}).\bs
+
+The goal of this thesis is not to find optimal control, or to model the environment with great accuracy. The goal is to select the best edge parameterization in the available set of edge parameterizations. Eleborating the control design and system model design is therefore out of the scope of this thesis, the control design parameters such as prediction horizon, cost function, number of rollouts can be found in the implementation.\bs
 
 % \section{Benchmark Tests}%
 % \label{sec:benchmark_tests}
@@ -177,10 +183,11 @@ The goal of this thesis is not to find optimal control, or to model the environm
 %
 % \todo[inline]{Test to create results for running the surround environment}
 
-\section{Randomization}%
+\section{Driving and Pushing Experiments}%
 \label{sec:randomization}
-In the randomized environment the task and the environment are initialized by randomization, after tasks completion, the environment is reshuffled. A reshuffled gives the objects in environment and task a new initial pose and resets the robot pose. By solving a task, reshuffling the environment and solving another reshuffled task, the robot gains experience that is stored in the \ac{kgraph}. A set of multiple tasks where initially the \ac{kgraph} is empty, is named a \textit{run}, and at the end of a run the \ac{kgraph} is filled with the gained experience. \Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, an driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push an movable object toward a random target pose. First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting an available edge parameterization.\bs
+To improve the relevance of the experimental results, driving and pushing tasks are performed with randomized settings. A set of multiple tasks is given to the robot, named a \textit{run}. When the robot is tasked with the first task in the run the \ac{kgraph} is empty, and when the last task in the run is completed the \ac{kgraph} is filled with the experience gained. For each run, a set of random objects and properties are generated. This remains the same for the whole run, however for each task in the run the environment is reshuffled. A reshuffled does three things, first, it resets the robot pose, secondly, it gives the objects in environment new initial pose. Thirdly, new target poses are generated for the subtask in the new task. By solving multiple reshuffled tasks in a reshuffled environment, the robot gains experience that is stored in the \ac{kgraph}.\bs
 
+\Cref{table:configure_rand_env} presents a set of parameters that initializes the random environment. Two type of tasks solved by the robot, a driving task, where the robot must drive toward multiple random target poses, and a pushing task, where the robot must push a movable object toward a random target pose.\bs
 
 \noindent
 \begin{table}[H]
@@ -192,14 +199,15 @@ In the randomized environment the task and the environment are initialized by ra
 >{\raggedright\arraybackslash}p{0.65\textwidth}}
 The \textit{size of the grid} & length and width of the ground plane in \gls{x} and \gls{y} direction.\\
 The \textit{minimal and maximal size of objects} & A box will have sides with a length that lie in the specified range from minimal to maximal length. Cylinders will have a diameter and height that is within the specified range, additionally, cylinders are not higher than the radius of the cylinder to prevent cylinders from tipping over. \\
-The \textit{maximal weight} & which is uniformly distributed for the environment objects, minimal weight is set by default to 1 gram. \\
+The \textit{maximal weight} & which is uniformly distributed for the environment objects, minimal weight is set by default to 1 kilogram. \\
 The \textit{number of unmovable objects} & Specify the amount of unmovable objects.\\
 The \textit{number of movable objects} & Specify the amount of movable objects.\\
-The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.
+The \textit{number of subtasks in a task} & Specify the amount of subtasks in a task.\\
+The \textit{number of boxes and cylinders} & For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder.
 \end{tabular}
 \end{table}
 
-The ratio between the number of cylinders and boxes is determined by randomization. For every new object generated there is a 50\% chance it becomes a box and 50\% chance it becomes a cylinder. The environment can be \textit{reshuffled}, which can be visualized in \Cref{fig:random_environment_reshuffle}. Reshuffling the environment changes 3 aspects of the environment, first, the robots position is reset to the origin \gls{origin}. Second, every object is set to a new initial position whilst their properties remain unchanged. Thirdly, objects in the task receive new target poses.  The reshuffle functionality can be visualized in \Cref{fig:random_environment_reshuffle}. By solving a similar task in an reshuffled random environment multiple times, the robot gains experience and task execution can be investigated. With the investigation trends in task execution is monitored, to see improvement whilst gaining experience.\bs
+An randomly initialized environment that is then reshuffled can be visualized in \Cref{fig:random_environment_reshuffle}.\bs
 
 \begin{figure}[H]
     \centering
@@ -212,21 +220,21 @@ The ratio between the number of cylinders and boxes is determined by randomizati
     \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/results/random2}
-    \caption{Environment after first reshuffle.}
+    \caption{Environment after a reshuffle.}
     \end{subfigure}
 
-    \vspace{0.2cm}
-    \begin{subfigure}{.49\textwidth}
-    \includegraphics[width=\textwidth]{figures/results/random3}
-    \caption{Environment after second reshuffle.}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/results/random4}
-    \caption{Environment after thirth reshuffle.}
-    \end{subfigure}
-    \caption{A random environment initialized by tuning parameters presented in \Cref{table:configure_rand_drive_env_values}.\\After initialization the environment is reshuffled three times.}%
+    % \vspace{0.2cm}
+    % \begin{subfigure}{.49\textwidth}
+    % \includegraphics[width=\textwidth]{figures/results/random3}
+    % \caption{Environment after second reshuffle.}
+    % \end{subfigure}
+    % \hfill
+    % \begin{subfigure}{.49\textwidth}
+    % \centering
+    % \includegraphics[width=\textwidth]{figures/results/random4}
+    % \caption{Environment after thirth reshuffle.}
+    % \end{subfigure}
+    \caption{A random environment initialized by tuning parameters presented in \Cref{table:configure_rand_drive_env_values} and randomness.}%
     \label{fig:random_environment_reshuffle}
 \end{figure}
 
@@ -243,7 +251,7 @@ For the driving task the random environment is created with the following tuning
 >{\raggedright\arraybackslash}p{0.60\textwidth}}
 \text{grid size}  &\gls{x}=12 m, \quad \gls{y}=12 m \\
 \text{object size}  &$\mathit{min\_length}=0.2 m, \quad \mathit{max\_length}=2 m$ \\
-\text{object weight}  &$\mathit{max\_weight}=1000 g = 1 \mathit{kg}$\\
+\text{object weight}  &$\mathit{max\_weight}=1000 kg$\\
 \text{number of objects}  &$\mathit{num\_unmovable\_obj}=3, \quad \mathit{num\_movable\_obj}=5$ \\
 \text{number of tested runs}  &$\mathit{num\_runs}=10$\\
 \text{number of tasks in a run}  &$\mathit{num\_tasks}=10$\\
@@ -253,29 +261,27 @@ For the driving task the random environment is created with the following tuning
 
 These parameters have been specifically selected, starting with the size of the ground floor. The ground floor should be large enough such that objects can be pushed around, note that, for a driving task, pushing is involved when a path must be freed. An enormous (100 by 100 meter) ground floor would result in a longer computational time for path planning, which is undesired. A 12 by 12 meter ground floor is selected because the floor is large enough for objects to be pushed around. The range that determines the size of objects is set such that objects can be as large as the robot itself, and be around 10 times as large as the robot. With these sizes the robot is unable to grasp objects, a gripper would be too small to grasp objects. The comparatively large size fits the objective of nonprehensile pushing, there simply is no other method to manipulate such large objects other than pushing. A real-life example are can be found in harbours where tug boats push giant cargo ships around that are many times over the size of the tug boat. The ratio of solid obstacles vs.~movable objects determines if a task is more navigation (only solid obstacles) or more \ac{NAMO} (only movable objects). A task that tends toward \ac{NAMO} is favoured because that is the target environment in this thesis. There should be some unmovable obstacles that reward the robot learning such objects are unmovable (to then not interact with them). Thus there are more movable objects than solid obstacles chosen, whilst still having 2 solid obstacles around. Ten runs are taken, each run consisting of 10 tasks, the results are averaged to reach statistic relevance in a randomized environments. The number of subtasks is set to 3, a low number of drive subtasks that can be completed in under 2 minutes.\bs
 
-Lastly, a number of tuning parameters must be set for the \ac{halgorithm}. These are the maximal robot speed, set to 1 $m/s$, the \textit{cell size} for the path estimator set to 0.1 meter, the action planner takes four tuning parameters; the \textit{step size} set to 0.2 meter, the \textit{search size} set to 0.35 meter, an \textit{known obstacle space cost} set to 2 meter and an \textit{unknown obstacle space cost} set to 3.5 meter.\bs
+Lastly, a number of tuning parameters must be set for the \ac{halgorithm}. These are the maximal robot speed, set to 1 $\frac{\mathit{meter}}{\mathit{s}}$, the \textit{cell size} for the path estimator set to 0.1 meter, the path planner takes four tuning parameters; the \textit{step size} set to 0.2 meter, the \textit{search size} set to 0.35 meter, the \textit{MovableSpaceCost} set to 2 meter and the \textit{UnknownSpaceCost} set to 3.5 meter.\bs
 
-All parameters are set, results can be analyzed, the following two figures show the execution-, search- and total times over the ten runs. First, a boxplot displaying task execution whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}. Second, a boxplot that displays task execution without using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_no_kgraph}.\bs
+Given the above parameters, all parameters are now set. Ten runs are solved by the robot where every run is composed of ten tasks. The first generated environment in the run determines the type of objects and their properties that remain unchanged for the entire run. The subsequent environments in the run are reshuffled versions of the first environment. After ten runs the task performance is collected that is expressed in the metrics just described. The ten runs metrics are vertically augmented such that they are grouped by the same number of tasks in experience. First, a boxplot is presented displaying execution-, search- and total times over the ten runs whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}. The number of solved subtasks can be calculated by multiplying the number of runs times the number task in a run by the number of subtasks in a task, which is $10 \cdot 10 \cdot 3 = 300$ subtasks.\bs
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_kgraph}
-    \caption{Search-, execution- and total time to complete a drive task \textbf{whilst} using \ac{kgraph} action suggestions. The horizontal axis indicates the number of task experience in a run. A run contains ten tasks, starting the run with an empty \ac{kgraph} that collects action feedback as the robot gains experience. The task contains three subtasks, in other words, the robot must drive to three target poses in order to complete a task. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs, where the sum of search- and execution time equals total time.}%
+    \caption{Search-, execution- and total time to complete a drive task \textbf{whilst} using \ac{kgraph} action suggestions. The horizontal axis indicates the number of task experience in a run. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs grouped by number of tasks in experience.}%
    \label{fig:random_drive_time_kgraph}
 \end{figure}
-\todo{these red, blue and yellow colors couls be more cute, and also have more consistentcy with the otehr figures.}
 
-The above figure displays results where the \ac{halgorithm} sends action feedback and received action suggestions from the \ac{kgraph}, the figure below displays the results for solving the same tasks in the same random environment without using \ac{kgraph} suggestions. Instead a random parameterization is selected for every action edge. Ensuring that the random environments are repeatable is accomplished by fixing the seed. The fixed seed ensures that the randomly generated environments can be created multiple times, once to solve with \ac{kgraph} suggestions and once to solve without help from the \ac{kgraph}.\bs
+The above figure displays results where the \ac{halgorithm} initially selects a random edge parameterization, after executing an action edge it sends action feedback to the \ac{kgraph}. When every possible edge parameterization for drive actions has corresponding action feedback in the \ac{kgraph}, the \ac{kgraph} starts suggesting edge parameterizations. Now a boxplot is presented in \Cref{fig:random_drive_time_no_kgraph} that displays task execution without using the \ac{kgraph} action suggestions, instead a random parameterization is selected for every action edge. By fixing a seed the environments used for \Cref{fig:random_drive_time_kgraph} are equal to the environments used for \Cref{fig:random_drive_time_no_kgraph}.\bs
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_no_kgraph}
-    \caption{Search-, execution- and total time to complete a drive task \textbf{without} using \ac{kgraph} action suggestions. The horizontal axis indicates the number of task experience in a run. A run contains ten tasks, starting the run with an empty \ac{kgraph} that collects action feedback as the robot gains experience. The task contains three subtasks, in other words, the robot must drive to three target poses in order to complete a task. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs, where the sum of search- and execution time equals total time.}%
+    \caption{Search-, execution- and total time to complete a drive task by randomly selecting edge parameterizations. The horizontal axis indicates the number of task experience in a run. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs grouped by number of tasks in experience. }%
    \label{fig:random_drive_time_no_kgraph}
 \end{figure}
 
-
-The results in both \Cref{fig:random_drive_time_kgraph,fig:random_drive_time_no_kgraph} show no clear trend. However overall \Cref{fig:random_drive_time_kgraph} shows significant improvement over \Cref{fig:random_drive_time_no_kgraph} which becomes better visible if only the means are compared in \Cref{fig:random_drive_time_vs}.\bs
+Lets compare the means from \Cref{fig:random_drive_time_kgraph,fig:random_drive_time_no_kgraph} and compare task execution with and without the \ac{kgraph} action suggestions. However overall \Cref{fig:random_drive_time_kgraph} shows significant improvement over \Cref{fig:random_drive_time_no_kgraph} which becomes better visible if only the means are compared in \Cref{fig:random_drive_time_vs}.\bs
 
 \begin{figure}[H]
     \centering
@@ -308,7 +314,8 @@ Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI}
     \end{tabular}
 \end{table}
 
-The \ac{halgorithm} successfully completes 300 subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed) twice. Once while storing edge feedback in the \ac{kgraph} that suggest edge parameterization, and once without \ac{kgraph}. In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more than 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. A fault has been detected that terminates the execution of an edge, to complete the task, a new edge is created, resulting in more than 30 \ac{MPC} and \ac{MPPI} edge parameterizations. When comparing both a positive effect is measured of the use of the \ac{kgraph} on the total task required to complete a task compared to random selection of edge parameterization. Now a task is taken that compares the use of the \ac{halgorithm} with and without \ac{kgraph} for a pushing task.\bs
+The \ac{halgorithm} successfully completes 300 driving subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed). Once while storing edge feedback in the \ac{kgraph} that suggest edge parameterization, and once without \ac{kgraph}. In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more than 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. A fault has been detected that terminates the execution of an edge, to complete the task, a new edge is created, resulting in more than 30 \ac{MPC} and \ac{MPPI} edge parameterizations. When comparing both a positive effect is measured of the use of the \ac{kgraph} on the total task required to complete a task compared to random selection of edge parameterization. Now a task is taken that compares the use of the \ac{halgorithm} with and without \ac{kgraph} for a pushing task.\bs
+\todo{put this here: First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting a available edge parameterization.}
 
 \subsection{A Pushing Task}%
 \label{subsec:rand_pushing}
