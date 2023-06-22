@@ -3,11 +3,11 @@
 \textit{This chapter presents various robot environments and tasks that challenge the proposed framework. The test results provide evidence that supports the answers to the research questions. The chapter starts by presenting metrics that measure task performance, the simulation environment is introduced, then a number of system models is presented and tuning variables are specified. With the system models defined and tuning parameters set test are presented, a randomized environment that is split in task that mainly involve driving and tasks that mainly involve pushing. The chapter finishes with a comparison with the state-of-the-art in \Cref{sec:compare_with_related_papers}.\bs}
 
 \paragraph{Metrics to Measure Task Performance}
-The proposed frameworks task performance is measured in metrics, these include the \ac{PE}, search-, execute- and total time to complete a task. We can draw conclusions from the evolution of the metrics over time. Furthermore, the method metrics will be used to compare the proposed framework to state-of-the-art. Now, the method metrics are presented in~\Cref{table:proposed_method_metrics}.\bs
+The proposed frameworks task performance is measured in metrics, these include the \ac{PE}, search-, execute- and total time to complete a task. We can draw conclusions from the evolution of the metrics over time. Furthermore, the test metrics will be used to compare the proposed framework to state-of-the-art. Now, the test metrics are presented in~\Cref{table:proposed_test_metrics}.\bs
 
 \noindent
 \begin{table}[H]
-\caption{Method metrics employed to measure task performance by the proposed robot framework in the left column. Motivation on relevance of the metric is provided in the corresponding right column.}\label{table:proposed_method_metrics}
+\caption{Testing metrics employed to measure task performance by the proposed robot framework in the left column. Motivation on relevance of the metric is provided in the corresponding right column.}\label{table:proposed_test_metrics}
 \centering
 \begin{tabular}%
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
@@ -29,7 +29,7 @@ Testing in a simulation environment has been done using the URDF Gym Environment
 Robot input is defined as:\\
 \[ u(k) = {[ u_{\gls{x}}(k), u_{\gls{y}}(k) ]}^\top \]
 
-During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} controller for driving the robot, and a \ac{MPPI} controller for robot pushing. The \ac{MPC} and \ac{MPPI} control methods were introduced in \Cref{sec:control_methods}. Three system models are implemented, a \ac{LTI} model describing robot driving, and two nonlinear model describing the robot pushing an object. First a short textual description of the available system models is provided below. Second, the state-space model is provided for the three implemented models.\bs
+During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} controller for driving the robot named \textit{mpc-drive-controller} and \textit{mppi-drive-controller}, and a \ac{MPPI} controller for robot pushing named \textit{mppi-push-controller}. The \ac{MPC} and \ac{MPPI} control methods were introduced in \Cref{sec:control_methods}. Three system models are developed without drawing upon any existing source material. The first model is an \ac{LTI} model describing robot driving, the second model is an \ac{LTI} model describing robot the robot pushing an object, the thirth model is a nonlinaer model also describing robot pushing. First a short textual description of the available system models is provided below. Second, the state-space model is provided for the three implemented models.\bs
 
 \begin{table}[H]
 \caption{The left column displays the available models of drive- and push systems, accompanied by a description in the corresponding right column.}\label{table:available_system_models}
@@ -38,8 +38,8 @@ During testing three controllers have been used. A \ac{MPC} and \ac{MPPI} contro
   {>{\raggedright\arraybackslash}p{0.25\textwidth}%
    >{\raggedright\arraybackslash}p{0.65\textwidth}}
 \textit{lti-drive-model} & A second order \ac{LTI} model that is compatible with both the \ac{MPC} and the \ac{MPPI} drive controller. The state variables are the robot's \gls{x} and \gls{y} position. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT} and robot system input $u(k)$.\\
-\textit{nonlinear-push-model-1} & A nonlinear model that is compatible with only the \ac{MPPI} push controller. The state variables are the robot's and the pushed object's \gls{x} and \gls{y} position. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT} and robot system input $u(k)$.\\
-\textit{nonlinear-push-model-2} & 
+\textit{lti-push-model} & A \ac{LTI} model that is compatible with only the \ac{MPPI} push controller. The state variables are the robot's and the pushed object's \gls{x} and \gls{y} position. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT} and robot system input $u(k)$.\\
+\textit{nonlinear-push-model} & 
 A nonlinear model that is compatible with only the \ac{MPPI} push controller. The state variables are the robot's and the pushed object's \gls{x} and \gls{y} position and the objects orientation $\gls{theta}_\mathit{obj}$. The next state $x(k+1)$ is based on the current state $x(k)$, the time step \gls{DT}, robot system input $u(k)$ and geometrical variables $v_p$ and $s_t$.\\
 \end{tabular}
 \end{table}
@@ -60,10 +60,10 @@ x_{\mathit{lti-drive-model}}(k+1)=
 \end{bmatrix}
 \end{equation}
 
-State-space representation of the \textit{nonlinear-push-model-1}:\bs
+State-space representation of the \textit{lti-push-model}:\bs
 
 \begin{equation}
-x_{\mathit{nonlinear-push-model-1}}(k+1)=
+x_{\mathit{lti-push-model}}(k+1)=
 \begin{bmatrix}
 \gls{x}_{\mathit{robot}}(k+1)\\
 \gls{y}_{\mathit{robot}}(k+1)\\
@@ -77,13 +77,13 @@ x_{\mathit{nonlinear-push-model-1}}(k+1)=
 \gls{x}_{\mathit{obj}}(k+1) + \frac{1}{2} \gls{DT} u_{\gls{x}}(k)\\
 \gls{y}_{\mathit{obj}}(k+1) + \frac{1}{2} \gls{DT} u_{\gls{y}}(k)
 \end{bmatrix}
-\label{eq:nonlinear-push-model-1}
+\label{eq:lti-push-model}
 \end{equation}
 
 
-State-space representation of the \textit{nonlinear-push-model-2}:\bs
+State-space representation of the \textit{nonlinear-push-model}:\bs
 \begin{equation}
-x_{\mathit{nonlinear-push-model-2}}(k+1)=
+x_{\mathit{nonlinear-push-model}}(k+1)=
 \begin{bmatrix}
 \gls{x}_{\mathit{robot}}(k+1)\\
 \gls{y}_{\mathit{robot}}(k+1)\\
@@ -99,7 +99,7 @@ x_{\mathit{nonlinear-push-model-2}}(k+1)=
 \gls{y}_{\mathit{obj}}(k) + \gls{DT}\sin(\gls{theta}_{\mathit{obj}}(k)) (1-|\frac{2\mathit{s_t}}{H}|)\mathit{v_p}\\
 \gls{theta}_{\mathit{obj}}(k) + \frac{2*\gls{DT}*\mathit{v_p}*\mathit{s_t}}{H}
 \end{bmatrix}
-\label{eq:nonlinear-push-model-2}
+\label{eq:nonlinear-push-model}
 \end{equation}
 
 
@@ -115,7 +115,7 @@ Where distance $s_t$ and velocity $v_p$ can be visually seen in \Cref{fig:robot_
 Where $v_p$ is the velocity of the robot perpendicular to the object defined as:\bs
 \[ \mathit{v_p} = u_{\gls{x}} \cos(\gls{theta}_{\mathit{obj}}(k)) + u_{\gls{y}}\sin(\gls{theta}_{\mathit{obj}}(k)) \]
 
-Two drive action edge parameterizations are available: (\ac{MPC}, \textit{lti-drive-model}) and (\ac{MPPI}, \textit{lti-drive-model}), and two push action edge parameterizations are available: (\ac{MPPI}, \textit{nonlinear-push-model-1}) and (\ac{MPPI}, \textit{nonlinear-push-model-2}).\bs
+Two drive action edge parameterizations are available: (\textit{mpc-drive-controller}, \textit{lti-drive-model}) and (\textit{mppi-drive-controller}, \textit{lti-drive-model}), and two push action edge parameterizations are available: (\textit{mppi-push-controller}, \textit{lti-push-model}) and (\textit{mppit-push-controller}, \textit{nonlinear-push-model}).\bs
 
 The goal of this thesis is not to find optimal control, or to model the environment with great accuracy. The goal is to select the best edge parameterization in the available set of edge parameterizations. Eleborating the control design and system model design is therefore out of the scope of this thesis, the control design parameters such as prediction horizon, cost function, number of rollouts can be found in the implementation.\bs
 
@@ -132,9 +132,9 @@ The goal of this thesis is not to find optimal control, or to model the environm
 %     \label{fig:benchmark_blockade}
 % \end{figure}
 %
-% The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First, the \ac{halgorithm} plans to push the box directly to the target pose, then it realizes a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushing the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remembered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model-2 to push both the box and the cylinder object. Converging to this conclusion improves the method metrics for the task as can be seen in \Cref{fig:results_blockade}\bs
+% The blockade task neatly shows that the \ac{halgorithm} uses the backward search technique. First, the \ac{halgorithm} plans to push the box directly to the target pose, then it realizes a blocking object must first be moved to free the path. It makes the mistake of pushing the unmovable wall, then it succeeds in pushing the movable cylinder out of the way. The \ac{kgraph} then ensures that this mistake will not occur again because is remembered that the wall is immovable. Over time the \ac{kgraph} indicates that it prefers to use the \ac{MPPI} controller with the nonlinear-push-model to push both the box and the cylinder object. Converging to this conclusion improves the testing metrics for the task as can be seen in \Cref{fig:results_blockade}\bs
 %
-% \todo[inline]{is nonlinear-push-model-2 still the preferred model after testing??}
+% \todo[inline]{is nonlinear-push-model still the preferred model after testing??}
 %
 % \begin{figure}[H]
 %     \centering
@@ -263,7 +263,7 @@ These parameters have been specifically selected, starting with the size of the 
 
 Lastly, a number of tuning parameters must be set for the \ac{halgorithm}. These are the maximal robot speed, set to 1 $\frac{\mathit{meter}}{\mathit{s}}$, the \textit{cell size} for the path estimator set to 0.1 meter, the path planner takes four tuning parameters; the \textit{step size} set to 0.2 meter, the \textit{search size} set to 0.35 meter, the \textit{MovableSpaceCost} set to 2 meter and the \textit{UnknownSpaceCost} set to 3.5 meter.\bs
 
-Given the above parameters, all parameters are now set. Ten runs are solved by the robot where every run is composed of ten tasks. The first generated environment in the run determines the type of objects and their properties that remain unchanged for the entire run. The subsequent environments in the run are reshuffled versions of the first environment. After ten runs the task performance is collected that is expressed in the metrics just described. The ten runs metrics are vertically augmented such that they are grouped by the same number of tasks in experience. First, a boxplot is presented displaying execution-, search- and total times over the ten runs whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}. The number of solved subtasks can be calculated by multiplying the number of runs times the number task in a run by the number of subtasks in a task, which is $10 \cdot 10 \cdot 3 = 300$ subtasks.\bs
+The search- and execution time to complete a task is investigated, and especially its development over multiple tasks. Then a comparison is made between completing reshuffled tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting a available edge parameterization. Given the above parameters, all parameters are now set. Ten runs are solved by the robot where every run is composed of ten tasks. The first generated environment in the run determines the type of objects and their properties that remain unchanged for the entire run. The subsequent environments in the run are reshuffled versions of the first environment. After ten runs the task performance is collected that is expressed in the metrics just described. The ten runs metrics are vertically augmented such that they are grouped by the same number of tasks in experience. First, a boxplot is presented displaying execution-, search- and total times over the ten runs whilst using \ac{kgraph} action suggestions in \Cref{fig:random_drive_time_kgraph}. The number of solved subtasks can be calculated by multiplying the number of runs times the number task in a run by the number of subtasks in a task, which is $10 \cdot 10 \cdot 3 = 300$ subtasks. The available drive edge parameterizations that can be selected are: (\textit{mpc-drive-controller}, \textit{lti-drive-model}) and (\textit{mppi-drive-controller}, \textit{lti-drive-model}).\bs
 
 \begin{figure}[H]
     \centering
@@ -277,7 +277,7 @@ The above figure displays results where the \ac{halgorithm} initially selects a 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_no_kgraph}
-    \caption{Search-, execution- and total time to complete a drive task by randomly selecting edge parameterizations. The horizontal axis indicates the number of task experience in a run. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs grouped by number of tasks in experience. }%
+    \caption{Search-, execution- and total time to complete a drive task \textbf{without} \ac{kgraph} action suggestions and by randomly selecting edge parameterizations. The horizontal axis indicates the number of task experience in a run. The vertical axis displays a boxplot of the search-, execution- and total time over ten runs grouped by number of tasks in experience. }%
    \label{fig:random_drive_time_no_kgraph}
 \end{figure}
 
@@ -286,7 +286,7 @@ Lets compare the means from \Cref{fig:random_drive_time_kgraph,fig:random_drive_
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_drive_time_vs}
-    \caption{Comparing average total time to complete a task out of then runs for a driving task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}\label{fig:random_drive_time_vs}
+    \caption{Comparing means of total time to complete a task out of ten runs for a driving task.}\label{fig:random_drive_time_vs}
 \end{figure}
 
 Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI} parameterization that both use lti-drive-model. The \ac{kgraph} prefers the \ac{MPC} parameterization over the \ac{MPPI} parameterization as can be seen in \Cref{table:rand_drive_mpc_vs_mppi}. In this table is can be seen that the \ac{kgraph} needs at most one task of experience to suggest the \ac{MPC} parameterization. An explanation why there was no trend to be found in \Cref{fig:random_drive_time_kgraph}, it was already converged at the first task.  
@@ -314,14 +314,13 @@ Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI}
     \end{tabular}
 \end{table}
 
-The \ac{halgorithm} successfully completes 300 driving subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed). Once while storing edge feedback in the \ac{kgraph} that suggest edge parameterization, and once without \ac{kgraph}. In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more than 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. A fault has been detected that terminates the execution of an edge, to complete the task, a new edge is created, resulting in more than 30 \ac{MPC} and \ac{MPPI} edge parameterizations. When comparing both a positive effect is measured of the use of the \ac{kgraph} on the total task required to complete a task compared to random selection of edge parameterization. Now a task is taken that compares the use of the \ac{halgorithm} with and without \ac{kgraph} for a pushing task.\bs
-\todo{put this here: First the search- and execution time of a task are investigated, and its development over multiple tasks. Then a comparison is made between solving and reshuffling multiple tasks once with the \ac{kgraph} that suggests edge parameterizations, and once without suggestions, by randomly selecting a available edge parameterization.}
+The \ac{halgorithm} successfully completes 300 driving subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed). In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more or equal to 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. This effect is due to detected faults, upon fault detection, the edge is terminated and a new edge is created to to complete the subtask. Since two or more edge parameterization are initialized to complete a single subtask, that results in more than 30 driving edge parameterizations to complete 30 subtasks.\bs
+
+The \ac{kgraph} converges to the (\textit{mpc-drive-controller}, \textit{lti-drive-model}) parameterization during the first task. Selecting this parameterization compared to selecting a random parameterization has a positive effect on the total time to complete a task. The search time for both using the \ac{kgraph} suggestions or random selection is similar, the difference is due to the difference in execution time. Now a task is taken that compares the use of the \ac{halgorithm} with and without \ac{kgraph} for a pushing task.\bs
 
 \subsection{A Pushing Task}%
 \label{subsec:rand_pushing}
 The push task in the randomized environment consists of a single subtask. To complete this push task the robot must push the object toward its specified target pose. The tuning parameters that make up the random environment for the push task can be visualized in \Cref{table:configure_rand_push_env_values}.\bs
-\todo{This test of yours, 10 is the magic number does Winters support that claim?G}
-\todo{\cite{dewinter_using_} can this <- winter guy add something to my conclusions, especially because it does have outliers wich are far out. }
 
 \begin{table}[H]
 \caption{The selected tuning parameters for the randomized push environment.}%
@@ -340,28 +339,27 @@ The push task in the randomized environment consists of a single subtask. To com
 \end{tabular}
 \end{table}
 
-
-
+The available push edge parameterizations that can be selected are: (\textit{mppi-push-controller}, \textit{lti-push-model}) and (\textit{mppit-push-controller}, \textit{nonlinear-push-model}).\bs
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/results/random_1}
-    \caption{}
+    \includegraphics[width=0.9\textwidth]{figures/results/random_1.drawio}
+    \caption{Robot tasked to push the yellow box toward the object's goal.}
     \end{subfigure}
 
     \vspace{0.2cm}
     \begin{subfigure}{\textwidth}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/results/random_2}
-    \caption{}
+    \caption{Robot tasked to push the brown box to the ghost pose.}
     \end{subfigure}
-    \caption{Two random environments where the pushing task contains a single subtask displayed by a target ghost pose.}%
+    \caption{Two random environments with the object's target displayed as a transparent ghost pose.}%
     \label{fig:random_environnment}
 \end{figure}
 
-All tuning parameters are set up, now the results are presented, first the pushing task is completed using \ac{kgraph} suggestions. The search-, execute- and total time for task completion is presented in \Cref{fig:random_push_time_kgraph}. Then the same tasks are completed without help of the \ac{kgraph} suggestions in \Cref{fig:random_drive_time_no_kgraph}. 
+Given the parameters range in table \Cref{table:configure_rand_push_env_values} randomized experiments are carried out for ten runs of pushing tasks. First the pushing tasks are completed using \ac{kgraph} suggestions. The search-, execute- and total time for task completion is presented in \Cref{fig:random_push_time_kgraph}. Then the same tasks are completed without help of the \ac{kgraph} suggestions in \Cref{fig:random_drive_time_no_kgraph}. 
 
 \begin{figure}[H]
     \centering
@@ -382,12 +380,12 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_push_time_vs}
-    \caption{Comparing average total time to complete a task out of then runs for a pushing task. For the edge parameterizations once with the use of \ac{kgraph} action suggestions are leveraged indicated by \quotes{with \ac{kgraph}} and once with random selection indicated by \quotes{no \ac{kgraph}}.}\label{fig:random_push_time_vs}
+    \caption{Comparing means of total time to complete a task out of ten runs for a pushing task.}\label{fig:random_push_time_vs}
 \end{figure}
 
 
 \begin{table}[H]
-    \caption{The selection of the (\ac{MPPI}, \textit{nonlinear-push-model-1}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model-2}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}
+    \caption{The selection of the (\ac{MPPI}, \textit{lti-push-model}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{kgraph} action suggestions, and without action suggestions.}
     \label{table:rand_push_model1_vs_model2}
     \centering
     \begin{tabular}%
@@ -397,20 +395,20 @@ Both \Cref{fig:random_push_time_kgraph} and \Cref{fig:random_push_time_no_kgraph
       |p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}}
       \multicolumn{2}{c|}{Number of Tasks in experience} &0&1&2&3&4&5\\\toprule
       \multirow{4}{0.1\textwidth}{With \ac{kgraph} suggestions} 
-      &Number of \textit{nonlinear-push-model-1} parameterizations&4&5&8&10&10&10\\
-      &Number of \textit{nonlinear-push-model-2} parameterizations&5&4&2&0&0&0\\
-      & \textit{nonlinear-push-model-1} selected in total push actions [\%]&44&56&80&100&100&100\\
-      & \textit{nonlinear-push-model-2} selected in total push actions [\%]&56&44&20&0&0&0\\\midrule
+      &Number of \textit{lti-push-model} parameterizations&4&5&8&10&10&10\\
+      &Number of \textit{nonlinear-push-model} parameterizations&5&4&2&0&0&0\\
+      & \textit{lti-push-model} selected in total push actions [\%]&44&56&80&100&100&100\\
+      & \textit{nonlinear-push-model} selected in total push actions [\%]&56&44&20&0&0&0\\\midrule
       \multirow{4}{0.1\textwidth}{Without \ac{kgraph} suggestions} 
-      &Number of \textit{nonlinear-push-model-1} parameterizations&4&3&7&5&4&5\\
-      &Number of \textit{nonlinear-push-model-2} parameterizations&5&5&3&5&6&4\\
-      & \textit{nonlinear-push-model-1} selected in total push actions [\%]&44&38&70&50&40&56\\
-      & \textit{nonlinear-push-model-2} selected in total push actions [\%]&56&62&30&50&60&44\\
+      &Number of \textit{lti-push-model} parameterizations&4&3&7&5&4&5\\
+      &Number of \textit{nonlinear-push-model} parameterizations&5&5&3&5&6&4\\
+      & \textit{lti-push-model} selected in total push actions [\%]&44&38&70&50&40&56\\
+      & \textit{nonlinear-push-model} selected in total push actions [\%]&56&62&30&50&60&44\\
     \end{tabular}
 \end{table}
 
 
-The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-model-1} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The nonlinear-push-model-1 parameterization does not only have a lower execution time compared to the nonlinear-push-model-2 parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
+The \ac{kgraph} favours the \ac{MPPI} controller with \textit{lti-push-model} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The lti-push-model parameterization does not only have a lower execution time compared to the nonlinear-push-model parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
 
 \begin{figure}[H]
     \centering
@@ -419,15 +417,17 @@ The \ac{kgraph} favours the \ac{MPPI} controller with \textit{nonlinear-push-mod
     \label{fig:random_push_pe_vs}
 \end{figure}
 
-The proposed framework has been compared against itself, it has shown that learning improves the method metrics by a notable margin as can be seen in \Cref{fig:random_push_pe_vs}. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
+The proposed framework has been compared against itself, it has shown that learning improves the testing metrics by a notable margin as can be seen in \Cref{fig:random_push_pe_vs}. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
+
+\todo{ I think this analysis should be better described and highlighted since it’s one of the main conclusions }
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}
-In the introduction \Cref{table:sota_and_3_topics} was presented. That table presents state-of-the-art methods and the subset of the three main topics that they include (the three topics; learning system models, the \ac{NAMO} problem and nonprehesile pushing). Now that table presented again in \Cref{table:sota_vs_results_proposed}, an additional column is augmented to the table on the right side. This extra column indicates the testing metric that state-of-the-arts uses and underlines the metric that is compared between the proposed framework and the state-of-the-art.\bs
+A summary of state-of-the-art methods is presented again (as it was already presented in the introduction, \Cref{table:sota_and_3_topics}). The goal is now to highlight the test metrics the state-of-the-art methods used. Based on these, a fair test metric is used to compare with our approach.\bs
 
 \noindent
 \begin{table}[H]
-\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The method metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
+\caption{Overview of recent state-of-the-art papers that include a subset of the 3 topics (learning system models, \ac{NAMO}, and nonprehensile pushing). The testing metric indicates the testing method used by the paper, where the underlined metric is used to compare against the proposed framework.}%
 \label{table:sota_vs_results_proposed}
   \centering
   \rowcolors{2}{white}{myEvenLighterColor}
@@ -449,7 +449,7 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
   \vspace{-0.4cm}\rotatebox{50}{nonprehesile}&
   \vspace{-0.2cm}\rotatebox{50}{prehesile}&
   \vspace{-0.4cm}\rotatebox{50}{nonprehesile}&
-  method metric\\\toprule
+  testing metric\\\toprule
   \citeauthor{ellis_navigation_2022} &          \cite{ellis_navigation_2022} &          \cmark& \xmark& \cmark& \xmark& \xmark& success rate\\
   \citeauthor{sabbaghnovin_model_2021} &        \cite{sabbaghnovin_model_2021} &        \cmark& \cmark& \xmark& \cmark& \xmark& success rate, execution time prediction error, final pose error\\
   \citeauthor{scholz_navigation_2016} &         \cite{scholz_navigation_2016} &         \cmark& \cmark& \xmark& \xmark& \xmark& runtime, planning time, number of replanning number of calls to update model\\
@@ -459,7 +459,7 @@ In the introduction \Cref{table:sota_and_3_topics} was presented. That table pre
 \end{tabular}
 \end{table}
 
-A comparison with one state-of-the-art paper is made, that is accomplished by recreating the environment that the state-of-the-art has used during testing. With \citeauthor{wang_affordancebased_2020} the computation- (or search) and execution time is compared.\bs
+A comparison with a single state-of-the-art paper is made, that is accomplished by recreating the environment that the state-of-the-art has used during testing. With \citeauthor{wang_affordancebased_2020} the computation- (or search) and execution time is compared.\bs
 
 % \paragraph{Comparing Success Rate with \citeauthor{ellis_navigation_2022}}
 % \todo{This can use some extra review here, it is unclear}
@@ -483,7 +483,7 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
 
 
 \paragraph{Comparing Computation and Execution time with \citeauthor{wang_affordancebased_2020}}
-\citeauthor{wang_affordancebased_2020} combines the \ac{NAMO} problem with learning object dynamics. He tests his method with a task to drive toward a target pose, where a chair is blocking the path~\cite{wang_affordancebased_2020}. \citeauthor{wang_affordancebased_2020} proposed framework takes an accordance approach compared with a contact-implicit motion planning algorithm~\cite{wang_affordancebased_2020}. A test is performed in a real-world environment, where the robot drive toward a target pose, whilst the path is blocked by a chair. The real-world robot environment is implicitly presented as simulation environment. The environment is mimicked with three walls and a red box on the spot where is chair stands. The implicit representation of the real-world environment and the mimicked robot environments can be seen in \Cref{fig:wang}.\bs
+\citeauthor{wang_affordancebased_2020} combines the \ac{NAMO} problem with learning object dynamics. \citeauthor{wang_affordancebased_2020} proposed framework takes an affordance approach than can be best described as: Affordance offers robots to perceive the environment in a way similar to humans do, by capturing the properties of objects without identifying them. The affordance approach is combined with a contact-implicit motion planning algorithm, a manipulation planning algorithm for push manipulation~\cite{wang_affordancebased_2020}. A test is performed in a real-world environment, where the robot drives toward a target pose, whilst the path is blocked by a chair. The real-world robot environment is implicitly represented as simulation environment. The environment is mimicked with three walls and a red box on the spot where is chair stands. The implicit representation of the real-world environment and the mimicked robot environments can be seen in \Cref{fig:wang}.\bs
 
 \begin{figure}[H]
     \centering
@@ -504,7 +504,7 @@ A comparison with one state-of-the-art paper is made, that is accomplished by re
     \label{fig:wang}
 \end{figure}
 
-\citeauthor{wang_affordancebased_2020} solves the task three times, the average search-, execute- and total time over these three executions is displayed in \Cref{table:wang_vs_mimick}. Note that, during testing \citeauthor{wang_affordancebased_2020} splits the search time in two categories; time to estimate accordance of an object and time to optimize the trajectory. The recreated or mimicked environment is displayed in \Cref{subfig:wang_mimick} and is solved ten times, every time starting without environmental knowledge and thus an empty \ac{kgraph}. The average search, execute- and total time over these then executions is also displayed in \Cref{table:wang_vs_mimick}.\bs
+\citeauthor{wang_affordancebased_2020} solves the task three times, the average search-, execute- and total time over these three executions is displayed in \Cref{table:wang_vs_mimick}. Note that, during testing \citeauthor{wang_affordancebased_2020} splits the search time in two categories; time to estimate accordance of an object and time to optimize the trajectory. For the purpose of comparison, we replicate the use case of \citeauthor{wang_affordancebased_2020} displayed in \Cref{subfig:wang_mimick}. The task is then solved ten times, every time starting without environmental knowledge and thus an empty \ac{kgraph}. The average search, execute- and total time over these then executions is also displayed in \Cref{table:wang_vs_mimick}.\bs
 
 \begin{table}[H]
     \caption{Average execute-, search and total times for a task that involves learning object dynamics and the \ac{NAMO} problem. The results are average over three solved tasks for \citeauthor{wang_affordancebased_2020}, and ten solved tasks for the proposed framework. A visualization of the task if presented in \Cref{fig:wang}.}%
