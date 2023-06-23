@@ -4,27 +4,29 @@ Before defining the \ac{h-graph}, some definitions are provided on which the \ac
 
 Formally an \textbf{configuration}, $\gls{c}_{id}(k)$ is a tuple of $\left\langle \gls{x}(\gls{k}), \gls{y}(\gls{k}), \gls{theta}(\gls{k})\right\rangle$\\ where $\gls{x}, \gls{y} \in \mathbb{R}, \quad  \gls{theta} \in [0, 2\pi)$\bs
 
-An object is represented as its shape and configuration\\Formally, a \textbf{object},  $\gls{obj}_{id}(\gls{k}) = \left\langle \gls{c}(k), \mathit{shape} \right\rangle $\bs
+An object is represented as its shape and configuration\\Formally, a \textbf{object},  $\gls{obj}_{id} = \left\langle \gls{objectClass}, \mathit{shape} \right\rangle $\bs
 
-where $\mathit{shape}$ is linked to a 3D representation of the object, \textit{id} is an identifier for the object.\bs
+Where \textit{id} is an identifier for the object, \gls{objectClass} the objects classification and $\mathit{shape}$ is linked to a 3D representation of the object.\bs
 
-An object node represents an object in a configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \textrm{status}, \gls{obj}(k)\right\rangle $.\bs
+An object node represents an object in a certain configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \gls{obj}, \gls{c}(k), \textrm{status} \right\rangle $.\bs
 
-An edge describes how a node transitions to another node in the \ac{h-graph}. In the robot environment, an edge represents an object's configuration change. Edges are split into three categories since they accomplish different goals. \textit{System identification edges} that have as a goal to collect \ac{IO} data and to generate a system model with that data, \textit{action edges} steer a system toward a target configuration and \textit{emtpy edges} connect nodes that contain different objects. The edges are formally defined as:\bs
+Where \textit{id} is an identifier for the node, \gls{obj} an object, $\gls{c}(k)$ the configuration at time step $k$ and status indicates if the configuration is reachable for the object that both reside in the node, the status can be INITIALIZED or COMPLETED or UNFEASIBLE.\bs
 
-A \textbf{identification edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{Identification Method}, \textrm{controller}, \textrm{input}\right\rangle\]\bs
+An edge describes how a node transitions to another node in the \ac{h-graph}. Edges are split into three categories since they accomplish different goals. \textit{System identification edges} that have as a goal to collect \ac{IO} data and to generate a system model with that data, \textit{action edges} steer a system toward a target configuration and \textit{emtpy edges} connect nodes that contain different objects that could otherwise not be connected. The edges are formally defined as:\bs
 
-With $id_{from}$ and $id_{to}$ indicating the node identifier where the edge points from and towards, respectively, the identification method indicates the used method, and the controller contains the control method used for driving the robot during the collection of \ac{IO} data. The input contains multiple input sequences to apply to the system. The yielded system model must meet the controller requirements, otherwise, they are incompatible.\bs
+A \textbf{identification edge}, \[\gls{edge}^\mathit{iden}_\mathit{id} = \left\langle \mathit{id_{from}}, \mathit{id_{to}}, \textrm{Identification Method}, \textrm{\ac{IO} data set}, \textrm{controller}, \textrm{system model}, \textrm{status} \right\rangle\]\bs
 
-A \textbf{action edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{dynamic model}, \textrm{path}\right\rangle\]\bs
+Where \textit{id} is an identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~identification method indicates the used method for system identification, the \textrm{\ac{IO} data set} contains the input sequences and the system's recorded output reponse, the controller contains the controller used for driving the robot during data collection and the status indicates the node's status thas is eleborated in datail in \Cref{tikz:status_identification_edge}.\bs
 
-With $id_{from}$ and $id_{to}$ indicating the node identifier of the node in the \ac{h-graph} where the edge starts from, and points to, verb is an English verb describing the action the edge represents (driving, pushing), the controller contains the control method used for driving the robot, the dynamic model is the dynamic model used by the control method and the path a list of configurations indicating the path connecting a start- to target node.\bs
+A \textbf{action edge}, \[\gls{edge}^\mathit{action}_\mathit{id} = \left\langle id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{system model}, \textrm{path}, \textrm{status} \right\rangle\]\bs
 
-A \textbf{empty edge}, \[\gls{edge}_{(from, to)} = \left\langle \textrm{status}, id_{from}, id_{to}\right\rangle\]\bs
+Where \textit{id} is a identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~verb is an English verb describing the action the edge represents (in this thesis driving or pushing), the controller contains the control method used for driving the robot, system model is the dynamic system model used by the control method, path is a list of configurations and status indicates the node's status thas is eleborated in datail in \Cref{tikz:status_action_edge}.\bs
 
-Where the status for an emtpy edge can be INITIALIZED or FAILED.\bs
+Connecting nodes with edges is eleborated upon in the upcoming section. Two nodes can only be connected if they both contain the same object. The empty edge main goal is to connect nodes that contain different object, to involve multiple objects in a single action sequence.\bs
 
-Connecting nodes with edges is eleborated upon in the upcoming section. Two nodes can only be connected if they both contain the same object. The empty edge main goal is to connect nodes that contain different object, to involve multiple objects in a single  action sequence.\bs
+A \textbf{empty edge}, \[\gls{edge}^\mathit{emtpy}_\mathit{id} = \left\langle id_{from}, id_{to}, \textrm{status} \right\rangle\]\bs
+
+Where \textit{id} is and identifier for the edge, status for an emtpy edge can be INITIALIZED or FAILED.\bs
 
 Now that the nodes and edges have been defined, the \ac{h-graph} can be defined.\bs
 
@@ -33,7 +35,7 @@ Formally, a \textbf{hypothesis graph}, $\gls{h-graph} = \left\langle \gls{nodesH
 
 Most \ac{h-graph} components have been defined. The status of an identification or action edge remains undefined and requires further explanation.\bs
 
-\subsection{Edge statusus}
+\subsection{Edge statusus}\label{subsec:edge_status}
 The edges are split into two categories, identification edges and action edges. An identification edge sends an input sequence and records the system output. That \ac{IO} sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \Cref{sec:sys_iden}. The goal is to create a dynamic model augmented with a corresponding controller that forms closed-loop stable control. The status of an identification edge can be visualized in the following \ac{FSM}.\bs
 
 \begin{figure}[H]
@@ -113,7 +115,7 @@ After initialization, an action edge starts propagating its status as indicated 
    >{\raggedright\arraybackslash}p{0.66\textwidth}}
 INITIALIZED (IN): & The edge is created with a source and target node, which are present in the \ac{h-graph}. A choice of controller is made by random selection. \\
 PATH EXISTS (PE): & A graph-based search is performed to validate whether the target configuration is reachable, assuming the system is holonomic. \\
-SYSTEM MODEL (SM): & A dynamics system model is provided to the controller residing in the edge. \\
+SYSTEM MODEL (SM): & A dynamic system model is provided to the controller residing in the edge. \\
 PATH PLANNED (PP): & Resulting from a sample-based planner, a path from start to target configuration is provided. \\
 EXECUTING (EX): & The edge receives observations from the robot environment and sends back robot input. \\
 COMPLETED (CO): & The edge has driven the system toward its target configuration, and its performance has been calculated. \\
@@ -122,9 +124,7 @@ FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{table}
 
 
-\subsection{Legend}
-\todo{hmmm, you want this?}
-
+\paragraph{\ac{H-graph} Legend}
 \Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed.
 Before executing edges, edges must be initialized, which is where the next section is dedicated to.\bs
 

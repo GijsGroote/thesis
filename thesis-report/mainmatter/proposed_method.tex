@@ -2,17 +2,17 @@
  
 \chapter{Proposed Robot Framework}%
 \label{chap:h-graph_and_k-graph}
-\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \acl{h-algorithm}, the \acl{h-graph} and the \acl{k-graph}. The \textbf{\acf{h-algorithm}} acts on the \textbf{\acf{h-graph}} and is responsible for searching and executing action sequences to complete a specified task. \Cref{sec:h-graph} is dedicated to introducing and defining the \ac{h-graph}. Then the \ac{h-algorithm} is discussed and defined in \Cref{sec:h-algorithm}. The chapter finalizes with the \ac{k-graph} in \Cref{sec:k-graph}.\bs}
+\textit{This chapter is dedicated to introducing and defining the proposed framework. The proposed framework consists of the \textbf{\acf{h-algorithm}}, the \textbf{\acf{h-graph}} and the \textbf{\acf{k-graph}}. The \ac{h-algorithm} acts on the \ac{h-graph} and is responsible for searching and executing action sequences to complete a specified task. \Cref{sec:h-graph} is dedicated to introducing and defining the \ac{h-graph}. Then the \ac{h-algorithm} is discussed and defined in \Cref{sec:h-algorithm}. The chapter finalizes with the \ac{k-graph} in \Cref{sec:k-graph}.\bs}
 
 \section{Overview of the Proposed Framework}
-\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the \ac{k-graph}, \ac{h-algorithm} and the robot environment.\bs
+\Cref{tikz:flowchart_proposed_method} presents a schematic overview of the interconnection of the \ac{k-graph}, \ac{h-algorithm} and the robot environment. The proposed framework could be augmented with a high-level planner that would transform a high-level task such as cleaning into the accepted format a list containing objects and corresponding target pose.\bs
 
-\vspace{-0.2cm}
+\vspace{-0.4cm}
 \begin{figure}[H] \centering
-\begin{tikzpicture}[node distance = 2cm, auto]
+\begin{tikzpicture}[node distance = 1.5cm, auto]
     % Place nodes
-    \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=11.0cm, minimum width=5.8cm, yshift=3.25cm] (focusbox) {};
-    \node[yshift=5.8cm, xshift=-1.5cm, align=left] at (focusbox) {\textbf{Thesis focus}};
+    \node[draw=gray, rounded corners, inner sep=3ex, line width=7pt, fill=gray, fill opacity=0.4, minimum height=9.3cm, minimum width=5.8cm, yshift=2.50cm] (focusbox) {};
+    \node[yshift=5.0cm, xshift=-1.5cm, align=left] at (focusbox) {\textbf{Thesis focus}};
 
    \node [outer sep=0cm] (environment) at (0,0)  {\includegraphics[width=4.6cm]{figures/proposed_method/example_environment.png}};
 
@@ -28,49 +28,49 @@
 
     \node [block,
     above of=environment,
-    minimum height=2cm,
+    minimum height=1.5cm,
     minimum width=5cm,
-    node distance=4.1cm,
+    node distance=3.6cm,
     outer sep=0cm] (h-graph) {Hypothesis Algorithm};
 
     \node [block,
     above of=h-graph,
-    node distance=3.3cm,
+    node distance=2.5cm,
     minimum width=5cm,
-    minimum height=2.0cm] (k-graph) {Knowledge Graph};
+    minimum height=1.5cm] (k-graph) {Knowledge Graph};
 
     \node [rectangle, draw,
     fill=myEvenLighterColor,
     text width=5em, text centered, rounded corners,
     right of=k-graph,
     minimum width=4cm,
-    minimum height=2cm,
-    node distance=7.2cm] (ontology) {Ontology};
+    minimum height=1.5cm,
+    node distance=7.5cm] (ontology) {Ontology};
 
     \node [rectangle, draw,
     fill=myEvenLighterColor,
     text width=5em, text centered, rounded corners,
     right of=h-graph,
     minimum width=4cm,
-    minimum height=2cm,
-    node distance=7.2cm] (planner) {High-level planner};
+    minimum height=1.5cm,
+    node distance=7.5cm] (planner) {High-level planner};
 
     % Draw edges
-    \draw[-stealth] ([yshift=0.155cm, xshift=0.4 cm]environment.north) -- node [xshift=-.05cm, right] {\shortstack[]{sensor\\measurements}}([xshift=0.4 cm]h-graph.south) ;
-    \draw[-stealth] ([xshift=-0.4 cm]h-graph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.4 cm]environment.north) ;
+    \draw[-stealth] ([yshift=0.155cm, xshift=0.3 cm]environment.north) -- node [xshift=-.05cm, right] {\shortstack[]{sensor\\measurements}}([xshift=0.3 cm]h-graph.south) ;
+    \draw[-stealth] ([xshift=-0.3 cm]h-graph.south) -- node [left] {robot input}([yshift=0.155cm, xshift=-0.3 cm]environment.north) ;
     \draw[-stealth] (planner.west) -- node [pos=0.37, above] {task}(h-graph.east);
-    \draw[-stealth] ([xshift=-0.4cm]k-graph.south) -- node [left] {\shortstack[]{action\\suggestions}}([xshift= -0.4cm]h-graph.north) ;
-    \draw[stealth-] ([xshift=0.4cm]k-graph.south) -- node [right] {\shortstack[]{action\\feedback}}([xshift= 0.4cm]h-graph.north) ;
+    \draw[-stealth] ([xshift=-0.3cm]k-graph.south) -- node [left] {\shortstack[]{action\\suggestions}}([xshift= -0.3cm]h-graph.north) ;
+    \draw[stealth-] ([xshift=0.3cm]k-graph.south) -- node [right] {\shortstack[]{action\\feedback}}([xshift= 0.3cm]h-graph.north) ;
     \draw[-stealth] (k-graph.east) -- node [xshift=-0.1cm, above, pos=0.63] {\shortstack[]{environment\\knowledge}}(ontology.west);
-    \draw[stealth-] ([xshift=0.4cm]ontology.south) -- node [right] {\shortstack[]{query}}([xshift=0.4cm]planner.north);
-    \draw[-stealth] ([xshift=-0.4cm]ontology.south) -- node [left] {\shortstack[]{output}}([xshift=-0.4cm]planner.north);
+    \draw[stealth-] ([xshift=0.3cm]ontology.south) -- node [right] {\shortstack[]{query}}([xshift=0.3cm]planner.north);
+    \draw[-stealth] ([xshift=-0.3cm]ontology.south) -- node [left] {\shortstack[]{output}}([xshift=-0.3cm]planner.north);
     \draw[stealth-] (planner.south) |- ++ (2,-1) node[near end, above] {\shortstack[]{High-level\\task}};
     \end{tikzpicture}
 \caption{Flowchart representation of the proposed robot framework.}%
 \label{tikz:flowchart_proposed_method}
 \end{figure}
 
-The above figure shows that the thesis focus could be augmented with an ontology and high-level planner. Such an augmentation would create a framework capable of completing high-level tasks such as cleaning or exploring.\bs
+The block containing the \ac{h-algorithm} in \Cref{tikz:flowchart_proposed_method} orchestrates the generation and execution of action sequences. In doing so, it creates a \ac{h-graph}, first the \ac{h-graph} is introduced and discussed, then the \ac{h-algorithm} is introduced and discussed.\bs
 
 \input{mainmatter/hypothesis_graph/hypothesis_graph}
 \input{mainmatter/hypothesis_graph/h-algorithm}
