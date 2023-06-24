@@ -82,3 +82,35 @@ The limited number of possible edge parameterization (every combination of a sys
 
 This thesis proposes to combine the three topics (one, learning object dynamics, two, the \ac{NAMO} problem, and three, nonprehensile push manipulation to target pose). The \ac{h-algorithm} can solve \ac{NAMO} problems because the robot can drive toward target poses even if reaching such a pose requires objects to be moved first. The proposed algorithm learns to classify objects by updating the object's class from unknown to movable or unmovable. The \ac{h-algorithm} can push objects to target poses by identifying a system model and then pushing the object toward its target pose. However, the system model that system identification yields is of short use because it is only given to the corresponding action edge.\bs
 
+% This chapter has terminology that is conveniently grouped in \Cref{table:proposed_method_terminology}.\bs
+
+% \noindent
+% \begin{table}[H]
+% \caption{The proposed-framework-related terminology is juxtaposed in the left column\\alongside its corresponding description in the right column.}%
+% \label{table:proposed_method_terminology}
+% \centering
+% \begin{tabular}%
+%   {>{\raggedright\arraybackslash}p{0.23\textwidth}%
+%    >{\raggedright\arraybackslash}p{0.67\textwidth}}
+% Task:   &  Tuple of objects and corresponding target configurations.\\[-0.3cm]
+%         & \[\textrm{task} = \gls{task} = \left\langle \gls{Obj}_{\mathit{task}}, C_{\mathit{targets}} \right\rangle\]\\[-0.3cm]
+% Subtask:& A single object and a single target configuration.\\[-0.3cm]
+%         & \[\textrm{subtask} = \gls{subtask}= \left\langle \mathit{obj}_{\mathit{subtask}}, \gls{c}_{\mathit{target}} \right\rangle\]\\[-0.3cm]
+% Object Class & Classification assigned to an object.\\[-0.3cm]
+%              & \[\gls{objectClass} = \textrm{Unknown}\vee \textrm{Obstacle}\vee \textrm{Movable}\]\\[-0.3cm]
+% Node:   & Three type of nodes exist, the object node in the \acs{h-graph} and the center- and side node in the \acs{k-graph}. The object node represents an object at a certain pose. The center node represents an object, the side node acts as a placeholder.\\
+% Node Status:& Only an object node bears a status, which indicates if a object node could be reached over a sequence of edges from a start node. \\[-0.3cm]
+%             & \[\gls{nodeStatus} = \mathrm{Initialised} \vee \mathrm{Completed} \vee \mathrm{Unfeasible} \]\\[-0.3cm]
+% Edge:   & Edge connecting a node to another node in the \acs{h-graph} or \ac{k-graph}.\\[-0.3cm]
+% Edge Status:& Status of an edge indicates at which stage of its lifetime the edge currently is. For an identification edge, eleborate information can be found in \Cref{tikz:status_identification_edge}, for a action edge eleborate information can be found in \Cref{tikz:status_action_edge}.\\
+% Non-Failed Status:& Node- or edge status other than FAILED.\\
+% Hypothesis:& Sequence of successive edges in the \ac{h-graph}, an idea to put an object at its target configuration. If executed and completed, a subtask is completed.\\[-0.3cm]
+%            & \[\textrm{hypothesis} = \gls{hypothesis} = \left[\ \gls{edge}_{1}, \gls{edge}_{2}, \gls{edge}_{3}, \dots \gls{edge}_{m} \right]\,  m>0\]\\[-0.3cm]
+% Hypothesis Algorithm:& Graph-based algorithm that searches for hypothesis in the \ac{h-graph} to complete subtasks, eventually completing a task.\\
+% Hypothesis Graph:& Collection of nodes and edges. For every subtask, a start and target node exist in the \ac{h-graph}, and the \ac{h-algorithm} searches for a path through nodes and edges to connect the start to the target node.\\[-0.3cm]
+%                  & \[\textrm{\ac{h-graph}} = \gls{h-graph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle \]\\[-0.3cm]
+% Knowledge Graph:& Collection of nodes and edges. The \ac{k-graph} acts as a knowledge base and can be queried for an action suggestion.\\[-0.3cm]
+%                 & \[\textrm{\ac{k-graph}} = \gls{k-graph} = \left\langle \gls{nodesK}, \gls{edgesK} \right\rangle \]\\[-0.3cm]
+% \end{tabular}
+% \end{table}
+

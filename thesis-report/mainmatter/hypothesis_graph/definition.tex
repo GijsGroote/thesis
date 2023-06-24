@@ -6,7 +6,7 @@ Formally an \textbf{configuration}, $\gls{c}_{id}(k)$ is a tuple of $\left\langl
 
 An object is represented as its shape and configuration\\Formally, a \textbf{object},  $\gls{obj}_{id} = \left\langle \gls{objectClass}, \mathit{shape} \right\rangle $\bs
 
-Where \textit{id} is an identifier for the object, \gls{objectClass} the objects classification and $\mathit{shape}$ is linked to a 3D representation of the object.\bs
+Where \textit{id} is an identifier for the object, \gls{objectClass} the objects classification that can be either movable, unmovable or unknown. $\mathit{shape}$ is linked to a 3D representation of the object.\bs
 
 An object node represents an object in a certain configuration.\\Formally, a \textbf{objectNode}, $V^{\gls{obj}}_{id} =\left\langle \gls{obj}, \gls{c}(k), \textrm{status} \right\rangle $.\bs
 
@@ -28,15 +28,15 @@ A \textbf{empty edge}, \[\gls{edge}^\mathit{emtpy}_\mathit{id} = \left\langle id
 
 Where \textit{id} is and identifier for the edge, status for an emtpy edge can be INITIALIZED or FAILED.\bs
 
-Now that the nodes and edges have been defined, the \ac{h-graph} can be defined.\bs
+\noindent Now that the nodes and edges have been defined, the \ac{h-graph} can be defined.\bs
 
 Formally, a \textbf{hypothesis graph}, $\gls{h-graph} = \left\langle \gls{nodesH}, \gls{edgesH} \right\rangle $
-\\ Where \gls{nodesH} is a set of nodes and \gls{edgesH} a set of edges, defined as: $\gls{nodesH} = \{\gls{nodesH}^{\gls{obj}}_{i}\}$, \quad $\gls{edgesH} \in \{\gls{edge}_{(i,j)}| \gls{edgesH}_i, \gls{edgesH}_j \in \{\gls{nodesH}^{\gls{obj}} \}, i \neq j\}$.\bs
+\\ Where \gls{nodesH} is a set of nodes and \gls{edgesH} a set of edges, defined as:\\ $\gls{nodesH} = \{\gls{nodesH}^{\gls{obj}}_{i}\}$, \quad $\gls{edgesH} \in \{\gls{edge}_{(i,j)}| \gls{edgesH}_i, \gls{edgesH}_j \in \{\gls{nodesH}^{\gls{obj}} \}, i \neq j\}$.\bs
 
-Most \ac{h-graph} components have been defined. The status of an identification or action edge remains undefined and requires further explanation.\bs
+The \ac{h-graph} and most of it's components have been defined. The status of an identification or action edge remains undefined and requires further explanation which is provided in the next subsection.\bs
 
 \subsection{Edge statusus}\label{subsec:edge_status}
-The edges are split into two categories, identification edges and action edges. An identification edge sends an input sequence and records the system output. That \ac{IO} sequence and assumptions on the system are the basis for system identification, techniques on various system identification methods are discussed in \Cref{sec:sys_iden}. The goal is to create a dynamic model augmented with a corresponding controller that forms closed-loop stable control. The status of an identification edge can be visualized in the following \ac{FSM}.\bs
+The edges are split into three categories; identification-, action- and empty edges, these edges have just been defined in previous subsection. The status of an identification- and action edge are now defined as \ac{FSM} in \Cref{tikz:status_identification_edge,tikz:status_action_edge}.\bs
 
 \begin{figure}[H]
 \centering
@@ -47,7 +47,7 @@ The edges are split into two categories, identification edges and action edges. 
     \node [state, accepting, fill=my_red, right of=completed_test_num, node distance=6cm] (failed) {FAIL};
 
  % arrows
-    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{Select compatible\\sys. iden. method\\Go to first $\gls{c}_{\mathit{start}}$}} (init_test_num.west);
+    \draw [-stealth] ([xshift=-2cm]init_test_num.west) to node[near start,above]{\shortstack[]{Select sys.\\ iden. method\\Go to starting pose}} (init_test_num.west);
     \draw[-stealth] (init_test_num) edge[bend right] node[left]{Collect \ac{IO} data} (completed_test_num)
 (completed_test_num) edge node[left]{Create system model} (completed);
     \draw [-stealth] (completed_test_num) edge[bend right] node[right]{\shortstack{Go to next\\start configuration}} (init_test_num);
@@ -65,16 +65,14 @@ The edges are split into two categories, identification edges and action edges. 
 \begin{tabular}%
   {>{\raggedleft\arraybackslash}p{0.30\textwidth}%
    >{\raggedright\arraybackslash}p{0.60\textwidth}}
-PRE INPUT SEQUENCE number t (PrIS\#t): & Go to target configuration to apply the input sequence. \\
-POST INPUT SEQUENCE number t (PoIS\#t): & Collect the output sequence. \\
+PRE INPUT SEQUENCE number t (PrIS\#t): & Go to start pose ready to apply the input sequence. \\
+POST INPUT SEQUENCE number t (PoIS\#t): & Collect the output response. \\
 COMPLETED (CO): & The edge has driven the system toward its target configuration, and its performance has been calculated. \\
 FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
 
-An identification edge corresponds to an action edge because its goal is to generate a system model to hand over its corresponding action edge. The system identification method is selected after the action edge is selected to yield a system model compatible with the controller that resides in the action edge. Two types of system models are generated: system models that describe the driving behaviour of the robot and system models that describe the robot's push behaviour and an object's.\bs
-
-After initialization, an action edge starts propagating its status as indicated in \Cref{tikz:status_action_edge}. An action edge's eventual goal is to track a path. First, the existence of a path is estimated, a system model must be provided, and action planning must be performed. \bs
+An identification edge goal is to generate a system model, to then hand over to a corresponding action edge that requires a system model. An action edge's eventual goal is to track a path, to make an action edge ready to track a path or ready for execution a certain number of steps must be completed. First, the existence of a path is estimated, then a system model must be provided, and lastly action planning must be performed. These steps all propogate the status of an action edge as can visualized in \Cref{tikz:status_action_edge}.\bs
 
 \begin{figure}[H]
 \centering
@@ -89,7 +87,7 @@ After initialization, an action edge starts propagating its status as indicated 
 
  % arrows
     \draw [-stealth] ([xshift=-2cm]init.west) to node[near start,above]{Select controller} (init.west);
-    \draw[-stealth] (init) edge node[left]{Graph-based path estimation} (path_exist)
+    \draw[-stealth] (init) edge node[left]{Path estimation} (path_exist)
       (path_exist) edge[bend right] node[left]{Load in system model} (system_model)
 (system_model) edge[bend right] node[left]{Path planning} (path_planned)
 (path_planned) edge[bend right] node[left]{Go to execution loop} (executing)
@@ -113,22 +111,20 @@ After initialization, an action edge starts propagating its status as indicated 
 \begin{tabular}%
   {>{\raggedleft\arraybackslash}p{0.24\textwidth}%
    >{\raggedright\arraybackslash}p{0.66\textwidth}}
-INITIALIZED (IN): & The edge is created with a source and target node, which are present in the \ac{h-graph}. A choice of controller is made by random selection. \\
+INITIALIZED (IN): & The edge is created between a source and target node.\\
 PATH EXISTS (PE): & A graph-based search is performed to validate whether the target configuration is reachable, assuming the system is holonomic. \\
-SYSTEM MODEL (SM): & A dynamic system model is provided to the controller residing in the edge. \\
-PATH PLANNED (PP): & Resulting from a sample-based planner, a path from start to target configuration is provided. \\
+SYSTEM MODEL (SM): & A system model is provided to the controller that resides in the edge.\\
+PATH PLANNED (PP): & The path planner plans a path from start- to target configuration. \\
 EXECUTING (EX): & The edge receives observations from the robot environment and sends back robot input. \\
-COMPLETED (CO): & The edge has driven the system toward its target configuration, and its performance has been calculated. \\
+COMPLETED (CO): & The edge has driven the system toward its target configuration. \\
 FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
 
+what here now/
 
-\paragraph{\ac{H-graph} Legend}
-\Cref{tikz:status_action_edge} shows that many steps must successfully be completed before the edge can be executed.
-Before executing edges, edges must be initialized, which is where the next section is dedicated to.\bs
-
-The following figure presents an legend for the \ac{h-graph}s that will be presented in the next section.\bs
+\paragraph{\ac{h-graph} Legend}
+The following figure presents an legend for the \ac{h-graph}s.\bs
 
 \begin{figure}[H]
     \centering
@@ -171,3 +167,5 @@ The following figure presents an legend for the \ac{h-graph}s that will be prese
     \caption{Legend for the \acl{h-graph}. }%
     \label{fig:h-graph_legend}
 \end{figure}
+
+The \ac{h-graph} has now fully been defined, in the upcoming section, the \ac{h-algorithm} that creates and updates a \ac{h-graph} is defined and discussed.\bs
