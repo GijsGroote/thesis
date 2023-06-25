@@ -272,7 +272,7 @@ The search- and execution time to complete a task is investigated, and especiall
    \label{fig:random_drive_time_k-graph}
 \end{figure}
 
-The above figure displays results where the \ac{h-algorithm} initially selects a random edge parameterization, after executing an action edge it sends action feedback to the \ac{k-graph}. When every possible edge parameterization for drive actions has corresponding action feedback in the \ac{k-graph}, the \ac{k-graph} starts suggesting edge parameterizations. Now a boxplot is presented in \Cref{fig:random_drive_time_no_k-graph} that displays task execution without using the \ac{k-graph} action suggestions, instead a random parameterization is selected for every action edge. By fixing a seed the environments used for \Cref{fig:random_drive_time_k-graph} are equal to the environments used for \Cref{fig:random_drive_time_no_k-graph}.\bs
+In the above figure the \ac{h-algorithm} initially selects a random edge parameterization, also known as the learning phase. The duration of the learning phase is the first task, which can be concluded from \Cref{table:rand_drive_mpc_vs_mppi}. From that table it becomes clear that after the first task, only the \ac{MPC} parameterization is selected for driving tasks, indicating the learning phase is over. Since the learning phase is already over after the first task, it is hard to identify a trend in search-, execute- or total time during learning, because there is only one data point in the learning phase. After the learning phase, in the converging phase starts, the total execution time deviates between 15 and 20 seconds. Now a boxplot is presented in \Cref{fig:random_drive_time_no_k-graph} that displays task execution without using the \ac{k-graph} action suggestions, instead a random parameterization is selected for every action edge. By fixing a seed the environments used for \Cref{fig:random_drive_time_k-graph} are equal to the environments used for \Cref{fig:random_drive_time_no_k-graph}.\bs
 
 \begin{figure}[H]
     \centering
@@ -281,7 +281,7 @@ The above figure displays results where the \ac{h-algorithm} initially selects a
    \label{fig:random_drive_time_no_k-graph}
 \end{figure}
 
-Lets compare the means from \Cref{fig:random_drive_time_k-graph,fig:random_drive_time_no_k-graph} and compare task execution with and without the \ac{k-graph} action suggestions. However overall \Cref{fig:random_drive_time_k-graph} shows significant improvement over \Cref{fig:random_drive_time_no_k-graph} which becomes better visible if only the means are compared in \Cref{fig:random_drive_time_vs}.\bs
+When comparing the average median total time to complete a task in both \Cref{fig:random_drive_time_k-graph,fig:random_drive_time_no_k-graph} a difference becomes clear, which can be better visualized if only the medians of both task execution with and without the \ac{k-graph} action suggestions are plotted in the following figure.\bs
 
 \begin{figure}[H]
     \centering
@@ -289,10 +289,10 @@ Lets compare the means from \Cref{fig:random_drive_time_k-graph,fig:random_drive
     \caption{Comparing means of total time to complete a task out of ten runs for a driving task.}\label{fig:random_drive_time_vs}
 \end{figure}
 
-Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI} parameterization that both use lti-drive-model. The \ac{k-graph} prefers the \ac{MPC} parameterization over the \ac{MPPI} parameterization as can be seen in \Cref{table:rand_drive_mpc_vs_mppi}. In this table is can be seen that the \ac{k-graph} needs at most one task of experience to suggest the \ac{MPC} parameterization. An explanation why there was no trend to be found in \Cref{fig:random_drive_time_k-graph}, it was already converged at the first task.  
+In \Cref{fig:random_drive_time_k-graph} no clear trend could be indicated because the converging phase was over in the during the first task.When comparing the average medians for task execution with and without \ac{k-graph} action suggestions it becomes clear that the action suggestions result in a positive effect on the total time to complete a task. Without action suggestions the total time varies between 19 and 27 seconds, whilst task performance with action suggestions results in a total time that varies between 14 and 19 seconds. Now a table is presented that summarizes the edge parameterizations and displays success rate of tasks and hypotheses of the driving task.\bs
 
 \begin{table}[H]
-    \caption{The selection of the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model}) parameterization for drive actions during the randomized driving tasks. The leftmost column indicates that tasks execution is performed with the \ac{k-graph} action suggestions, and without action suggestions.}%
+    \caption{The selection of the (\ac{MPC}, \textit{lti-drive-model}) parameterization versus selecting the (\ac{MPPI}, \textit{lti-drive-model}) parameterization for drive actions during the randomized driving tasks. The leftmost column indicates the metric to measure performance  with and without the \ac{k-graph} action suggestions. The rightmost column presents task performance over the number of tasks in experience.}%
     \label{table:rand_drive_mpc_vs_mppi}
     \centering
     \begin{tabular}%
@@ -301,22 +301,24 @@ Two driving edge parameterizations are available, the \ac{MPC} and the \ac{MPPI}
         >{\raggedright\arraybackslash}p{0.22\textwidth}
       |p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}}
       \multicolumn{2}{c|}{Number of Tasks in experience} &0&1&2&3&4&5&6&7&8&9\\\toprule
-      \multirow{4}{0.1\textwidth}{With \ac{k-graph} suggestions} 
-      &Number of \ac{MPC} parameterizations&22&33&34&33&33&33&33&34&33&32\\
-      &Number of \ac{MPPI} parameterizations&11&0&0&0&0&0&0&0&0&0\\
-      & \ac{MPC} selected in total drive actions [\%]&67&100&100&100&100&100&100&100&100&100\\
-      & \ac{MPPI} selected in total drive actions [\%]&33&0&0&0&0&0&0&0&0&0\\\midrule
-      \multirow{4}{0.1\textwidth}{Without \ac{k-graph} suggestions} 
-      &Number of \ac{MPC} parameterizations &14&14&12&12&17&16&17&19&16&11\\
-      &Number of \ac{MPPI} parameterizations &19&19&21&21&17&17&18&14&17&22\\
-      & \ac{MPC} selected from total drive actions [\%] &42&42&36&36&50&48&49&58&48&33\\
-      & \ac{MPPI} selected from total drive actions [\%]&58&58&64&64&50&52&51&42&52&67\\
+      \multirow{5}{0.1\textwidth}{With \ac{k-graph} suggestions} 
+      &Number of \ac{MPC} parameterizations&20&30&31&31&30&30&31&30&30&33\\
+      &Number of \ac{MPPI} parameterizations&10&0&0&0&0&0&0&0&0&0\\
+      & task success rate [\%]& 100& 100& 100& 100& 100& 100& 100& 100& 100& 90\\
+      & successfully hypothesis [-]& 30& 30& 30& 30& 30& 30& 30& 30& 30& 29\\
+      & failed hypothesis [-]& 0& 0& 1& 1& 0& 0& 1& 0& 0& 4\\\midrule
+      \multirow{5}{0.1\textwidth}{Without \ac{k-graph} suggestions} 
+      &Number of \ac{MPC} parameterizations&12&14&13&10&15&16&13&17&16&9\\
+      &Number of \ac{MPPI} parameterizations&18&17&18&20&17&15&17&13&15&22\\
+      & task success rate [\%]& 100& 100& 100& 100& 100& 100& 100& 100& 100& 100\\
+      & successfully hypothesis [-]& 30& 30& 30& 30& 30& 30& 30& 30& 30& 30\\
+      & failed hypothesis [-]& 0& 1& 1& 0& 1& 1& 0& 0& 1& 1\\
     \end{tabular}
 \end{table}
 
-The \ac{h-algorithm} successfully completes 300 driving subtasks (3 subtasks per task, 10 tasks per run, 10 runs are completed). In \Cref{table:rand_drive_mpc_vs_mppi} the number of \ac{MPC} and \ac{MPPI} parameterizations should be more or equal to 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. This effect is due to detected faults, upon fault detection, the edge is terminated and a new edge is created to to complete the subtask. Since two or more edge parameterization are initialized to complete a single subtask, that results in more than 30 driving edge parameterizations to complete 30 subtasks.\bs
+Whilst using the \ac{k-graph} suggestions the \ac{h-algorithm} almost completes all 300 (3 subtasks per task, 10 tasks per run, 10 runs are completed) driving subtasks. The 90\% success rate in the task using \ac{k-graph} suggestions and having 9 task in experience in \Cref{table:rand_drive_mpc_vs_mppi} can be assigned to pure chance, as it is a single occurrence. The \ac{h-algorithm} successfully completes 300 driving subtasks with random selection of edge parameterization. The number of \ac{MPC} and \ac{MPPI} parameterizations should be more or equal to 30 for any number of tasks in experience. In many cases it is more than 30, which indicates more than 30 drive edges were created to complete 30 drive subtasks. This effect is due to detected faults, that result in hypothesis failure. In such cases because two or more edge parameterization are initialized to complete a single subtask, that results in more than 30 driving edge parameterizations to complete 30 subtasks.\bs
 
-The \ac{k-graph} converges to the (\textit{mpc-drive-controller}, \textit{lti-drive-model}) parameterization during the first task. Selecting this parameterization compared to selecting a random parameterization has a positive effect on the total time to complete a task. The search time for both using the \ac{k-graph} suggestions or random selection is similar, the difference is due to the difference in execution time. Now a task is taken that compares the use of the \ac{h-algorithm} with and without \ac{k-graph} for a pushing task.\bs
+For the driving task in the randomized environment the \ac{k-graph} converges to the (\textit{mpc-drive-controller}, \textit{lti-drive-model}) parameterization during the first task. Selecting this parameterization compared to selecting a random parameterization has a positive effect on the total time to complete a task. The search time for both using the \ac{k-graph} suggestions or random selection is similar. Now a similar experiment is conducted for a pushing task.\bs
 
 \subsection{A Pushing Task}%
 \label{subsec:rand_pushing}
@@ -368,6 +370,8 @@ Given the parameters range in table \Cref{table:configure_rand_push_env_values} 
     \label{fig:random_push_time_k-graph}
 \end{figure}
 
+\Cref{fig:random_push_time_k-graph} above displays that the usage of the \ac{k-graph} lowers the total execution time with two tasks in experience. From \Cref{table:rand_push_model1_vs_model2} it can be concluded that the learning phase is over with two tasks in experience, since then only the parameterization with the \ac{LTI} model is selected when leveraging the \ac{k-graph}. A similar effect (total time to complete a task lowers after two tasks in experience) is then recorded in the following figure, that displays the results of the same tasks executed without action suggestions in \Cref{fig:random_push_time_k-graph}.\bs
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/results/random_push_time_no_k-graph}
@@ -383,9 +387,10 @@ Both \Cref{fig:random_push_time_k-graph} and \Cref{fig:random_push_time_no_k-gra
     \caption{Comparing means of total time to complete a task out of ten runs for a pushing task.}\label{fig:random_push_time_vs}
 \end{figure}
 
+Both with and without action suggestion appear to lower total task execution time for pushing task, which begs the question: Is the trend in time to complete a task due to the \ac{k-graph} or due to chance?. Even if in both scenario's the total time lowers after two tasks in experience, there still is a small margin of difference if the action suggestions are used over random selection, which becomes clear when comparing average median task completion times in \Cref{fig:random_push_time_vs}.
 
 \begin{table}[H]
-    \caption{The selection of the (\ac{MPPI}, \textit{lti-push-model}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates that tasks execution is performed with the \ac{k-graph} action suggestions, and without action suggestions.}
+    \caption{The selection of the (\ac{MPPI}, \textit{lti-push-model}) parameterization versus selecting the (\ac{MPPI}, \textit{nonlinear-push-model}) parameterization for push actions during the randomized pushing tasks. The leftmost column indicates the metric to measure performance  with and without the \ac{k-graph} action suggestions. The rightmost column presents task performance over the number of tasks in experience.}
     \label{table:rand_push_model1_vs_model2}
     \centering
     \begin{tabular}%
@@ -394,20 +399,20 @@ Both \Cref{fig:random_push_time_k-graph} and \Cref{fig:random_push_time_no_k-gra
         >{\raggedright\arraybackslash}p{0.35\textwidth}
       |p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}p{0.4cm}}
       \multicolumn{2}{c|}{Number of Tasks in experience} &0&1&2&3&4&5\\\toprule
-      \multirow{4}{0.1\textwidth}{With \ac{k-graph} suggestions} 
-      &Number of \textit{lti-push-model} parameterizations&4&5&8&10&10&10\\
-      &Number of \textit{nonlinear-push-model} parameterizations&5&4&2&0&0&0\\
-      & \textit{lti-push-model} selected in total push actions [\%]&44&56&80&100&100&100\\
-      & \textit{nonlinear-push-model} selected in total push actions [\%]&56&44&20&0&0&0\\\midrule
-      \multirow{4}{0.1\textwidth}{Without \ac{k-graph} suggestions} 
-      &Number of \textit{lti-push-model} parameterizations&4&3&7&5&4&5\\
-      &Number of \textit{nonlinear-push-model} parameterizations&5&5&3&5&6&4\\
-      & \textit{lti-push-model} selected in total push actions [\%]&44&38&70&50&40&56\\
-      & \textit{nonlinear-push-model} selected in total push actions [\%]&56&62&30&50&60&44\\
+      \multirow{5}{0.1\textwidth}{With \ac{k-graph} suggestions} 
+      &Number of \textit{lti-push-model} parameterizations&6&8&8&10&10&10\\
+      &Number of \textit{nonlinear-push-model} parameterizations&7&9&2&0&0&0\\
+      & task success rate [\%]& 90& 90& 100& 100& 100& 100\\
+      & successfully hypothesis [-]& 9& 9& 10& 10& 10& 10\\
+      & failed hypothesis [-]& 5& 8& 0& 0& 0& 0\\\midrule
+      \multirow{5}{0.1\textwidth}{Without \ac{k-graph} suggestions} 
+      &Number of \textit{lti-push-model} parameterizations&6&8&8&6&4&6\\
+      &Number of \textit{nonlinear-push-model} parameterizations&8&9&3&6&6&8\\
+      & task success rate [\%]& 90& 80& 100& 100& 100& 90\\
+      & successfully hypothesis [-]& 9& 8& 10& 10& 10& 9\\
+      & failed hypothesis [-]& 5& 9& 1& 2& 0& 5\\
     \end{tabular}
 \end{table}
-\todo{remove procentarge rows, add fault detection rows and add succesfully completed rows}
-
 
 The \ac{k-graph} favours the \ac{MPPI} controller with \textit{lti-push-model} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The lti-push-model parameterization does not only have a lower execution time compared to the nonlinear-push-model parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
 
