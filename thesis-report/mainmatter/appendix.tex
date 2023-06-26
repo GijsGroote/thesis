@@ -6,9 +6,12 @@
 
 \textit{The appendix contains additional information that may help better understand the thesis.\bs}
 
+\begingroup
+\let\clearpage\relax
 \chapter*{Complexity Classes}%
 Problems in class P have a solution which can be found in polynomial time, problems in \ac{NP} are problems for which no polynomial algorithms have been found yet, and of which it is believed that no polynomial time solution exist. For problems in \ac{NP}, when provided with a solution, verifying that the solution is indeed a valid solution can be done in polynomial time. \ac{NP-hard} problems are a class of problems which are at least as hard as the hardest problems in \ac{NP}. Problems that are \ac{NP-hard} do not have to be elements of NP. They may not even be decidable~\cite{pokharel_computational_2020}. This thesis or other recent studies in the references do not attempt to find an optimal solution. Instead, they provide a solution whilst guaranteeing properties such as near-optimality or probabilistic completeness. As the piano's mover problem can be reduced to the \ac{NAMO} problem combined with relocating objects to target poses, the conclusion can be drawn that this \ac{NAMO} problem is \ac{NP-hard}.\bs
 
+\newpage
 \chapter*{Benchmark Tests}%
 Three benchmark test are presented, the blockade, swap and surround environment. The environments are created but have not been used for testing the proposed \ac{h-algorithm}. The three environments are presented and a short description is provided that elaborates which parts of the proposed method are tested. Now the blockade environment is presented.\bs
 
@@ -64,6 +67,8 @@ Hybrid models are an extension of analytical approaches with data-driven methods
 where $x$ is the state vector, $u$ is the input vector and $p$ is the parameterisation which needs to be found such that $f(x,u,p)$ accurately estimates the true dynamics. With a random or educated initial guess of the parameterisation $p$, a system model is provided without full knowledge of all system parameters. An initial guess as parameterisation may not be a very accurate model, but it does allow to skip a tedious system identification period. Online adaptation allows to converge to a local minimum during execution. Whether this local minimum also coincides with the global minimum is dependent on the optimisation technique and the initial guess. Parameterisable differential models are very powerful in situations where the general structure of dynamics is known, but certain parameters e.g. weight, the friction coefficient is unknown or change over time~\cite{seegmiller_vehicle_2013}.\\
 
 In a environment with unknown objects, the ability to rapidly interact with objects is provided by hybrid models. During interaction hybrid approaches can improve their model accuracy whilst also adapting to changing systems. To fully capture the push mechanics, data-driven methods should be used, because only data-driven methods are able to capture a large portion of the nonlinear dynamics.
+
+\endgroup
 
 % \chapter*{Implementation in Python}%
 % \label{chap:code_implementation}
