@@ -185,7 +185,7 @@ The goal of the path planner is to find a path between a given start- and target
 
 \[\mathit{TotalPathCost} = \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1}) = \sum_{i=1}^{n-1}  \left\|\gls{c}_i-\gls{c}_{i+1}\right\|\]
 
-Now pseudocode of the \ac{RRT*} algorithm is presented that is split into three parts that are grouped by color as can be seen in \Cref{pseudocode:proposed_rrt_star_all}. Notice that the colour correspond to the later pseudocode and example figures. Each part is then discussed, as well as a number of variables and functions used in that respected part. When discussing each part an example is analyzed in which the path planner adds a single node to the connectivity graph. Note that, the path planner in this section plans in free- and obstacle (or unmovable) space, later in \Cref{chap:proposed_planning} that will be extended to free-, unknown-, movable- and unmovable space.\bs
+Now pseudocode of the \ac{RRT*} algorithm is presented that is split into three parts that are grouped by color as can be seen in \Cref{pseudocode:proposed_rrt_star_all}. Notice that the color correspond to the later pseudocode and example figures. Each part is then discussed, as well as a number of variables and functions used in that respected part. When discussing each part an example is analyzed in which the path planner adds a single node to the connectivity graph. Note that, the path planner in this section plans in free- and obstacle (or unmovable) space, later in \Cref{chap:proposed_planning} that will be extended to free-, unknown-, movable- and unmovable space.\bs
 
 A node \gls{nodeMP} in the path planner consists of the following tuple:
 \[\gls{nodeMP} = \left\langle \gls{c}, \mathit{cost\_to\_source}, \mathit{key}, \mathit{prev\_node\_key}, \mathit{in\_tree} \right\rangle\]
@@ -194,7 +194,7 @@ Where \gls{c} is a point in configuration space, \textit{cost\_to\_source} the c
 
 % ALL
 \begin{algorithm}[H]
-\caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green coloured blocks.}%
+\caption{Pseudocode for double tree \ac{RRT*} algorithm. The pseudocode is split into three parts, \Cref{pseudocode:proposed_rrt_star_one,pseudocode:proposed_rrt_star_two,pseudocode:proposed_rrt_star_three} that correspond to the blue, yellow and green colored blocks.}%
 \label{pseudocode:proposed_rrt_star_all}%
 \begin{algorithmic}[1]
 
@@ -284,7 +284,7 @@ The new node resides in free space and should now be added to either the start- 
 
 \[\mathit{Cost_{toInit}} = \mathit{CostToInit(\gls{nodeMP}_{near})} + \mathit{Distance}(\gls{nodeMP}_{near}, \gls{nodeMP}_{new})\]
 
-The $\mathit{Cost_{toInit}}$ is proportional to the path length from a node toward the initial node in the connectivity graph. It can be seen as half of the $\mathit{Cost_{path}}$ that will be later defined as te cost for the entire path from starting- to target node. The second and third functions are the $\mathit{Distance}(x, x')$ function that returns the distance between node $x$ and $x'$, and a $\mathit{CostToInit}(x)$ function that finds the total cost from $x$ to the initial node.\bs
+The $\mathit{Cost_{toInit}}$ is proportional to the path length from a node toward the initial node in the connectivity graph. It can be seen as half of the $\mathit{Cost_{path}}$ that will be later defined as the cost for the entire path from starting- to target node. The second and third functions are the $\mathit{Distance}(x, x')$ function that returns the distance between node $x$ and $x'$, and a $\mathit{CostToInit}(x)$ function that finds the total cost from $x$ to the initial node.\bs
 
 % TWO
 \begin{algorithm}[H]
@@ -317,7 +317,7 @@ The $\mathit{Cost_{toInit}}$ is proportional to the path length from a node towa
     \label{fig:motion_planner_adding_one_node_two}
 \end{figure}
 
-The new node is connected to a parent node as can be seen in \Cref{fig:motion_planner_adding_one_node_tree}. A final step remains to be done, connecting the two trees or rewiring. For this step the $\mathit{InSameTree}(x, x')$ indicates if both $x$ and $x'$ are or are not in the same tree. For every node in the set of nearest nodes that is in the same tree as the new node, it is validated if rewiring would result in a lower $\mathit{Cost_{toInit}}$ for that node. The rewire procedure changes the parent node by removing and adding an edge, rewiring can be visually seen in \Cref{subfig:mp_rewire}. The node in the set of nearest nodes that are in the other three that results in the lowerst $\mathit{Cost_{path}}$ is connected to the new node. Thereby creating a path from start node to target node, the path is added to the set of paths with corresponding $\mathit{Cost}_\mathit{path}$, defined as:\bs
+The new node is connected to a parent node as can be seen in \Cref{fig:motion_planner_adding_one_node_tree}. A final step remains to be done, connecting the two trees or rewiring. For this step the $\mathit{InSameTree}(x, x')$ indicates if both $x$ and $x'$ are or are not in the same tree. For every node in the set of nearest nodes that is in the same tree as the new node, it is validated if rewiring would result in a lower $\mathit{Cost_{toInit}}$ for that node. The rewire procedure changes the parent node by removing and adding an edge, rewiring can be visually seen in \Cref{subfig:mp_rewire}. The node in the set of nearest nodes that are in the other three that results in the lowest $\mathit{Cost_{path}}$ is connected to the new node. Thereby creating a path from start node to target node, the path is added to the set of paths with corresponding $\mathit{Cost}_\mathit{path}$, defined as:\bs
 
 \[\mathit{Cost_{path}} = \mathit{CostToInit(\gls{nodeMP}_{new})} + \mathit{Distance}(\gls{nodeMP}_{new}, \gls{nodeMP}_{other\_tree}) +\mathit{CostToInit(\gls{nodeMP}_{other\_tree})} \]
 

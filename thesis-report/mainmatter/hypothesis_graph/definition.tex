@@ -12,21 +12,21 @@ An object node represents an object in a certain configuration.\\Formally, a \te
 
 Where \textit{id} is an identifier for the node, \gls{obj} an object, $\gls{c}(k)$ the configuration at time step $k$ and status indicates if the configuration is reachable for the object that both reside in the node, the status can be INITIALIZED or COMPLETED or UNFEASIBLE.\bs
 
-An edge describes how a node transitions to another node in the \ac{h-graph}. Edges are split into three categories since they accomplish different goals. \textit{System identification edges} that have as a goal to collect \ac{IO} data and to generate a system model with that data, \textit{action edges} steer a system toward a target configuration and \textit{emtpy edges} connect nodes that contain different objects that could otherwise not be connected. The edges are formally defined as:\bs
+An edge describes how a node transitions to another node in the \ac{h-graph}. Edges are split into three categories since they accomplish different goals. \textit{System identification edges} that have as a goal to collect \ac{IO} data and to generate a system model with that data, \textit{action edges} steer a system toward a target configuration and \textit{empty edges} connect nodes that contain different objects that could otherwise not be connected. The edges are formally defined as:\bs
 
 A \textbf{identification edge}, \[\gls{edge}^\mathit{iden}_\mathit{id} = \left\langle \mathit{id_{from}}, \mathit{id_{to}}, \textrm{Identification Method}, \textrm{\ac{IO} data set}, \textrm{controller}, \textrm{system model}, \textrm{status} \right\rangle\]\bs
 
-Where \textit{id} is an identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~identification method indicates the used method for system identification, the \textrm{\ac{IO} data set} contains the input sequences and the system's recorded output reponse, the controller contains the controller used for driving the robot during data collection and the status indicates the node's status thas is eleborated in datail in \Cref{tikz:status_identification_edge}.\bs
+Where \textit{id} is an identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~identification method indicates the used method for system identification, the \textrm{\ac{IO} data set} contains the input sequences and the system's recorded output response, the controller contains the controller used for driving the robot during data collection and the status indicates the node's status that is elaborated in detail in \Cref{tikz:status_identification_edge}.\bs
 
 A \textbf{action edge}, \[\gls{edge}^\mathit{action}_\mathit{id} = \left\langle id_{from}, id_{to}, \textrm{verb}, \textrm{controller},\textrm{system model}, \textrm{path}, \textrm{status} \right\rangle\]\bs
 
-Where \textit{id} is a identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~verb is an English verb describing the action the edge represents (in this thesis driving or pushing), the controller contains the control method used for driving the robot, system model is the dynamic system model used by the control method, path is a list of configurations and status indicates the node's status thas is eleborated in datail in \Cref{tikz:status_action_edge}.\bs
+Where \textit{id} is a identifier for the edge, $\mathit{id_{from}}$ and $\mathit{id_{to}}$ indicating the node identifier where the edge points from and to, respectively.~verb is an English verb describing the action the edge represents (in this thesis driving or pushing), the controller contains the control method used for driving the robot, system model is the dynamic system model used by the control method, path is a list of configurations and status indicates the node's status that is elaborated in detail in \Cref{tikz:status_action_edge}.\bs
 
-Connecting nodes with edges is eleborated upon in the upcoming section. Two nodes can only be connected if they both contain the same object. The empty edge main goal is to connect nodes that contain different object, to involve multiple objects in a single action sequence.\bs
+Connecting nodes with edges is elaborated upon in the upcoming section. Two nodes can only be connected if they both contain the same object. The empty edge main goal is to connect nodes that contain different object, to involve multiple objects in a single action sequence.\bs
 
 A \textbf{empty edge}, \[\gls{edge}^\mathit{emtpy}_\mathit{id} = \left\langle id_{from}, id_{to}, \textrm{status} \right\rangle\]\bs
 
-Where \textit{id} is and identifier for the edge, status for an emtpy edge can be INITIALIZED or FAILED.\bs
+Where \textit{id} is and identifier for the edge, status for an empty edge can be INITIALIZED or FAILED.\bs
 
 \noindent Now that the nodes and edges have been defined, the \ac{h-graph} can be defined.\bs
 
@@ -35,7 +35,7 @@ Formally, a \textbf{hypothesis graph}, $\gls{h-graph} = \left\langle \gls{nodesH
 
 The \ac{h-graph} and most of it's components have been defined. The status of an identification or action edge remains undefined and requires further explanation which is provided in the next subsection.\bs
 
-\subsection{Edge statusus}\label{subsec:edge_status}
+\subsection{Edge Statuses}\label{subsec:edge_status}
 The edges are split into three categories; identification-, action- and empty edges, these edges have just been defined in previous subsection. The status of an identification- and action edge are now defined as \ac{FSM} in \Cref{tikz:status_identification_edge,tikz:status_action_edge}.\bs
 
 \begin{figure}[H]
@@ -72,7 +72,7 @@ FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
 
-An identification edge goal is to generate a system model, to then hand over to a corresponding action edge that requires a system model. An action edge's eventual goal is to track a path, to make an action edge ready to track a path or ready for execution a certain number of steps must be completed. First, the existence of a path is estimated, then a system model must be provided, and lastly action planning must be performed. These steps all propogate the status of an action edge as can visualized in \Cref{tikz:status_action_edge}.\bs
+An identification edge goal is to generate a system model, to then hand over to a corresponding action edge that requires a system model. An action edge's eventual goal is to track a path, to make an action edge ready to track a path or ready for execution a certain number of steps must be completed. First, the existence of a path is estimated, then a system model must be provided, and lastly action planning must be performed. These steps all propagate the status of an action edge as can visualized in \Cref{tikz:status_action_edge}.\bs
 
 \begin{figure}[H]
 \centering
@@ -120,8 +120,6 @@ COMPLETED (CO): & The edge has driven the system toward its target configuration
 FAILED (FAIL): & An error occurred, yielding the edge unusable. \\
 \end{tabular}
 \end{table}
-
-what here now/
 
 \paragraph{\ac{h-graph} Legend}
 The following figure presents an legend for the \ac{h-graph}s.\bs

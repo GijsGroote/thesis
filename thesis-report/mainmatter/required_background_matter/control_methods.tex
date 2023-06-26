@@ -28,11 +28,11 @@ the connection between $u$ and $y$. In this viewpoint, various system identifica
     label=above:MPC controller,
 ] (controller) {};
 % the blocks and arrows inside MPC
-\node[draw, minimum width=2cm, below=3mm of controller.north, anchor=north, fill=myDarkColor] (optimisation) {Optimisation};
-\node[draw, below=8mm of optimisation.south, anchor=south, fill=myDarkColor] (model) {System Model};
+\node[draw, minimum width=2cm, below=3mm of controller.north, anchor=north, fill=myDarkColor] (optimization) {Optimization};
+\node[draw, below=8mm of optimization.south, anchor=south, fill=myDarkColor] (model) {System Model};
 \path[-stealth]
-        (model.east) edge[bend right=70] node[pos=0.5, right] {Predict} (optimisation.east)
-        (optimisation.west) edge[bend right=70] node[pos=0.5, left] {Action}  (model.west);
+        (model.east) edge[bend right=70] node[pos=0.5, right] {Predict} (optimization.east)
+        (optimization.west) edge[bend right=70] node[pos=0.5, left] {Action}  (model.west);
 % Arrows
 \draw[-stealth] (controller.west) |- ($(controller.west) - (1,0mm) $) |- (system.west)
 node[near end, above]{$u(t)$};
@@ -41,11 +41,11 @@ node[near end, above]{$u(t)$};
     node[midway](output){}node[midway,above]{$y(t)$};
     \draw [-stealth] (output.center) |- ([yshift=0.5cm]controller.east);
 \end{tikzpicture}
-\caption{System $G(t)$ with input ${u}(t)$, output $y(t)$ and \acs{MPC} controller with input $y(t)$\\reference signal $y_{ref}(t)$, parameterisation $p$ and constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$} \label{figure: mpc_block_diagam} \end{figure}
+\caption{System $G(t)$ with input ${u}(t)$, output $y(t)$ and \acs{MPC} controller with input $y(t)$\\reference signal $y_{ref}(t)$, parameterization $p$ and constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$} \label{figure: mpc_block_diagam} \end{figure}
 
-Some states of the system might be inside an obstacle region, such a region is undesirable for the robot to be in or go toward. The robot states are allowed in free space, which is all space minus the obstacle region. The free space is specified as a state constrained set $\mathbb{X}$. Allowable input can be restricted by the input constraint set $\mathbb{U}$, a scenario in which input constraints are required is for example the maximum torque an engine produces at full throttle. Lastly, the set of allowed outputs is specified in the output constraint set $\mathbb{Y}$. State, input and output constraints must be respected during optimisation, the optimiser takes the state-, input- and output constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$ and if feasible, finds an action sequence driving the system toward the reference signal while constraints are respected. The \ac{MPC} system model predicts future states where the system is steered toward as a result of input actions.\\
+Some states of the system might be inside an obstacle region, such a region is undesirable for the robot to be in or go toward. The robot states are allowed in free space, which is all space minus the obstacle region. The free space is specified as a state constrained set $\mathbb{X}$. Allowable input can be restricted by the input constraint set $\mathbb{U}$, a scenario in which input constraints are required is for example the maximum torque an engine produces at full throttle. Lastly, the set of allowed outputs is specified in the output constraint set $\mathbb{Y}$. State, input and output constraints must be respected during optimization, the optimizer takes the state-, input- and output constraint sets $\mathbb{X}$, $\mathbb{U}$, $\mathbb{Y}$ and if feasible, finds an action sequence driving the system toward the reference signal while constraints are respected. The \ac{MPC} system model predicts future states where the system is steered toward as a result of input actions.\\
 
-The optimisation minimises an objective function $V_{N}(x_{0}, y_{ref}, \mathbf{u}_{N}(0))$, where\\ $ \mathbf{u}_{N}(k) = (u_k, u_{k+1}, \dots , u_{k+N})$. The objective function takes the reference signal as an argument together with the initial state and the control input for the control horizon. The objective function then creates a weighted sum of some heuristic function. States and inputs resulting in outputs far from the reference signal are penalised more by the heuristic function than outputs closer to the reference signal. Because the objective function is a Lyapunov function, it has the property that, it has a global minimum for the optimal input $\mathbf{u}_{N}^*$. If the system output reaches the reference signal $y_{ref}$, $x_{ref}$ then $u_{ref}$ will be mapped to the output reference signal as such $y_{ref} = h(x_{ref}, u_{ref})$. As a result solving the minimisation problem displayed in \cref{equation: mpc_problem} gives the optimal input which steers the system toward the output reference signal while at the same time respecting the constraints.
+The optimization minimizes an objective function $V_{N}(x_{0}, y_{ref}, \mathbf{u}_{N}(0))$, where\\ $ \mathbf{u}_{N}(k) = (u_k, u_{k+1}, \dots , u_{k+N})$. The objective function takes the reference signal as an argument together with the initial state and the control input for the control horizon. The objective function then creates a weighted sum of some heuristic function. States and inputs resulting in outputs far from the reference signal are penalized more by the heuristic function than outputs closer to the reference signal. Because the objective function is a Lyapunov function, it has the property that, it has a global minimum for the optimal input $\mathbf{u}_{N}^*$. If the system output reaches the reference signal $y_{ref}$, $x_{ref}$ then $u_{ref}$ will be mapped to the output reference signal as such $y_{ref} = h(x_{ref}, u_{ref})$. As a result solving the minimization problem displayed in \cref{equation: mpc_problem} gives the optimal input which steers the system toward the output reference signal while at the same time respecting the constraints.
 
 \begin{mini}
 {u_k, u_{k+1}, \dots , u_{k+N}} {
@@ -60,10 +60,10 @@ V_{N}(x_{0}, y_{ref}, u_k, u_{k+1}, \dots , u_{k+N})
 \label{equation: mpc_problem}
 \end{mini}
 
-After solving the minimisation problem, \cref{equation: mpc_problem}, the optimal input sequence is obtained $\mathbf{u}^*_N$ (given that the constraints are respected for such input), from which only the first input is executed for time step $k$ to $k+1$. Then all indices are shifted such that the previous time step $k+1$ becomes $k$, the output is measured and the reference signal, parameterisation, and constraints sets are updated and a new minimisation problem is created, which completes the cycle.\bs
+After solving the minimization problem, \cref{equation: mpc_problem}, the optimal input sequence is obtained $\mathbf{u}^*_N$ (given that the constraints are respected for such input), from which only the first input is executed for time step $k$ to $k+1$. Then all indices are shifted such that the previous time step $k+1$ becomes $k$, the output is measured and the reference signal, parameterization, and constraints sets are updated and a new minimization problem is created, which completes the cycle.\bs
 
 \paragraph{\acl{MPPI} Control}
-Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose, which was followed by \ac{MPPI} control combined with various system identification methods and system models~\cite{abraham_modelbased_2020,cong_selfadapting_2020,arruda_uncertainty_2017}. The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future a number of "rollouts" for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalised undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. If a goal state is not reached, the control loop starts with the next iteration. An example is provided, see  \cref{figure: mppi_car_with_rollouts}.
+Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose, which was followed by \ac{MPPI} control combined with various system identification methods and system models~\cite{abraham_modelbased_2020,cong_selfadapting_2020,arruda_uncertainty_2017}. The core idea is from the current state of the system with the use of a system model and randomly sampled inputs to simulate in the future a number of "rollouts" for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the future states of the system if the randomly sampled inputs would be applied to the system, the future states can be evaluated by a cost function which penalized undesired states and rewards desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. If a goal state is not reached, the control loop starts with the next iteration. An example is provided, see  \cref{figure: mppi_car_with_rollouts}.
 
 \begin{figure}[H]
     \centering
@@ -72,14 +72,14 @@ Introduced by~\cite{williams_model_2015} \ac{MPPI} control arose, which was foll
     \label{figure: mppi_car_with_rollouts}
 \end{figure}
 
-Here 3 rollouts are displayed, The objective function is designed to keep the car driving on the center of the road by penalising rollouts which are further away from the center of the road relatively more. resulting in a high cost for $\text{rollout}_1$ and $\text{rollout}_3$ compared to $\text{rollout}_2$. As a result, the input send to the system as a weighted sum of the rollouts is mostly determined by $\text{rollout}_2$. The weighted sum determining the input is displayed in \cref{equation: mppi_weighted_sum}, from~\cite{neuromorphictutorial_ltc21_2021}.
+Here 3 rollouts are displayed, The objective function is designed to keep the car driving on the center of the road by penalizing rollouts which are further away from the center of the road relatively more. Resulting in a high cost for $\text{rollout}_1$ and $\text{rollout}_3$ compared to $\text{rollout}_2$. As a result, the input send to the system as a weighted sum of the rollouts is mostly determined by $\text{rollout}_2$. The weighted sum determining the input is displayed in \cref{equation: mppi_weighted_sum}, from~\cite{neuromorphictutorial_ltc21_2021}.
 
 \begin{equation}
 u(k+1)=u(k)+\frac{\sum_{i} w_{i} \delta u_{i}}{\sum_{i} w_{i}}
 \label{equation: mppi_weighted_sum}
 \end{equation}
 
-Where $\delta u_i$ is the difference between $u(k)$ and the input for rollout $i$, the weight of $\text{rollout}_i$ is detemined as: $w_{i}=e^{-\frac{1}{\lambda} \text{cost}_{i}}$, $\lambda$ is a constant parameter.\bs
+Where $\delta u_i$ is the difference between $u(k)$ and the input for rollout $i$, the weight of $\text{rollout}_i$ is determined as: $w_{i}=e^{-\frac{1}{\lambda} \text{cost}_{i}}$, $\lambda$ is a constant parameter.\bs
 
 
 The core idea is from the current state of the system using a system model and randomly sampled inputs to simulate several \quotes{rollouts} for a specific time horizon,~\cite{neuromorphictutorial_ltc21_2021}. These rollouts indicate the system's future states if the randomly sampled inputs are applied. The future states can be evaluated by a cost function penalizing undesired states and rewarding desired future states. A weighted sum over all rollouts determines the input which will be applied to the system. The main advantage \ac{MPPI} has over \ac{MPC} control is that it is better suited for nonlinear system models. Whilst linear models can accurately estimate drive applications, push applications are harder to estimate with a linear model. Thus \ac{MPPI} is selected mainly for push applications.\bs
