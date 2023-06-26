@@ -16,7 +16,7 @@ The \ac{RRT*} algorithm searches for a path with the lowest cost, by adding a pe
   \caption{Pseudocode for extended \ac{RRT*} path planning algorithm. Lines that contain changes compared to \Cref{pseudocode:proposed_rrt_star_all} are indicated with the red colour.}%
   \label{pseudocode:modified_proposed_rrt_star}
   \begin{algorithmic}[1]
-    \State $\gls{nodesMP} \leftarrow x_{init}$
+    \State $\gls{nodesMP} \leftarrow \gls{nodesMP}_{init}$
     \While{\textit{NotReachStop}}
         \State $\gls{nodeMP}_\mathit{rand} \leftarrow \mathit{Sample_{random}}$ \algorithmiccomment{Create, project and validate a new random sample}
       \State $\gls{nodeMP}_\mathit{nearest} \leftarrow \mathit{Nearest(\gls{nodeMP}_{rand}, \gls{nodesMP})}$
@@ -98,7 +98,7 @@ When sampling a new node in the path planner a dynamic model can be incorporated
 
 This thesis focuses on the improvement of task execution as a result of learning dynamical models on how to manipulate objects in the robot environment. The proposed path planning algorithm can be extended into a kinodynamic planning algorithm to generate paths that respect non-holonomic and dynamic constraints. As will become clear later in this thesis, the selection of a dynamic model for a certain manipulation action will improve over time when the robot becomes more experienced in the robot environment. To incorporate a system model into path planning leads to the conclusion that: \textit{When using dynamic models that improve modeling the system in term of capturing dynamics and lowering model mismatch, the path planner that incorporates a dynamic model to generate new nodes will improve the paths generated. Where path improvement implies firstly, that the system can be controlled to track a path found, secondly paths that do not respect the dynamic constraints are not generated.} Later in this thesis, during testing, the holonomic point robot is used. Since the point robot has no dynamic or non-holonomic constraints that must be respected, no extension of the proposed planning algorithm is made that makes the path planner a kinodynamic path planner.\bs
 
-Now that the modified path planner is discussed, the proposed robotic framework is discussed. The proposed framework relies on the required background from previous chapter, and relies on the modified path planner from this chapter.\bs
+Now that the modified path planner is discussed, the proposed robotic framework can be discussed. The proposed framework relies on the required background from previous chapter, and relies on the modified path planner from this chapter.\bs
 
 % old manipulation section shit
 

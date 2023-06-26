@@ -13,7 +13,7 @@ Where $k$ is the time step, $(u_\mathit{id}, y_\mathit{id})$ is a \ac{IO} sequen
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/required_background/collect_io_robot}
+    \includegraphics[width=0.6\textwidth]{figures/required_background/collect_io_robot}
     \caption{A top view of the point robot with five input sequences. The input sequences are executed\\on the robot and the output responses are recorded, together the in- and output sequences form a \ac{IO} data set.}%
     \label{fig:collect_io_robot}
 \end{figure}
@@ -24,18 +24,18 @@ The initial pose does not affect a driving model's collection of an \ac{IO} sequ
     \centering
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/required_background/collect_io_data_object}
+    \includegraphics[width=0.6\textwidth]{figures/required_background/collect_io_data_object}
     \caption{A top view of a box object with six input sequences.}%
     \label{subfig:collect_io_object_arrows}
     \end{subfigure}
 
     \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/required_background/collect_io_data_obj_and_robot}
+    \includegraphics[width=0.6\textwidth]{figures/required_background/collect_io_data_obj_and_robot}
     \caption{The robot driving to toward the initial pose to then apply input sequence $u_1(k)$ and collect output sequence $y_1(k)$.}%
     \label{subfig:collect_io_object_goto_init}
     \end{subfigure}
-    \caption{The roobt collecting an \ac{IO} data sequence by first driving toward the initial pose at the start of an arrow. Then the corresponding input is sent toward the robot, and the robot and the object's output response is collected to form a \ac{IO} sequence. The \ac{IO} data set then consists of all six \ac{IO} data sequences.}%
+    \caption{The robot collecting an \ac{IO} data sequence by first driving toward the initial pose at the start of an arrow. Then the corresponding input is sent toward the robot, and the robot and the object's output response is collected to form a \ac{IO} sequence. The \ac{IO} data set then consists of all six \ac{IO} data sequences.}%
     \label{fig:collect_io_object}
 \end{figure}
 

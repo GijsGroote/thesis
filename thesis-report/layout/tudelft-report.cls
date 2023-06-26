@@ -22,8 +22,8 @@
 
 \definecolor{my_purple}{RGB}{183, 141, 242}
 \definecolor{my_dark_blue}{RGB}{255, 128, 255}
-\definecolor{my_light_blue}{RGB}{96, 219, 232} % skyBlue ##87CEEB
-\definecolor{my_green}{RGB}{139, 211, 70} % kiwi #d3e7c1
+\definecolor{my_light_blue}{RGB}{100, 222, 235} % skyBlue ##87CEEB
+\definecolor{my_green}{RGB}{139, 211, 70} % kiwi #nd3e7c1
 \definecolor{my_dark_green}{RGB}{38, 120, 19} % #267813
 
 \definecolor{my_yellow}{RGB}{239, 223, 72} % minionYellow #FFD55E 

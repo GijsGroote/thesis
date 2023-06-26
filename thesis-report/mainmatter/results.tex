@@ -414,7 +414,7 @@ Both with and without action suggestion appear to lower total task execution tim
     \end{tabular}
 \end{table}
 
-The \ac{k-graph} favours the \ac{MPPI} controller with \textit{lti-push-model} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The lti-push-model parameterization does not only have a lower execution time compared to the nonlinear-push-model parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}.
+The \ac{k-graph} favours the \ac{MPPI} controller with \textit{lti-push-model} as can be seen in \Cref{table:rand_push_model1_vs_model2}. The lti-push-model parameterization does not only have a lower execution time compared to the nonlinear-push-model parameterization, it also has a lower \ac{PE} as can be seen in \Cref{fig:random_push_pe_vs}. The difference in \ac{PE} between the \textit{lti-push-model} and the \textit{nonlinear-push-model} can be explained by involving a fixed geometrical property in the \ac{nonlinear-push-model}, which is the width of the object \textit{H} set to 2 meters. Just as with many solutions in general, a simple solution mostly works best.\bs
 
 \begin{figure}[H]
     \centering
@@ -423,13 +423,13 @@ The \ac{k-graph} favours the \ac{MPPI} controller with \textit{lti-push-model} a
     \label{fig:random_push_pe_vs}
 \end{figure}
 
-The proposed framework has been compared against itself, it has shown that learning improves the testing metrics by a notable margin as can be seen in \Cref{fig:random_push_pe_vs}. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
+\Cref{fig:random_drive_time_vs,fig:random_push_time_vs,fig:random_push_pe_vs} all confirm that the use of the action suggestion provided by the \ac{k-graph} results in improved task total time and \ac{PE} compared to random selection of edge parameterizations. 
 
-\todo{ I think this analysis should be better described and highlighted since it’s one of the main conclusions }
+The strategy also named control and system model combination or edge parameterization to which the \ac{h-algorithm} converges is detemined by two aspects. First, the set of available edge parameterizations, because the strategy can only converge toward the best available edge parameterization. Second, the success factor defined in \Cref{eq:success_factor}, because it determines which metrics play a role in selection of the best strategy. In this thesis the success factor favours an edge parameterization that bears a low \ac{PE} and thus, logically the \ac{k-graph} convergest toward the edge parameterization with a lower \ac{PE}. Further investigation of different types of success factors are moved toward the future work section. Now the proposed framework is compared to the state-of-the-art in the upcoming section.\bs
 
 \section{Comparison with State-of-the-Art}%
 \label{sec:compare_with_related_papers}
-A summary of state-of-the-art methods is presented again (as it was already presented in the introduction, \Cref{table:sota_and_3_topics}). The goal is now to highlight the test metrics the state-of-the-art methods used. Based on these, a fair test metric is used to compare with our approach.\bs
+A summary of state-of-the-art methods is presented again (as it was already presented in the introduction, \Cref{table:sota_and_3_topics}). The goal is now to highlight the test metrics the state-of-the-art methods used during their tests of their methods. Based on these, a fair test metric is used to compare with our approach.\bs
 
 \noindent
 \begin{table}[H]
@@ -529,6 +529,7 @@ A comparison with a single state-of-the-art paper is made, that is accomplished 
 
 The proposed framework outperforms the contact-implicit motion planning framework proposed by \citeauthor{wang_affordancebased_2020}. Mainly the search time improves by a margin. The execution time improves, but because \citeauthor{wang_affordancebased_2020} tests in an real-world environment where motion equations are more complex compared to the simulated environment, an improvement in the execution time is expected.\bs
 
+The test in randomized environments shows that edge parameterization selection based on experience in the environment improves task execution compared to random selection. Converging to a specific control method is influenced by the available control methods, and how the action feedback is calculated that forms the success factor. Comparison to a single state-of-the-art paper confirms that the \ac{h-algorithm} with the backward search is an effective tool to search and execute action sequences. Before claiming hard conclusions more tests should be performed for both converging toward an optimal controller and for the proposed method to complete tasks in unforeseen robot environments.\bs
 
 % \paragraph{Comparing Prediction Error}
 % \citeauthor{sabbaghnovin_model_2021} displays the final position errors for a selection of objects which range from 0.05 to 0.6 meters. A success threshold is set to 0.1 meters, which determines that the object is at its target location~\cite{sabbaghnovin_model_2021}. The success threshold in this thesis is set to a staggering 0.9 meters,\todo{Corrado: But then how can you compare success rate if you have different metrics for success?} thus it is concluded an object has reached its target position, whilst it is still 0.9 meters from its target configurations. This thesis does not try to reach optimal control, it tries to select the best controller in the available set of controllers. If the same controller from \citeauthor{sabbaghnovin_model_2021} would be available, then similar final position errors would be obtained. It can be concluded that the prediction error \todo{Corrado: Not position errro?}of the proposed framework is worse compared to this state-of-the-art. The reason is that the proposed framework focuses on improving the control selection and action sequences over time, and not on lowering final prediction errors.\bs
@@ -537,8 +538,3 @@ The proposed framework outperforms the contact-implicit motion planning framewor
 % \todo[inline]{\cite{scholz_navigation_2016}}
 % \todo{recreate this envionrment, run 10 tests and compare the search and execution time, as well at the number of call toward the planner}
 % \todo{additinoally execute this environment a twice in a row, show that the execution number of call to the planner drops, theand the execution time drops}
-
-
-
-
-\todo{Would it be possibel to create extra results that support your work?, or some benchmark tests?}

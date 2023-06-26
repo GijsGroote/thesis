@@ -19,11 +19,14 @@ Where $\mathit{id}_\mathit{from}$ and $\mathit{id}_\mathit{to}$ corresond the th
 The successfactor rates an edge parameterization based on experience in the robot environment. The successfactor is created or updated when an action edge with that parameterization failed during execution time or successfully completed.\bs
 
 Formally the \textbf{success factor} = \gls{successfactor}:
-\[\gls{successfactor}(a+1) =
+\begin{equation}
+\gls{successfactor}(a+1) =
   \begin{cases} 0.1^{\gls{pe}_\textrm{avg}}& \textrm{if $a$ = 0}\\[5px]
     0.1 + 0.9\gls{successfactor}(a) & \textrm{if $a > 0$ and the reviewed edge was successfully completed}\\[5px]
   0.9\gls{successfactor}(a) & \textrm{if $a > 0$ and the reviewed edge failed during execution time}
-\end{cases}\]
+\end{cases}
+\label{eq:success_factor}
+\end{equation}
 
 Where $\gls{pe}_\textrm{avg}$ is the average \ac{PE} of the action edge that is reviewed. $a$ is the number of times an action edge with such a edge parameterization reached the EXECUTING status.\bs
 
@@ -35,14 +38,13 @@ Formally, a \textbf{\acl{k-graph}}, $\gls{k-graph} = \left\langle \gls{nodesK}, 
 Where $\gls{nodesK}^\mathit{center}_\mathit{ids}$ are the identifiers of the set of center nodes, and $\gls{nodesK}^\mathit{side}_\mathit{ids}$ are the identifiers of the set of side nodes.\bs
 
 \subsection{The Testing and Converging Phases}
-When the \ac{h-algorithm} determines is must manipulate an object to fullfill the given task, it creates a action edge with a random edge parameterization. After executing that action edge that parameterization is stored in the \ac{k-graph}. When encountering the need to manipulate the object again a different random parameterization is selected. First, all possible edge parameterizations are tested and stored on a specific object, this can be seen as the testing phase on how to manipulate an object. Then second, when all possible parameterizations are tested, the \ac{k-graph} suggests the edge parameterization with the highest success factor, this phase can be seen as the converging phase. Where either, the edge parameterization with the highest success factor receives an even higher success factor, or the success factor is lowered, and the second best edge parameterization becomes the highest ranking edge parameterization in terms of success factor.\bs
+When the \ac{h-algorithm} determines it must manipulate an object to fullfill the given task, it creates an action edge with a random edge parameterization. After executing that action edge that parameterization is stored in the \ac{k-graph}. When encountering the need to manipulate the object again a different random parameterization is selected. First, all possible edge parameterizations are tested and stored on a specific object, this can be seen as the testing phase on how to manipulate an object. Then second, when all possible parameterizations are tested, the \ac{k-graph} suggests the edge parameterization with the highest success factor, this phase can be seen as the converging phase. Where either, the edge parameterization with the highest success factor receives an even higher success factor, or the success factor is lowered, and the second best edge parameterization becomes the highest ranking edge parameterization in terms of success factor.\bs
 
 The \ac{k-graph} has three interface functions. The \textit{add\_object(\gls{obj}, \gls{objectClass})} function adds an object and its class to the \ac{k-graph}. Espacially usefull to indicate which objects are unmovable. The \textit{add\_review(\gls{edge})} function takes an action edge from the \ac{h-graph} and depending on the \ac{k-graph} does the following. If a corresponding center node (containing the object the edge manipulated) does not yet exist, create a new center node. Then calculate the success factor and add a new edge or update the success factor of the existing edge with equal edge parameterization in the \ac{k-graph}.  
 
 or update the the edge that containts the edge parameterization. If the edge parameterization exist in one of the outgoing edges from the center node, existthe of the corersponding object if it does not exist. 
 creates or updates the corresponding edge  the \ac{k-graph} is updated with a new success factor as described in the formula above. The \textit{action\_suggestion} returns the best parameterization it contains for an object.\bs
 
-\subsection{Legend and Example}
 A legend for the \ac{k-graph} is now presented.\bs
 
 \begin{figure}[H]
