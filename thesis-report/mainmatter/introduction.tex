@@ -55,6 +55,36 @@ The most relevant hierarchical approach is presented by \citeauthor{scholz_navig
 
 Individually a considerable amount of research is done on these three topics (learning object dynamics~\cite{cong_selfadapting_2020,seegmiller_vehicle_2013}, \ac{NAMO}~\cite{chen_fast_2018,elbanhawi_samplingbased_2014,ellis_navigation_2022,kingston_samplingbased_2018,lavalle_planning_2006,wang_affordancebased_2020}, nonprehensile pushing~\cite{arruda_uncertainty_2017,bauza_dataefficient_2018,mericli_pushmanipulation_2015,stuber_featurebased_2018,stuber_let_2020,toussaint_sequenceofconstraints_2022}). Combining two topics received little attention from the scientific community, and combining all three topics (to the best of my search) not at all. The most relevant work for local optimal~\cite{sabbaghnovin_model_2021} and hierarchical~\cite{scholz_navigation_2016} approaches are discussed, both having advantages and disadvantages. Local optimal approaches converge to a local optimal plan. To avoid the curse of dimensionality, simplifications must be used to sample the composite configuration space to be computationally feasible. Such simplifications determine the quality of solutions found. Hierarchical structures generally provide computationally efficient solutions but are hierarchical, meaning the solutions found are the best feasible solutions in the task hierarchy they search. The quality of the solution depends on the hierarchy, which is typically hand-coded and domain-specific~\cite{vega-brown_asymptotically_2020}. \Cref{table:sota_and_3_topics} presents state-of-the-art literature and which portion of the three topics they include in their research. Note that both relevant works focus on prehensile manipulation, whilst this thesis focuses on nonprehensile push manipulation. This thesis combines the three topics partly indicated in the table below by \xmark/\cmark~because learning object dynamics is only theoretically included and is not tested properly.\bs
 
+% \noindent
+% \begin{table}[H]
+% \caption{Overview of state-of-the-art literature with an indication of which topics they incorporate from the three topics; learning object dynamics, the \ac{NAMO} problem and specifying object target poses.}%
+% \label{table:sota_and_3_topics}
+%   \centering
+%   \rowcolors{2}{white}{myEvenLighterColor}
+%   \begin{tabular}
+%     {>{\raggedright\arraybackslash}P{2.5cm}%
+%       >{\centering\arraybackslash}P{1.4cm}%
+%       |>{\centering\arraybackslash}P{1.4cm}%
+%       >{\centering\arraybackslash}P{1.4cm}%
+%       |>{\centering\arraybackslash}P{1.4cm}%
+%       >{\centering\arraybackslash}P{1.4cm}
+%     }
+%     && \multicolumn{2}{c|}{\ac{NAMO}} & \multicolumn{2}{c}{\shortstack[c]{Specify object\\target poses}}\\
+%   Author&
+%   Learns\newline object\newline dynamics&
+%   \vspace{-0.2cm}\rotatebox{50}{prehensile}&
+%   \vspace{-0.4cm}\rotatebox{50}{nonprehesile}&
+%   \vspace{-0.2cm}\rotatebox{50}{prehensile}&
+%   \vspace{-0.4cm}\rotatebox{50}{nonprehesile}\\\hline
+%   \citeauthor{ellis_navigation_2022} &                \cmark& \xmark& \cmark& \xmark& \xmark\\
+%   \citeauthor{sabbaghnovin_model_2021} &              \cmark& \cmark& \xmark& \cmark& \xmark\\
+%   \citeauthor{scholz_navigation_2016} &               \cmark& \cmark& \xmark& \xmark& \xmark\\
+%   \citeauthor{vega-brown_asymptotically_2020}   & \xmark& \cmark& \xmark& \cmark& \xmark\\
+%   \citeauthor{wang_affordancebased_2020} &       \cmark& \xmark& \cmark& \xmark& \xmark\\
+%   Groote & \cmark& \xmark& \cmark& \xmark& \cmark
+% \end{tabular}
+% \end{table}
+
 \noindent
 \begin{table}[H]
 \caption{Overview of state-of-the-art literature with an indication of which topics they incorporate from the three topics; learning object dynamics, the \ac{NAMO} problem and specifying object target poses.}%

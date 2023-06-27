@@ -1,58 +1,42 @@
-\begin{frame}[fragile]{Thesis Goal} % some commands, e.g. \verb require [fragile]
+\begin{frame}[fragile]{Intro: Robot Environment} % some commands, e.g. \verb require [fragile]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{figures/introduction/blockade}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Intro: Thesis Goal} % some commands, e.g. \verb require [fragile]
 \begin{itemize}
   \item Learning System Models\\%\pause, <-- put these in here later
-  \item Navigation Among Movable Objects\\
+  \item Navigation Among Movable Objects (NAMO)\\
   \item Nonprehensile Pushing
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Robot Environment} % some commands, e.g. \verb require [fragile]
-\begin{center}
-\includegraphics[width=0.7\textwidth]{figures/introduction/2_pushes_to_freedom}
-\end{center}
+\begin{frame}[c]{Intro: Overview Proposed Method} % some commands, e.g. \verb require [fragile]
+  \input{main/pre_overview_proposed_method}
 \end{frame}
 
-
-\begin{frame}[fragile]{Joint Configuration Space}
-\begin{center}
-\includegraphics[width=0.6\textwidth]{figures/introduction/2_pushes_to_freedom_robot_conf_space}\vspace{2mm}
-\includegraphics[width=0.6\textwidth]{figures/introduction/2_pushes_to_freedom_box_conf_space}
-\end{center}
-\end{frame}
-
-
-\begin{frame}[fragile]{Research Question}
+\begin{frame}[fragile]{Intro: Research Question}
 \large
-How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time?\bs
+How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time? \bs
 
 \textbf{Research Subquestions:}
 \begin{enumerate}
-  \item Can the proposed method combine learning and planning for push en drive applications with a technique known as backward search?\\
-  \item How do learning system models and remembering interactions compare to only learning system models? And, how does the proposed method compare against the state-of-the-art?
+    \item\label{researchsubquestion:does_it_work}\small How to combine learning and planning for push and drive applications?
+    \item\label{researchsubquestion:does_it_compare}\small How does the proposed framework compare against the state-of-the-art?
 \end{enumerate}
 \end{frame}
 
-\begin{frame}[fragile]{State-of-The-Art}
-\begin{table}[H]
-  \centering
-  \begin{tabular}
-  {>{\raggedright\arraybackslash}p{2.0cm}%
-    ccc%
-    >{\raggedright\arraybackslash}p{2.5cm}}
-    Author &  Learning & NAMO & Object to Target & Manipulation\\[2mm]
-    \citeauthor{ellis_navigation_2022}  &\cmark& \cmark& \xmark& pushing\\
-    \citeauthor{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
-    \citeauthor{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
-    \citeauthor{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\[2mm]
-    \citeauthor{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
-    Groote & ? & ? & ? & pushing\\
-  \end{tabular}
-\end{table}
+\begin{frame}[fragile]{Intro: Task Specification}
+\includegraphics[width=1.0\textwidth]{figures/introduction/blockade}
+\end{frame}
+
+\begin{frame}[fragile]{Intro: Task Specification}
+\includegraphics[width=1.0\textwidth]{figures/introduction/blockade_with_target}
 \end{frame}
 
 \begin{frame}[fragile]{Assumptions}
-
-  \begin{block}{}
+\begin{block}{}
 \begin{enumerate}
   \item \textbf{Closed-World Assumption:} Objects are manipulated, directly or indirectly only by the robot. Objects cannot be manipulated by influences from outside the environment.\\
 \item\textbf{Perfect Object Sensor Assumption:} the robot has full access to the poses and geometry of all objects in the environment at all times.\\
@@ -62,10 +46,11 @@ How do learned objects' system models improve global task planning for a robot w
 \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Task Specification}
-\[\text{task} = \left\langle Ob_{task}, C_{targets} \right\rangle\]
 
-where $Ob_{task} = (ob_1, ob_2, ob_3, \dots, ob_k) \subset Ob$\bs
+\begin{frame}[fragile]{State-of-The-Art}
+  \includegraphics[width=1.0\textwidth]{figures/introduction/sota}
 
-$C_{target} = (c_1, c_2, c_3, \dots c_k)$ and $k>0$.\bs
 \end{frame}
+
+
+
