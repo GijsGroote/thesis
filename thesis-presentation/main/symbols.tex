@@ -1,0 +1,51 @@
+% general symbols
+\glsxtrnewsymbol[description={Set of Real numbers}]{R}{\ensuremath{\mathbb{R}}}
+\glsxtrnewsymbol[description={Set of non-negative integers}]{Rnonnegative}{\ensuremath{\mathbb{Z}_{\geq 0}}}
+\glsxtrnewsymbol[description={Number of \acl{DOF}}]{n_dof}{\ensuremath{\mathit{n}}}
+
+% robot environment symbols
+\glsxtrnewsymbol[description={Object in the robot environment}]{obj}{\ensuremath{\mathit{obj}}}
+\glsxtrnewsymbol[description={Set of objects}]{Obj}{\ensuremath{\mathit{Obj}}}
+\glsxtrnewsymbol[description={Number of objects in the environment}]{n_obj}{\ensuremath{\mathit{m}}}
+\glsxtrnewsymbol[description={Origin of the environment with with $x$ (north to south), $y$ (west to east) and $z$ (down to up) axis}]{origin}{\ensuremath{\textrm{Origin}}}
+\glsxtrnewsymbol[description={The robot environment ground plane}]{groundPlane}{\ensuremath{\textrm{Ground Plane}}}
+\glsxtrnewsymbol[description={Set of motion equations in the robot environment}]{motionEquations}{\ensuremath{\textrm{Eq}}}
+\glsxtrnewsymbol[description={time step index}]{k}{\ensuremath{k}}
+\glsxtrnewsymbol[description={Prediction Error}]{pe}{\ensuremath{\epsilon^{\mathit{pred}}}}
+\glsxtrnewsymbol[description={Tracking Error}]{te}{\ensuremath{\epsilon^{\mathit{track}}}}  
+
+% path estimation & planning symbols
+\glsxtrnewsymbol[description={Configuration Space, $Dim(\textrm{C-space}) \in \mathbb{R}^2 \vee \mathbb{R}^3$}]{cspace}{\ensuremath{\textrm{C-space}}} 
+\glsxtrnewsymbol[description={Configuration, point in configuration space}]{c}{\ensuremath{\mathit{c}}}
+\glsxtrnewsymbol[description={Estimated configuration}]{Cest}{\ensuremath{\hat{\mathit{c}}}}
+\glsxtrnewsymbol[description={distance to \gls{origin} over the $x$-axis}]{x}{\ensuremath{x}}
+\glsxtrnewsymbol[description={distance to \gls{origin} over the $y$-axis}]{y}{\ensuremath{y}}
+\glsxtrnewsymbol[description={angular distance toward the the \gls{origin}'s positive $x$-axis around the $z$ axis}]{theta}{\ensuremath{\theta}}
+\glsxtrnewsymbol[description={length of grid in direction of $x$-axis}]{xGridLength}{\ensuremath{x_{\mathit{grid}}}}
+\glsxtrnewsymbol[description={length of grid in direction of $y$-axis}]{yGridLength}{\ensuremath{y_{\mathit{grid}}}}
+\glsxtrnewsymbol[description={length and width of a cell}]{cellSize}{\ensuremath{s_{\mathit{cell}}}}
+
+\glsxtrnewsymbol[description={Node in motion or manipulation planner}]{nodeMP}{\ensuremath{\text{\fontfamily{qcr}\selectfont v}}}
+\glsxtrnewsymbol[description={Set of nodes for motion or manipulation planner}]{nodesMP}{\ensuremath{V_{\mathit{MP}}}}
+\glsxtrnewsymbol[description={Set of edges for motion or manipulation planner}]{edgesMP}{\ensuremath{E_{\mathit{MP}}}}
+\glsxtrnewsymbol[description={Set of paths}]{pathsMP}{\ensuremath{P}}
+
+% proposed framework symbols
+\glsxtrnewsymbol[description={Task, Tuple of objects and corresponding target configurations.}]{task}{\ensuremath{S}}
+\glsxtrnewsymbol[description={subtask, tuple of an object and an target configuration}]{subtask}{\ensuremath{s}}
+\glsxtrnewsymbol[description={hypothesis, Sequence of successive edges in the \acl{h-graph}, an idea to put a object at it's target configuration}]{hypothesis}{\ensuremath{h}}
+\glsxtrnewsymbol[description={hypothesis graph}]{h-graph}{\ensuremath{G^{\mathit{hypothesis}}}}
+\glsxtrnewsymbol[description={knowledge graph}]{k-graph}{\ensuremath{G^{\mathit{knowledge}}}}
+\glsxtrnewsymbol[description={Node in hypothesis or \acl{k-graph}}]{node}{\ensuremath{v}}
+\glsxtrnewsymbol[description={Set of nodes for \ac{h-graph} }]{nodesH}{\ensuremath{V_{\mathit{H}}}}
+\glsxtrnewsymbol[description={Set of nodes for \ac{k-graph}}]{nodesK}{\ensuremath{V_{\mathit{K}}}}
+\glsxtrnewsymbol[description={Edge in \acl{h-graph} or \acl{k-graph}}]{edge}{\ensuremath{e}}
+\glsxtrnewsymbol[description={Set of edges for \ac{h-graph}}]{edgesH}{\ensuremath{E_{\mathit{H}}}}
+\glsxtrnewsymbol[description={Set of edges for \ac{k-graph}}]{edgesK}{\ensuremath{E_{\mathit{K}}}}
+\glsxtrnewsymbol[description={Status of a node}]{nodeStatus}{\ensuremath{\textrm{NODE\_STATUS}}}
+\glsxtrnewsymbol[description={Status of a edge}]{edgeStatus}{\ensuremath{\textrm{EDGE\_STATUS}}}
+\glsxtrnewsymbol[description={classification of an object}]{objectClass}{\ensuremath{\textrm{OBJ\_CLASS}}}
+\glsxtrnewsymbol[description={observation from the robot environment}]{observation}{\ensuremath{\textrm{ob}}}
+\glsxtrnewsymbol[description={Success factor for an edge in \ac{k-graph}}]{successfactor}{\ensuremath{\alpha}}
+\glsxtrnewsymbol[description={Time step [sec]}]{DT}{\ensuremath{\mathit{\Delta k}}}
+

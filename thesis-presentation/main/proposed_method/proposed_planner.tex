@@ -1,45 +1,22 @@
-
-\begin{frame}[fragile]{Required Background: Extension to 4 subspaces} % some commands, e.g. \verb require [fragile]
-  Add the unknown and movable space
-  redefine the cost in RRT*
+\begin{frame}[fragile]{Proposed method} 
+  \[\mathit{Cost_{path}} =  \sum_{i=1}^{n-1} \mathit{Distance}(c_i, c_{i+1}) \hspace{2cm}\]
+  \[\hspace{3cm}+ \mathit{MovableSpaceCost} + \mathit{UnknownSpaceCost} \]
 \end{frame}
 
-
-\begin{frame}[fragile]{Required Background: Extension to 4 subspaces} % some commands, e.g. \verb require [fragile]
-
+\begin{frame}[fragile]{Proposed Method} 
 \begin{center}
 \begin{figure}[H]
-  \centering
-  \subfloat[First subfigure]{\includegraphics[width=0.8\textwidth]{figures/proposed_method/push_or_drive}}\qquad
-  \subfloat[Second subfigure]{ \includegraphics[width=\textwidth]{figures/proposed_method/mp_high_fixed_cost}}\qquad
-  \subfloat[Thirth subfigure]{ \includegraphics[width=\textwidth]{figures/proposed_method/mp_low_fixed_cost}}
-\caption{A figure}
+\includegraphics[width=\textwidth]{figures/proposed_method/push_or_drive}
 \end{figure}
 \end{center}
 
 \end{frame}
 
-
-
-
-
-%     \centering
-%     \begin{subfigure}{\textwidth}
-%     \centering
-%   \includegraphics[width=0.8\textwidth]{figures/proposed_method/push_or_drive}
-%     \caption{Robot environment with the point robot, two yellow unmovable walls and an unknown brown box.\\The robot tasked to drive toward the opposite side of the brown box.}
-%   \end{subfigure}
-
-%     \begin{subfigure}{1.11\textwidth}
-%     \centering
-%     \includegraphics[width=\textwidth]{figures/proposed_method/mp_high_fixed_cost}
-%     \caption{Visualization of the planned path around the brown box and yellow obstacles, with $\mathit{UnknownSpaceCost} = 1$.}
-%     \end{subfigure}
-
-%     \begin{subfigure}{1.11\textwidth}
-%     \centering
-%     \includegraphics[width=\textwidth]{figures/proposed_method/mp_low_fixed_cost}
-%     \caption{Visualization of the planned path going through the brown box, $\mathit{UnknownSpaceCost} = 0.5$.}
-%     \end{subfigure}
-%     \caption{Driving task and two planned paths.}%
-% \end{figure}
+\begin{frame}[fragile]{Proposed Method}
+\begin{center}
+\begin{figure}[H]
+\vspace{-0.2cm}
+\includegraphics[width=0.90\textwidth]{figures/proposed_method/push_or_drive_planned.drawio.png} 
+\end{figure}
+\end{center}
+\end{frame}

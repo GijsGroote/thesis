@@ -7,6 +7,7 @@ The modified algorithm has four tuning parameters that can be tweaked; The \text
 
 \[\mathit{Cost_{path}} = \mathit{MovableSpaceCost} + \mathit{UnknownSpaceCost} + \sum_{i=1}^{n-1} \mathit{Distance}(\gls{c}_i, \gls{c}_{i+1})\]
 
+
 Where $\mathit{n} \geq 2$ configuration points make up the path starting at $\gls{c}_\mathit{start}$ and ending at $\gls{c}_\mathit{target}$.\bs
 
 The \ac{RRT*} algorithm searches for a path with the lowest cost, by adding a penalty for crossing through unknown or movable space the path planner is incentivized to find the shortest path around objects but prefers moving an object over making a large detour. Tuning the additional fixed cost for a path crossing through movable or unknown space balances the robot's decision between the length of a detour the robot is willing to drive, compared to pushing an object to free the path. Removing an unknown object bears more uncertainty than a movable object, motivating a higher cost to remove an unknown object compared to an known object. The pseudocode from \Cref{pseudocode:proposed_rrt_star_all} is presented again, with changes due to the extension indicated with a red color.\bs

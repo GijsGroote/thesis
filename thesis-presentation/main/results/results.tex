@@ -1,4 +1,20 @@
-\begin{frame}[fragile]{Results: Randomisation Drive Task} % some commands, e.g. \verb require [fragile]
+\section{Results}
+\begin{frame}[fragile]{Results} 
+\begin{center}
+ \includegraphics[width=1.1\textwidth]{figures/results/compare_sota}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]{Results} 
+\begin{center}
+ \includegraphics[width=0.7\textwidth]{figures/results/table_sota}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]{Results} 
+  \todo{where is robot target in these figures?}
 \begin{figure}
   \centering
   \subfloat{\includegraphics[width=0.45\textwidth]{figures/results/random1}}\quad
@@ -13,79 +29,60 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{Results: Randomisation Push Task} % some commands, e.g. \verb require [fragile]
+\begin{frame}[fragile]{Results} 
+  \begin{center}
+  \movie[width=\textwidth, height=0.5\textwidth, autostart, poster]{}{figures/results/confetti.mp4}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]{Results} 
+\todo{make this visual that there are 300 subtasks to solve}
+\[\textrm{number of subtasks} = 10 * 10 * 3 = 300\]
+\end{frame}
+
+
+\begin{frame}[fragile]{Results} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/results/random_1}
+  \hbox{\hspace{-0.7cm} \includegraphics[width=1.1\textwidth]{figures/results/random_drive_time_k-graph} }
 \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Results: Randomisation Drive Task Execution Times} % some commands, e.g. \verb require [fragile]
+\begin{frame}[fragile]{Results} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/results/random_drive_time_vs}
+\includegraphics[width=1.0\textwidth]{figures/results/random_drive_para}
 \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Results: Randomisation Push Task Execution Times} % some commands, e.g. \verb require [fragile]
+\begin{frame}[fragile]{Results} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/results/random_push_time_vs}
+  \hbox{\hspace{-0.7cm} \includegraphics[width=1.1\textwidth]{figures/results/random_drive_time_vs}}
 \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Results: Randomisation Push Task Prediction Error} % some commands, e.g. \verb require [fragile]
+\begin{frame}[fragile]{Results} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/results/random_push_pe_vs}
+   \includegraphics[width=1.0\textwidth]{figures/results/random_1.drawio}
 \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Results} % some commands, e.g. \verb require [fragile]
-\begin{table}[H]
-  \centering
-  \begin{tabular}
-  {>{\raggedright\arraybackslash}p{2.0cm}%
-    ccc%
-    >{\raggedright\arraybackslash}p{2.5cm}}
-    Author &  Learning & NAMO & Object to Target & Manipulation\\[2mm]
-    \citeauthor{ellis_navigation_2022}  &\cmark& \cmark& \xmark& pushing\\
-    \citeauthor{sabbaghnovin_model_2021} & \cmark& \xmark& \cmark& grasp-push grasp-pull\\
-    \citeauthor{scholz_navigation_2016} & \cmark& \cmark& \xmark& graph-push grasp-pull\\
-    \citeauthor{vega-brown_asymptotically_2020} & \xmark& \cmark& \cmark& gripping\\[2mm]
-    \citeauthor{wang_affordancebased_2020} & \cmark& \cmark& \xmark& pushing\\
-    Groote & \xmark/\cmark & \cmark & \cmark & pushing\\
-  \end{tabular}
-\end{table}
-\end{frame}
 
-\begin{frame}[fragile]{More convincing environments}
-\begin{figure}
-  \centering
-  \subfloat{\includegraphics[width=0.45\textwidth]{figures/results/blockade}}\quad
-  \subfloat{\includegraphics[width=0.45\textwidth]{figures/results/surrounded}}
-\end{figure}
-\vspace{-0.7cm}
-\begin{figure}
-  \centering
-  \subfloat{\includegraphics[width=0.45\textwidth]{figures/results/swap}}\quad
-  \subfloat{\includegraphics[width=0.45\textwidth]{figures/introduction/2_pushes_to_freedom}}
-\end{figure}
-
+\begin{frame}[fragile]{Results} 
+\begin{center}
+  \hbox{\hspace{-0.7cm} \includegraphics[width=1.1\textwidth]{figures/results/random_push_time_vs}}
+\end{center}
 \end{frame}
 
 
-\begin{frame}[fragile]{4 Week Planning}
-  \begin{block}{Good Scenario}
-    \begin{itemize}
-      \item 50 \% Report \\
-      \item 50 \% Presentation
-    \end{itemize}
-  \end{block}\pause
+% \begin{frame}[fragile]{Results} 
+  % \todo{success factor targets the prediction error, not really that otehr thingy}
+% \end{frame}
 
-  \begin{exampleblock}{Better Scenario}
-    \begin{itemize}
-      \item 40 \% Report \\
-      \item 40 \% Presentation \\
-      \item 20 \% Benchmark Environments
-    \end{itemize}
-   \end{exampleblock}
+\begin{frame}[fragile]{Results} 
+\begin{center}
+  \hbox{\hspace{-0.05\textwidth} \includegraphics[width=1.1\textwidth]{figures/results/random_push_pe_vs}}
+\end{center}
 \end{frame}
+
 
 

@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{subfig}
 
+
+\usepackage{bookmark}
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -93,7 +95,7 @@
 
 % TIKZ settings
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,fit,mindmap,arrows,matrix,calc}
+\usetikzlibrary{shapes,arrows,positioning,fit,mindmap,arrows,matrix,calc,automata}
 
 % tikz flowchart settings
 \tikzstyle{decision} = [diamond, draw, fill=myEvenLighterColor, 
@@ -103,6 +105,38 @@ fill=myLightColor,
 text width=5em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{line} = [draw, -latex']
 
+\definecolor{myDarkColor}{RGB}{178, 178, 255} % blue!30, #b2b2ff
+\definecolor{myLightColor}{RGB}{204, 204, 255} % blue!20, #ccccff 
+\definecolor{myEvenLighterColor}{RGB}{231, 231, 255}
+
+\definecolor{my_grey}{RGB}{238,238,228} % #eeeee4
+
+\definecolor{my_purple}{RGB}{183, 141, 242}
+\definecolor{my_dark_blue}{RGB}{255, 128, 255}
+\definecolor{my_light_blue}{RGB}{100, 222, 235} % skyBlue ##87CEEB
+\definecolor{my_green}{RGB}{139, 211, 70} % kiwi #nd3e7c1
+\definecolor{my_dark_green}{RGB}{38, 120, 19} % #267813
+
+\definecolor{my_yellow}{RGB}{239, 223, 72} % minionYellow #FFD55E 
+\definecolor{my_orange}{RGB}{249, 165, 44} % deepSaffron #FF9933
+% \definecolor{my_red}{RGB}{214, 78, 18} % sinopia #cb410b 
+\definecolor{my_red}{RGB}{255, 90, 30}
+
+
+\definecolor{ukraine_yellow}{RGB}{254, 241, 0}
+\definecolor{ukraine_blue}{RGB}{1, 124, 194}
 
 % \usepackage[table, dvipsnames]{xcolor} 
 \usepackage{xcolor} 
+\usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}
+\usepackage[overlay,absolute]{textpos}
+
+
+\usepackage{multimedia}
+\usepackage{animate}
+
+\setlength{\TPHorizModule}{30mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{10mm}{10mm} % start everything near the top-left corner
+\setlength{\parindent}{0pt}
+
