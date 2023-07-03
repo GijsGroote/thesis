@@ -5,8 +5,12 @@
   \item LTI drive model\pause
   \item LTI push model\pause
   \item Nonlinear push model
-\end{enumerate}
+\end{enumerate}\pause
 \end{block}
+
+\begin{example}{}
+\[x(k+1) = f(x(k), u(k))\]
+\end{example}
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
@@ -33,6 +37,21 @@
 % first input in applied to the system, the time step in incremented and the cycle repeats itself. 
 \end{frame}
 
+\begin{frame}[fragile]{Required Background} 
+\begin{block}{Driving}
+\begin{enumerate}
+  \item (MPC, \textit{lti-drive-model})
+  \item (MPPI, \textit{lti-drive-model})
+\end{enumerate}
+\end{block}\pause
+
+\begin{block}{Pushing}
+\begin{enumerate}
+  \item (MPPI, \textit{lti-push-model})
+  \item (MPPI, \textit{nonlinear-push-model})
+\end{enumerate}
+\end{block}
+\end{frame}
 
 \begin{frame}[fragile]{Required Background} 
 \begin{block}{Find a Path}
@@ -44,27 +63,27 @@
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-  \todo{the robot inthe cente rplease}
   \begin{center}
-  \hbox{\hspace{-0.5em} \includegraphics[width=1.0\textwidth]{figures/required_background/is_there_a_path}}
+    \hbox{\hspace{-1.5em} \includegraphics[height=0.85\textheight]{figures/required_background/is_there_a_path}}
   \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
   \begin{center}
-  \hbox{\hspace{-0.05\textwidth} \includegraphics[width=1.1\textwidth]{figures/required_background/occupancy_grid} }
+  \hbox{\hspace{0.0\textwidth} \includegraphics[width=1.0\textwidth]{figures/required_background/occupancy_grid} }
   \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-
 \begin{center}
-\begin{tikzpicture}[scale=0.65, every node/.style={scale=0.65}]
+  \vspace{-0.5cm}
+  \hspace{-1cm}
+\begin{tikzpicture}[scale=0.70, every node/.style={scale=0.70}]
     % Nodes
     \node [decision, text width=8em, line width=1pt] (first) {\huge Did Path estimator find a path? };
 
     \node [block, below left=1cm and 1cm of first, minimum width=13em, text width=16em, line width=1pt] (path_exists) {\huge Potentially Unfeasible };
-    \node [block, below right=1cm and 1cm of first, minimum width=13em, text width=12em, line width=1pt] (path_does_not_exists) {\huge A path could still exist };
+    \node [block, below right=1cm and 1.4cm of first, minimum width=13em, text width=12em, line width=1pt] (path_does_not_exists) {\huge A path could still exist };
 
     \draw[>=stealth, ->, line width=1.0pt] (first.west) [out=180, in=90] to node[xshift=-0.3cm, above] {\huge yes} (path_exists.north);
     \draw[>=stealth, ->, line width=1.0pt] (first.east) [out=0, in=90] to node[xshift=0.3cm, above] {\huge no} (path_does_not_exists.north);
@@ -91,38 +110,8 @@
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-  \begin{center}
-  \movie[width=\textwidth, height=0.5\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
-  \end{center}
+\movie[width=\textwidth, height=0.5\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
 \end{frame}
-
-\begin{frame}[fragile]{Required Background} 
-  \begin{center}
-  \includegraphics[width=1.0\textwidth]{figures/required_background/rrt/rrt67}
-  \end{center}
-\end{frame}
-
-% \begin{frame}[fragile]{Required Background}
-%   \centering
-%   \animategraphics[width=\textwidth, autoplay, loop]{15}{figures/required_background/rrt/rrt}{0}{67}
-% \end{frame}
-
-% \animategraphics{fr}{figures/required_background/rrt.gif}{figures/required_background/rrtvideofirst}{figures/required_background/rrtvideolast}
-
-% \begin{frame}[fragile]{Required Background} 
-
-% \begin{center}
-%     \includemedia[
-%       width=0.6\linewidth,
-%       height=0.4\linewidth,
-%       activate=pageopen,
-%       addresource=figures/required_background/rrtvideo.mp4,
-%       flashvars={
-%         source=figures/required_background/rrtvideo.mp4
-%       }
-%     ]{\fbox{Click to play}}{VPlayer.swf}
-%   \end{center}
-% \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
 \[\mathit{Cost_{path}} = \sum_{i=1}^{n-1} \mathit{Distance}(c_i, c_{i+1})\]

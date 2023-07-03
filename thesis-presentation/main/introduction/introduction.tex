@@ -1,26 +1,39 @@
 \section{Introduction}
+
 \begin{frame}[fragile]{} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/robot1}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot1}
 \end{center}
 \end{frame}
 \begin{frame}[fragile]{} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/robot2}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot2}
 \end{center}
 \end{frame}
 \begin{frame}[fragile]{} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/robot4}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot4}
 \end{center}
 \end{frame}
 \begin{frame}[fragile]{} 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/robot3}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot3}
 \end{center}
 \end{frame}
 
 \begin{frame}[c]{Intro} 
+  \begin{block}{Table of Content}
+    \begin{enumerate}
+      \item Introduction
+      \item Required Background
+      \item Proposed Method
+      \item Results
+      \item Conclusions
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}[c]{Intro\quad{\color{easy}Intro\quad}{\color{medium}Intro\quad}{\color{hard}Intro}} 
   \begin{block}{Table of Content}
     \begin{enumerate}
       \item Introduction
@@ -40,60 +53,65 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}[c]{Intro} 
+  \begin{center}
+  \input{main/introduction/pre_overview_proposed_method}
+  \end{center}
+\end{frame}
+
 \begin{frame}[fragile]{Intro}
-\large
-How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time? \bs
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[height=0.9\textheight]{figures/introduction/blockade}
+\end{center}
+\end{frame}
 
-\textbf{Research Subquestions:}
+\begin{frame}[fragile]{Intro}
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[height=0.9\textheight]{figures/introduction/blockade_with_target}
+\end{center}
+\end{frame}
 
-\begin{enumerate}
+\begin{frame}[fragile]{Intro}
+  \begin{minipage}[l]{0.46\textwidth}
+    \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
+  \end{minipage}\pause
+  \begin{minipage}[l]{0.3\textwidth}
+    \includegraphics[width=1.8\textwidth]{figures/introduction/wang_table}
+    \vspace{3.0cm}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Intro}
+  \begin{minipage}[l]{0.46\textwidth}
+    \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
+  \end{minipage}
+  \begin{minipage}[l]{0.3\textwidth}
+    \includegraphics[width=1.8\textwidth]{figures/introduction/wang_groote_table}
+    \vspace{3.0cm}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]{Intro}
+    \large
+    How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time? \bs
+
+  \textbf{Research Subquestions:}
+
+  \begin{enumerate}
     \item\small How to combine learning and planning for push and drive applications?
     \item\small How does the proposed framework compare against the state-of-the-art?
-\end{enumerate}
-\end{frame}
-
-\begin{frame}[c]{Intro: Overview Proposed Method} 
-  \input{main/introduction/pre_overview_proposed_method}
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{Intro}
-\begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/blockade}
-\end{center}
-\end{frame}
-
-
-\begin{frame}[fragile]{Intro}
-\begin{center}
-\includegraphics[width=1.0\textwidth]{figures/introduction/blockade_with_target}
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-  \begin{center}
-    \vspace{-0.2cm}
-  \begin{minipage}[c]{0.8\textwidth}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/introduction/wang}
-  \end{minipage}
-  \vspace{0.3cm}
-  \begin{minipage}[c]{0.5\textwidth}
-     \includegraphics[width=0.8\textwidth]{figures/introduction/wang_table}
-  \end{minipage}
-\end{center}
-
-\end{frame}
-
-
-
-
-
-\begin{frame}[fragile]{Intro}
-\begin{block}{Assumtions}
-\begin{enumerate}
-  \item \textbf{Closed-World}\pause
-\item\textbf{Perfect Object Sensor}\pause
-\item\textbf{Tasks are Commutative}
-\end{enumerate}
-\end{block}
+  \begin{block}{Assumtions}
+    \begin{enumerate}
+      \item \textbf{Closed-World}\pause
+      \item\textbf{Perfect Object Sensor}\pause
+      \item\textbf{Tasks are Commutative}
+    \end{enumerate}
+  \end{block}
 \end{frame}
