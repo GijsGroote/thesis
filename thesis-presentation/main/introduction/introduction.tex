@@ -2,11 +2,6 @@
 
 \begin{frame}[fragile]{} 
 \begin{center}
-\includegraphics[height=0.9\textheight]{figures/introduction/robot1}
-\end{center}
-\end{frame}
-\begin{frame}[fragile]{} 
-\begin{center}
 \includegraphics[height=0.9\textheight]{figures/introduction/robot2}
 \end{center}
 \end{frame}
@@ -22,18 +17,17 @@
 \end{frame}
 
 \begin{frame}[c]{Intro} 
-  \begin{block}{Table of Content}
+  \begin{block}{Challenges}
     \begin{enumerate}
-      \item Introduction
-      \item Required Background
-      \item Proposed Method
-      \item Results
-      \item Conclusions
+      \item Many different Robots
+      \item Controllers 
+      \item Many different Environments
+      \item Models of objects
     \end{enumerate}
   \end{block}
 \end{frame}
 
-\begin{frame}[c]{Intro\quad{\color{easy}Intro\quad}{\color{medium}Intro\quad}{\color{hard}Intro}} 
+\begin{frame}[c]{Intro} 
   \begin{block}{Table of Content}
     \begin{enumerate}
       \item Introduction
@@ -46,64 +40,81 @@
 \end{frame}
 
 \begin{frame}[fragile]{Intro} 
+\begin{block}{}
 \begin{itemize}
-  \item Learn System Models\\\pause
-  \item Navigation Among Movable Objects (NAMO)\\\pause
+  \item Learn System Models\\
+  \item Select best Available Controller
+\end{itemize}
+  \end{block}\pause
+
+\begin{block}{}
+\begin{itemize}
+  \item Navigation Among Movable Objects (NAMO)\\
   \item Nonprehensile Pushing
 \end{itemize}
+  \end{block}
 \end{frame}
 
-\begin{frame}[c]{Intro} 
+\input{main/introduction/pre_overview_proposed_method}
+
+
+
+\begin{frame}[fragile]{Intro}
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot_no_target}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Intro}
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot_no_target_with_arrows}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Intro}
+\vspace{-0.7cm}
+\begin{center}
+\includegraphics[height=0.9\textheight]{figures/introduction/robot_with_target}
+\end{center}
+\end{frame}
+
+% \begin{frame}[fragile]{Intro}
+%   \begin{minipage}[l]{0.46\textwidth}
+%     \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
+%   \end{minipage}\pause
+%   \begin{minipage}[l]{0.3\textwidth}
+%     \includegraphics[width=1.8\textwidth]{figures/introduction/wang_table}
+%     \vspace{3.0cm}
+%   \end{minipage}
+%   \cite{wang_affordancebased_2020}
+% \end{frame}
+
+\begin{frame}[fragile]{Intro}
+  \begin{minipage}[l]{0.46\textwidth}
+    \cite{wang_affordancebased_2020}
+    \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
+  \end{minipage}
+  \begin{minipage}[l]{0.3\textwidth}
+\begin{overprint}
+  \onslide<1> \includegraphics[width=1.8\textwidth]{figures/introduction/wang_table_transparent}\vspace{3.5cm}
+  \onslide<2> \includegraphics[width=1.8\textwidth]{figures/introduction/wang_table}\vspace{3.5cm}
+    \onslide<3> \includegraphics[width=1.8\textwidth]{figures/introduction/wang_groote_table}\vspace{3.5cm}
+\end{overprint}
+  \end{minipage}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Intro}
+
+  Research Question:\bs
   \begin{center}
-  \input{main/introduction/pre_overview_proposed_method}
+  \large
+  How to learn system models and how to select the\\ best available control method during task execution?\bs
   \end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-\vspace{-0.7cm}
-\begin{center}
-\includegraphics[height=0.9\textheight]{figures/introduction/blockade}
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-\vspace{-0.7cm}
-\begin{center}
-\includegraphics[height=0.9\textheight]{figures/introduction/blockade_with_target}
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-  \begin{minipage}[l]{0.46\textwidth}
-    \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
-  \end{minipage}\pause
-  \begin{minipage}[l]{0.3\textwidth}
-    \includegraphics[width=1.8\textwidth]{figures/introduction/wang_table}
-    \vspace{3.0cm}
-  \end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-  \begin{minipage}[l]{0.46\textwidth}
-    \includegraphics[width=1.3\textwidth]{figures/introduction/wang}
-  \end{minipage}
-  \begin{minipage}[l]{0.3\textwidth}
-    \includegraphics[width=1.8\textwidth]{figures/introduction/wang_groote_table}
-    \vspace{3.0cm}
-  \end{minipage}
-
-\end{frame}
-
-\begin{frame}[fragile]{Intro}
-    \large
-    How do learned objects' system models improve global task planning for a robot with nonprehensile push manipulation abilities over time? \bs
-
-  \textbf{Research Subquestions:}
-
-  \begin{enumerate}
-    \item\small How to combine learning and planning for push and drive applications?
-    \item\small How does the proposed framework compare against the state-of-the-art?
-  \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{Intro}

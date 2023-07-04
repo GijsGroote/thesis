@@ -1,15 +1,25 @@
 \section{Required Background}
 \begin{frame}[fragile]{Required Background} 
+Set of Available Controllers:
+
+\[action_1: \{ (\mathit{controller}_1^\mathit{action1}, \mathit{model}_1^\mathit{action1}), \dots \}\]
+\[action_2: \{ (\mathit{controller}_1^\mathit{action2}, \mathit{model}_1^\mathit{action2}), \dots \}\]
+\[\vdots\]
+\[action_n:  \{ (\mathit{controller}_1^\mathit{actionN}, \mathit{model}_1^\mathit{actionN}), \dots \}\]
+\end{frame}
+
+
+\begin{frame}[fragile]{Required Background} 
 \begin{block}{System Models}
 \begin{enumerate}
   \item LTI drive model\pause
   \item LTI push model\pause
   \item Nonlinear push model
-\end{enumerate}\pause
+\end{enumerate}
 \end{block}
 
-\begin{example}{}
-\[x(k+1) = f(x(k), u(k))\]
+\begin{example}{Model Structure}
+  \[x(k+1) = f(x(k), u(k))\]
 \end{example}
 \end{frame}
 
@@ -20,22 +30,8 @@
   \item Model Predictive Path Intergral (MPPI) control
 \end{enumerate}
 \end{block}
-
-% MPC and MPPI:
-% Both have a objective function which they desire to miimize. 
-% Robot wants to go go target, minimize distance to target. Now both methods caclulate the 
-% input on the robot using two different methods. 
-
-% MPC uses a system model to simulate the future states of the system whilst keeping robot input as variables to be determined
-% Mathematical solvers then solve a minimization function that minimizes the objective function and find the robot input that 
-% can be applied to the robot. The time step is incremented, new measurements are taken and a new minimization function is created 
-% and the cycle repeats itself. Key thing to take away, robot input is found by mathematical solvers.
-
-% MPPI simulate rollouts into the future. Using a system model and randomly generated input, multiple potential future states are
-% obtained. The inputs that correspond to rollouts close to the desired states are mostly selected and inputs that correspond to
-% rollouts far from the desired state are neglected. The multiple inputs are then combined into a single input, from which the 
-% first input in applied to the system, the time step in incremented and the cycle repeats itself. 
 \end{frame}
+
 
 \begin{frame}[fragile]{Required Background} 
 \begin{block}{Driving}
@@ -43,7 +39,7 @@
   \item (MPC, \textit{lti-drive-model})
   \item (MPPI, \textit{lti-drive-model})
 \end{enumerate}
-\end{block}\pause
+\end{block}
 
 \begin{block}{Pushing}
 \begin{enumerate}
@@ -75,45 +71,20 @@
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-\begin{center}
-  \vspace{-0.5cm}
-  \hspace{-1cm}
-\begin{tikzpicture}[scale=0.70, every node/.style={scale=0.70}]
-    % Nodes
-    \node [decision, text width=8em, line width=1pt] (first) {\huge Did Path estimator find a path? };
-
-    \node [block, below left=1cm and 1cm of first, minimum width=13em, text width=16em, line width=1pt] (path_exists) {\huge Potentially Unfeasible };
-    \node [block, below right=1cm and 1.4cm of first, minimum width=13em, text width=12em, line width=1pt] (path_does_not_exists) {\huge A path could still exist };
-
-    \draw[>=stealth, ->, line width=1.0pt] (first.west) [out=180, in=90] to node[xshift=-0.3cm, above] {\huge yes} (path_exists.north);
-    \draw[>=stealth, ->, line width=1.0pt] (first.east) [out=0, in=90] to node[xshift=0.3cm, above] {\huge no} (path_does_not_exists.north);
-\end{tikzpicture}
-\end{center}
-\end{frame}
-
-% \begin{frame}{GIFs in Beamer}
-% \centering
-% \animategraphics[loop,width=4cm]{10}{thanks-}{0}{6}
-% \end{frame}
-
-
-% \begin{frame}{GIFs in Beamer}
-% \centering
-% \movie[]{optional text}{figures/required_background/rrt.gif}
-% \end{frame}
-
-
-\begin{frame}[fragile]{Required Background} 
+  Double-tree Rapidly exploring Random Tree (RRT*) Algorithm~\cite{chen_fast_2018}:
   \begin{center}
-  \includegraphics[width=1.0\textwidth]{figures/required_background/rrt/rrt0}
+  \includegraphics[width=0.7\textwidth]{figures/required_background/rrt/rrt0}
   \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-\movie[width=\textwidth, height=0.5\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
+\movie[width=\textwidth, height=0.3874\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
 \end{frame}
 
-\begin{frame}[fragile]{Required Background} 
+\begin{frame}[fragile]{Required Background}
+  \begin{center}
+  \includegraphics[width=0.8\textwidth]{figures/required_background/rrt/rrt67}
+  \end{center}
 \[\mathit{Cost_{path}} = \sum_{i=1}^{n-1} \mathit{Distance}(c_i, c_{i+1})\]
 \end{frame}
 

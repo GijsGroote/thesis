@@ -18,6 +18,12 @@ Where $\mathit{id}_\mathit{from}$ and $\mathit{id}_\mathit{to}$ correspond to th
 
 The success factor rates an edge parameterization based on experience in the robot environment. The success factor is created or updated when an action edge with that parameterization failed during execution time or successfully completed.\bs
 
+
+$a$: number of times an edge with $(\mathit{controller}, \mathit{model})$ is reviewed\bs
+
+$\epsilon^\mathit{pred}_\mathrm{avg}$: average prediction error 
+
+
 Formally the \textbf{success factor} = \gls{successfactor}:
 \begin{equation}
 \gls{successfactor}(a+1) =
