@@ -18,9 +18,8 @@ Set of Available Controllers:
 \end{enumerate}
 \end{block}
 
-\begin{example}{Model Structure}
+System Model Structure
   \[x(k+1) = f(x(k), u(k))\]
-\end{example}
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
@@ -50,42 +49,25 @@ Set of Available Controllers:
 \end{frame}
 
 \begin{frame}[fragile]{Required Background} 
-\begin{block}{Find a Path}
-\begin{enumerate}
-  \item Path Estimation\\
-  \item Path Planning\\
-\end{enumerate}
-\end{block}
-\end{frame}
-
-\begin{frame}[fragile]{Required Background} 
   \begin{center}
     \hbox{\hspace{-1.5em} \includegraphics[height=0.85\textheight]{figures/required_background/is_there_a_path}}
   \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Required Background} 
+\begin{frame}[fragile]{Required Background: Path Estimation} 
   \begin{center}
   \hbox{\hspace{0.0\textwidth} \includegraphics[width=1.0\textwidth]{figures/required_background/occupancy_grid} }
   \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Required Background} 
+\begin{frame}[fragile]{Required Background: Path Planning} 
+  \movie[width=\textwidth, height=0.3874\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
+\end{frame}
+
+\begin{frame}[fragile]{Required Background: Path Planning} 
   Double-tree Rapidly exploring Random Tree (RRT*) Algorithm~\cite{chen_fast_2018}:
   \begin{center}
-  \includegraphics[width=0.7\textwidth]{figures/required_background/rrt/rrt0}
-  \end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Required Background} 
-\movie[width=\textwidth, height=0.3874\textwidth, autostart, poster]{}{figures/required_background/rrtvideo.mp4}
-\end{frame}
-
-\begin{frame}[fragile]{Required Background}
-  \begin{center}
-  \includegraphics[width=0.8\textwidth]{figures/required_background/rrt/rrt67}
+  \includegraphics[width=0.8\textwidth]{figures/required_background/path_found}
   \end{center}
 \[\mathit{Cost_{path}} = \sum_{i=1}^{n-1} \mathit{Distance}(c_i, c_{i+1})\]
 \end{frame}
-
-
